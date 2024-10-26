@@ -165,7 +165,8 @@ export const submitForm = async ({
                 setSuccess &&
                   setSuccess((prev) => ({
                     ...prev,
-                    ticketURL: response.data.response.ticket_url,
+                    is_approved: response.data.response.is_approved,
+                    show_sub_event: response.data.response.show_sub_event,
                     followupMessage: response.data.response.followup_msg,
                     eventRegisterId: response.data.response.event_register_id,
                     loading: false,
@@ -213,6 +214,8 @@ export const submitForm = async ({
 
         const successData = {
           showModal: true,
+          is_approved: response.data.response.is_approved,
+          show_sub_event: response.data.response.show_sub_event,
           ticketURL: response.data.response.ticket_url,
           followupMessage: response.data.response.followup_msg,
           eventRegisterId: response.data.response.event_register_id,
@@ -296,8 +299,10 @@ export const validateRSVPData = (
   formData: FormDataType,
   setFormNumber: React.Dispatch<React.SetStateAction<number>>,
   setFieldErrors: Dispatch<React.SetStateAction<ErrorMessages>>,
+  setLoading: Dispatch<React.SetStateAction<boolean>>,
   selectedDate?: string | null,
 ) => {
+  setLoading(true);
   return new Promise<void>((resolve, reject) => {
     const selectedDateFormatted = selectedDate
       ? new Date(selectedDate).toISOString().split('T')[0]
@@ -352,6 +357,9 @@ export const validateRSVPData = (
       .catch((error) => {
         setFieldErrors(error.response.data.message);
         reject(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   });
 };

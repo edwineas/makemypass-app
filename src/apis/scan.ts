@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { privateGateway } from '../../services/apiGateway';
 import { makeMyPass } from '../../services/urls';
 import { formatDate } from '../common/commonFunctions';
-import { multipleTicketCount } from '../pages/app/CheckIns/pages/ScanQR/types';
+import { MapNewCode, multipleTicketCount } from '../pages/app/CheckIns/pages/ScanQR/types';
 import { LogType } from '../pages/app/CheckIns/pages/Venue/Venue';
 import type { checkInButtonsType } from '../pages/app/CheckIns/types';
 
@@ -13,6 +13,41 @@ type ResponseTicketType = {
   total_count: number;
   remaining_count: number;
   checked_in_count: number;
+};
+
+export const mapNewCode = async ({
+  mappingNewCode,
+  newCode,
+  eventId,
+  setMappingNewCode,
+  setMessage,
+}: {
+  mappingNewCode: MapNewCode;
+  newCode: string;
+  eventId: string;
+  setMappingNewCode: React.Dispatch<React.SetStateAction<MapNewCode | undefined>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+}): Promise<unknown> => {
+  return new Promise((resolve, reject) => {
+    privateGateway
+      .post(makeMyPass.scanGuestMapNewCode(eventId), {
+        old_ticket_code: mappingNewCode.ticketCode,
+        new_ticket_code: newCode,
+      })
+      .then((response) => {
+        setMessage(response.data.message.general[0]);
+        setMappingNewCode({
+          apiConfirmation: false,
+          ticketCode: '',
+          modalConfirmation: false,
+        });
+        resolve(response);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message.general[0] || 'Error in Mapping New Code');
+        reject(error);
+      });
+  });
 };
 
 export const checkInUser = async ({
@@ -25,6 +60,7 @@ export const checkInUser = async ({
   multipleTickets,
   setTrigger,
   roomNumber,
+  setMappingNewCode,
 }: {
   ticketId: string;
   eventId: string;
@@ -35,6 +71,7 @@ export const checkInUser = async ({
   multipleTickets?: multipleTicketCount;
   setTrigger?: React.Dispatch<React.SetStateAction<boolean>>;
   roomNumber?: string;
+  setMappingNewCode?: React.Dispatch<React.SetStateAction<MapNewCode | undefined>>;
 }) => {
   if (setChecking) {
     setChecking(true);
@@ -88,6 +125,14 @@ export const checkInUser = async ({
       } else {
         toast.success(response.data.message.general[0] || 'Check-In Successful');
       }
+
+      if (setMappingNewCode && response.data.response.map_new_code) {
+        setMappingNewCode({
+          apiConfirmation: true,
+          ticketCode: ticketId,
+          modalConfirmation: false,
+        });
+      }
     })
     .catch((error) => {
       if (error.response.data.statusCode === 1101 && setMultipleTickets) {
@@ -102,7 +147,6 @@ export const checkInUser = async ({
             remaining_count: ticket.remaining_count,
             checked_in_count: ticket.remaining_count > 0 ? 1 : 0,
           })),
-          // userName: error.response.data.response.user_name,
           userData: error.response.data.response.user_data,
           entryDate: error.response.data.response.entry_date,
         }));
@@ -114,7 +158,15 @@ export const checkInUser = async ({
         }));
       }
 
-      if (error.response.data.statusCode !== 1101)
+      if (error.response.data.statusCode !== 1101) {
+        if (setMappingNewCode && error.response.data.response.map_new_code) {
+          setMappingNewCode({
+            apiConfirmation: true,
+            ticketCode: ticketId,
+            modalConfirmation: false,
+          });
+        }
+
         if (setMessage) {
           setMessage(error.response.data.message.general[0] || 'Check-In Failed');
           if (setScanLogs)
@@ -129,6 +181,7 @@ export const checkInUser = async ({
         } else {
           toast.error(error.response.data.message.general[0] || 'Check-In Failed');
         }
+      }
     })
     .finally(() => {
       if (setChecking) {
@@ -139,6 +192,7 @@ export const checkInUser = async ({
       }
     });
 };
+
 export const checkOutUser = async (
   ticketId: string,
   eventId: string,

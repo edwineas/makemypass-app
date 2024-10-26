@@ -5,18 +5,20 @@ import { BiChevronDown } from 'react-icons/bi';
 import { BsTicketPerforatedFill } from 'react-icons/bs';
 import { FaEdit, FaMailBulk, FaTrash, FaWalking } from 'react-icons/fa';
 import { FaCheck } from 'react-icons/fa6';
-import { MdDownload, MdMail } from 'react-icons/md';
+import { MdDownload, MdMail, MdRemove } from 'react-icons/md';
 import { HashLoader } from 'react-spinners';
 
+import { TillRoles } from '../../../../../../services/enums';
 import { setGuestShortlistStatus } from '../../../../../apis/guest';
 import {
   deleteGuestSubmission,
   getGuestMailLog,
   getGuestVisistedVenues,
   initateGuestRefund,
+  removeMappedCode,
 } from '../../../../../apis/guests';
 import { checkInUser } from '../../../../../apis/scan';
-import { formatDate, isUserEditor } from '../../../../../common/commonFunctions';
+import { formatDate, isUserAuthorized, isUserEditor } from '../../../../../common/commonFunctions';
 import Modal from '../../../../../components/Modal/Modal';
 import ScannerResponseModal from '../../../CheckIns/components/ScannerResponseModal/ScannerResponseModal';
 import { multipleTicketCount } from '../../../CheckIns/pages/ScanQR/types';
@@ -49,6 +51,7 @@ const ViewGuest = ({
     value: false,
   });
   const [deleteModal, setDeleteModal] = useState(false);
+  const [removeTicketCode, setRemoveTicketCode] = useState(false);
   const [mailLog, setMailLog] = useState<{
     showLog: boolean;
     logs: EmailType[];
@@ -85,7 +88,7 @@ const ViewGuest = ({
   const [message, setMessage] = useState<string>('');
 
   useEffect(() => {
-    if (selectedGuestData && selectedGuestData['id'] && trigger) {
+    if (selectedGuestData && selectedGuestData['id'] && trigger && message && message.length <= 0) {
       checkInUser({
         ticketId: selectedGuestData['ticket_code'],
         eventId,
@@ -146,6 +149,43 @@ const ViewGuest = ({
           </Modal>
         </>
       )}
+      {removeTicketCode && (
+        <Modal
+          title='Remove Ticket Code'
+          onClose={() => {
+            setRemoveTicketCode(false);
+          }}
+        >
+          <div className={styles.deleteModal}>
+            <p className={styles.deleteModalText}>
+              Are you sure you want to remove this ticket code?
+            </p>
+            <div className={styles.deleteModalButtons}>
+              <SecondaryButton
+                buttonText='Cancel'
+                onClick={() => {
+                  setRemoveTicketCode(false);
+                }}
+              />
+              <SecondaryButton
+                buttonText='Remove'
+                onClick={() => {
+                  if (selectedGuestData) {
+                    removeMappedCode(
+                      eventId,
+                      selectedGuestData['id'],
+                      selectedGuestData['mapped_code'],
+                      setTriggerFetch,
+                    );
+                  }
+                  setSelectedGuestId(null);
+                  setRemoveTicketCode(false);
+                }}
+              />
+            </div>
+          </div>
+        </Modal>
+      )}
       {visitedVenues.status && (
         <div className={styles.topLayer}>
           <Modal
@@ -184,14 +224,14 @@ const ViewGuest = ({
             })
           }
           style={{
-            maxWidth: '40rem',
+            maxWidth: '35rem',
             alignItems: 'flex-start',
           }}
         >
           <div className={styles.mailsContainer}>
             {mailLog.logs.map((mail, index) => {
               return (
-                <div className={styles.mail} key={index}>
+                <div className={styles.mail} key={index} onClick={() => toggleMailContent(mail.id)}>
                   <div className={styles.expandIcon}>
                     {
                       <BiChevronDown
@@ -208,6 +248,11 @@ const ViewGuest = ({
                     <MdMail size={25} />
                     <div className={styles.mailHeaderContents}>
                       <p className={styles.mailType}>{mail.type} Mail</p>
+                      {mail.opened_at && (
+                        <p className={styles.mailType}>
+                          Mail Opened @ {formatDate(mail.opened_at, true)}
+                        </p>
+                      )}
                       <p className={styles.mailSubject}>{mail.subject}</p>
                       <p className={styles.mailDescription}>
                         To: <span>{mail.send_to}</span> <br />
@@ -274,6 +319,12 @@ const ViewGuest = ({
                   </p>
                   <p className={styles.ticketCode}>
                     <span>Ticket Code:</span> {selectedGuestData['ticket_code']}
+                  </p>
+                  <p className={styles.ticketCode}>
+                    <span>Mapped Code:</span>{' '}
+                    {selectedGuestData['mapped_code']
+                      ? selectedGuestData['mapped_code']
+                      : 'Not Mapped'}
                   </p>
                 </div>
               </div>
@@ -501,20 +552,35 @@ const ViewGuest = ({
                     <FaMailBulk size={20} color='#8E8E8E' />
                     <span>View Mail Log</span>
                   </div>
+
+                  {selectedGuestData.mapped_code && (
+                    <div
+                      className={styles.deleteIcon}
+                      onClick={() => {
+                        setRemoveTicketCode(true);
+                      }}
+                    >
+                      <MdRemove size={15} color='#8E8E8E' />
+                      <span>Remove Mapped Code</span>
+                    </div>
+                  )}
                 </div>
               )}
 
-              {isUserEditor() && (
+              {(isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER)) && (
                 <div className='row'>
-                  <div
-                    className={styles.deleteIcon}
-                    onClick={() => {
-                      setDeleteModal(true);
-                    }}
-                  >
-                    <FaTrash size={15} color='#8E8E8E' />
-                    <span> Delete Submission</span>
-                  </div>
+                  {isUserEditor() && (
+                    <div
+                      className={styles.deleteIcon}
+                      onClick={() => {
+                        setDeleteModal(true);
+                      }}
+                    >
+                      <FaTrash size={15} color='#8E8E8E' />
+                      <span> Delete Submission</span>
+                    </div>
+                  )}
+
                   {!type && (
                     <div
                       className={styles.deleteIcon}

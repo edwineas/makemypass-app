@@ -12,6 +12,7 @@ export const makeMyPass = {
 
   //Scan Guest
   scanGuestCheckin: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/checkin`), //Till Volunteer
+  scanGuestMapNewCode: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/map-new-code`), //Till Volunteer
   scanGuestButtons: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/buttons/`), //Till Volunteer
   scanGuestCheckout: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/checkout`), //Till Volunteer
   scanGuestVenueCheckin: (eventId: string) =>
@@ -22,6 +23,10 @@ export const makeMyPass = {
   scanGuestPerkClaim: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/perk/claim`), //Till Volunteer
   scanGuestPerkList: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/perk/list`), //Till Viewer, Patch Editor
   scanGuestPrint: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/print`), //Till Volunteer
+  scanGuestSubEventCheckin: (eventId: string) =>
+    makeMyPassURL(`/scan-guest/${eventId}/sub-event/checkin/`), //Till Volunteer
+  scanGuestSubEventList: (eventId: string) =>
+    makeMyPassURL(`/scan-guest/${eventId}/sub-event/list`), //Till Volunteer
 
   //Manage Guests
   eventCreate: makeMyPassURL(`/manage-event/create/`), // SuperUser
@@ -53,6 +58,10 @@ export const makeMyPass = {
   guestListFormCategories: (eventId: string) =>
     makeMyPassURL(`/manage-guest/${eventId}/list-form-categories/`),
   guestList: (eventId = '') => makeMyPassURL(`/manage-guest/${eventId}/register-list/`), //Till Volunteer
+  removeTicketCode: (eventId: string, eventRegisterId: string, ticketCode: string) =>
+    makeMyPassURL(
+      `/manage-guest/${eventId}/guest/${eventRegisterId}/remove-ticket-code/${ticketCode}/`,
+    ), //Till Admin
 
   //Manage Logs
   mailLog: (eventId: string) => makeMyPassURL(`/manage-log/${eventId}/mail-log/`), //Till Admin
@@ -155,6 +164,8 @@ export const makeMyPass = {
   getVenueAnalytics: (eventId: string) => makeMyPassURL(`/analytics/${eventId}/venue-analytics/`), //Till Volunteer
   getPageViewAnalytics: (eventId: string) =>
     makeMyPassURL(`/analytics/${eventId}/page-view-analytics/`), //Till Viewer
+  subEventAnalytics: (eventId: string) =>
+    makeMyPassURL(`/analytics/${eventId}/sub-event-analytics/`), //Till Viewer
 
   //Manage Games
   scratchCardClaim: (eventId: string, eventRegisterId: string) =>
@@ -169,6 +180,26 @@ export const makeMyPass = {
 
   utmList: (eventId: string) => makeMyPassURL(`/utm/${eventId}/list/`), //Till Viewer
   createUtm: (eventId: string) => makeMyPassURL(`/utm/${eventId}/create/`), //Till Viewer
+
+  //Sub-Event
+  viewSubEvent: (eventId: string, eventRegisterId: string) =>
+    makeMyPassURL(`/sub-events/${eventId}/view/${eventRegisterId}/`), //Till Editor
+  getSubEventForm: (eventId: string, eventRegisterId: string) =>
+    makeMyPassURL(`/sub-events/${eventId}/get-form/${eventRegisterId}/`), //Till Editor
+  subEventRegister: (eventId: string, eventRegisterId: string) =>
+    makeMyPassURL(`/sub-events/${eventId}/register/${eventRegisterId}/`), //Till Viewer
+  removeRegisteredSubEvent: (eventId: string, eventRegisterId: string, userSubEventId: string) =>
+    makeMyPassURL(
+      `/sub-events/${eventId}/remove-register/${eventRegisterId}/sub-event/${userSubEventId}/`,
+    ), //Till Viewer
+  listSubEvents: (eventId: string) => makeMyPassURL(`/sub-events/${eventId}/list/`), //Till Viewer
+  createNewSubEvent: (eventId: string) => makeMyPassURL(`/sub-events/${eventId}/create/`), //Till Editor
+  updateSubEvent: (eventId: string, subEventId: string) =>
+    makeMyPassURL(`/sub-events/${eventId}/sub-event/${subEventId}/`), //Till Editor
+  subEventGuestList: (eventId: string, subEventId: string) =>
+    makeMyPassURL(`/sub-events/${eventId}/sub-event/${subEventId}/guest/list/`), //Till Viewer
+  subEventCSVDownload: (eventId: string, subEventId: string) =>
+    makeMyPassURL(`/sub-events/${eventId}/sub-event/${subEventId}/guest/download-csv/`), //Till Viewer
 };
 
 export const makeMyPassSocket = {

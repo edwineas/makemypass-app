@@ -174,6 +174,8 @@ export interface EventType {
   is_sub_event: boolean;
   is_random_user: boolean;
   status: string;
+  map_new_code: boolean;
+  checkin_confirmation_required: boolean;
   is_scratch_card: boolean;
   need_confirmation: boolean;
   confirmation_fields: string[];
@@ -265,6 +267,7 @@ export type MailType = {
   subject: string;
   type: string;
   updated_at: string;
+  opened_at: string;
 };
 
 export type listMailType = {
@@ -425,4 +428,22 @@ type Metadata = {
 export type DefaultListType = {
   id: string;
   name: string;
+};
+
+export type SubEventType = {
+  id: string;
+  title: string;
+  description: string;
+  start_time: string;
+  end_time: string;
+  place: string;
+  location: string;
+  capacity_left: number;
+  price: number;
+  currency: string;
+  platform_fee: number;
+  gateway_fee: number;
+  already_booked: boolean;
+  conflicting_event?: string;
+  capacity: number;
 };

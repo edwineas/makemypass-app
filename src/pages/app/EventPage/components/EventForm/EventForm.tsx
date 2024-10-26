@@ -24,6 +24,8 @@ import CouponForm from '../CouponForm/CouponForm';
 import VoiceInput from './components/VoiceInput';
 
 const EventForm = ({
+  formNumber,
+  setFormNumber,
   eventFormData,
   setSuccess,
   setEventData,
@@ -36,6 +38,8 @@ const EventForm = ({
   isCashInHand,
   utmData,
 }: {
+  formNumber: number;
+  setFormNumber: Dispatch<React.SetStateAction<number>>;
   eventFormData: FormEventData;
   eventTitle: string | undefined;
   setEventData?: Dispatch<React.SetStateAction<EventType | undefined>>;
@@ -66,11 +70,11 @@ const EventForm = ({
   const [loading, setLoading] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<FormDataType>({});
-  const [formNumber, setFormNumber] = useState<number>(eventFormData.show_ticket_first ? 1 : 0);
   const [selectedDate, setSelectedDate] = useState<string | null>();
   const [formErrors, setFormErrors] = useState<{ [key: string]: string[] }>({});
   const [formIdToKey, setFormIdToKey] = useState<{ [key: string]: string }>({});
   const [tickets, setTickets] = useState<Tickets[]>([]);
+  const [isFormSubmitable, setIsFormSubmitable] = useState<boolean>(false);
   const [discount, setDiscount] = useState<DiscountData>({
     discount_type: '',
     discount_value: 0,
@@ -92,18 +96,21 @@ const EventForm = ({
   const newSearchParams = new URLSearchParams(location.search);
 
   useEffect(() => {
+    setFormData(
+      eventFormData?.form.reduce((data: FormDataType, field: FormFieldType) => {
+        data[field.field_key] = newSearchParams.get(field.field_key) || '';
+        return data;
+      }, {}),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const accessCodeParam = newSearchParams.get('access_code');
     if (accessCodeParam) {
       setAccessCode(accessCodeParam);
     }
     if (eventFormData?.form) {
-      setFormData(
-        eventFormData?.form.reduce((data: FormDataType, field: FormFieldType) => {
-          data[field.field_key] = newSearchParams.get(field.field_key) || '';
-          return data;
-        }, {}),
-      );
-
       eventFormData?.form.forEach((field) => {
         setFormIdToKey((prevState) => {
           return { ...prevState, [field.id]: field.field_key };
@@ -267,6 +274,21 @@ const EventForm = ({
     setPreviews(newPreviews);
   };
 
+  //write the function to check whether the all the required filed in the form are filled or not with proper validation
+  useEffect(() => {
+    let isSubmitable = true;
+
+    eventFormData.form.forEach((field) => {
+      if (
+        (field.required && !formData[field.field_key]) ||
+        (Array.isArray(formData[field.field_key]) && formData[field.field_key].length === 0)
+      ) {
+        isSubmitable = false;
+      }
+    });
+    setIsFormSubmitable(isSubmitable);
+  }, [formData, eventFormData.form]);
+
   useEffect(() => {
     if (previews.length === 0) {
       eventFormData.form.forEach((field) => {
@@ -387,7 +409,15 @@ const EventForm = ({
         )}
         <motion.button
           initial={{ opacity: 0, y: 35 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            background: isFormSubmitable
+              ? 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)'
+              : 'linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 100%)',
+            color: isFormSubmitable ? '#000' : '#fff)',
+          }}
+          transition={{ duration: 0.6 }}
           whileTap={{ scale: 0.95 }}
           type='submit'
           disabled={loading}
@@ -402,6 +432,7 @@ const EventForm = ({
                 formData,
                 setFormNumber,
                 setFormErrors,
+                setLoading,
                 selectedDate,
               ).then(() => {
                 if (eventFormData.show_ticket_first)
@@ -473,7 +504,7 @@ const EventForm = ({
         >
           {loading ? (
             <PropagateLoader
-              color={'#fff'}
+              color={isFormSubmitable ? '#272727' : 'ffffff'}
               loading={loading}
               size={10}
               style={{

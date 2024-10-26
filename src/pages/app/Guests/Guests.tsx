@@ -77,6 +77,7 @@ const Guests = () => {
   const [showScanner, setShowScanner] = useState<boolean>(false);
   const [isCashInHand, setIsCashInHand] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState('');
+  const [formNumber, setFormNumber] = useState(eventFormData?.show_ticket_first ? 1 : 0);
 
   const [showPicker, setShowPicker] = useState<boolean>(false);
 
@@ -96,11 +97,20 @@ const Guests = () => {
 
   const getGuestData = () => {
     if (!eventFormData) getEventFormData(eventId, setEventFormData);
-    if (selectedGuestId && selectedGuestId.id && selectedGuestId.type == 'edit' && isUserEditor()) {
+    if (
+      selectedGuestId &&
+      selectedGuestId.id &&
+      selectedGuestId.type == 'edit' &&
+      (isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER))
+    ) {
       getGuestEditPrefillData(eventId, selectedGuestId.id, setSelectedGuest, setFormData);
     } else if (selectedGuestId && selectedGuestId.id && selectedGuestId.type == 'view')
       getGuestInformation(eventId, selectedGuestId.id, setSelectedGuest);
   };
+
+  useEffect(() => {
+    setFormNumber(eventFormData?.show_ticket_first ? 1 : 0);
+  }, [eventFormData]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -204,78 +214,82 @@ const Guests = () => {
 
         {selectedGuestId && selectedGuestId.type === 'bulk' && <BulkUpload onClose={onClose} />}
 
-        {selectedGuestId && selectedGuestId.type === 'add' && isUserEditor() && (
-          <Modal title='Invite Guest' onClose={onClose} type='side'>
-            <div className={styles.userInfoModalContainer}>
-              <button
-                className={styles.bulkUploadButton}
-                onClick={() => {
-                  setSelectedGuestId({
-                    id: '',
-                    type: 'bulk',
-                  });
-                }}
-              >
-                Bulk Upload
-              </button>
-              <div className={styles.orContainer}>
-                <hr />
-                <p>OR</p>
-                <hr />
-              </div>
-              <p className={styles.ticketLabel}>Enter Ticket Code</p>
-              <div className={styles.ticketCode}>
-                <input
-                  onChange={(event) => {
-                    setTicketCode(event.target.value);
-                  }}
-                  placeholder='Ticket Code'
-                  type='text'
-                  value={ticketCode}
-                  className={styles.scanInput}
-                />
+        {selectedGuestId &&
+          selectedGuestId.type === 'add' &&
+          (isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER)) && (
+            <Modal title='Invite Guest' onClose={onClose} type='side'>
+              <div className={styles.userInfoModalContainer}>
                 <button
+                  className={styles.bulkUploadButton}
                   onClick={() => {
-                    setShowScanner(true);
+                    setSelectedGuestId({
+                      id: '',
+                      type: 'bulk',
+                    });
                   }}
-                  className={styles.scanButton}
                 >
-                  Scan
+                  Bulk Upload
                 </button>
+                <div className={styles.orContainer}>
+                  <hr />
+                  <p>OR</p>
+                  <hr />
+                </div>
+                <p className={styles.ticketLabel}>Enter Ticket Code</p>
+                <div className={styles.ticketCode}>
+                  <input
+                    onChange={(event) => {
+                      setTicketCode(event.target.value);
+                    }}
+                    placeholder='Ticket Code'
+                    type='text'
+                    value={ticketCode}
+                    className={styles.scanInput}
+                  />
+                  <button
+                    onClick={() => {
+                      setShowScanner(true);
+                    }}
+                    className={styles.scanButton}
+                  >
+                    Scan
+                  </button>
+                </div>
+                {!showScanner ? (
+                  eventFormData && (
+                    <>
+                      <Slider
+                        checked={isCashInHand}
+                        onChange={() => setIsCashInHand(!isCashInHand)}
+                        key={isCashInHand ? 'cash' : 'online'}
+                        size='medium'
+                        text='Cash in Hand'
+                      />
+                      <EventForm
+                        formNumber={formNumber}
+                        setFormNumber={setFormNumber}
+                        eventFormData={eventFormData}
+                        eventTitle={eventTitle}
+                        type='addGuest'
+                        ticketCode={ticketCode}
+                        setSelectedGuestId={setSelectedGuestId}
+                        isCashInHand={isCashInHand}
+                      />
+                    </>
+                  )
+                ) : (
+                  <Scanner
+                    ticketId={ticketCode}
+                    setTicketId={setTicketCode}
+                    trigger={true}
+                    setTrigger={() => {
+                      if (setShowScanner) setShowScanner(false);
+                    }}
+                  />
+                )}
               </div>
-              {!showScanner ? (
-                eventFormData && (
-                  <>
-                    <Slider
-                      checked={isCashInHand}
-                      onChange={() => setIsCashInHand(!isCashInHand)}
-                      key={isCashInHand ? 'cash' : 'online'}
-                      size='medium'
-                      text='Cash in Hand'
-                    />
-                    <EventForm
-                      eventFormData={eventFormData}
-                      eventTitle={eventTitle}
-                      type='addGuest'
-                      ticketCode={ticketCode}
-                      setSelectedGuestId={setSelectedGuestId}
-                      isCashInHand={isCashInHand}
-                    />
-                  </>
-                )
-              ) : (
-                <Scanner
-                  ticketId={ticketCode}
-                  setTicketId={setTicketCode}
-                  trigger={true}
-                  setTrigger={() => {
-                    if (setShowScanner) setShowScanner(false);
-                  }}
-                />
-              )}
-            </div>
-          </Modal>
-        )}
+            </Modal>
+          )}
 
         {selectedGuestId && eventFormData && selectedGuestId.type === 'edit' && (
           <EditGuest
@@ -371,14 +385,26 @@ const Guests = () => {
                   <div className={styles.tableButtons}>
                     <Slider
                       checked={showCheckedInOnly}
-                      onChange={() => setShowCheckedInOnly(!showCheckedInOnly)}
+                      onChange={() => {
+                        setShowCheckedInOnly(!showCheckedInOnly);
+                        setPaginationData({
+                          ...paginationData,
+                          page: 1,
+                        });
+                      }}
                       size='small'
                       text='Checked-In'
                     />
 
                     <Slider
                       checked={showApprovedOnly}
-                      onChange={() => setShowApprovedOnly(!showApprovedOnly)}
+                      onChange={() => {
+                        setShowApprovedOnly(!showApprovedOnly);
+                        setPaginationData({
+                          ...paginationData,
+                          page: 1,
+                        });
+                      }}
                       size='small'
                       text='Shortlisted-Only'
                     />
@@ -438,7 +464,7 @@ const Guests = () => {
                       />
                     )}
 
-                    {isUserEditor() && (
+                    {(isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER)) && (
                       <TiUserAdd
                         onClick={() => {
                           setSelectedGuestId({

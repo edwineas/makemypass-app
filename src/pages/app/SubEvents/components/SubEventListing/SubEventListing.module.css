@@ -1,0 +1,283 @@
+.subEventsListingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  z-index: 2;
+  margin: auto;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+}
+
+@media screen and (max-width: 1330px) {
+  .subEventsListingContainer {
+    padding: 0 1.25rem;
+  }
+}
+
+.dayEventsContainer {
+  width: 100%;
+}
+
+.dateHeader {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: white;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.timeHeader {
+  font-family: 'Inter', sans-serif;
+
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #c5c5c5;
+  text-align: left;
+}
+
+.conflictIcon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.eventsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  row-gap: 1rem;
+  column-gap: 1rem;
+  margin-top: 1rem;
+}
+
+.event {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.eventCard {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.04);
+  max-width: 20rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  color: white;
+  min-width: 17.5rem;
+}
+
+@media screen and (min-width: 768px) {
+  .eventCard {
+    min-width: 20rem;
+  }
+}
+
+.eventCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.selectedCard {
+  border: 2px solid #fff;
+}
+
+.disabledCard {
+  opacity: 0.6;
+}
+
+.innerCard {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  column-gap: 1rem;
+  min-height: 14rem;
+  width: 100%;
+}
+
+.eventDetails {
+  width: 100%;
+  min-height: 14rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.eventTitle {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  max-width: 17rem;
+  font-family: 'Inter', sans-serif;
+}
+
+@media screen and (max-width: 768px) {
+  .eventTitle {
+    max-width: 15rem;
+  }
+}
+
+.cardPrimaryButton {
+  border-radius: 8px;
+  background: white;
+  border: none;
+  color: #000;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.25rem;
+  left: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.manage {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #a4a4a4;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.25rem;
+  left: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.manage:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.registedTag {
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  margin-top: 1rem;
+  background: #fff;
+  padding: 0.25rem 1.5rem;
+  position: absolute;
+  top: 6px;
+  right: -29px;
+  transform: rotate(45deg); /* Rotate the element */
+}
+
+.conflictingMessage {
+  margin-top: 0.5rem;
+  color: #f04b4b;
+  font-size: 0.9rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  margin-top: 0.5rem;
+}
+
+.timeContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  row-gap: 1rem;
+  column-gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.capacityText {
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  color: #c5c5c5;
+  margin-left: 0.25rem;
+}
+
+.timeHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.03);
+  color: white;
+  border: 8px;
+  width: 100%;
+}
+
+.timeBlock {
+  width: calc(100% - 20px);
+}
+
+.subEventHeading {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 0.25rem;
+}
+
+.helperText {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  font-family: 'Inter', sans-serif;
+  max-width: 25rem;
+}
+
+.subEventsListingHeader {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  row-gap: 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 8rem;
+  padding: 0.7rem 1rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+@media screen and (min-width: 768px) {
+  .searchInput {
+    max-width: 10rem;
+  }
+}
+
+.noEventsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.noEventsText {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 0.25rem;
+}

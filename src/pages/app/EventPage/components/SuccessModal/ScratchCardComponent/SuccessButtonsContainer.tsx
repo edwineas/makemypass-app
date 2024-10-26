@@ -26,7 +26,7 @@ const SuccessButtonsContainer = ({
         <div className={styles.modalTexts}>
           <div dangerouslySetInnerHTML={{ __html: success.followupMessage || '' }}></div>
 
-          {success.ticketURL && import.meta.env.VITE_CURRENT_ENV === 'dev' && (
+          {success.is_approved && (
             <>
               <button
                 onClick={() => {
@@ -38,11 +38,11 @@ const SuccessButtonsContainer = ({
                 View Ticket
               </button>
 
-              {success.ticketURL && (
+              {success.is_approved && (
                 <button
                   onClick={async () => {
                     try {
-                      const response = await fetch(success.ticketURL || '');
+                      const response = await fetch(success.is_approved || '');
                       const blob = await response.blob();
 
                       const link = document.createElement('a');
@@ -63,6 +63,20 @@ const SuccessButtonsContainer = ({
                   Download Ticket
                 </button>
               )}
+            </>
+          )}
+
+          {success.show_sub_event && (
+            <>
+              <button
+                onClick={() => {
+                  const eventTitle = JSON.parse(sessionStorage.getItem('eventData')!).event_name;
+                  window.open(`/${eventTitle}/sub-event/${success.eventRegisterId}`, '_blank');
+                }}
+                className={styles.downloadTicketButton}
+              >
+                Sub Event Registration
+              </button>
             </>
           )}
 
@@ -93,7 +107,7 @@ const SuccessButtonsContainer = ({
           )}
 
           <p className={styles.contactUs}>
-            If you have any questions or need assistance, please contact us at hello@makemypass.com
+            If you create similar events connect us at hello@makemypass.com
           </p>
         </div>
       ) : (

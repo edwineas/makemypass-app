@@ -29,6 +29,23 @@ export const resentGuestTicket = async (
     });
 };
 
+export const removeMappedCode = async (
+  eventId: string,
+  eventRegisterId: string,
+  ticketCode: string,
+  setTriggerFetch: Dispatch<SetStateAction<boolean>> | undefined,
+) => {
+  privateGateway
+    .post(makeMyPass.removeTicketCode(eventId, eventRegisterId, ticketCode))
+    .then((response) => {
+      toast.success(response.data.message.general[0] || 'Ticket code removed successfully');
+      if (setTriggerFetch) setTriggerFetch((prev) => !prev);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Something went wrong');
+    });
+};
+
 export const updateGuestSubmission = async (
   eventId: string,
   eventRegisterId: string,
@@ -69,6 +86,7 @@ export const updateGuestSubmission = async (
         toast.success(response.data.message.general[0] || 'Submission edited successfully');
         const updatedData = response.data.response;
         setSelectedGuestId(null);
+
         setFormData({});
         setGuests((prev) => {
           return prev.map((guest) => {

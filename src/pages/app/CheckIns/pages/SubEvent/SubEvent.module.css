@@ -1,0 +1,246 @@
+.mainContainer {
+  padding: 0 1.25rem;
+}
+
+.subEventHeading {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 0.25rem;
+}
+
+.checkInHeader {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 0.25rem;
+}
+
+.subEventListingHeader {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 0.25rem;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.helperText {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  font-family: 'Inter', sans-serif;
+}
+
+.subEvents {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.dayEventsContainer {
+  width: 100%;
+}
+
+.dateHeader {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: white;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.timeHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.03);
+  color: white;
+  border: 8px;
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.timeHeader {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #c5c5c5;
+  text-align: left;
+}
+
+.timeBlock {
+  width: calc(100% - 20px);
+}
+
+.eventsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  row-gap: 1rem;
+  column-gap: 1rem;
+  margin-top: 1rem;
+}
+
+.event {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.eventCard {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.04);
+  max-width: 20rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  color: white;
+  min-width: 17.5rem;
+}
+
+@media screen and (min-width: 768px) {
+  .eventCard {
+    min-width: 20rem;
+  }
+}
+
+.eventCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.innerCard {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  column-gap: 1rem;
+  min-height: 14rem;
+  width: 100%;
+}
+
+.eventDetails {
+  width: 100%;
+  min-height: 14rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.eventTitle {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  max-width: 17rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.noEventsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.noEventsText {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 0.25rem;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 8rem;
+  padding: 0.7rem 1rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+@media screen and (min-width: 768px) {
+  .searchInput {
+    max-width: 10rem;
+  }
+}
+
+.rowContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 2rem;
+  column-gap: 0.5rem;
+}
+
+.closeButton {
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: 'Inter';
+  width: 2rem;
+}
+
+.cardPrimaryButton {
+  border-radius: 8px;
+  background: white;
+  border: none;
+  color: #000;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.25rem;
+  left: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.checkInCount {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #9ca3af;
+  opacity: 0.8;
+  font-family: 'Inter', sans-serif;
+}
+
+.checkInText {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  opacity: 0.8;
+  font-family: 'Inter', sans-serif;
+}
