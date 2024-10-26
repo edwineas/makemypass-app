@@ -93,6 +93,9 @@ export const makeMyPass = {
 
   getFormKeys: (eventId: string) => makeMyPassURL(`/manage-event/${eventId}/get-form-keys/`), //Till Admin
 
+  postEventContentList: (eventId: string) => makeMyPassURL(`/post-event/${eventId}/post-content/list/`),
+  updatePostEventContent: (eventId: string) => makeMyPassURL(`/post-event/${eventId}/post-content/update/`),
+
   //Feedback
   feedbackList: (eventId: string) => makeMyPassURL(`/feedback/${eventId}/list/`),
   feedbackFormInfo: (eventId: string) => makeMyPassURL(`/feedback/${eventId}/form-info/`), //
