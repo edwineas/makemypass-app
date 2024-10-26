@@ -2,14 +2,19 @@ import { useEffect, useState } from 'react';
 import { LuMailPlus, LuMailX } from 'react-icons/lu';
 import { TiTick } from 'react-icons/ti';
 
-import { getPostEventStatus, sentPostEventMail, getPostEventContentList, updatePostEventContent } from '../../../apis/postevent';
+import {
+  getPostEventContentList,
+  getPostEventStatus,
+  sentPostEventMail,
+  updatePostEventContent,
+} from '../../../apis/postevent';
 import DashboardLayout from '../../../components/DashboardLayout/DashboardLayout';
 import Modal from '../../../components/Modal/Modal';
 import SectionButton from '../../../components/SectionButton/SectionButton';
 import Theme from '../../../components/Theme/Theme';
-import styles from './PostEvent.module.css';
 import InputField from '../../auth/Login/InputField';
 import UploadAttachement from '../EventGlance/components/MailModals/UpdateMail/components/UploadAttachement/UploadAttachements';
+import styles from './PostEvent.module.css';
 
 const PostEvent = () => {
   const [openConfirmModal, setConfirmModal] = useState({
@@ -32,9 +37,9 @@ const PostEvent = () => {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFiles = Array.from(event.target.files);
-      setPostEventContent(prevContent => ({
+      setPostEventContent((prevContent) => ({
         ...prevContent,
-        photos: [...prevContent.photos, ...newFiles]
+        photos: [...prevContent.photos, ...newFiles],
       }));
     }
   };
@@ -87,7 +92,7 @@ const PostEvent = () => {
           <p className={styles.modalHeader}>Send Mail</p>
           <p className={styles.modalSubText}>
             {(openConfirmModal.value && postEventStatus?.AfterEventThankYou) ||
-              (!openConfirmModal.value && postEventStatus?.AfterEventSorry)
+            (!openConfirmModal.value && postEventStatus?.AfterEventSorry)
               ? `Are You Sure you want to send the mails to the ${postEventStatus?.AfterEventThankYou ? 'Participants' : 'Non-Participants'} again?`
               : 'Are you sure you want to send mails?'}
           </p>
@@ -169,11 +174,11 @@ const PostEvent = () => {
               title='Enter Video Link'
               icon={<></>}
               value={postEventContent.video_link || ''}
-              onChange= {(event) => 
-                setPostEventContent(prev => ({
+              onChange={(event) =>
+                setPostEventContent((prev) => ({
                   ...prev,
-                  video_link: event.target.value
-                })) 
+                  video_link: event.target.value,
+                }))
               }
             />
           </div>
@@ -184,10 +189,10 @@ const PostEvent = () => {
             title='Enter Drive Link'
             icon={<></>}
             value={postEventContent.more_photo_link || ''}
-            onChange= {(event) =>
-              setPostEventContent(prev => ({
+            onChange={(event) =>
+              setPostEventContent((prev) => ({
                 ...prev,
-                more_photo_link: event.target.value
+                more_photo_link: event.target.value,
               }))
             }
           />

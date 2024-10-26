@@ -53,13 +53,13 @@ export const getPostEventContentList = async (
       setPostEventContent(response.data.response);
     })
     .catch((error) => {
-      toast.error(error.response.data.message.general[0] || 'Error in Fetching Post Event Content List');
+      toast.error(
+        error.response.data.message.general[0] || 'Error in Fetching Post Event Content List',
+      );
     });
 };
 
-export const updatePostEventContent = async (
-  formData: FormData,
-) => {
+export const updatePostEventContent = async (formData: FormData) => {
   const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);
   privateGateway
     .put(makeMyPass.updatePostEventContent(eventId), formData, {
