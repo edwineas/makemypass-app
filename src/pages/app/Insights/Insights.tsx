@@ -126,6 +126,7 @@ const Insights = ({ type }: { type?: string }) => {
     return () => {
       socket?.close();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
