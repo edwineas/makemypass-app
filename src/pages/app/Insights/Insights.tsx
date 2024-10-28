@@ -126,7 +126,7 @@ const Insights = ({ type }: { type?: string }) => {
     return () => {
       socket?.close();
     };
-  });
+  }, []);
 
   useEffect(() => {
     if (type === 'public' && eventTitle) {
