@@ -57,15 +57,13 @@ const EditEvent = () => {
   const [eventDate, setEventDate] = useState<{ start: Date | undefined; end: Date | undefined }>();
   const [regDate, setRegDate] = useState<{ start: Date | undefined; end: Date | undefined }>();
   const [placeName, setPlaceName] = useState('');
+  const [googlePlaceName, setGooglePlaceName] = useState('');
   const [banner, setBanner] = useState<File | null>(null);
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
   const [followupMessage, setFollowupMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [showCommunicationMediumModal, setShowCommunicationMediumModal] = useState(false);
-  // const [modalDataField, setModalDataField] = useState({
-  //   needConfirmation: false,
-  //   confirmationFields: [''],
-  // });
+
   const [formKeys, setFormKeys] = useState<string[]>([]);
 
   const [location, setLocation] = useState<google.maps.LatLngLiteral | null>(null);
@@ -97,6 +95,7 @@ const EditEvent = () => {
     if (autocompleteRef.current) {
       const place = autocompleteRef.current.getPlace();
       setPlaceName(place.name || '');
+      setGooglePlaceName(place.formatted_address || '');
       if (place.name && place.vicinity)
         setPlaceName(
           place.name + ' , ' + place.vicinity.substring(place.vicinity.lastIndexOf(',') + 1),
@@ -145,6 +144,8 @@ const EditEvent = () => {
     if (convertDate(regDate?.end) != fetchedEvent?.reg_end_date)
       changedData['reg_end_date'] = convertDate(regDate?.end);
     if (placeName && placeName !== fetchedEvent?.place) changedData['place'] = placeName;
+    if (placeName.length === 0 && googlePlaceName.length !== 0)
+      changedData['place'] = googlePlaceName;
     if (
       !eventData?.is_online &&
       (location?.lat != fetchedEvent?.location?.lat || location?.lng != fetchedEvent?.location?.lng)
@@ -227,7 +228,26 @@ const EditEvent = () => {
       setFetchedEvent(eventData);
       setLocation({ lat: eventData.location?.lat || 0, lng: eventData.location?.lng || 0 });
 
+      const fetchPlaceName = async (lat: number, lng: number) => {
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${import.meta.env.VITE_GMAPS_API_KEY}`,
+        );
+        const data = await response.json();
+        if (data.results && data.results.length > 0) {
+          console.log(data.results[0]);
+          return data.results[0].formatted_address;
+        }
+        return '';
+      };
+
+      if (eventData.location?.lat && eventData.location?.lng) {
+        fetchPlaceName(eventData.location.lat, eventData.location.lng).then((address) => {
+          setGooglePlaceName(address);
+        });
+      }
+
       setPlaceName(eventData.place);
+
       setEventDate({
         start: eventData.event_start_date ? new Date(eventData?.event_start_date) : undefined,
         end: eventData.event_end_date ? new Date(eventData?.event_end_date) : undefined,
@@ -1029,48 +1049,6 @@ const EditEvent = () => {
                       )}
                     </AnimatePresence>
 
-                    {!eventData.is_online && (
-                      <>
-                        <GoogleMap
-                          mapContainerStyle={{
-                            height: '400px',
-                            width: '100%',
-                            borderRadius: '4px 4px 0 0',
-                          }}
-                          zoom={14}
-                          center={location ?? { lat: 0, lng: 0 }}
-                          options={mapOptions}
-                          onClick={onMapClick}
-                        >
-                          {location && (
-                            <MarkerF
-                              position={location}
-                              icon={{
-                                url: 'https://makemypass.com/app/mascot.webp',
-                                scaledSize: new google.maps.Size(40, 52),
-                              }}
-                            />
-                          )}
-                        </GoogleMap>
-
-                        <div className={styles.eventLocation}>
-                          <GrLocation size={25} color='#949597' />
-                          <div className={styles.locationContainer}>
-                            <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-                              <input
-                                type='text'
-                                disabled={!isUserEditor()}
-                                title='Add Event Location'
-                                className={styles.inputLocation}
-                                value={placeName}
-                                onChange={(e) => isUserEditor() && setPlaceName(e.target.value)}
-                              />
-                            </Autocomplete>
-                            <p className={styles.subText}>Offline location </p>
-                          </div>
-                        </div>
-                      </>
-                    )}
                     <p className={styles.eventOptions}>Event Options</p>
                     <div className={styles.optionsContainer}>
                       <div className={styles.option}>
@@ -1160,6 +1138,78 @@ const EditEvent = () => {
                         </div>
                       </div>
                     </div>
+
+                    {!eventData.is_online && (
+                      <div className={styles.googleMapsContainer}>
+                        <GoogleMap
+                          mapContainerStyle={{
+                            height: '400px',
+                            width: '100%',
+                            borderRadius: '4px 4px 0 0',
+                          }}
+                          zoom={14}
+                          center={location ?? { lat: 0, lng: 0 }}
+                          options={mapOptions}
+                          onClick={onMapClick}
+                        >
+                          {location && (
+                            <MarkerF
+                              position={location}
+                              icon={{
+                                url: 'https://makemypass.com/app/mascot.webp',
+                                scaledSize: new google.maps.Size(40, 52),
+                              }}
+                            />
+                          )}
+                        </GoogleMap>
+
+                        <div className={styles.eventLocationContainer}>
+                          <div className={styles.eventLocation}>
+                            <GrLocation size={25} color='#949597' />
+                            <div className={styles.locationContainer}>
+                              <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+                                <input
+                                  type='text'
+                                  disabled={!isUserEditor()}
+                                  title='Add Event Location'
+                                  className={styles.inputLocation}
+                                  value={googlePlaceName}
+                                  onChange={(e) => {
+                                    if (eventData) {
+                                      setGooglePlaceName(e.target.value);
+                                    }
+                                  }}
+                                />
+                              </Autocomplete>
+                              <p className={styles.subText}>Offline location </p>
+                            </div>
+                          </div>
+                          <div className={styles.orContainer}>
+                            <div className={styles.line}></div>
+                            <div className={styles.or}>OR</div>
+                            <div className={styles.line}></div>
+                          </div>
+                          <InputField
+                            title='You could enter the location manually'
+                            name='place'
+                            type='text'
+                            placeholder='This will be shown on the event page'
+                            id='place'
+                            icon={<GrLocation size={20} color='#949597' />}
+                            value={placeName}
+                            onChange={
+                              isUserEditor()
+                                ? (e) => {
+                                    if (eventData) {
+                                      setPlaceName(e.target.value);
+                                    }
+                                  }
+                                : undefined
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
 
                     <div className={styles.uploadLogoContainerParent}>
                       <div className={styles.uploadLogoContainer}>
