@@ -1,0 +1,150 @@
+.onlineCheckInContainer {
+  max-width: 35rem;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .onlineCheckInContainer {
+    padding: 0 1rem;
+  }
+}
+
+.eventTopHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  column-gap: 1rem;
+
+  padding: 1rem;
+  background: #212325;
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.bannerImg {
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  max-height: 20rem;
+}
+
+.eventTitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.eventDatePlace {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+}
+
+.eventDate {
+  margin-right: 1rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+}
+
+.dateBox {
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+}
+
+.eventMonth {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.eventDateNum {
+  margin: 0.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.eventDateText {
+  font-size: 0.9rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  max-width: 15rem;
+}
+
+.eventTimeText {
+  margin-top: 0.5rem;
+  max-width: 12rem;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #bbbaba;
+  word-wrap: break-all;
+  font-family: 'Inter', sans-serif;
+}
+
+.locationBox {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 2.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+}
+
+.locationIcon {
+  padding: 0.25rem 0.5rem;
+  color: #ffffff;
+}
+
+.otpContainer {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: #212325;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  margin-top: 1rem;
+}
+
+.otpSubmitButton {
+  padding: 0.5rem 1rem;
+  width: 100%;
+  border-radius: 8px;
+  background: white;
+  color: #212325;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.otpSubmitButton:hover {
+  background: #ddd;
+}
+
+.checkInHeader {
+  font-weight: 500;
+}

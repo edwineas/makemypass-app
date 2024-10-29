@@ -51,7 +51,7 @@ const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, ...inputProp
         />
       </div>
       <AnimatePresence>
-        {inputProps.error && inputProps.error[0].length > 0 && (
+        {inputProps.error && inputProps?.error[0]?.length > 0 && (
           <motion.p
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
