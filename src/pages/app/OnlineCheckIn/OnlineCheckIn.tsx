@@ -81,27 +81,35 @@ const OnlineCheckIn = () => {
                 )}
               </div>
             </div>
+            <br />
+            {eventData?.online_event_link && (
+              <a href={eventData?.online_event_link}>
+                <button className={styles.otpSubmitButton}>Join Event</button>
+              </a>
+            )}
           </div>
         </div>
-        <div className={styles.otpContainer}>
-          <p className={styles.checkInHeader}>Check-In to the Event</p>
-          <InputField
-            title='Enter the Unique Key'
-            type='text'
-            placeholder='Key will be provided ones you have joined the event'
-            id='checkin_password'
-            name='checkin_password'
-            required
-            icon={<></>}
-            onChange={(e) => {
-              setCheckInPassword(e.target.value);
-            }}
-            error={Array.from(error)}
-          />
-          <button className={styles.otpSubmitButton} onClick={handleSubmit}>
-            {loading ? <BeatLoader color='#272727' loading={loading} size={10} /> : 'Check-In'}
-          </button>
-        </div>
+        {!eventData?.already_checkedin && (
+          <div className={styles.otpContainer}>
+            <p className={styles.checkInHeader}>Check-In to the Event</p>
+            <InputField
+              title='Enter the Unique Key'
+              type='text'
+              placeholder='Key will be provided ones you have joined the event'
+              id='checkin_password'
+              name='checkin_password'
+              required
+              icon={<></>}
+              onChange={(e) => {
+                setCheckInPassword(e.target.value);
+              }}
+              error={Array.from(error)}
+            />
+            <button className={styles.otpSubmitButton} onClick={handleSubmit}>
+              {loading ? <BeatLoader color='#272727' loading={loading} size={10} /> : 'Check-In'}
+            </button>
+          </div>
+        )}
       </div>
     </Theme>
   );

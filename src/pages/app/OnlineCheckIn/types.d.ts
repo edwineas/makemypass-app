@@ -4,4 +4,5 @@ export type UserCheckInEventType = {
   event_end_date: string;
   title: string;
   already_checkedin: boolean;
+  online_event_link: string;
 };
