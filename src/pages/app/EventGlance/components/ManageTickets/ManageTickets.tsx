@@ -430,7 +430,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
               </div>
 
               <div className={styles.ticketSlider}>
-                <p className={styles.ticketSliderLabel}>Require Approval</p>
+                <p className={styles.ticketSliderLabel}>Waitlisting</p>
                 <Slider
                   checked={selectedTicket?.approval_required}
                   onChange={() => {

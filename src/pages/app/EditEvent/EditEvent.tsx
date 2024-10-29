@@ -20,14 +20,7 @@ import { HiOutlineTicket, HiOutlineUserGroup } from 'react-icons/hi2';
 import { IoCheckmarkDoneOutline, IoCloseOutline } from 'react-icons/io5';
 import { LuPencil } from 'react-icons/lu';
 import { MdDatasetLinked, MdOutlineShoppingCartCheckout } from 'react-icons/md';
-import {
-  TbHeartHandshake,
-  TbMailStar,
-  TbMicrophone,
-  TbSettings,
-  TbUserCheck,
-  TbWorld,
-} from 'react-icons/tb';
+import { TbHeartHandshake, TbMailStar, TbMicrophone, TbSettings, TbWorld } from 'react-icons/tb';
 import Select from 'react-select';
 import { HashLoader, PulseLoader } from 'react-spinners';
 
@@ -1062,22 +1055,7 @@ const EditEvent = () => {
                           }
                         />
                       </div>
-                      <div className={styles.option}>
-                        <label>
-                          <TbUserCheck size={25} color='#949597' /> Require Approval
-                        </label>
-                        <Slider
-                          checked={eventData.approval_required}
-                          text={''}
-                          onChange={() =>
-                            isUserEditor() &&
-                            setEventData({
-                              ...eventData,
-                              approval_required: !eventData.approval_required,
-                            })
-                          }
-                        />
-                      </div>
+
                       <div className={styles.option}>
                         <label>
                           <TbMailStar size={25} color='#949597' /> Invite Only
