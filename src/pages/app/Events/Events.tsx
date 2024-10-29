@@ -106,6 +106,7 @@ const Events = () => {
               </div>
             </Modal>
           )}
+
           {Object.values(events).length === 0 && isDataLoaded && (
             <div className={styles.noEventsContainer}>
               <p className={styles.noEvents}>
