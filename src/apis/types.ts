@@ -145,7 +145,6 @@ export interface EventType {
   is_team: boolean;
   is_checkout: boolean;
   show_ticket_first: boolean;
-  approval_required: boolean;
   err_message: ReactNode;
   id: string;
   name: string;

@@ -125,6 +125,12 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
     let selection = specificUpdate || selectedTicket;
     const matchingTicket = ticketData.find((ticket) => ticket.id === selection?.id);
 
+    if (newDescription.length > 0 && newDescription !== '<p class="bn-inline-content"></p>') {
+      selection = { ...selection, description: newDescription } as TicketType;
+    } else {
+      selection = { ...selection, description: '' } as TicketType;
+    }
+
     if (!paidTicket) {
       selection = { ...selection, price: 0 } as TicketType;
     }
@@ -211,11 +217,12 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
   };
 
   const hasUnsavedChanges = () => {
+    const tempDesc = newDescription;
     const originalTicket = ticketData?.find((t) => t.id === selectedTicket?.id);
     if (!selectedTicket || !originalTicket) return false;
     const isDescriptionChanged =
       (selectedTicket?.description || '') !==
-      (newDescription.replace(/<p class="bn-inline-content"><\/p>/g, '') || '');
+      (tempDesc.replace(/<p class="bn-inline-content"><\/p>/g, '') || '');
     const isOtherDataChanged = !isEqual(selectedTicket, originalTicket);
 
     return isDescriptionChanged || isOtherDataChanged;
@@ -423,7 +430,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
               </div>
 
               <div className={styles.ticketSlider}>
-                <p className={styles.ticketSliderLabel}>Require Approval</p>
+                <p className={styles.ticketSliderLabel}>Waitlisting</p>
                 <Slider
                   checked={selectedTicket?.approval_required}
                   onChange={() => {

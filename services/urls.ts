@@ -27,6 +27,10 @@ export const makeMyPass = {
     makeMyPassURL(`/scan-guest/${eventId}/sub-event/checkin/`), //Till Volunteer
   scanGuestSubEventList: (eventId: string) =>
     makeMyPassURL(`/scan-guest/${eventId}/sub-event/list`), //Till Volunteer
+  scanGuestOnlineCheckinInfo: (eventName: string, eventRegisterId: string) =>
+    makeMyPassURL(`/scan-guest/${eventName}/checkin-online/${eventRegisterId}/info/`),
+  scanGuestOnlineCheckin: (eventName: string, eventRegisterId: string) =>
+    makeMyPassURL(`/scan-guest/${eventName}/checkin-online/${eventRegisterId}/checkin/`),
 
   //Manage Guests
   eventCreate: makeMyPassURL(`/manage-event/create/`), // SuperUser

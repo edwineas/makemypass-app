@@ -28,6 +28,7 @@ import PageViewAnalytics from './pages/app/Insights/pages/PageViewAnalytics/Page
 import PerkAnalytics from './pages/app/Insights/pages/PerkAnalytics/PerkAnalytics';
 import VenueAnalytics from './pages/app/Insights/pages/VenueAnalytics/VenueAnalytics';
 import LandingPage from './pages/app/LandingPage/LandingPage';
+import OnlineCheckIn from './pages/app/OnlineCheckIn/OnlineCheckIn';
 import CreateOrganization from './pages/app/Organization/Create/CreateOrganization';
 import EditOrganization from './pages/app/Organization/EditOrganization/EditOrganization';
 import OrganizationGlance from './pages/app/Organization/OrganizationGlance/OrganizationGlance';
@@ -343,6 +344,10 @@ const routes: RouteObject[] = [
   {
     path: '/:eventTitle/sub-event/:eventRegisterId',
     element: <ListSubEvents />,
+  },
+  {
+    path: '/:eventTitle/online-checkin/:eventRegisterId',
+    element: <OnlineCheckIn />,
   },
   {
     path: '*',

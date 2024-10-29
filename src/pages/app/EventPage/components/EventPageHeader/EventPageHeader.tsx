@@ -24,6 +24,20 @@ import styles from './EventPageHeader.module.css';
 import { getFormatedStartAndEndTime } from './functions';
 
 const EventPageHeader = ({ eventData }: { eventData: EventType | undefined }) => {
+  function normalizeUrl(url: string) {
+    if (!url) return '';
+
+    if (!url.startsWith('http')) {
+      url = `https://${url}`;
+    }
+
+    if (!url.includes('www.')) {
+      url = url.replace(/https?:\/\//, '$&www.');
+    }
+
+    return url;
+  }
+
   const [showFullDesc, setShowFullDesc] = useState(false);
   const [timer, setTimer] = useState({
     days: 0 as number | string,
@@ -130,12 +144,7 @@ const EventPageHeader = ({ eventData }: { eventData: EventType | undefined }) =>
                     <IoLocationOutline size={20} className={styles.locationIcon} />
                   </div>
                   <div className={styles.eventDateTimeText}>
-                    <p className={styles.eventDateText}>
-                      {eventData?.place?.substring(0, eventData.place.indexOf(' , '))}
-                    </p>
-                    <p className={styles.eventTimeText}>
-                      {eventData?.place?.substring(eventData.place.indexOf(' , ') + 2)}
-                    </p>
+                    <p className={styles.eventDateText}>{eventData?.place}</p>
                   </div>
                 </div>
               )}
@@ -199,22 +208,22 @@ const EventPageHeader = ({ eventData }: { eventData: EventType | undefined }) =>
                     </a>
                   )}
                   {eventData.host_communicate.instagram && (
-                    <a href={eventData.host_communicate.instagram} target='_blank'>
+                    <a href={normalizeUrl(eventData.host_communicate.instagram)} target='_blank'>
                       <IoLogoInstagram size={20} />
                     </a>
                   )}
                   {eventData.host_communicate.facebook && (
-                    <a href={eventData.host_communicate.facebook} target='_blank'>
+                    <a href={normalizeUrl(eventData.host_communicate.facebook)} target='_blank'>
                       <IoLogoFacebook size={20} />
                     </a>
                   )}
                   {eventData.host_communicate.twitter && (
-                    <a href={eventData.host_communicate.twitter} target='_blank'>
+                    <a href={normalizeUrl(eventData.host_communicate.twitter)} target='_blank'>
                       <IoLogoTwitter size={20} />
                     </a>
                   )}
                   {eventData.host_communicate.linkedin && (
-                    <a href={eventData.host_communicate.linkedin} target='_blank'>
+                    <a href={normalizeUrl(eventData.host_communicate.linkedin)} target='_blank'>
                       <IoLogoLinkedin size={20} />
                     </a>
                   )}
