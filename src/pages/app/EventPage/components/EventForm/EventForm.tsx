@@ -280,7 +280,9 @@ const EventForm = ({
 
     eventFormData.form.forEach((field) => {
       if (
-        (field.required && !formData[field.field_key]) ||
+        (field.required &&
+          validateCondition(field.conditions, formData, eventFormData.form) &&
+          !formData[field.field_key]) ||
         (Array.isArray(formData[field.field_key]) && formData[field.field_key].length === 0)
       ) {
         isSubmitable = false;
@@ -415,12 +417,12 @@ const EventForm = ({
             background: isFormSubmitable
               ? 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)'
               : 'linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 100%)',
-            color: isFormSubmitable ? '#000' : '#fff)',
           }}
           transition={{ duration: 0.6 }}
           whileTap={{ scale: 0.95 }}
           type='submit'
           disabled={loading}
+          style={{ color: isFormSubmitable ? '#272727' : '#ffffff' }}
           onClick={() => {
             if (
               (formNumber === 0 && !directRegister) ||
