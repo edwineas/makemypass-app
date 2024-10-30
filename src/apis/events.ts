@@ -106,10 +106,11 @@ export const getFormCategories = async (
     });
 };
 
-export const createEvent = (eventTitle: string) => {
+export const createEvent = (eventTitle: string, orgId?: string) => {
   privateGateway
     .post(makeMyPass.eventCreate, {
       title: eventTitle,
+      organization_id: orgId,
     })
     .then((response) => {
       toast.success(response.data.message.general[0] || 'Event Created Successfully');

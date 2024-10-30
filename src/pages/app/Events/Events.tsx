@@ -23,6 +23,8 @@ import { customStyles } from '../EventPage/constants';
 import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton';
 import styles from './Events.module.css';
 import RightClickMenu from './RightClickMenu';
+import InputField from '../../auth/Login/InputField';
+import { createEvent } from '../../../apis/events';
 
 const Events = () => {
   interface Position {
@@ -44,6 +46,11 @@ const Events = () => {
     setIsMenuOpen(true);
     setMenuPosition({ x: event.clientX, y: event.clientY });
   };
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newEvent, setNewEvent] = useState({
+    eventName: '',
+    orgId: '',
+  })
 
   const handleMenuClose = () => {
     setIsMenuOpen(false);
@@ -75,6 +82,13 @@ const Events = () => {
     setShowModal(false);
   };
 
+  const CreateEvent = () => {
+    if (newEvent.eventName) {
+      createEvent(newEvent.eventName, newEvent.orgId);
+      setShowCreateModal(false);
+    }
+  }
+
   return (
     <>
       {isDataLoaded ? (
@@ -103,6 +117,51 @@ const Events = () => {
                 >
                   Cancel
                 </p>
+              </div>
+            </Modal>
+          )}
+          {showCreateModal && (
+            <Modal onClose={() => setShowCreateModal(false)} title='Create Event'>
+              <div>
+                <InputField
+                  id='eventName'
+                  type='text'
+                  name='eventName'
+                  icon={<></>}
+                  title='Event Name'
+                  value={newEvent.eventName}
+                  onChange={(e) => {
+                    setNewEvent((prevState) => ({
+                      ...prevState!,
+                      eventName: e.target.value,
+                    }));
+                  }}
+                />
+                <Select
+                  styles={customStyles}
+                  options={
+                    orgs.length > 0
+                      ? orgs.map((org) => ({ value: org.id, label: org.name }))
+                      : [{ value: 'personal', label: 'Personal' }]
+                  }
+                  className='select'
+                  classNamePrefix='select'
+                  placeholder='Select Organization'
+                  onChange={(selectedOption) => {
+                    if (selectedOption) {
+                      setNewEvent((prevState) => ({
+                        ...prevState!,
+                        orgId: selectedOption.value,
+                      }));
+                    }
+                  }}
+                />
+                <button
+                  className={`${styles.btn} ${styles.createevetbtn}`}
+                  onClick={() => {
+                    CreateEvent();
+                  }}
+                >Create</button>
               </div>
             </Modal>
           )}
@@ -173,6 +232,12 @@ const Events = () => {
                   )}
                 </>
               )}
+              <button
+                className={styles.btn}
+                onClick={() => setShowCreateModal(true)}
+              >
+                Create Event
+              </button>
             </div>
             {Object.values(EventStatus).map((status) => {
               return (
@@ -196,13 +261,13 @@ const Events = () => {
                             event.tags.some((tag) => selectedTags.includes(tag))),
                       ).length > 0
                         ? `${status} Events (${
-                            events.filter(
-                              (event) =>
-                                event.status == status &&
-                                (selectedTags.length === 0 ||
-                                  event.tags.some((tag) => selectedTags.includes(tag))),
-                            ).length
-                          })`
+                          events.filter(
+                          (event) =>
+                            event.status == status &&
+                            (selectedTags.length === 0 ||
+                              event.tags.some((tag) => selectedTags.includes(tag))),
+                        ).length
+                        })`
                         : ''}
                     </motion.p>
                   </div>
