@@ -107,15 +107,18 @@ export const getFormCategories = async (
 };
 
 export const createEvent = (eventTitle: string, orgId?: string) => {
+  const payload: { title: string; organization_id?: string } = { title: eventTitle };
+  if (orgId) {
+    payload.organization_id = orgId;
+  }
+
   privateGateway
-    .post(makeMyPass.eventCreate, {
-      title: eventTitle,
-      organization_id: orgId,
-    })
+    .post(makeMyPass.eventCreate, payload)
     .then((response) => {
+      const eventName = response.data.response.event_name;
       toast.success(response.data.message.general[0] || 'Event Created Successfully');
       setTimeout(() => {
-        window.location.href = `/${eventTitle.toLowerCase().replace(/\s/g, '-')}/manage`;
+        window.location.href = `/${eventName}/manage`;
       }, 1000);
     })
     .catch((error) => {

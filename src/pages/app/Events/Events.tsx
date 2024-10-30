@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react';
 import { BsArrowRight, BsThreeDots } from 'react-icons/bs';
 import { FaTags } from 'react-icons/fa';
 import { GoPeople } from 'react-icons/go';
-import { IoMdSettings } from 'react-icons/io';
+import { IoIosCreate, IoMdSettings } from 'react-icons/io';
 import { useNavigate } from 'react-router';
 import Select from 'react-select';
 
 import {
   createDuplicateEvent,
+  createEvent,
   getCommonTags,
   getEventsList,
   setEventInfoLocal,
@@ -19,12 +20,11 @@ import { formatDate } from '../../../common/commonFunctions';
 import Loader from '../../../components/Loader';
 import Modal from '../../../components/Modal/Modal';
 import Theme from '../../../components/Theme/Theme';
+import InputField from '../../auth/Login/InputField';
 import { customStyles } from '../EventPage/constants';
 import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton';
 import styles from './Events.module.css';
 import RightClickMenu from './RightClickMenu';
-import InputField from '../../auth/Login/InputField';
-import { createEvent } from '../../../apis/events';
 
 const Events = () => {
   interface Position {
@@ -47,10 +47,15 @@ const Events = () => {
     setMenuPosition({ x: event.clientX, y: event.clientY });
   };
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [newEvent, setNewEvent] = useState({
+  const [newEvent, setNewEvent] = useState<{
+    eventName: string;
+    orgId: string;
+    error: string[];
+  }>({
     eventName: '',
     orgId: '',
-  })
+    error: [],
+  });
 
   const handleMenuClose = () => {
     setIsMenuOpen(false);
@@ -86,8 +91,13 @@ const Events = () => {
     if (newEvent.eventName) {
       createEvent(newEvent.eventName, newEvent.orgId);
       setShowCreateModal(false);
+    } else {
+      setNewEvent((prevState) => ({
+        ...prevState!,
+        error: ['Please enter the event name'],
+      }));
     }
-  }
+  };
 
   return (
     <>
@@ -122,47 +132,56 @@ const Events = () => {
           )}
           {showCreateModal && (
             <Modal onClose={() => setShowCreateModal(false)} title='Create Event'>
-              <div>
-                <InputField
-                  id='eventName'
-                  type='text'
-                  name='eventName'
-                  icon={<></>}
-                  title='Event Name'
-                  value={newEvent.eventName}
-                  onChange={(e) => {
-                    setNewEvent((prevState) => ({
-                      ...prevState!,
-                      eventName: e.target.value,
-                    }));
-                  }}
-                />
-                <Select
-                  styles={customStyles}
-                  options={
-                    orgs.length > 0
-                      ? orgs.map((org) => ({ value: org.id, label: org.name }))
-                      : [{ value: 'personal', label: 'Personal' }]
-                  }
-                  className='select'
-                  classNamePrefix='select'
-                  placeholder='Select Organization'
-                  onChange={(selectedOption) => {
-                    if (selectedOption) {
-                      setNewEvent((prevState) => ({
-                        ...prevState!,
-                        orgId: selectedOption.value,
-                      }));
+              <InputField
+                id='eventName'
+                type='text'
+                name='eventName'
+                icon={<></>}
+                title='Event Name'
+                placeholder='Enter the new event name'
+                required
+                value={newEvent.eventName}
+                onChange={(e) => {
+                  setNewEvent((prevState) => ({
+                    ...prevState!,
+                    eventName: e.target.value,
+                  }));
+                }}
+                error={newEvent.error}
+              />
+              <Select
+                styles={{
+                  ...customStyles,
+                  container: (provided) => ({
+                    ...provided,
+                    width: '100%',
+                  }),
+                }}
+                options={[
+                  { value: 'personal', label: 'Personal' },
+                  ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                ]}
+                className='select'
+                classNamePrefix='select'
+                placeholder='Select Organization'
+                value={selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null}
+                onChange={(selectedOption) => {
+                  if (selectedOption) {
+                    setSelectedOrgName(selectedOption.label);
+                    if (selectedOption.value !== 'personal') {
+                      getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
                     }
-                  }}
-                />
-                <button
-                  className={`${styles.btn} ${styles.createevetbtn}`}
-                  onClick={() => {
-                    CreateEvent();
-                  }}
-                >Create</button>
-              </div>
+                  }
+                }}
+              />
+              <button
+                className={styles.createEventButton}
+                onClick={() => {
+                  CreateEvent();
+                }}
+              >
+                Create
+              </button>
             </Modal>
           )}
           {Object.values(events).length === 0 && isDataLoaded && (
@@ -197,11 +216,10 @@ const Events = () => {
                 <>
                   <Select
                     styles={customStyles}
-                    options={
-                      orgs.length > 0
-                        ? orgs.map((org) => ({ value: org.id, label: org.name }))
-                        : [{ value: 'personal', label: 'Personal' }]
-                    }
+                    options={[
+                      { value: 'personal', label: 'Personal' },
+                      ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                    ]}
                     className='select'
                     classNamePrefix='select'
                     placeholder='Select Organization'
@@ -232,11 +250,8 @@ const Events = () => {
                   )}
                 </>
               )}
-              <button
-                className={styles.btn}
-                onClick={() => setShowCreateModal(true)}
-              >
-                Create Event
+              <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
+                <IoIosCreate size={20} /> Create Event
               </button>
             </div>
             {Object.values(EventStatus).map((status) => {
@@ -261,13 +276,13 @@ const Events = () => {
                             event.tags.some((tag) => selectedTags.includes(tag))),
                       ).length > 0
                         ? `${status} Events (${
-                          events.filter(
-                          (event) =>
-                            event.status == status &&
-                            (selectedTags.length === 0 ||
-                              event.tags.some((tag) => selectedTags.includes(tag))),
-                        ).length
-                        })`
+                            events.filter(
+                              (event) =>
+                                event.status == status &&
+                                (selectedTags.length === 0 ||
+                                  event.tags.some((tag) => selectedTags.includes(tag))),
+                            ).length
+                          })`
                         : ''}
                     </motion.p>
                   </div>
