@@ -291,6 +291,7 @@ const CouponForm = ({
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.5 }}
         className={styles.ticketTypes}
+        id='formFields'
       >
         <div>
           <p className={styles.ticketTypesTitle}>Ticket Types</p>
