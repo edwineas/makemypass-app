@@ -84,6 +84,14 @@ const EventPage = () => {
     setFormNumber(eventData?.show_ticket_first ? 1 : 0);
   }, [eventData]);
 
+  const showEventHeader = () => {
+    const defaultForm = eventData?.show_ticket_first ? 1 : 0;
+
+    if (formNumber === defaultForm) return true;
+
+    return false;
+  };
+
   return (
     <>
       <Helmet>
@@ -144,7 +152,7 @@ const EventPage = () => {
 
         {eventData && !eventData?.err_message && eventData?.form?.length > 0 ? (
           <div className={styles.eventPageContainer}>
-            {typeParam !== 'embed' && (
+            {typeParam !== 'embed' && showEventHeader() && (
               <div className={styles.eventHeaderContainer}>
                 <EventPageHeader eventData={eventData} />
               </div>
