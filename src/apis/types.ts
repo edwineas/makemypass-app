@@ -178,6 +178,7 @@ export interface EventType {
   is_scratch_card: boolean;
   need_confirmation: boolean;
   confirmation_fields: string[];
+  checkin_password: string;
   speakers?: {
     name: string;
     image: string;

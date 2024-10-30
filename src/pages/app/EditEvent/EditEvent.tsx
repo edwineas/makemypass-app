@@ -1076,12 +1076,44 @@ const EditEvent = () => {
                         <Slider
                           checked={eventData.is_online}
                           text={''}
-                          onChange={() =>
-                            isUserEditor() &&
-                            setEventData({ ...eventData, is_online: !eventData.is_online })
-                          }
+                          onChange={() => {
+                            if (isUserEditor()) {
+                              setEventData({
+                                ...eventData,
+                                is_online: !eventData.is_online,
+                                checkin_password: '',
+                              });
+                            }
+                          }}
                         />
                       </div>
+
+                      {eventData.is_online && (
+                        <div className={styles.checkInPasswordInput}>
+                          <InputField
+                            name='checkin_password'
+                            title=''
+                            type='number'
+                            id='checkin_password'
+                            placeholder='Enter 6 Digit Number'
+                            icon={<IoCheckmarkDoneOutline size={20} color='#949597' />}
+                            value={eventData?.checkin_password}
+                            onChange={
+                              isUserEditor()
+                                ? (e) => {
+                                    if (eventData) {
+                                      if (e.target.value.length <= 6)
+                                        setEventData({
+                                          ...eventData,
+                                          checkin_password: e.target.value,
+                                        });
+                                    }
+                                  }
+                                : undefined
+                            }
+                          />
+                        </div>
+                      )}
 
                       <div className={styles.option}>
                         <label>

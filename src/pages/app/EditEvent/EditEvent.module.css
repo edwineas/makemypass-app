@@ -816,3 +816,8 @@ input[type='color']::-webkit-color-swatch {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
+.checkInPasswordInput {
+  margin-top: -1rem;
+  width: 100%;
+}

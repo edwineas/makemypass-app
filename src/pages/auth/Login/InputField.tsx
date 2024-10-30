@@ -31,9 +31,11 @@ const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, ...inputProp
       className={styles.formInput}
       // style={inputProps.error ? { marginBottom: '0' }}
     >
-      <label className={styles.formLabel} htmlFor='email'>
-        {inputProps.required ? inputProps.title + '*' : inputProps.title}
-      </label>
+      {inputProps.title.length > 0 && (
+        <label className={styles.formLabel} htmlFor='email'>
+          {inputProps.required ? inputProps.title + '*' : inputProps.title}
+        </label>
+      )}
       <p className={styles.fieldDescription}>{inputProps.description}</p>
       <div className={styles.inputField}>
         {icon}
