@@ -162,7 +162,10 @@ const EditEvent = () => {
         changedData[key] = 'null';
     });
 
-    if (changedData?.is_online == true) {
+    if (
+      changedData?.is_online == true ||
+      (changedData['location[lat]'] == 0 && changedData['location[lng]'] == 0)
+    ) {
       changedData['location[lat]'] = 'null';
       changedData['location[lng]'] = 'null';
 
