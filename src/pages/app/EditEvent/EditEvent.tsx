@@ -132,7 +132,7 @@ const EditEvent = () => {
     if (convertDate(regDate?.end) != fetchedEvent?.reg_end_date)
       changedData['reg_end_date'] = convertDate(regDate?.end);
     if (placeName && placeName !== fetchedEvent?.place) changedData['place'] = placeName;
-    if (placeName.length === 0 && googlePlaceName.length !== 0)
+    if (placeName?.length === 0 && googlePlaceName?.length !== 0)
       changedData['place'] = googlePlaceName;
     if (
       !eventData?.is_online &&
