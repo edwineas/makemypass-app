@@ -69,6 +69,10 @@ a {
   text-decoration: none;
   color: #fff;
   cursor: pointer;
+
+  word-break: break-all; /* Allows breaking within words if necessary */
+  white-space: normal; /* Ensures text can wrap to the next line */
+  overflow-wrap: break-word; /* Helps browsers decide where to break */
 }
 
 button {
