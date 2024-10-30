@@ -518,7 +518,7 @@ const EditEvent = () => {
                 name='whatsapp'
                 type='text'
                 id='whatsapp'
-                placeholder='wa.me/1234567890'
+                placeholder='wa.me/+919234567890'
                 icon={<AiOutlineTeam size={20} color='#949597' />}
                 title='Add WhatsApp Link'
                 value={eventData?.host_communicate?.whatsapp}
