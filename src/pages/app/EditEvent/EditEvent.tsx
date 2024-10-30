@@ -1081,7 +1081,9 @@ const EditEvent = () => {
                               setEventData({
                                 ...eventData,
                                 is_online: !eventData.is_online,
-                                checkin_password: '',
+                                checkin_password: Math.floor(
+                                  100000 + Math.random() * 900000,
+                                ).toString(),
                               });
                             }
                           }}
