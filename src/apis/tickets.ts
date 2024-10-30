@@ -20,6 +20,7 @@ export const getTicketsList = async (
 
 export const createTicket = async (eventId: string, ticket: TicketType) => {
   delete ticket['new'];
+  delete ticket['image'];
   try {
     const response = await privateGateway.post(makeMyPass.ticketCreate(eventId), ticket, {
       headers: {

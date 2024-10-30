@@ -132,7 +132,7 @@ const EditEvent = () => {
     if (convertDate(regDate?.end) != fetchedEvent?.reg_end_date)
       changedData['reg_end_date'] = convertDate(regDate?.end);
     if (placeName && placeName !== fetchedEvent?.place) changedData['place'] = placeName;
-    if (placeName.length === 0 && googlePlaceName.length !== 0)
+    if (placeName?.length === 0 && googlePlaceName?.length !== 0)
       changedData['place'] = googlePlaceName;
     if (
       !eventData?.is_online &&
@@ -518,7 +518,7 @@ const EditEvent = () => {
                 name='whatsapp'
                 type='text'
                 id='whatsapp'
-                placeholder='wa.me/1234567890'
+                placeholder='wa.me/+919234567890'
                 icon={<AiOutlineTeam size={20} color='#949597' />}
                 title='Add WhatsApp Link'
                 value={eventData?.host_communicate?.whatsapp}

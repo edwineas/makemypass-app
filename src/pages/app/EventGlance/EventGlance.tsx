@@ -60,6 +60,7 @@ const EventGlance = () => {
     tags: [],
     showModal: false,
   });
+
   const [allTags, setAllTags] = useState<string[]>([]);
   const [UTMData, setUTMData] = useState<UTMDataType>({
     showUTM: false,
@@ -110,6 +111,7 @@ const EventGlance = () => {
   const [mails, setMails] = useState<listMailType[]>([]);
   const [showQR, setShowQR] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false); // state to track image load
+  const [showEmbedModal, setShowEmbedModal] = useState(false);
   const [venues, setVenues] = useState<VenueCRUDType>({
     showModal: false,
     venueList: [],
@@ -245,6 +247,42 @@ const EventGlance = () => {
                 </button>
                 <button className={styles.cancelButton}>Cancel</button>
               </div>
+            </div>
+          </Modal>
+        )}
+        {showEmbedModal && (
+          <Modal
+            title='Embed Form'
+            onClose={() => {
+              setShowEmbedModal(false);
+            }}
+          >
+            <div className={styles.publicEventModal}>
+              <div>
+                <div className={styles.sectionContent}>
+                  <p className={styles.publicModalText}>Embedable Event Form Link</p>
+                  <div className={styles.publicLinkField}>
+                    <textarea
+                      rows={5}
+                      className={styles.publicLink}
+                      value={`<iframe src="${`${eventLink}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`}
+                      readOnly
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `<iframe src="${`${eventLink}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`,
+                  );
+                  toast.success('Link copied to clipboard');
+                }}
+                className={styles.publishButton}
+              >
+                Copy Link
+              </button>
             </div>
           </Modal>
         )}
@@ -486,6 +524,12 @@ const EventGlance = () => {
                   </div>
                   {isUserEditor() && (
                     <div className={styles.buttons}>
+                      <button
+                        onClick={() => setShowEmbedModal(true)}
+                        className={styles.editEventButton}
+                      >
+                        Embed Form
+                      </button>
                       <button
                         onClick={() => navigate('./edit-event')}
                         className={styles.editEventButton}
