@@ -42,3 +42,35 @@ export const getPostEventStatus = async (
       toast.error(error.response.data.message.general[0] || 'Error in Fetching Post Event Status');
     });
 };
+
+export const getPostEventContentList = async (
+  setPostEventContent: React.Dispatch<React.SetStateAction<PostEventContent>>,
+) => {
+  const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);
+  privateGateway
+    .get(makeMyPass.postEventContentList(eventId))
+    .then((response) => {
+      setPostEventContent(response.data.response);
+    })
+    .catch((error) => {
+      toast.error(
+        error.response.data.message.general[0] || 'Error in Fetching Post Event Content List',
+      );
+    });
+};
+
+export const updatePostEventContent = async (formData: FormData) => {
+  const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);
+  privateGateway
+    .put(makeMyPass.updatePostEventContent(eventId), formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then((response) => {
+      toast.success(response.data.message.general[0]);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Error in Creating Post Event Content');
+    });
+};

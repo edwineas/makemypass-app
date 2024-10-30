@@ -2,11 +2,18 @@ import { useEffect, useState } from 'react';
 import { LuMailPlus, LuMailX } from 'react-icons/lu';
 import { TiTick } from 'react-icons/ti';
 
-import { getPostEventStatus, sentPostEventMail } from '../../../apis/postevent';
+import {
+  getPostEventContentList,
+  getPostEventStatus,
+  sentPostEventMail,
+  updatePostEventContent,
+} from '../../../apis/postevent';
 import DashboardLayout from '../../../components/DashboardLayout/DashboardLayout';
 import Modal from '../../../components/Modal/Modal';
 import SectionButton from '../../../components/SectionButton/SectionButton';
 import Theme from '../../../components/Theme/Theme';
+import InputField from '../../auth/Login/InputField';
+import UploadAttachement from '../EventGlance/components/MailModals/UpdateMail/components/UploadAttachement/UploadAttachements';
 import styles from './PostEvent.module.css';
 
 const PostEvent = () => {
@@ -16,9 +23,68 @@ const PostEvent = () => {
   });
 
   const [postEventStatus, setPostEventStatus] = useState<PostEventStatus>();
+  const [postEventContent, setPostEventContent] = useState<PostEventContent>({
+    more_photo_link: null,
+    photos: [],
+    video_link: null,
+  });
+
   useEffect(() => {
     getPostEventStatus(setPostEventStatus);
+    getPostEventContentList(setPostEventContent);
   }, []);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const newFiles = Array.from(event.target.files);
+      setPostEventContent((prevContent) => ({
+        ...prevContent,
+        photos: [...prevContent.photos, ...newFiles],
+      }));
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setPostEventContent((prevContent) => ({
+      ...prevContent,
+      photos: prevContent.photos.filter((_, i) => i !== index),
+    }));
+  };
+
+  const imgPreviews = postEventContent.photos.map((photo, index) => {
+    if (photo instanceof File) {
+      return {
+        previewURL: URL.createObjectURL(photo),
+        previewExtension: photo.type,
+        previewName: photo.name,
+      };
+    } else {
+      return {
+        previewURL: photo,
+        previewExtension: 'image/jpeg',
+        previewName: `Image ${index + 1}`,
+      };
+    }
+  });
+
+  const handleSave = () => {
+    const formData = new FormData();
+    const photosList: (File | string)[] = [];
+    postEventContent.photos.forEach((photo) => {
+      if (photo instanceof File) {
+        photosList.push(photo);
+      } else {
+        photosList.push(photo); // Add existing URLs to the list
+      }
+    });
+    photosList.forEach((photo) => {
+      formData.append('photos[]', photo);
+    });
+    formData.append('video_link', postEventContent.video_link || '');
+    formData.append('more_photo_link', postEventContent.more_photo_link || '');
+    updatePostEventContent(formData);
+  };
+
   return (
     <>
       {openConfirmModal && openConfirmModal.confirm && (
@@ -92,6 +158,47 @@ const PostEvent = () => {
               />
             </div>
           </div>
+          <p className={styles.text}>Media Uploads</p>
+          <p className={styles.uploadImage}>Upload images</p>
+          <UploadAttachement
+            previews={imgPreviews}
+            handleFileChange={handleImageChange}
+            handleDeleteAttachment={handleRemoveImage}
+            allowedFileTypes={['image/*']}
+          />
+          <div className='inputdiv '>
+            <InputField
+              type='text'
+              name='video'
+              id='video'
+              title='Enter Video Link'
+              icon={<></>}
+              value={postEventContent.video_link || ''}
+              onChange={(event) =>
+                setPostEventContent((prev) => ({
+                  ...prev,
+                  video_link: event.target.value,
+                }))
+              }
+            />
+          </div>
+          <InputField
+            type='text'
+            name='driveLink'
+            id='driveLink'
+            title='Enter Drive Link'
+            icon={<></>}
+            value={postEventContent.more_photo_link || ''}
+            onChange={(event) =>
+              setPostEventContent((prev) => ({
+                ...prev,
+                more_photo_link: event.target.value,
+              }))
+            }
+          />
+          <button className={styles.saveButton} onClick={handleSave}>
+            Save
+          </button>
         </DashboardLayout>
       </Theme>
     </>
