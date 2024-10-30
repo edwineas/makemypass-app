@@ -13,7 +13,7 @@ export const getEventMailLog = async (
   privateGateway
     .get(makeMyPass.mailLog(eventId))
     .then((response) => {
-      setAllMailLog(response.data.response);
+      setAllMailLog(response.data.response.data);
     })
     .finally(() => {
       setIsLoading(false);
