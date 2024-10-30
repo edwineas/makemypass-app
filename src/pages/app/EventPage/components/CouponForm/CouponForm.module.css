@@ -179,6 +179,7 @@
   margin-top: 0.5rem;
   margin-bottom: 1rem;
   text-align: left;
+  width: 100%;
 }
 
 .ticketCountContainer {
@@ -308,6 +309,12 @@
 .couponContainer {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
 }
 
 .couponName {
