@@ -218,7 +218,12 @@ const Guests = () => {
           selectedGuestId.type === 'add' &&
           (isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER)) && (
             <Modal title='Invite Guest' onClose={onClose} type='side'>
-              <div className={styles.userInfoModalContainer}>
+              <div
+                className={styles.userInfoModalContainer}
+                style={{
+                  paddingRight: '0.5rem',
+                }}
+              >
                 <button
                   className={styles.bulkUploadButton}
                   onClick={() => {

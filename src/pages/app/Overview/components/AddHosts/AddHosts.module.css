@@ -2,6 +2,7 @@
   font-weight: 600;
   font-size: 1.25rem;
   margin-top: 0.5rem;
+  width: 100%;
 }
 
 .modalSubText {
@@ -10,13 +11,17 @@
   margin-top: 0.25rem;
 }
 
+.userInfoModalContainer {
+  width: 100%;
+}
+
 .buttons {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  column-gap: 1rem;
-  margin-top: 1rem;
+  column-gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .button {
@@ -77,10 +82,39 @@
 
 .inputLabel {
   text-align: left;
+  font-size: 0.9rem;
   margin-bottom: 0.25rem;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
 }
 
 .dropdown {
   margin-top: 1rem;
   width: 20rem;
+}
+
+.secondaryButton {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: none;
+  width: 50%;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 0.75rem;
+}
+
+.primaryButton {
+  text-align: center;
+  background: #fdfdfd;
+  color: rgb(43, 42, 42);
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 0.75rem;
 }

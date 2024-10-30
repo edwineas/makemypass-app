@@ -6,6 +6,7 @@ import { Roles } from '../../../../../../services/enums';
 import { getLoggedInUserRole } from '../../../../../common/commonFunctions';
 import Modal from '../../../../../components/Modal/Modal';
 import Slider from '../../../../../components/SliderButton/Slider';
+import InputField from '../../../../auth/Login/InputField';
 import { customStyles } from '../../../EventPage/constants';
 import type { hostData } from '../../Overview/types';
 import styles from './AddHosts.module.css';
@@ -54,40 +55,39 @@ const AddHosts = ({
   return (
     <Modal onClose={onClose} title={add ? 'Add Host' : 'Edit Host'}>
       <div className={styles.userInfoModalContainer}>
-        <div className={styles.inputContainers}>
-          <div className={styles.inputContainer}>
-            <p className={styles.inputLabel}>Email</p>
+        <InputField
+          type='text'
+          name='Email'
+          id='email'
+          title='Enter Email'
+          icon={<></>}
+          required={false}
+          onChange={(event) => {
+            setHostData((prevState) => ({
+              ...prevState!,
+              email: event.target.value,
+            }));
+          }}
+          value={hostData?.email}
+          placeholder='Enter the email address for the host'
+          disabled={hostData.id ? true : false}
+        />
 
-            <input
-              value={hostData?.email}
-              className={styles.input}
-              disabled={hostData.id ? true : false}
-              type='text'
-              onChange={(event) => {
-                setHostData((prevState) => ({
-                  ...prevState!,
-                  email: event.target.value,
-                }));
-              }}
-            />
-          </div>
+        <div className={styles.dropdown} style={{ width: '100%' }}>
+          <p className={styles.inputLabel}>Select Role</p>
+          <Select
+            className='basic-single'
+            classNamePrefix='select'
+            value={roleOptions.filter((role) => role.value === hostData?.role)[0]}
+            onChange={(event) => {
+              handleRoleChange(event);
+            }}
+            name='role'
+            options={getOptionsForUserRole()}
+            styles={customStyles}
+          />
         </div>
-        <div className={styles.dropdownContainer}>
-          <div className={styles.dropdown}>
-            <p className={styles.inputLabel}>Select Role</p>
-            <Select
-              className='basic-single'
-              classNamePrefix='select'
-              value={roleOptions.filter((role) => role.value === hostData?.role)[0]}
-              onChange={(event) => {
-                handleRoleChange(event);
-              }}
-              name='role'
-              options={getOptionsForUserRole()}
-              styles={customStyles}
-            />
-          </div>
-        </div>
+
         <div className={styles.inputContainers}>
           <div className={styles.inputContainer}>
             <Slider
@@ -104,12 +104,12 @@ const AddHosts = ({
         </div>
 
         <div className={styles.buttons}>
-          <p className={`pointer ${styles.button}`} onClick={onSubmit}>
+          <button className={`pointer ${styles.primaryButton}`} onClick={onSubmit}>
             {hostData.id ? 'Edit Host' : 'Add Host'}
-          </p>
-          <p className={`pointer ${styles.button}`} onClick={onClose}>
+          </button>
+          <button className={`pointer ${styles.secondaryButton}`} onClick={onClose}>
             Cancel
-          </p>
+          </button>
         </div>
       </div>
     </Modal>
