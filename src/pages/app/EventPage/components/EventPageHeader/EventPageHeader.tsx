@@ -308,13 +308,7 @@ const EventPageHeader = ({ eventData }: { eventData: EventType | undefined }) =>
 
             <div className={styles.bottomLocationHeader}>
               <div className={styles.eventDateTimeText}>
-                <p className={styles.eventDateText}>
-                  {' '}
-                  {eventData?.place?.substring(0, eventData.place.indexOf(' , '))}
-                </p>
-                <p className={styles.eventTimeText}>
-                  {eventData?.place?.substring(eventData.place.indexOf(' , ') + 2)}
-                </p>
+                <p className={styles.eventTimeText}>{eventData?.place}</p>
               </div>
             </div>
           </div>
