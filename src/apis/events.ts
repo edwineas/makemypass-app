@@ -1,8 +1,9 @@
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
 
 import { privateGateway, publicGateway } from '../../services/apiGateway';
 import { makeMyPass } from '../../services/urls';
+import type { NewEventStateType } from '../pages/app/Events/types';
 import { ErrorMessages, Event, EventType } from './types';
 
 export const getEventsList = async (
@@ -106,10 +107,14 @@ export const getFormCategories = async (
     });
 };
 
-export const createEvent = (eventTitle: string, orgId?: string) => {
-  const payload: { title: string; organization_id?: string } = { title: eventTitle };
-  if (orgId) {
-    payload.organization_id = orgId;
+export const createEvent = (
+  newEvent: NewEventStateType,
+  setNewEvent?: Dispatch<SetStateAction<NewEventStateType>>,
+  setShowCreateModal?: Dispatch<SetStateAction<boolean>>,
+) => {
+  const payload: { title: string; organization_id?: string } = { title: newEvent.eventName };
+  if (newEvent.orgId) {
+    payload.organization_id = newEvent.orgId;
   }
 
   privateGateway
@@ -117,9 +122,12 @@ export const createEvent = (eventTitle: string, orgId?: string) => {
     .then((response) => {
       const eventName = response.data.response.event_name;
       toast.success(response.data.message.general[0] || 'Event Created Successfully');
+      if (setNewEvent)
+        setNewEvent((prev) => ({ ...prev, eventName: eventName, showLimitationMessage: true }));
       setTimeout(() => {
         window.location.href = `/${eventName}/manage`;
-      }, 1000);
+        if (setShowCreateModal) setShowCreateModal(false);
+      }, 7500);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');

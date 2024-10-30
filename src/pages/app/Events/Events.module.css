@@ -324,3 +324,49 @@
   cursor: pointer;
   margin-top: 0.75rem;
 }
+
+.createEventButtonSecondary {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 0.75rem;
+}
+
+.helperText {
+  font-size: 0.8rem;
+  color: white;
+  opacity: 0.7;
+  font-family: 'Inter', sans-serif;
+
+  margin-top: 0.75rem;
+}
+
+.limitationIcon {
+  margin-top: 0.5rem;
+}
+
+.limitationHeader {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  margin-top: 0.5rem;
+}
+
+.limitationMessageContainer {
+  width: 100%;
+}
+
+.limitationText {
+  font-size: 0.9rem;
+  color: white;
+  opacity: 0.8;
+  font-family: 'Inter', sans-serif;
+  margin-top: 0.5rem;
+}

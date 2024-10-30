@@ -3,11 +3,17 @@ import { useState } from 'react';
 import { createEvent } from '../../../apis/events';
 import Theme from '../../../components/Theme/Theme';
 import InputField from '../../auth/Login/InputField.tsx';
+import type { NewEventStateType } from '../Events/types';
 import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton.tsx';
 import styles from './CreateEvent.module.css';
 
 const CreateEvent = () => {
-  const [eventTitle, setEventTitle] = useState('');
+  const [eventTitle, setEventTitle] = useState<NewEventStateType>({
+    eventName: '',
+    orgId: '',
+    error: [],
+    showLimitationMessage: false,
+  });
   const submitCreateEvent = () => {
     if (eventTitle) {
       createEvent(eventTitle);
@@ -26,8 +32,13 @@ const CreateEvent = () => {
               name={'name'}
               id={'name'}
               icon={''}
-              value={eventTitle}
-              onChange={(e) => setEventTitle(e.target.value)}
+              value={eventTitle.eventName}
+              onChange={(e) =>
+                setEventTitle({
+                  ...eventTitle,
+                  eventName: e.target.value,
+                })
+              }
             />
           </div>
           <SecondaryButton buttonText='Create Event' onClick={submitCreateEvent} />

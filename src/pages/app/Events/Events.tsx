@@ -4,6 +4,7 @@ import { BsArrowRight, BsThreeDots } from 'react-icons/bs';
 import { FaTags } from 'react-icons/fa';
 import { GoPeople } from 'react-icons/go';
 import { IoIosCreate, IoMdSettings } from 'react-icons/io';
+import { TbAlertTriangleFilled } from 'react-icons/tb';
 import { useNavigate } from 'react-router';
 import Select from 'react-select';
 
@@ -25,6 +26,7 @@ import { customStyles } from '../EventPage/constants';
 import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton';
 import styles from './Events.module.css';
 import RightClickMenu from './RightClickMenu';
+import type { NewEventStateType } from './types';
 
 const Events = () => {
   interface Position {
@@ -36,7 +38,7 @@ const Events = () => {
   const [tags, setTags] = useState([] as string[]);
   const [orgs, setOrgs] = useState([] as DefaultListType[]);
   const [selectedTags, setSelectedTags] = useState([] as string[]);
-  const [selectedOrgName, setSelectedOrgName] = useState('personal');
+  const [selectedOrgName, setSelectedOrgName] = useState('Personal');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState<Position>({ x: 0, y: 0 });
   const [showModal, setShowModal] = useState(false);
@@ -47,14 +49,11 @@ const Events = () => {
     setMenuPosition({ x: event.clientX, y: event.clientY });
   };
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [newEvent, setNewEvent] = useState<{
-    eventName: string;
-    orgId: string;
-    error: string[];
-  }>({
+  const [newEvent, setNewEvent] = useState<NewEventStateType>({
     eventName: '',
     orgId: '',
     error: [],
+    showLimitationMessage: false,
   });
 
   const handleMenuClose = () => {
@@ -89,8 +88,7 @@ const Events = () => {
 
   const CreateEvent = () => {
     if (newEvent.eventName) {
-      createEvent(newEvent.eventName, newEvent.orgId);
-      setShowCreateModal(false);
+      createEvent(newEvent, setNewEvent, setShowCreateModal);
     } else {
       setNewEvent((prevState) => ({
         ...prevState!,
@@ -131,57 +129,97 @@ const Events = () => {
             </Modal>
           )}
           {showCreateModal && (
-            <Modal onClose={() => setShowCreateModal(false)} title='Create Event'>
-              <InputField
-                id='eventName'
-                type='text'
-                name='eventName'
-                icon={<></>}
-                title='Event Name'
-                placeholder='Enter the new event name'
-                required
-                value={newEvent.eventName}
-                onChange={(e) => {
-                  setNewEvent((prevState) => ({
-                    ...prevState!,
-                    eventName: e.target.value,
-                  }));
-                }}
-                error={newEvent.error}
-              />
-              <Select
-                styles={{
-                  ...customStyles,
-                  container: (provided) => ({
-                    ...provided,
-                    width: '100%',
-                  }),
-                }}
-                options={[
-                  { value: 'personal', label: 'Personal' },
-                  ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                ]}
-                className='select'
-                classNamePrefix='select'
-                placeholder='Select Organization'
-                value={selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null}
-                onChange={(selectedOption) => {
-                  if (selectedOption) {
-                    setSelectedOrgName(selectedOption.label);
-                    if (selectedOption.value !== 'personal') {
-                      getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
+            <Modal
+              onClose={() => setShowCreateModal(false)}
+              title={newEvent.showLimitationMessage ? 'Alert Message' : 'Create New Event'}
+            >
+              {!newEvent.showLimitationMessage ? (
+                <>
+                  <InputField
+                    id='eventName'
+                    type='text'
+                    name='eventName'
+                    icon={<></>}
+                    title='Event Name'
+                    placeholder='Enter the new event name'
+                    required
+                    value={newEvent.eventName}
+                    onChange={(e) => {
+                      setNewEvent((prevState) => ({
+                        ...prevState!,
+                        eventName: e.target.value,
+                      }));
+                    }}
+                    error={newEvent.error}
+                  />
+                  <Select
+                    styles={{
+                      ...customStyles,
+                      container: (provided) => ({
+                        ...provided,
+                        width: '100%',
+                      }),
+                    }}
+                    options={[
+                      { value: 'Personal', label: 'Personal' },
+                      ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                    ]}
+                    className='select'
+                    classNamePrefix='select'
+                    placeholder='Select Organization'
+                    value={
+                      selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null
                     }
-                  }
-                }}
-              />
-              <button
-                className={styles.createEventButton}
-                onClick={() => {
-                  CreateEvent();
-                }}
-              >
-                Create
-              </button>
+                    onChange={(selectedOption) => {
+                      if (selectedOption) {
+                        setSelectedOrgName(selectedOption.label);
+                        if (selectedOption.value !== 'Personal') {
+                          getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
+                        }
+                      }
+                    }}
+                  />
+                  <button
+                    className={styles.createEventButton}
+                    onClick={() => {
+                      CreateEvent();
+                    }}
+                  >
+                    Create
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className={styles.limitationMessageContainer}>
+                    <TbAlertTriangleFilled
+                      size={30}
+                      color='#f04b4b'
+                      className={styles.limitationIcon}
+                    />
+                    <p className={styles.limitationHeader}>Paricipant Count is Limited</p>
+                    <p className={styles.limitationText}>
+                      There is a 250 participant limit for regular events. Please contact our sales
+                      team to increase the limit.
+                    </p>
+                    <a href='https://wa.me/916238450178' target='_blank' rel='noopener noreferrer'>
+                      <button className={styles.createEventButton}>Contact Sales</button>
+                    </a>
+
+                    <button
+                      onClick={() => {
+                        window.location.href = `/${newEvent.eventName}/manage`;
+                      }}
+                      className={styles.createEventButtonSecondary}
+                    >
+                      Continue
+                    </button>
+
+                    <p className={styles.helperText}>
+                      You will be redirected to the dashboard in 7 seconds.
+                    </p>
+                  </div>
+                </>
+              )}
             </Modal>
           )}
           {Object.values(events).length === 0 && isDataLoaded && (
@@ -217,7 +255,7 @@ const Events = () => {
                   <Select
                     styles={customStyles}
                     options={[
-                      { value: 'personal', label: 'Personal' },
+                      { value: 'Personal', label: 'Personal' },
                       ...orgs.map((org) => ({ value: org.id, label: org.name })),
                     ]}
                     className='select'
@@ -226,14 +264,14 @@ const Events = () => {
                     onChange={(selectedOption) => {
                       if (selectedOption) {
                         setSelectedOrgName(selectedOption.label);
-                        if (selectedOption.value !== 'personal') {
+                        if (selectedOption.value !== 'Personal') {
                           getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
                         }
                       }
                     }}
                   />
 
-                  {selectedOrgName && selectedOrgName != 'personal' && (
+                  {selectedOrgName && selectedOrgName != 'Personal' && (
                     <IoMdSettings
                       size={20}
                       color='#ffffff'
@@ -250,9 +288,12 @@ const Events = () => {
                   )}
                 </>
               )}
-              <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
-                <IoIosCreate size={20} /> Create Event
-              </button>
+
+              {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
+                <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
+                  <IoIosCreate size={20} /> Create Event
+                </button>
+              )}
             </div>
             {Object.values(EventStatus).map((status) => {
               return (
