@@ -284,10 +284,17 @@
 .selectRow {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  width: 100%;
-  column-gap: 1rem;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+}
+
+@media (max-width: 576px) {
+  .selectRow {
+    justify-content: flex-start;
+  }
 }
 
 .createButton {
@@ -369,4 +376,25 @@
   opacity: 0.8;
   font-family: 'Inter', sans-serif;
   margin-top: 0.5rem;
+}
+
+.searchInput {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  border: none;
+  cursor: pointer;
+}
+
+.actionRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  row-gap: 0.5rem;
 }
