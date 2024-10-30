@@ -379,7 +379,7 @@ const Coupon = () => {
                   </div>
                   <div className={styles.limitOne}>
                     <Slider
-                      checked={newCouponData.is_private}
+                      checked={!newCouponData.is_private}
                       onChange={() => {
                         if (isUserEditor())
                           setNewCouponData({
