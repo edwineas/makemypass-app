@@ -321,12 +321,11 @@ const ViewGuest = ({
                   <p className={styles.ticketCode}>
                     <span>Ticket Code:</span> {selectedGuestData['ticket_code']}
                   </p>
-                  <p className={styles.ticketCode}>
-                    <span>Mapped Code:</span>{' '}
-                    {selectedGuestData['mapped_code']
-                      ? selectedGuestData['mapped_code']
-                      : 'Not Mapped'}
-                  </p>
+                  {selectedGuestData['mapped_code'] && (
+                    <p className={styles.ticketCode}>
+                      <span>Mapped Code:</span> {selectedGuestData['mapped_code']}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className={styles.tsRow2}>
