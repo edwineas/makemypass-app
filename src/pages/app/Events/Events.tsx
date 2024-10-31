@@ -223,22 +223,16 @@ const Events = () => {
               )}
             </Modal>
           )}
-          {Object.values(events).length === 0 && isDataLoaded && (
-            <div className={styles.noEventsContainer}>
-              <p className={styles.noEvents}>
-                You don't have any events yet. Please connect with our sales team to get started.
-              </p>
-              <SecondaryButton
-                buttonText='Contact Sales'
-                onClick={() => {
-                  window.open('https://wa.me/916238450178', '_blank');
-                }}
-              />
-            </div>
-          )}
+
           <div className={styles.homeContainer}>
-            {Object.values(events).length > 0 && isDataLoaded && (
-              <div className={styles.actionRow}>
+            <div
+              className={styles.actionRow}
+              style={{
+                justifyContent:
+                  Object.values(events).length > 0 && isDataLoaded ? 'space-between' : 'flex-end',
+              }}
+            >
+              {Object.values(events).length > 0 && isDataLoaded && (
                 <div className={styles.selectRow1}>
                   <input
                     className={styles.searchInput}
@@ -248,69 +242,69 @@ const Events = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
-                <div className={styles.selectRow}>
-                  {tags && tags.length > 0 && (
+              )}
+              <div className={styles.selectRow}>
+                {tags && tags.length > 0 && (
+                  <Select
+                    styles={customStyles}
+                    isMulti
+                    options={tags.map((tag) => ({ value: tag, label: tag }))}
+                    className='basic-multi-select'
+                    classNamePrefix='select'
+                    placeholder='Select tags'
+                    onChange={(selectedOptions) => {
+                      setSelectedTags(selectedOptions.map((option) => option.value));
+                    }}
+                  />
+                )}
+
+                <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
+                  <IoIosCreate size={20} /> Create Event
+                </button>
+
+                {orgs && orgs.length > 0 && (
+                  <>
                     <Select
                       styles={customStyles}
-                      isMulti
-                      options={tags.map((tag) => ({ value: tag, label: tag }))}
-                      className='basic-multi-select'
+                      options={[
+                        { value: 'Personal', label: 'Personal' },
+                        ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                      ]}
+                      className='select'
                       classNamePrefix='select'
-                      placeholder='Select tags'
-                      onChange={(selectedOptions) => {
-                        setSelectedTags(selectedOptions.map((option) => option.value));
+                      placeholder='Select Organization'
+                      onChange={(selectedOption) => {
+                        if (selectedOption) {
+                          setSelectedOrgName(selectedOption.label);
+                          if (selectedOption.value !== 'Personal') {
+                            getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
+                          } else if (selectedOption.value === 'Personal') {
+                            getEventsList(setEvents, setIsDataLoaded);
+                          }
+                        }
                       }}
                     />
-                  )}
-                  {import.meta.env.VITE_CURRENT_ENV === 'dev' && orgs && orgs.length > 0 && (
-                    <>
-                      <Select
-                        styles={customStyles}
-                        options={[
-                          { value: 'Personal', label: 'Personal' },
-                          ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                        ]}
-                        className='select'
-                        classNamePrefix='select'
-                        placeholder='Select Organization'
-                        onChange={(selectedOption) => {
-                          if (selectedOption) {
-                            setSelectedOrgName(selectedOption.label);
-                            if (selectedOption.value !== 'Personal') {
-                              getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
-                            }
-                          }
+
+                    {selectedOrgName && selectedOrgName != 'Personal' && (
+                      <IoMdSettings
+                        size={20}
+                        color='#ffffff'
+                        className='pointer'
+                        onClick={() => {
+                          navigate(`/organization/${selectedOrgName}/`, {
+                            state: {
+                              orgId: orgs.find((org) => org.name === selectedOrgName)?.id,
+                              orgName: selectedOrgName,
+                            },
+                          });
                         }}
                       />
-
-                      {selectedOrgName && selectedOrgName != 'Personal' && (
-                        <IoMdSettings
-                          size={20}
-                          color='#ffffff'
-                          className='pointer'
-                          onClick={() => {
-                            navigate(`/organization/${selectedOrgName}/`, {
-                              state: {
-                                orgId: orgs.find((org) => org.name === selectedOrgName)?.id,
-                                orgName: selectedOrgName,
-                              },
-                            });
-                          }}
-                        />
-                      )}
-                    </>
-                  )}
-                  {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
-                    <button
-                      className={styles.createButton}
-                      onClick={() => setShowCreateModal(true)}
-                    >
-                      <IoIosCreate size={20} /> Create Event
-                    </button>
-                  )}
-                </div>
+                    )}
+                  </>
+                )}
               </div>
-            )}
+            </div>
+
             {Object.values(EventStatus).map((status) => {
               return (
                 <div key={status}>
@@ -468,6 +462,20 @@ const Events = () => {
               );
             })}
           </div>
+
+          {Object.values(events).length === 0 && isDataLoaded && (
+            <div className={styles.noEventsContainer}>
+              <p className={styles.noEvents}>
+                You don't have any events yet. Please connect with our sales team to get started.
+              </p>
+              <SecondaryButton
+                buttonText='Contact Sales'
+                onClick={() => {
+                  window.open('https://wa.me/916238450178', '_blank');
+                }}
+              />
+            </div>
+          )}
         </Theme>
       ) : (
         <Loader />
