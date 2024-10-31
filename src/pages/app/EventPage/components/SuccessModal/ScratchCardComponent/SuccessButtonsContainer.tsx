@@ -37,32 +37,6 @@ const SuccessButtonsContainer = ({
               >
                 View Ticket
               </button>
-
-              {success.is_approved && (
-                <button
-                  onClick={async () => {
-                    try {
-                      const response = await fetch(success.is_approved || '');
-                      const blob = await response.blob();
-
-                      const link = document.createElement('a');
-                      link.href = URL.createObjectURL(blob);
-                      link.setAttribute('download', 'ticket.png');
-
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-
-                      URL.revokeObjectURL(link.href);
-                    } catch (error) {
-                      toast.error('Failed to download ticket');
-                    }
-                  }}
-                  className={styles.downloadTicketButton}
-                >
-                  Download Ticket
-                </button>
-              )}
             </>
           )}
 

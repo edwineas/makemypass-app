@@ -56,7 +56,7 @@ const Header = ({
         currentTime.getSeconds(),
       ].map((unit) => unit.toString().padStart(2, '0'));
 
-      const timezoneOffset = currentTime.getTimezoneOffset();
+      const timezoneOffset = currentTime.getTimezoneOffset() + 60; // Adjusting for the correct timezone offset
       const timezoneSign = timezoneOffset > 0 ? '-' : '+';
       const [timezoneOffsetHours, timezoneOffsetMinutes] = [
         Math.abs(Math.floor(timezoneOffset / 60)),

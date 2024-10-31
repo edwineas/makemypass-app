@@ -89,7 +89,7 @@ const Overview = () => {
             });
           }
         };
-
+        setIsDataLoading(false);
         setSocket(ws);
       });
 

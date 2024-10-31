@@ -1,4 +1,4 @@
-import { FaTelegramPlane } from 'react-icons/fa';
+import { FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
 import { FaInstagram, FaXTwitter } from 'react-icons/fa6';
 
 import styles from './Footer.module.css';
@@ -29,6 +29,13 @@ const Footer = () => {
                 rel='noopener noreferrer'
               >
                 <FaInstagram color='a4a4a4' size={20} />
+              </a>
+              <a
+                href='https://www.linkedin.com/company/makemypass/'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <FaLinkedinIn color='a4a4a4' size={20} />
               </a>
               <a href='https://x.com/makemypass_x' target='_blank' rel='noopener noreferrer'>
                 <FaXTwitter color='a4a4a4' size={20} />
