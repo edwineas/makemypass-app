@@ -1,25 +1,8 @@
-.button {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  border: none;
-  cursor: pointer;
-}
-
-.button:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
 .inputContainers {
   display: flex;
   flex-direction: column;
-  row-gap: 0.5rem;
-  margin-top: 1rem;
-  justify-content: flex-start;
-  row-gap: 1rem;
   width: fit-content;
+  width: 100%;
 }
 
 .inputContainer {
@@ -82,4 +65,37 @@
   .svgText {
     transform: translateX(-1.4rem);
   }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  column-gap: 0.5rem;
+}
+
+.secondaryButton {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: none;
+  width: 50%;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 0.75rem;
+}
+
+.primaryButton {
+  text-align: center;
+  background: #fdfdfd;
+  color: rgb(43, 42, 42);
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 0.75rem;
 }

@@ -389,7 +389,6 @@ const InEventStats = () => {
                         ({findDistrictWithMostNumber()?.value} <span>guests</span>)
                       </span>
                     </p>
-                    <p className={styles.count}></p>
                   </div>
                 </>
               </div>

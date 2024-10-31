@@ -38,7 +38,13 @@ const Modal = ({
       </>
     ) : (
       <>
-        <div onClick={onClose} className={styles.backgroundBlur}></div>
+        <div
+          onClick={onClose}
+          className={styles.backgroundBlur}
+          style={{
+            zIndex: zIndexCount,
+          }}
+        ></div>
         <dialog {...inputProps} className={styles.onClickModal} style={style}>
           {title && (
             <div className={styles.modalHeader}>

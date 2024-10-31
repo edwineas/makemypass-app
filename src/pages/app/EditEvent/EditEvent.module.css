@@ -498,11 +498,22 @@ input[type='color']::-webkit-color-swatch {
   align-items: center;
   justify-content: flex-end;
   column-gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.1);
 }
 
 .uploadLogoContainerParent {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 436px) {
+  .uploadLogoContainerParent {
+    margin-bottom: 1rem;
+  }
 }
 
 .uploadLogoContainer {
@@ -520,7 +531,6 @@ input[type='color']::-webkit-color-swatch {
   column-gap: 0.5rem;
   row-gap: 0.5rem;
   margin-bottom: 1rem;
-  width: 50%;
 }
 
 .fileUpload {
@@ -552,6 +562,7 @@ input[type='color']::-webkit-color-swatch {
   margin-left: auto;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  margin-left: 1rem;
 }
 
 .uploadLogoContainer:hover > .pencil {
@@ -632,28 +643,16 @@ input[type='color']::-webkit-color-swatch {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.closeIcon {
-  cursor: pointer;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 25px;
-  height: 25px;
-  transition: all 0.2s ease-in-out;
-  scale: 1.2;
-}
-
 .closeIcon:hover {
   transform: scale(1.25);
 }
 
-.uploadLogoContainerParent > .closeIcon {
+.uploadLogoContainerParent > div > .closeIcon {
   position: relative;
   top: 0;
   right: 0;
   scale: 1;
-  margin-left: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.75rem;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.04);
 }
@@ -667,7 +666,6 @@ input[type='color']::-webkit-color-swatch {
   border: 1px solid rgba(255, 255, 255, 0.04);
   background: rgba(255, 255, 255, 0);
   border: none;
-  padding: 0.5rem 1rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   font-weight: 400;

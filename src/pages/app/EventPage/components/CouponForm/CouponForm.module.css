@@ -48,12 +48,18 @@
   color: #4eff99;
   line-height: 1.75rem;
   font-family: 'Inter', sans-serif;
-  max-width: 15rem;
+  max-width: 20rem;
   span {
     color: white;
     font-size: 0.8rem;
     opacity: 0.8;
     font-weight: 400;
+  }
+}
+
+@media (max-width: 758px) {
+  .ticketTypeTitle {
+    max-width: 15rem;
   }
 }
 
@@ -70,6 +76,11 @@
   color: #fff;
   opacity: 0.8;
   font-family: 'Inter', sans-serif;
+
+  ul {
+    padding-left: 0.5rem;
+    margin-top: 0.5rem;
+  }
 
   li {
     list-style: disc;
@@ -285,7 +296,7 @@
   color: #bbbaba;
   font-family: 'Inter', sans-serif;
   text-align: left;
-  padding: 0.75rem 0.5rem;
+  padding: 0.75rem 2rem;
   margin-bottom: 1rem;
 
   margin-bottom: 1rem;

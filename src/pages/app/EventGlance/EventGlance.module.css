@@ -263,6 +263,7 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 0.25rem;
 }
 
 .sendMailsHeading {
@@ -307,8 +308,11 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.scheduleBox:last-child {
+  border-bottom: none;
 }
 
 .scheduleTextHeader {

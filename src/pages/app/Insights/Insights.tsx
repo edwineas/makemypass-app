@@ -473,6 +473,9 @@ const Insights = ({ type }: { type?: string }) => {
                             <p className={styles.categoryCount}>{value}</p>
                           </div>
                         ))}
+                        {Object.entries(message?.category_percentages || {}).length === 0 && (
+                          <p className={styles.noData}>No Registrations to Yet</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -532,81 +535,90 @@ const Insights = ({ type }: { type?: string }) => {
 
               <div className={styles.insightsContainer}>
                 <div className={styles.pieContainer}>
-                  <div className={styles.pieSection}>
-                    {pieData && pieData.datasets[0].data.length > 0 ? (
-                      <Doughnut
-                        data={pieData}
-                        options={{
-                          plugins: {
-                            legend: {
-                              display: false,
-                            },
-                          },
-                        }}
-                      />
-                    ) : (
-                      <p className={styles.noData}>No Data to Show</p>
-                    )}
-                  </div>
-                  <div className={styles.timeSection}>
-                    <p className={styles.rightSectionHeading}>Registration Time</p>
-                    <div className={styles.times}>
-                      {message?.active_timeframe.Morning && (
-                        <div className={styles.time}>
-                          <p
-                            style={{
-                              color: '#35A1EB',
+                  {message?.active_timeframe.Morning ||
+                  message?.active_timeframe.Afternoon ||
+                  message?.active_timeframe.Evening ||
+                  message?.active_timeframe.Night ? (
+                    <>
+                      <div className={styles.pieSection}>
+                        {pieData && pieData.datasets[0].data.length > 0 ? (
+                          <Doughnut
+                            data={pieData}
+                            options={{
+                              plugins: {
+                                legend: {
+                                  display: false,
+                                },
+                              },
                             }}
-                            className={styles.line}
-                          >
-                            {message?.active_timeframe.Morning}
-                          </p>
-                          <p className='type'>Morning</p>
-                        </div>
-                      )}
+                          />
+                        ) : (
+                          <p className={styles.noData}>No Data to Show</p>
+                        )}
+                      </div>
+                      <div className={styles.timeSection}>
+                        <p className={styles.rightSectionHeading}>Registration Time</p>
+                        <div className={styles.times}>
+                          {message?.active_timeframe.Morning && (
+                            <div className={styles.time}>
+                              <p
+                                style={{
+                                  color: '#35A1EB',
+                                }}
+                                className={styles.line}
+                              >
+                                {message?.active_timeframe.Morning}
+                              </p>
+                              <p className='type'>Morning</p>
+                            </div>
+                          )}
 
-                      {message?.active_timeframe.Afternoon && (
-                        <div className={styles.time}>
-                          <p
-                            style={{
-                              color: '#47C97E',
-                            }}
-                            className={styles.line}
-                          >
-                            {message?.active_timeframe.Afternoon}
-                          </p>
-                          <p className='type'>Afternoon</p>
-                        </div>
-                      )}
+                          {message?.active_timeframe.Afternoon && (
+                            <div className={styles.time}>
+                              <p
+                                style={{
+                                  color: '#47C97E',
+                                }}
+                                className={styles.line}
+                              >
+                                {message?.active_timeframe.Afternoon}
+                              </p>
+                              <p className='type'>Afternoon</p>
+                            </div>
+                          )}
 
-                      {message?.active_timeframe.Evening && (
-                        <div className={styles.time}>
-                          <p
-                            style={{
-                              color: '#FBD85B',
-                            }}
-                            className={styles.line}
-                          >
-                            {message?.active_timeframe.Evening}
-                          </p>
-                          <p className='type'>Evening</p>
+                          {message?.active_timeframe.Evening && (
+                            <div className={styles.time}>
+                              <p
+                                style={{
+                                  color: '#FBD85B',
+                                }}
+                                className={styles.line}
+                              >
+                                {message?.active_timeframe.Evening}
+                              </p>
+                              <p className='type'>Evening</p>
+                            </div>
+                          )}
+                          {message?.active_timeframe.Night && (
+                            <div className={styles.time}>
+                              <p
+                                style={{
+                                  color: '#C33D7B',
+                                }}
+                                className={styles.line}
+                              >
+                                {message?.active_timeframe.Night}
+                              </p>
+                              <p className='type'>Night</p>
+                            </div>
+                          )}
                         </div>
-                      )}
-                      {message?.active_timeframe.Night && (
-                        <div className={styles.time}>
-                          <p
-                            style={{
-                              color: '#C33D7B',
-                            }}
-                            className={styles.line}
-                          >
-                            {message?.active_timeframe.Night}
-                          </p>
-                          <p className='type'>Night</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                      </div>
+                    </>
+                  ) : (
+                    <p className={styles.noData}>No Registrations Yet</p>
+                  )}
                 </div>
 
                 <div className={styles.pageVisitsCount}>
@@ -673,9 +685,10 @@ const Insights = ({ type }: { type?: string }) => {
                             ? Math.round(
                                 message?.page_visit.register_page.conversion_rate_vs_page_visit *
                                   100,
-                              ) / 100
+                              ) /
+                                100 +
+                              '%'
                             : '-'}
-                          %
                         </p>
                       </div>
                     </div>
@@ -797,12 +810,14 @@ const Insights = ({ type }: { type?: string }) => {
                       <p className={styles.rightSectionHeading}>Organization Counts</p>
 
                       <div className={styles.categories}>
-                        {Object.entries(message?.organisation_count || {}).map(([key, value]) => (
-                          <div className={styles.category}>
-                            <p className={styles.categoryName}>{key}</p>
-                            <p className={styles.categoryCount}>{value}</p>
-                          </div>
-                        ))}
+                        {Object.entries(message?.organisation_count || {})
+                          .sort(([, a], [, b]) => Number(b) - Number(a))
+                          .map(([key, value]) => (
+                            <div className={styles.category} key={key}>
+                              <p className={styles.categoryName}>{key}</p>
+                              <p className={styles.categoryCount}>{value}</p>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   )}

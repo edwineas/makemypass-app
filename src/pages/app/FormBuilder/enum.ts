@@ -21,7 +21,7 @@ export enum DefaultFieldTypes {
   Phone = 'phone',
   Category = 'category',
   Organization = 'organization',
-  Referral = 'referral',
+  // Referral = 'referral', Still In Progress
   District = 'district',
   TeamId = 'team_id',
 }

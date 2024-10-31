@@ -1222,54 +1222,53 @@ const EditEvent = () => {
                     )}
 
                     <div className={styles.uploadLogoContainerParent}>
-                      <div className={styles.uploadLogoContainer}>
-                        <div>
-                          {logo ? (
-                            <img
-                              src={URL.createObjectURL(logo)}
-                              alt='Uploaded Image'
-                              className={styles.noImage}
-                            />
-                          ) : eventData?.logo && typeof eventData?.logo === 'string' ? (
-                            <img src={eventData.logo} className={styles.noImage} />
-                          ) : (
-                            <div className={styles.noImage}></div>
-                          )}
-                        </div>
-                        <div className={styles.uploadLogo}>
-                          <p>Upload {eventData?.logo ? 'New' : ''} Logo</p>
-                          <p className={styles.logoName}>{logo?.name}</p>
-                        </div>
-                        <input
-                          disabled={!isUserEditor()}
-                          type='file'
-                          className={styles.fileUpload}
-                          accept='image/*'
-                          onChange={(e) =>
-                            isUserEditor() && setLogo(e.target.files ? e.target.files[0] : null)
-                          }
-                        />
-                        <div className={styles.pencil}>
-                          <LuPencil size={15} color='#949597' />
-                        </div>
-                      </div>
-                      <IoCloseOutline
-                        className={styles.closeIcon}
-                        onClick={() => {
-                          if (isUserEditor()) {
-                            setLogo(null);
-                            setEventData({ ...eventData, logo: '' });
-                          }
+                      <div
+                        className='row'
+                        style={{
+                          flexWrap: 'nowrap',
                         }}
-                      />
-                    </div>
-
-                    <div className={styles.buttonContainer}>
-                      {isUserEditor() && (
-                        <button className={styles.deleteButton} onClick={() => setShowModal(true)}>
-                          Delete
-                        </button>
-                      )}
+                      >
+                        <div className={styles.uploadLogoContainer}>
+                          <div>
+                            {logo ? (
+                              <img
+                                src={URL.createObjectURL(logo)}
+                                alt='Uploaded Image'
+                                className={styles.noImage}
+                              />
+                            ) : eventData?.logo && typeof eventData?.logo === 'string' ? (
+                              <img src={eventData.logo} className={styles.noImage} />
+                            ) : (
+                              <div className={styles.noImage}></div>
+                            )}
+                          </div>
+                          <div className={styles.uploadLogo}>
+                            <p>Upload {eventData?.logo ? 'New' : ''} Logo</p>
+                            <p className={styles.logoName}>{logo?.name}</p>
+                          </div>
+                          <input
+                            disabled={!isUserEditor()}
+                            type='file'
+                            className={styles.fileUpload}
+                            accept='image/*'
+                            onChange={(e) =>
+                              isUserEditor() && setLogo(e.target.files ? e.target.files[0] : null)
+                            }
+                          />
+                          <div className={styles.pencil}>
+                            <LuPencil size={15} color='#949597' />
+                          </div>
+                        </div>
+                        <IoCloseOutline
+                          className={styles.closeIcon}
+                          onClick={() => {
+                            if (isUserEditor()) {
+                              setLogo(null);
+                              setEventData({ ...eventData, logo: '' });
+                            }
+                          }}
+                        />
+                      </div>
 
                       <button
                         className={styles.settingsButton}
@@ -1278,6 +1277,14 @@ const EditEvent = () => {
                         <TbSettings />
                         Advanced Settings
                       </button>
+                    </div>
+
+                    <div className={styles.buttonContainer}>
+                      {isUserEditor() && (
+                        <button className={styles.deleteButton} onClick={() => setShowModal(true)}>
+                          Delete
+                        </button>
+                      )}
 
                       <button className={styles.createButton} onClick={() => history.back()}>
                         Cancel

@@ -79,7 +79,6 @@
   flex-direction: column;
   margin-top: 1rem;
   margin-left: 0.5rem;
-  height: calc(100vh - 23rem);
 }
 
 .ticketTitleContainer {
@@ -177,7 +176,10 @@
   row-gap: 1.5rem;
   align-items: center;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .buttonGroup {

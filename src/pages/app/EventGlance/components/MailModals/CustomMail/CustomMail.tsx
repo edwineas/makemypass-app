@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { HashLoader } from 'react-spinners';
 
 import { getEventMailService, updateEventMailService } from '../../../../../../apis/mails';
+import Modal from '../../../../../../components/Modal/Modal';
 import Slider from '../../../../../../components/SliderButton/Slider';
+import InputField from '../../../../../auth/Login/InputField';
 import styles from './CustomMail.module.css';
 
 type Props = {
@@ -21,7 +22,7 @@ export type mailData = {
 
 const CustomMail = ({ setCustomMail }: Props) => {
   const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);
-  const [showPassword, setShowPassword] = useState(false);
+
   const [showCustomMail, setShowCustomMail] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [fetchedMailData, setFetchedMailData] = useState<mailData>();
@@ -29,7 +30,7 @@ const CustomMail = ({ setCustomMail }: Props) => {
 
   const onUpdate = () => {
     let changedData: Record<string, unknown> = Object.entries(mailData as Record<string, unknown>)
-      .filter(([key, value]) => fetchedMailData?.[key as keyof mailData] !== value)
+      .filter(([key, value]) => fetchedMailData?.[key as keyof mailData] !== value && value !== '')
       .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
 
     if (!showCustomMail) {
@@ -54,19 +55,21 @@ const CustomMail = ({ setCustomMail }: Props) => {
   }, [fetchedMailData]);
 
   return (
-    <>
-      <div className={styles.modalSubText}>
+    <Modal title='Custom Mail' onClose={() => setCustomMail(false)} zIndexCount={100}>
+      <>
         {isLoading ? (
           <HashLoader color='#46BF75' size={50} className={styles.loader} />
         ) : (
           <div className={styles.inputContainers}>
-            <div className={styles.inputContainer}>
-              <label className={styles.inputLabel}>Turn On Custom Mail ?</label>
-              <Slider
-                checked={showCustomMail}
-                onChange={() => setShowCustomMail(!showCustomMail)}
-              />
-            </div>
+            <Slider
+              text='Turn On Custom Mail ?'
+              checked={showCustomMail}
+              onChange={() => setShowCustomMail(!showCustomMail)}
+              labelStyle={{
+                fontSize: '0.9rem',
+              }}
+            />
+
             {showCustomMail && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -74,80 +77,106 @@ const CustomMail = ({ setCustomMail }: Props) => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
                 className={styles.inputContainers}
+                style={{
+                  borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                  paddingTop: '0.5rem',
+                  marginTop: '0.5rem',
+                }}
               >
-                <div className={styles.inputContainer}>
-                  <label className={styles.inputLabel}>SMTP Server</label>
-                  <input
-                    type='text'
-                    className={styles.input}
-                    value={mailData?.smtp_server}
-                    onChange={(e) => {
-                      mailData && setMailData({ ...mailData, smtp_server: e.target.value });
-                    }}
-                  />
-                </div>
-                <div className={styles.inputContainer}>
-                  <label className={styles.inputLabel}>SMTP Port</label>
-                  <input
-                    type='text'
-                    className={styles.input}
-                    value={mailData?.smtp_port}
-                    onChange={(e) => {
-                      mailData && setMailData({ ...mailData, smtp_port: e.target.value });
-                    }}
-                  />
-                </div>
-                <div className={styles.inputContainer}>
-                  <label className={styles.inputLabel}>Username</label>
-                  <input
-                    type='text'
-                    className={styles.input}
-                    value={mailData?.smtp_username}
-                    onChange={(e) => {
-                      mailData && setMailData({ ...mailData, smtp_username: e.target.value });
-                    }}
-                  />
-                </div>
-                <div className={styles.inputContainer}>
-                  <label className={styles.inputLabel}>Password</label>
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    className={styles.input}
-                    value={mailData?.smtp_password}
-                    onChange={(e) => {
-                      mailData && setMailData({ ...mailData, smtp_password: e.target.value });
-                    }}
-                  />
-                </div>
-                <div className={styles.showPass} onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? <FaEye /> : <FaEyeSlash />}
-                  Show Password?
-                </div>
-                <div className={styles.inputContainer}>
-                  <label className={styles.inputLabel}>Mail Id</label>
-                  <input
-                    type='mail'
-                    className={styles.input}
-                    value={mailData?.from_mail}
-                    onChange={(e) => {
-                      mailData && setMailData({ ...mailData, from_mail: e.target.value });
-                    }}
-                  />
-                </div>
+                <InputField
+                  type='text'
+                  value={mailData?.smtp_server}
+                  onChange={(e) => {
+                    mailData && setMailData({ ...mailData, smtp_server: e.target.value });
+                  }}
+                  placeholder='e.g., smtp.gmail.com'
+                  title='SMTP Server'
+                  name='smtp_server'
+                  id='smtp_server'
+                  icon={null}
+                  style={{
+                    marginTop: '0',
+                  }}
+                />
+
+                <InputField
+                  type='text'
+                  value={mailData?.smtp_port}
+                  onChange={(e) => {
+                    mailData && setMailData({ ...mailData, smtp_port: e.target.value });
+                  }}
+                  placeholder='e.g., 587'
+                  title='SMTP Port'
+                  name='smtp_port'
+                  id='smtp_port'
+                  icon={null}
+                  style={{
+                    marginTop: '0',
+                  }}
+                />
+
+                <InputField
+                  type='text'
+                  value={mailData?.smtp_username}
+                  onChange={(e) => {
+                    mailData && setMailData({ ...mailData, smtp_username: e.target.value });
+                  }}
+                  placeholder='e.g., your-email@gmail.com'
+                  title='SMTP Username'
+                  name='smtp_username'
+                  id='smtp_username'
+                  icon={null}
+                  style={{
+                    marginTop: '0',
+                  }}
+                />
+
+                <InputField
+                  type='password'
+                  value={mailData?.smtp_password}
+                  onChange={(e) => {
+                    mailData && setMailData({ ...mailData, smtp_password: e.target.value });
+                  }}
+                  placeholder='e.g., your-password'
+                  title='SMTP Password'
+                  name='smtp_password'
+                  id='smtp_password'
+                  icon={null}
+                  style={{
+                    marginTop: '0',
+                  }}
+                />
+
+                <InputField
+                  type='text'
+                  value={mailData?.from_mail}
+                  onChange={(e) => {
+                    mailData && setMailData({ ...mailData, from_mail: e.target.value });
+                  }}
+                  placeholder='e.g., your-email@gmail.com'
+                  title='From Mail'
+                  name='from_mail'
+                  id='from_mail'
+                  icon={null}
+                  style={{
+                    marginTop: '0',
+                  }}
+                />
               </motion.div>
             )}
+
             <div className={styles.buttonContainer}>
-              <button className={styles.button} onClick={onUpdate}>
+              <button className={styles.primaryButton} onClick={onUpdate}>
                 Update
               </button>
-              <button className={styles.button} onClick={() => setCustomMail(false)}>
+              <button className={styles.secondaryButton} onClick={() => setCustomMail(false)}>
                 Cancel
               </button>
             </div>
           </div>
         )}
-      </div>
-    </>
+      </>
+    </Modal>
   );
 };
 

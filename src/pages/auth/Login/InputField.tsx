@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
 import styles from '../Authstyles.module.css';
 
@@ -21,7 +22,13 @@ interface FormProps {
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, ...inputProps }, ref) => {
+const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, type, ...inputProps }, ref) => {
+  const [inputType, setInputType] = useState(type);
+
+  const togglePasswordVisibility = () => {
+    setInputType((prevType) => (prevType === 'password' ? 'text' : 'password'));
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -29,19 +36,21 @@ const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, ...inputProp
       exit={{ opacity: 0, y: 10 }}
       transition={{ duration: 0.2 }}
       className={styles.formInput}
-      // style={inputProps.error ? { marginBottom: '0' }}
+      style={inputProps.style}
     >
       {inputProps.title.length > 0 && (
-        <label className={styles.formLabel} htmlFor='email'>
+        <label className={styles.formLabel} htmlFor={inputProps.id}>
           {inputProps.required ? inputProps.title + '*' : inputProps.title}
         </label>
       )}
-      <p className={styles.fieldDescription}>{inputProps.description}</p>
+      {inputProps.description && (
+        <p className={styles.fieldDescription}>{inputProps.description}</p>
+      )}
       <div className={styles.inputField}>
         {icon}
         <input
           {...inputProps}
-          type={inputProps.type}
+          type={inputType}
           disabled={inputProps.disabled}
           placeholder={`${inputProps.placeholder ? inputProps.placeholder : ''}`}
           ref={ref}
@@ -51,6 +60,11 @@ const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, ...inputProp
             fontFamily: 'Inter',
           }}
         />
+        {type === 'password' && (
+          <span onClick={togglePasswordVisibility} className={styles.eyeIcon}>
+            {inputType === 'password' ? <FaEye /> : <FaEyeSlash />}
+          </span>
+        )}
       </div>
       <AnimatePresence>
         {inputProps.error && inputProps?.error[0]?.length > 0 && (

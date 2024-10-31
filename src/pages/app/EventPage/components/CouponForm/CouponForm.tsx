@@ -378,11 +378,13 @@ const CouponForm = ({
                   </div>
                 )}
 
-                {filteredTicket.capacity != null && filteredTicket.capacity >= 0 && (
-                  <div className={styles.dateContainer}>
-                    <p className={styles.capacity}>{filteredTicket.capacity} tickets left</p>
-                  </div>
-                )}
+                {filteredTicket.capacity != null &&
+                  filteredTicket.capacity >= 0 &&
+                  filteredTicket.capacity <= 20 && (
+                    <div className={styles.dateContainer}>
+                      <p className={styles.capacity}>{filteredTicket.capacity} tickets left</p>
+                    </div>
+                  )}
 
                 <div>
                   <div className={styles.passText}>
@@ -516,11 +518,13 @@ const CouponForm = ({
                   </div>
                 )}
 
-                {filteredTicket.capacity != null && filteredTicket.capacity >= 0 && (
-                  <div className={styles.dateContainer}>
-                    <p className={styles.capacity}>{filteredTicket.capacity} tickets left</p>
-                  </div>
-                )}
+                {filteredTicket.capacity != null &&
+                  filteredTicket.capacity >= 0 &&
+                  filteredTicket.capacity <= 20 && (
+                    <div className={styles.dateContainer}>
+                      <p className={styles.capacity}>{filteredTicket.capacity} tickets left</p>
+                    </div>
+                  )}
 
                 <div>
                   <div className={styles.passText}>

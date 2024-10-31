@@ -298,15 +298,7 @@ const EventGlance = () => {
               <ManageTickets setIsTicketsOpen={setIsTicketsOpen} ref={modalRef} />
             </Modal>
           )}
-          {customMail && (
-            <Modal
-              title='Connect Custom Mail'
-              onClose={() => setCustomMail(false)}
-              style={{ zIndex: 1500 }}
-            >
-              <CustomMail setCustomMail={setCustomMail} />
-            </Modal>
-          )}
+          {customMail && <CustomMail setCustomMail={setCustomMail} />}
           {selectedMail && (
             <Modal onClose={() => setSelectedMail(undefined)} type='side'>
               <UpdateMail
