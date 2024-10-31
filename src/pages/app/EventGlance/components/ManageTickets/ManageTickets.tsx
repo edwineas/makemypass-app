@@ -501,7 +501,11 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                         if (Number(e.target.value) < 0) {
                           return;
                         }
-                        if (Number(e.target.value) > selectedTicket.event_capacity) {
+                        if (
+                          selectedTicket.event_capacity &&
+                          selectedTicket.event_capacity > 0 &&
+                          Number(e.target.value) > selectedTicket.event_capacity
+                        ) {
                           toast.error(
                             `Kindly increase the event capacity (current: ${selectedTicket.event_capacity}), to increase ticket capacity`,
                           );

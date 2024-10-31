@@ -1164,7 +1164,11 @@ const EditEvent = () => {
                             onChange={(e) => {
                               if (isUserEditor()) {
                                 const value = Number(e.target.value);
-                                if (value <= (eventData?.max_capacity || Infinity)) {
+                                if (
+                                  eventData?.max_capacity &&
+                                  eventData?.max_capacity > 0 &&
+                                  value <= eventData?.max_capacity
+                                ) {
                                   setShowContactSalesInfo(false);
                                   setEventData({
                                     ...eventData,
