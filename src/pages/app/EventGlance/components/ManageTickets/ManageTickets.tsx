@@ -342,18 +342,16 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         </Modal>
       )}
       {isChangedModal && (
-        <Modal title=' ' onClose={() => setIsChangedModal(false)} style={{ zIndex: 999 }}>
-          <UnsavedChanges
-            setIsChangedModal={setIsChangedModal}
-            setSelectedTicket={setSelectedTicket}
-            setIsTicketsOpen={setIsTicketsOpen}
-            ticketData={ticketData}
-            ticketPair={ticketPair}
-            wantToClose={wantToClose}
-            setWantToClose={setWantToClose}
-            updateTicket={updateTicket}
-          />
-        </Modal>
+        <UnsavedChanges
+          setIsChangedModal={setIsChangedModal}
+          setSelectedTicket={setSelectedTicket}
+          setIsTicketsOpen={setIsTicketsOpen}
+          ticketData={ticketData}
+          ticketPair={ticketPair}
+          wantToClose={wantToClose}
+          setWantToClose={setWantToClose}
+          updateTicket={updateTicket}
+        />
       )}
       {deleteModal && (
         <DeleteModal

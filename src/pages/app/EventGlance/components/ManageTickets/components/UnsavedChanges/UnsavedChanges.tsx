@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { TicketType } from '../../../../../../../apis/types';
+import Modal from '../../../../../../../components/Modal/Modal';
 import styles from './UnsavedChanges.module.css';
 
 type Props = {
@@ -26,8 +27,7 @@ const UnsavedChanges = ({
 }: Props) => {
   return (
     <>
-      <div className={styles.modalContainer}>
-        {/* Get Confirmation to continue event though user has not saved changes.*/}
+      <Modal onClose={() => setIsChangedModal(false)} title='Unsaved Changes' zIndexCount={101}>
         <div className={styles.sectionContent1}>
           <p className={styles.sectionTitle}>You have unsaved changes</p>
           <p className={styles.sectionSubTitle}>
@@ -37,27 +37,6 @@ const UnsavedChanges = ({
         <div className={styles.modalButtons}>
           <button
             className={styles.confirmButton}
-            onClick={() => {
-              setIsChangedModal(false);
-              if (wantToClose) {
-                setIsTicketsOpen(false);
-                setWantToClose(false);
-                return;
-              }
-
-              const [tempTicket, tempSelectedTicket] = ticketPair as TicketType[];
-              tempTicket.id != tempSelectedTicket?.id &&
-                setSelectedTicket(
-                  Object.assign(
-                    {},
-                    ticketData.find((t) => t.id == tempTicket.id),
-                  ),
-                );
-            }}
-          >
-            Continue without saving
-          </button>
-          <button
             onClick={() => {
               setIsChangedModal(false);
               const [tempTicket, tempSelectedTicket] = ticketPair as TicketType[];
@@ -76,12 +55,33 @@ const UnsavedChanges = ({
                 return;
               }
             }}
-            className={styles.cancelButton}
           >
             Save changes and continue
           </button>
+          <button
+            className={styles.cancelButton}
+            onClick={() => {
+              setIsChangedModal(false);
+              if (wantToClose) {
+                setIsTicketsOpen(false);
+                setWantToClose(false);
+                return;
+              }
+
+              const [tempTicket, tempSelectedTicket] = ticketPair as TicketType[];
+              tempTicket.id != tempSelectedTicket?.id &&
+                setSelectedTicket(
+                  Object.assign(
+                    {},
+                    ticketData.find((t) => t.id == tempTicket.id),
+                  ),
+                );
+            }}
+          >
+            Continue Without Saving
+          </button>
         </div>
-      </div>
+      </Modal>
     </>
   );
 };

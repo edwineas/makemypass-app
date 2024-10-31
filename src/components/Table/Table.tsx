@@ -260,7 +260,7 @@ const Table = ({
                 <div
                   className='center'
                   style={{
-                    height: '34vh',
+                    height: '41vh',
                   }}
                 >
                   <HashLoader color='#47c97e' size={50} />
