@@ -151,13 +151,13 @@
 .updateButton {
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.04);
+  background: white;
   border: none;
   padding: 0.5rem 1rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
-  color: #d2d4d7;
+  color: #1d1d1d;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
