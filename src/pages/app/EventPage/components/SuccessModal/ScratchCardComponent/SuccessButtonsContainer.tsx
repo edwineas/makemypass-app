@@ -1,4 +1,3 @@
-import toast from 'react-hot-toast';
 import { HashLoader } from 'react-spinners';
 
 import { claimScratchCard } from '../../../../../../apis/publicpage';

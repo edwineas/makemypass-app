@@ -100,6 +100,7 @@ export interface TicketType {
   code_digits: number;
   maintain_code_order?: boolean;
   id: string;
+  event_capacity: number;
   price: number;
   show_price?: number;
   perks: {

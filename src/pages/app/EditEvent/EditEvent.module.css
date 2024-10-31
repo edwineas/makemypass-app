@@ -852,3 +852,22 @@ input[type='color']::-webkit-color-swatch {
   margin-top: -1rem;
   width: 100%;
 }
+
+.contactSales {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  color: #f04b4b;
+  cursor: pointer;
+
+  a {
+    color: #f04b4b;
+    text-decoration: underline;
+  }
+}

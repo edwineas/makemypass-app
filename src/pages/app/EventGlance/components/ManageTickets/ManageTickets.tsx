@@ -84,6 +84,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         capacity: 0,
         default_selected: true,
         platform_fee: 0,
+        event_capacity: 0,
         platform_fee_from_user: false,
         currency: '',
         entry_date: [],
@@ -221,8 +222,18 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
     const originalTicket = ticketData?.find((t) => t.id === selectedTicket?.id);
     if (!selectedTicket || !originalTicket) return false;
 
-    const isDescriptionChanged = selectedTicket.description !== tempDesc;
+    let isDescriptionChanged = false;
+
+    if (selectedTicket.description && tempDesc && selectedTicket.description !== tempDesc) {
+      isDescriptionChanged = true;
+    }
+
     const isOtherDataChanged = !isEqual(selectedTicket, originalTicket);
+
+    console.log('description', selectedTicket.description);
+    console.log('tempDesc', tempDesc);
+
+    console.log(isDescriptionChanged, isOtherDataChanged);
 
     return isDescriptionChanged || isOtherDataChanged;
   };
@@ -440,7 +451,10 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                 />
               </div>
               <div className={styles.ticketSlider}>
-                <p className={styles.ticketSliderLabel}>Limit Capacity</p>
+                <p className={styles.ticketSliderLabel}>
+                  Limit Capacity
+                  {selectedTicket?.event_capacity && ` (Max: ${selectedTicket?.event_capacity})`}
+                </p>
                 <Slider
                   checked={selectedTicket?.capacity != null && limitCapacity}
                   onChange={() => {
@@ -477,7 +491,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                   className={styles.ticketSlider}
                 >
                   <div className={styles.ticketCapacityContainer}>
-                    <label className={styles.ticketCapacityLabel}>Capacity</label>
+                    <label className={styles.ticketCapacityLabel}>Capacity </label>
                     <input
                       type='number'
                       placeholder='Unlimited'
@@ -485,6 +499,12 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                       value={selectedTicket?.capacity}
                       onChange={(e) => {
                         if (Number(e.target.value) < 0) {
+                          return;
+                        }
+                        if (Number(e.target.value) > selectedTicket.event_capacity) {
+                          toast.error(
+                            `Kindly increase the event capacity (current: ${selectedTicket.event_capacity}), to increase ticket capacity`,
+                          );
                           return;
                         }
                         setSelectedTicket({

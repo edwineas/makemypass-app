@@ -23,6 +23,7 @@ import { MdDatasetLinked, MdOutlineShoppingCartCheckout } from 'react-icons/md';
 import {
   TbAlertTriangleFilled,
   TbHeartHandshake,
+  TbInfoCircleFilled,
   TbMailStar,
   TbMicrophone,
   TbSettings,
@@ -64,6 +65,8 @@ const EditEvent = () => {
   const [loading, setLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showCommunicationMediumModal, setShowCommunicationMediumModal] = useState(false);
+
+  const [showContactSalesInfo, setShowContactSalesInfo] = useState(false);
 
   const [formKeys, setFormKeys] = useState<string[]>([]);
 
@@ -1148,22 +1151,28 @@ const EditEvent = () => {
                         <label>
                           {' '}
                           <BiArrowToTop size={25} color='#949597' />
-                          Capacity
+                          Capacity{' '}
+                          {eventData?.max_capacity > 0 ? `(Max.${eventData?.max_capacity})` : ''}
                         </label>
                         <div>
                           <input
                             type='number'
-                            disabled={!isUserEditor()}
+                            placeholder='enter capacity'
                             className={styles.capcityInput}
                             title='Unlimited'
                             value={eventData?.capacity}
                             onChange={(e) => {
                               if (isUserEditor()) {
                                 const value = Number(e.target.value);
-                                setEventData({
-                                  ...eventData,
-                                  capacity: value === 0 ? undefined : value,
-                                });
+                                if (value <= (eventData?.max_capacity || Infinity)) {
+                                  setShowContactSalesInfo(false);
+                                  setEventData({
+                                    ...eventData,
+                                    capacity: value === 0 ? undefined : value,
+                                  });
+                                } else {
+                                  setShowContactSalesInfo(true);
+                                }
                               }
                             }}
                             min={1}
@@ -1171,6 +1180,28 @@ const EditEvent = () => {
                           <LuPencil size={15} color='#949597' />
                         </div>
                       </div>
+
+                      {showContactSalesInfo && (
+                        <div className={styles.contactSales}>
+                          <TbInfoCircleFilled size={20} color='#f04b4b' />
+                          <p>
+                            Kindly,{' '}
+                            <a
+                              href='https://wa.me/916238450178'
+                              target='_blank'
+                              rel='noopener noreferrer'
+                            >
+                              Contact Sales
+                            </a>{' '}
+                            to increase the capacity than {eventData?.max_capacity}
+                          </p>
+                          <IoCloseOutline
+                            size={20}
+                            color='#949597'
+                            onClick={() => setShowContactSalesInfo(false)}
+                          />
+                        </div>
+                      )}
                     </div>
 
                     {!eventData.is_online && (
