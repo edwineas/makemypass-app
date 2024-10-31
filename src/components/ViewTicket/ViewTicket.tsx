@@ -50,7 +50,13 @@ const ViewTicket = () => {
   return (
     <>
       <Theme>
-        {isUserAuthorized(TillRoles.VOLUNTEER) && <EventHeader previousPageNavigate='-1' />}
+        <div className={styles.viewEventHeaderContainer}>
+          {isUserAuthorized(TillRoles.VOLUNTEER) && (
+            <EventHeader
+              previousPageNavigate={`/${eventTitle}/guests?eventRegisterId=${eventRegisterId}`}
+            />
+          )}
+        </div>
         <div className={styles.ticketDisplayContainer}>
           {loading ? (
             <HashLoader color={'#46BF75'} size={50} />

@@ -43,3 +43,9 @@
 .downloadTicketButton:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
+@media screen and (max-width: 468px) {
+  .viewEventHeaderContainer {
+    padding: 0 1.25rem;
+  }
+}
