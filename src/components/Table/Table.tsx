@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { Dispatch, useMemo } from 'react';
+import React, { Dispatch, useMemo, useState } from 'react';
 import { FaCheck, FaDollarSign } from 'react-icons/fa6';
 import { MdCheckBox, MdCheckBoxOutlineBlank, MdDelete, MdEdit } from 'react-icons/md';
+import { RiSearchLine } from 'react-icons/ri';
 import { HashLoader } from 'react-spinners';
 import { FixedSizeList } from 'react-window';
 
@@ -176,6 +177,8 @@ const Table = ({
   paginationData,
   setPaginationData,
   setTriggerFetch,
+  isLoading,
+  showSearch,
 }: {
   tableHeading: string;
   tableData: TableType[];
@@ -187,9 +190,11 @@ const Table = ({
   paginationData?: PaginationDataType;
   setPaginationData?: Dispatch<React.SetStateAction<PaginationDataType>>;
   setTriggerFetch?: Dispatch<React.SetStateAction<boolean>>;
+  isLoading?: boolean;
+  showSearch?: boolean;
 }) => {
   const categoryColors = ['#47C97E', '#7662FC', '#C33D7B', '#FBD85B', '#5B75FB', '#D2D4D7'];
-
+  const [searchInput, setSearchInput] = useState('');
   const rgbaArray = [
     'rgba(7, 164, 96, 0.13)',
     'rgba(118, 98, 252, 0.13)',
@@ -224,7 +229,16 @@ const Table = ({
     }, {});
   };
 
-  const groupByTeam = groupBy(tableData, 'team_id');
+  const filteredTableData = useMemo(() => {
+    if (!showSearch || !searchInput) return tableData;
+    return tableData.filter(
+      (item) =>
+        item.name?.toLowerCase().includes(searchInput.toLowerCase()) ||
+        item.email?.toLowerCase().includes(searchInput.toLowerCase()),
+    );
+  }, [showSearch, searchInput, tableData]);
+
+  const groupByTeam = groupBy(filteredTableData, 'team_id');
 
   const itemData: ItemDataType = useMemo(
     () => ({
@@ -253,6 +267,17 @@ const Table = ({
           {secondaryButton && secondaryButton}
         </div>
 
+        {showSearch && (
+          <div className={styles.searchInput}>
+            <RiSearchLine color='#5F6063' />
+            <input
+              onChange={(event) => setSearchInput(event.target.value)}
+              placeholder='Search Event Hosts'
+              type='text'
+            />
+          </div>
+        )}
+
         <div className={styles.tableContainer}>
           {tableData.length > 0 ? (
             <div className={styles.table}>
@@ -268,7 +293,9 @@ const Table = ({
               ) : (
                 <AnimatePresence>
                   <FixedSizeList
-                    height={Object.keys(groupByTeam).length > 50 ? 550 : tableData.length * 38.5}
+                    height={
+                      Object.keys(groupByTeam).length > 50 ? 550 : filteredTableData.length * 38.5
+                    }
                     width='100%'
                     itemCount={Object.keys(groupByTeam).length}
                     itemSize={37} // Adjust based on row height
@@ -281,7 +308,20 @@ const Table = ({
             </div>
           ) : (
             <div className={styles.noData}>
-              <p>No data found</p>
+              <p>
+                {isLoading ? (
+                  <div
+                    className='center'
+                    style={{
+                      height: '41vh',
+                    }}
+                  >
+                    <HashLoader color='#47c97e' size={50} />
+                  </div>
+                ) : (
+                  'No Data Available'
+                )}
+              </p>
             </div>
           )}
         </div>

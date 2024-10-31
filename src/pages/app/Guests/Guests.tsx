@@ -488,6 +488,7 @@ const Guests = () => {
                 paginationData={paginationData}
                 setPaginationData={setPaginationData}
                 setTriggerFetch={setTriggerFetch}
+                isLoading={paginationData.fetchingData}
               />
             </div>
           </>

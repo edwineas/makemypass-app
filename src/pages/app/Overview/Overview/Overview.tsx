@@ -54,6 +54,8 @@ const Overview = () => {
     is_private: true,
   });
 
+  const [isDataLoading, setIsDataLoading] = useState(false);
+
   useEffect(() => {
     return () => {
       socket?.close();
@@ -68,13 +70,15 @@ const Overview = () => {
 
   useEffect(() => {
     if (eventId) {
+      setIsDataLoading(true);
       connectPrivateSocket({
         url: makeMyPassSocket.guestRecentRegistrations(eventId),
       }).then((ws) => {
         ws.onmessage = (event) => {
-          if (JSON.parse(event.data).response && !JSON.parse(event.data).response.data)
+          if (JSON.parse(event.data).response && !JSON.parse(event.data).response.data) {
             setRecentRegistrations(JSON.parse(event.data).response);
-          else if (JSON.parse(event.data).response.data) {
+            setIsDataLoading(false);
+          } else if (JSON.parse(event.data).response.data) {
             const newRegistration = JSON.parse(event.data).response.data;
 
             setRecentRegistrations((prev) => {
@@ -303,6 +307,7 @@ const Overview = () => {
                     tableHeading='Recent Registration'
                     tableData={recentTableData}
                     setSelectedGuestId={setSelectedGuestId}
+                    isLoading={isDataLoading}
                   />
                 )}
               </AnimatePresence>
@@ -317,6 +322,7 @@ const Overview = () => {
                     ) : undefined
                   }
                   setHostId={setHostId}
+                  showSearch={true}
                 />
               </div>
             </>
