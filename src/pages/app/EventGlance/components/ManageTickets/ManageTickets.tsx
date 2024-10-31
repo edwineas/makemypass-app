@@ -494,7 +494,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                     <label className={styles.ticketCapacityLabel}>Capacity </label>
                     <input
                       type='number'
-                      placeholder='Unlimited'
+                      placeholder='0'
                       disabled={!isUserEditor()}
                       value={selectedTicket?.capacity}
                       onChange={(e) => {

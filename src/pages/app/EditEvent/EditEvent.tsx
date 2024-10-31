@@ -1159,7 +1159,7 @@ const EditEvent = () => {
                             type='number'
                             placeholder='enter capacity'
                             className={styles.capcityInput}
-                            title='Unlimited'
+                            title='Capacity'
                             value={eventData?.capacity}
                             onChange={(e) => {
                               if (isUserEditor()) {
@@ -1193,7 +1193,8 @@ const EditEvent = () => {
                             >
                               Contact Sales
                             </a>{' '}
-                            to increase the capacity than {eventData?.max_capacity}
+                            to increase the capacity {'> '}
+                            {eventData?.max_capacity}
                           </p>
                           <IoCloseOutline
                             size={20}
