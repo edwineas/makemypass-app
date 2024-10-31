@@ -190,7 +190,8 @@ export const updateEventData = ({
     });
 };
 
-export const deleteEvent = (eventId: string) => {
+export const deleteEvent = (eventId: string, setIsDeleting: Dispatch<SetStateAction<boolean>>) => {
+  setIsDeleting(true);
   privateGateway
     .delete(makeMyPass.event(eventId))
     .then((response) => {
@@ -201,6 +202,9 @@ export const deleteEvent = (eventId: string) => {
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    })
+    .finally(() => {
+      setIsDeleting(false);
     });
 };
 

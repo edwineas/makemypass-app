@@ -20,9 +20,16 @@ import { HiOutlineTicket, HiOutlineUserGroup } from 'react-icons/hi2';
 import { IoCheckmarkDoneOutline, IoCloseOutline } from 'react-icons/io5';
 import { LuPencil } from 'react-icons/lu';
 import { MdDatasetLinked, MdOutlineShoppingCartCheckout } from 'react-icons/md';
-import { TbHeartHandshake, TbMailStar, TbMicrophone, TbSettings, TbWorld } from 'react-icons/tb';
+import {
+  TbAlertTriangleFilled,
+  TbHeartHandshake,
+  TbMailStar,
+  TbMicrophone,
+  TbSettings,
+  TbWorld,
+} from 'react-icons/tb';
 import Select from 'react-select';
-import { HashLoader, PulseLoader } from 'react-spinners';
+import { BeatLoader, HashLoader, PulseLoader } from 'react-spinners';
 
 import { deleteEvent, getEventData, updateEventData } from '../../../apis/events';
 import { getFormKeys } from '../../../apis/publicpage';
@@ -55,6 +62,7 @@ const EditEvent = () => {
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
   const [followupMessage, setFollowupMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [showCommunicationMediumModal, setShowCommunicationMediumModal] = useState(false);
 
   const [formKeys, setFormKeys] = useState<string[]>([]);
@@ -202,7 +210,7 @@ const EditEvent = () => {
   };
 
   const agreeToDelete = () => {
-    deleteEvent(eventId);
+    deleteEvent(eventId, setIsDeleting);
   };
 
   useOverrideCtrlS(onSubmit);
@@ -698,15 +706,31 @@ const EditEvent = () => {
           {eventData && isLoaded ? (
             <>
               {showModal && (
-                <Modal onClose={() => setShowModal(false)}>
+                <Modal onClose={() => setShowModal(false)} title='Delete Confirmation'>
                   <div className={styles.modalContainer}>
+                    <TbAlertTriangleFilled
+                      size={30}
+                      color='#f04b4b'
+                      className={styles.limitationIcon}
+                    />
                     <p className={styles.modalHeader}>Are you sure you want to Delete?</p>
+                    <p className={styles.modalSubText}>
+                      This action cannot be undone. This will permanently delete the event and all
+                      associated data.
+                    </p>
                     <div className={styles.modalButtonContainer}>
-                      <button className={styles.modalButton} onClick={() => setShowModal(false)}>
-                        No
+                      <button
+                        className={styles.primaryButton}
+                        onClick={() => agreeToDelete()}
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? <BeatLoader color='#1d1d1d' size={8} /> : 'Delete'}
                       </button>
-                      <button className={styles.modalButton} onClick={() => agreeToDelete()}>
-                        Yes
+                      <button
+                        className={styles.secondaryButton}
+                        onClick={() => setShowModal(false)}
+                      >
+                        Cancel
                       </button>
                     </div>
                   </div>
@@ -1281,8 +1305,16 @@ const EditEvent = () => {
 
                     <div className={styles.buttonContainer}>
                       {isUserEditor() && (
-                        <button className={styles.deleteButton} onClick={() => setShowModal(true)}>
-                          Delete
+                        <button
+                          className={styles.deleteButton}
+                          onClick={() => setShowModal(true)}
+                          disabled={isDeleting}
+                        >
+                          {isDeleting ? (
+                            <BeatLoader color={'#fff'} loading={loading} size={8} />
+                          ) : (
+                            'Delete'
+                          )}
                         </button>
                       )}
 
@@ -1296,7 +1328,7 @@ const EditEvent = () => {
                           disabled={loading}
                         >
                           {loading ? (
-                            <PulseLoader color={'#fff'} loading={loading} size={8} />
+                            <PulseLoader color={'#1d1d1d'} loading={loading} size={8} />
                           ) : (
                             'Save'
                           )}
