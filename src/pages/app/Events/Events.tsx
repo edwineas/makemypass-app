@@ -258,47 +258,54 @@ const Events = () => {
                   />
                 )}
 
-                <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
-                  <IoIosCreate size={20} /> Create Event
-                </button>
-
-                {orgs && orgs.length > 0 && (
+                {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
                   <>
-                    <Select
-                      styles={customStyles}
-                      options={[
-                        { value: 'Personal', label: 'Personal' },
-                        ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                      ]}
-                      className='select'
-                      classNamePrefix='select'
-                      placeholder='Select Organization'
-                      onChange={(selectedOption) => {
-                        if (selectedOption) {
-                          setSelectedOrgName(selectedOption.label);
-                          if (selectedOption.value !== 'Personal') {
-                            getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
-                          } else if (selectedOption.value === 'Personal') {
-                            getEventsList(setEvents, setIsDataLoaded);
-                          }
-                        }
-                      }}
-                    />
+                    <button
+                      className={styles.createButton}
+                      onClick={() => setShowCreateModal(true)}
+                    >
+                      <IoIosCreate size={20} /> Create Event
+                    </button>
 
-                    {selectedOrgName && selectedOrgName != 'Personal' && (
-                      <IoMdSettings
-                        size={20}
-                        color='#ffffff'
-                        className='pointer'
-                        onClick={() => {
-                          navigate(`/organization/${selectedOrgName}/`, {
-                            state: {
-                              orgId: orgs.find((org) => org.name === selectedOrgName)?.id,
-                              orgName: selectedOrgName,
-                            },
-                          });
-                        }}
-                      />
+                    {orgs && orgs.length > 0 && (
+                      <>
+                        <Select
+                          styles={customStyles}
+                          options={[
+                            { value: 'Personal', label: 'Personal' },
+                            ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                          ]}
+                          className='select'
+                          classNamePrefix='select'
+                          placeholder='Select Organization'
+                          onChange={(selectedOption) => {
+                            if (selectedOption) {
+                              setSelectedOrgName(selectedOption.label);
+                              if (selectedOption.value !== 'Personal') {
+                                getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
+                              } else if (selectedOption.value === 'Personal') {
+                                getEventsList(setEvents, setIsDataLoaded);
+                              }
+                            }
+                          }}
+                        />
+
+                        {selectedOrgName && selectedOrgName != 'Personal' && (
+                          <IoMdSettings
+                            size={20}
+                            color='#ffffff'
+                            className='pointer'
+                            onClick={() => {
+                              navigate(`/organization/${selectedOrgName}/`, {
+                                state: {
+                                  orgId: orgs.find((org) => org.name === selectedOrgName)?.id,
+                                  orgName: selectedOrgName,
+                                },
+                              });
+                            }}
+                          />
+                        )}
+                      </>
                     )}
                   </>
                 )}

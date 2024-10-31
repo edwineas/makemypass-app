@@ -12,12 +12,12 @@ export type EmailType = {
   id: string;
   event_id: string;
   send_to: string;
-  send_from: string;
   subject: string;
-  body: string;
   type: string;
   created_at: string;
   created_by: string;
   opened_at: string;
-  show_content: boolean;
+  body?: string;
+  send_from?: string;
+  show_content?: boolean;
 };

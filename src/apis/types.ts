@@ -155,6 +155,7 @@ export interface EventType {
   reg_start_date: string;
   reg_end_date: string;
   followup_msg: string;
+  max_capacity: number;
   is_online: boolean;
   logo: string | File;
   banner: string | File;

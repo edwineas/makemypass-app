@@ -69,6 +69,9 @@ export const makeMyPass = {
 
   //Manage Logs
   mailLog: (eventId: string) => makeMyPassURL(`/manage-log/${eventId}/mail-log/`), //Till Admin
+  individualMailLog: (eventId: string, mailId: string) =>
+    makeMyPassURL(`/manage-log/${eventId}/mail-log/${mailId}/get`), //Till Admin
+
   paymentLog: (eventId: string) => makeMyPassURL(`/manage-log/${eventId}/payment-log/`), //Till Admin
   paymentLogCSV: (eventId: string) => makeMyPassURL(`/manage-log/${eventId}/payment-log/csv/`), //Till Admin
 
@@ -106,8 +109,10 @@ export const makeMyPass = {
 
   getFormKeys: (eventId: string) => makeMyPassURL(`/manage-event/${eventId}/get-form-keys/`), //Till Admin
 
-  postEventContentList: (eventId: string) => makeMyPassURL(`/post-event/${eventId}/post-content/list/`),
-  updatePostEventContent: (eventId: string) => makeMyPassURL(`/post-event/${eventId}/post-content/update/`),
+  postEventContentList: (eventId: string) =>
+    makeMyPassURL(`/post-event/${eventId}/post-content/list/`),
+  updatePostEventContent: (eventId: string) =>
+    makeMyPassURL(`/post-event/${eventId}/post-content/update/`),
 
   //Feedback
   feedbackList: (eventId: string) => makeMyPassURL(`/feedback/${eventId}/list/`),

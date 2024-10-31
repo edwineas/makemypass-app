@@ -227,6 +227,7 @@ const ViewGuest = ({
             maxWidth: '35rem',
             alignItems: 'flex-start',
           }}
+          zIndexCount={100}
         >
           <div className={styles.mailsContainer}>
             {mailLog.logs.map((mail, index) => {

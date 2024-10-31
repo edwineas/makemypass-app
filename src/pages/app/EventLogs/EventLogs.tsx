@@ -2,60 +2,85 @@ import { useEffect, useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 import { HashLoader } from 'react-spinners';
 
-import { getEventMailLog } from '../../../apis/logs';
+import { getEventIndividualMailLog, getEventMailLog } from '../../../apis/logs';
 import { formatDate } from '../../../common/commonFunctions';
 import DashboardLayout from '../../../components/DashboardLayout/DashboardLayout';
 import Theme from '../../../components/Theme/Theme';
 import type { EmailType } from '../Guests/components/ViewGuest/types';
+import { PaginationDataType } from '../Guests/types';
 import styles from './EventLogs.module.css';
 
 const EventLogs = () => {
   const [mailLogs, setMailLogs] = useState<EmailType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [triggerFetch, setTriggerFetch] = useState(false);
+
+  const [selectedMailLog, setSelectedMailLog] = useState<{
+    id: string;
+    body: string;
+  }>({
+    id: '',
+    body: '',
+  });
   const eventId = JSON.parse(sessionStorage.getItem('eventData') || '{}').event_id;
 
-  useEffect(() => {
-    getEventMailLog(eventId, setMailLogs, setIsLoading);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [paginationData, setPaginationData] = useState<PaginationDataType>({
+    page: 1,
+    total_pages: 0,
+    total_items: 0,
+    per_page: 30,
+    next: null,
+    previous: null,
+    fetchingData: false,
+  });
 
-  const toggleMailContent = (id: string) => {
-    setMailLogs((prevState) =>
-      prevState.map((mail) => {
-        if (mail.id === id) {
-          return {
-            ...mail,
-            show_content: !mail.show_content as boolean,
-          };
-        }
-        return mail;
-      }),
-    );
-  };
+  useEffect(() => {
+    getEventMailLog(eventId, setMailLogs, setIsLoading, paginationData, setPaginationData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerFetch]);
+
+  useEffect(() => {
+    if (selectedMailLog && selectedMailLog.body === '') {
+      getEventIndividualMailLog(eventId, selectedMailLog, setSelectedMailLog);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedMailLog]);
 
   return (
     <>
       <Theme>
         <DashboardLayout prevPage='/events' tabName='logs'>
           {!isLoading ? (
-            <div className={styles.mailsOuterContainer}>
+            <>
               <p className={styles.mailLogsHeaders}>
-                {mailLogs.length === 0 ? 'No logs available' : 'Mail Logs'}
+                {mailLogs.length === 0 ? 'No logs available' : 'Event Mail Logs'}
+              </p>
+              <p className={styles.mailLogsSubText}>
+                {mailLogs.length === 0
+                  ? 'No mail logs available for this event'
+                  : 'Click on the mail to view the content'}
               </p>
               <div className={styles.mailsContainer}>
                 {mailLogs.map((mail, index) => (
                   <div
                     className={styles.mail}
                     key={index}
-                    onClick={() => toggleMailContent(mail.id)}
+                    onClick={() => {
+                      setSelectedMailLog({
+                        id: mail.id,
+                        body: '',
+                      });
+                    }}
                   >
                     <div className={styles.expandIcon}>
                       {
                         <BiChevronDown
-                          onClick={() => toggleMailContent(mail.id)}
                           size={25}
                           style={{
-                            transform: mail.show_content ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transform:
+                              mail.id == selectedMailLog.id && selectedMailLog.body.length > 0
+                                ? 'rotate(180deg)'
+                                : 'rotate(0deg)',
                           }}
                         />
                       }
@@ -76,22 +101,103 @@ const EventLogs = () => {
 
                         <p className={styles.mailDescription}>
                           To: <span>{mail.send_to}</span> <br />
-                          From: <span>{mail.send_from}</span>
                         </p>
                       </div>
                     </div>
-                    {mail.show_content && (
+                    {mail.id == selectedMailLog.id && selectedMailLog.body.length > 0 && (
                       <>
                         <hr className={styles.line} />
                         <div className={styles.mailContent}>
-                          <pre> {mail.body}</pre>
+                          <pre> {selectedMailLog.body}</pre>
                         </div>
                       </>
                     )}
                   </div>
                 ))}
               </div>
-            </div>
+              <div className={styles.paginationContainer}>
+                {paginationData && (
+                  <>
+                    <div className={styles.totalRecords}>
+                      <p className={styles.paginationText}>{paginationData.total_items} Records</p>
+                    </div>
+                    <div className={styles.perPage}>
+                      <p className={styles.paginationText}>
+                        Per Page:{' '}
+                        <select
+                          className={styles.perPageSelect}
+                          value={paginationData.per_page}
+                          onChange={(e) => {
+                            setTriggerFetch && setTriggerFetch((prevState) => !prevState);
+                            setPaginationData &&
+                              setPaginationData((prevState) => ({
+                                ...prevState,
+                                per_page: Number(e.target.value),
+                              }));
+                          }}
+                        >
+                          <option value={30}>30</option>
+                          <option value={50}>50</option>
+                          <option value={100}>100</option>
+                        </select>
+                      </p>
+                    </div>
+                    {(paginationData.next || paginationData.previous) && (
+                      <div className={styles.pagination}>
+                        <p className={styles.paginationText}>
+                          {paginationData.page} of {paginationData.total_pages}
+                        </p>
+                        <button
+                          className={styles.paginationButton}
+                          disabled={paginationData.page === 1}
+                          onClick={() => {
+                            setTriggerFetch && setTriggerFetch((prevState) => !prevState);
+                            setPaginationData &&
+                              setPaginationData((prevState) => ({
+                                ...prevState,
+                                page: prevState.page - 1,
+                              }));
+                          }}
+                          style={
+                            paginationData.previous === null
+                              ? {
+                                  opacity: 0.4,
+                                  cursor: 'not-allowed',
+                                }
+                              : {}
+                          }
+                        >
+                          {'<'}
+                        </button>
+
+                        <button
+                          className={styles.paginationButton}
+                          disabled={paginationData.page === paginationData.total_pages}
+                          onClick={() => {
+                            setTriggerFetch && setTriggerFetch((prevState) => !prevState);
+                            setPaginationData &&
+                              setPaginationData((prevState) => ({
+                                ...prevState,
+                                page: prevState.page + 1,
+                              }));
+                          }}
+                          style={
+                            paginationData.next === null
+                              ? {
+                                  opacity: 0.4,
+                                  cursor: 'not-allowed',
+                                }
+                              : {}
+                          }
+                        >
+                          {'>'}
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </>
           ) : (
             <div className='center'>
               <HashLoader color={'#46BF75'} size={50} />
