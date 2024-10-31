@@ -237,75 +237,80 @@ const Events = () => {
             </div>
           )}
           <div className={styles.homeContainer}>
-            <div className={styles.actionRow}>
-              <div className={styles.selectRow1}>
-                <input
-                  className={styles.searchInput}
-                  type='text'
-                  placeholder='Search Events'
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <div className={styles.selectRow}>
-                {tags && tags.length > 0 && (
-                  <Select
-                    styles={customStyles}
-                    isMulti
-                    options={tags.map((tag) => ({ value: tag, label: tag }))}
-                    className='basic-multi-select'
-                    classNamePrefix='select'
-                    placeholder='Select tags'
-                    onChange={(selectedOptions) => {
-                      setSelectedTags(selectedOptions.map((option) => option.value));
-                    }}
+            {Object.values(events).length > 0 && isDataLoaded && (
+              <div className={styles.actionRow}>
+                <div className={styles.selectRow1}>
+                  <input
+                    className={styles.searchInput}
+                    type='text'
+                    placeholder='Search Events'
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                )}
-                {import.meta.env.VITE_CURRENT_ENV === 'dev' && orgs && orgs.length > 0 && (
-                  <>
+                </div>
+                <div className={styles.selectRow}>
+                  {tags && tags.length > 0 && (
                     <Select
                       styles={customStyles}
-                      options={[
-                        { value: 'Personal', label: 'Personal' },
-                        ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                      ]}
-                      className='select'
+                      isMulti
+                      options={tags.map((tag) => ({ value: tag, label: tag }))}
+                      className='basic-multi-select'
                       classNamePrefix='select'
-                      placeholder='Select Organization'
-                      onChange={(selectedOption) => {
-                        if (selectedOption) {
-                          setSelectedOrgName(selectedOption.label);
-                          if (selectedOption.value !== 'Personal') {
-                            getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
-                          }
-                        }
+                      placeholder='Select tags'
+                      onChange={(selectedOptions) => {
+                        setSelectedTags(selectedOptions.map((option) => option.value));
                       }}
                     />
-
-                    {selectedOrgName && selectedOrgName != 'Personal' && (
-                      <IoMdSettings
-                        size={20}
-                        color='#ffffff'
-                        className='pointer'
-                        onClick={() => {
-                          navigate(`/organization/${selectedOrgName}/`, {
-                            state: {
-                              orgId: orgs.find((org) => org.name === selectedOrgName)?.id,
-                              orgName: selectedOrgName,
-                            },
-                          });
+                  )}
+                  {import.meta.env.VITE_CURRENT_ENV === 'dev' && orgs && orgs.length > 0 && (
+                    <>
+                      <Select
+                        styles={customStyles}
+                        options={[
+                          { value: 'Personal', label: 'Personal' },
+                          ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                        ]}
+                        className='select'
+                        classNamePrefix='select'
+                        placeholder='Select Organization'
+                        onChange={(selectedOption) => {
+                          if (selectedOption) {
+                            setSelectedOrgName(selectedOption.label);
+                            if (selectedOption.value !== 'Personal') {
+                              getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
+                            }
+                          }
                         }}
                       />
-                    )}
-                  </>
-                )}
-                {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
-                  <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
-                    <IoIosCreate size={20} /> Create Event
-                  </button>
-                )}
+
+                      {selectedOrgName && selectedOrgName != 'Personal' && (
+                        <IoMdSettings
+                          size={20}
+                          color='#ffffff'
+                          className='pointer'
+                          onClick={() => {
+                            navigate(`/organization/${selectedOrgName}/`, {
+                              state: {
+                                orgId: orgs.find((org) => org.name === selectedOrgName)?.id,
+                                orgName: selectedOrgName,
+                              },
+                            });
+                          }}
+                        />
+                      )}
+                    </>
+                  )}
+                  {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
+                    <button
+                      className={styles.createButton}
+                      onClick={() => setShowCreateModal(true)}
+                    >
+                      <IoIosCreate size={20} /> Create Event
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
             {Object.values(EventStatus).map((status) => {
               return (
                 <div key={status}>
