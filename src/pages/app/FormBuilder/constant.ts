@@ -190,7 +190,6 @@ export const DefaultFiledTypeMapping: Record<DefaultFieldTypes, FieldType> = {
   [DefaultFieldTypes.Phone]: FieldType.Phone,
   [DefaultFieldTypes.Category]: FieldType.SingleSelect,
   [DefaultFieldTypes.Organization]: FieldType.Text,
-
   [DefaultFieldTypes.District]: FieldType.SingleSelect,
   [DefaultFieldTypes.TeamId]: FieldType.Text,
 };

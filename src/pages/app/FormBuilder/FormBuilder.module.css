@@ -315,6 +315,18 @@
   color: white;
 }
 
+.saveFormButton {
+  font-size: 1rem;
+
+  color: #1d1d1d;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  background: white;
+}
+
 .addQuestionButton span {
   margin-right: 0.5rem;
 }

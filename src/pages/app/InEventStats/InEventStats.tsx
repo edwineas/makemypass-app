@@ -343,7 +343,7 @@ const InEventStats = () => {
             {lineData && lineData.datasets.length > 0 ? (
               <Line options={options} data={lineData} />
             ) : (
-              <p className={styles.noData}>No Data Yet, Check Back Later</p>
+              <p className={styles.noData}>No data yet, kindly check later.</p>
             )}
 
             {dailyCount.length > 0 && (

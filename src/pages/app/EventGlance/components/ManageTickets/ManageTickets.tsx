@@ -220,9 +220,8 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
     const tempDesc = newDescription;
     const originalTicket = ticketData?.find((t) => t.id === selectedTicket?.id);
     if (!selectedTicket || !originalTicket) return false;
-    const isDescriptionChanged =
-      (selectedTicket?.description || '') !==
-      (tempDesc.replace(/<p class="bn-inline-content"><\/p>/g, '') || '');
+
+    const isDescriptionChanged = selectedTicket.description !== tempDesc;
     const isOtherDataChanged = !isEqual(selectedTicket, originalTicket);
 
     return isDescriptionChanged || isOtherDataChanged;

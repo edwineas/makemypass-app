@@ -380,7 +380,7 @@ const CouponForm = ({
 
                 {filteredTicket.capacity != null &&
                   filteredTicket.capacity >= 0 &&
-                  filteredTicket.capacity <= 20 && (
+                  filteredTicket.capacity <= 10 && (
                     <div className={styles.dateContainer}>
                       <p className={styles.capacity}>{filteredTicket.capacity} tickets left</p>
                     </div>
@@ -520,7 +520,7 @@ const CouponForm = ({
 
                 {filteredTicket.capacity != null &&
                   filteredTicket.capacity >= 0 &&
-                  filteredTicket.capacity <= 20 && (
+                  filteredTicket.capacity <= 10 && (
                     <div className={styles.dateContainer}>
                       <p className={styles.capacity}>{filteredTicket.capacity} tickets left</p>
                     </div>

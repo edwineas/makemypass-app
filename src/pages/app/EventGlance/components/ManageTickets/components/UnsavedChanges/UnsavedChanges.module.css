@@ -14,6 +14,14 @@
   margin-top: 0.5rem;
 }
 
+.modalButtons {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+  column-gap: 0.5rem;
+}
+
 .confirmButton {
   text-align: center;
   background: #fdfdfd;
@@ -33,7 +41,7 @@
   color: #fff;
   border: none;
   font-weight: 500;
-  width: 100%;
+  width: 70%;
   border-radius: 8px;
   padding: 0.5rem 1rem;
   cursor: pointer;

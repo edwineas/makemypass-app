@@ -7,6 +7,7 @@ export type CouponType = {
   tickets: string[];
   active: boolean;
   created_at: string;
+  consumed: number;
 };
 
 export type CreateCouponType = {

@@ -9,6 +9,7 @@ import { LuPlus } from 'react-icons/lu';
 import { MdDelete, MdOutlineSdStorage } from 'react-icons/md';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { RxDragHandleDots2 } from 'react-icons/rx';
+import { TiLockClosed } from 'react-icons/ti';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { v4 as uuidv4 } from 'uuid';
@@ -261,30 +262,48 @@ const FormBuilder = () => {
               </p>
             </div>
             <div className={styles.customFieldsContainer}>
-              {import.meta.env.CURRENT_ENV == 'dev' && (
-                <div className={styles.customFieldsHeader}>
-                  <div className={styles.customFieldsHeading}>
-                    <div
-                      className={styles.image}
-                      style={{
-                        backgroundColor: '#FF9641',
+              <div className={styles.customFieldsHeader}>
+                <div className={styles.customFieldsHeading}>
+                  <div
+                    className={styles.image}
+                    style={{
+                      backgroundColor: '#FF9641',
+                    }}
+                  >
+                    <FaAddressCard size={20} color='#ffffff' />
+                  </div>
+                  <p className={styles.customFieldsText}>Custom Fields</p>
+                </div>
+                <div className='row'>
+                  {import.meta.env.CURRENT_ENV == 'dev' && (
+                    <button
+                      className={styles.generateWithAIButton}
+                      onClick={() => {
+                        setShowGenerateWithAI(true);
                       }}
                     >
-                      <FaAddressCard size={20} color='#ffffff' />
-                    </div>
-                    <p className={styles.customFieldsText}>Custom Fields</p>
-                  </div>
+                      {' '}
+                      <FaWandMagicSparkles /> Generate With AI
+                    </button>
+                  )}
                   <button
                     className={styles.generateWithAIButton}
                     onClick={() => {
-                      setShowGenerateWithAI(true);
+                      setCloseForm(true);
                     }}
+                    style={
+                      showFollowUpMessage
+                        ? {
+                            backgroundColor: '#f04b4b',
+                            color: '#ffffff',
+                          }
+                        : { background: 'rgba(255, 255, 255, 0.08)', color: '#fff' }
+                    }
                   >
-                    {' '}
-                    <FaWandMagicSparkles /> Generate With AI
+                    <TiLockClosed /> {showFollowUpMessage ? 'Form Closed' : 'Close Form'}
                   </button>
                 </div>
-              )}
+              </div>
 
               <div className={styles.customFields}>
                 <Reorder.Group values={formFields} onReorder={setFormFields}>
@@ -883,24 +902,16 @@ const FormBuilder = () => {
                         <span>+</span>Add Question
                       </button>
                     )}
-                    <button
-                      onClick={() => {
-                        setFormFieldErrors({});
-                        if (isUserEditor())
-                          updateFormBuilderForm(event_id, formFields, setFormFieldErrors);
-                      }}
-                      className={styles.addQuestionButton}
-                    >
-                      Save Form
-                    </button>
                   </div>
                   <button
                     onClick={() => {
-                      setCloseForm(true);
+                      setFormFieldErrors({});
+                      if (isUserEditor())
+                        updateFormBuilderForm(event_id, formFields, setFormFieldErrors);
                     }}
-                    className={styles.addQuestionButton}
+                    className={styles.saveFormButton}
                   >
-                    Close Form
+                    Save Form
                   </button>
                 </div>
               </div>

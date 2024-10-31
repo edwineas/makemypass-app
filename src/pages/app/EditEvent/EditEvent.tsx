@@ -1286,7 +1286,7 @@ const EditEvent = () => {
                         </button>
                       )}
 
-                      <button className={styles.createButton} onClick={() => history.back()}>
+                      <button className={styles.cancelButton} onClick={() => history.back()}>
                         Cancel
                       </button>
                       {isUserEditor() && (

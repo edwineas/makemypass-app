@@ -1,4 +1,5 @@
 import React from 'react';
+import { TbAlertTriangleFilled } from 'react-icons/tb';
 
 import { TicketType } from '../../../../../../../apis/types';
 import Modal from '../../../../../../../components/Modal/Modal';
@@ -29,9 +30,10 @@ const UnsavedChanges = ({
     <>
       <Modal onClose={() => setIsChangedModal(false)} title='Unsaved Changes' zIndexCount={101}>
         <div className={styles.sectionContent1}>
-          <p className={styles.sectionTitle}>You have unsaved changes</p>
+          <TbAlertTriangleFilled size={30} color='#f04b4b' className={styles.limitationIcon} />
+          <p className={styles.sectionTitle}>You've made some changes</p>
           <p className={styles.sectionSubTitle}>
-            Are you sure you want to continue without saving?
+            Are you sure you want to continue without saving, it cannot be undone?
           </p>
         </div>
         <div className={styles.modalButtons}>
@@ -56,7 +58,7 @@ const UnsavedChanges = ({
               }
             }}
           >
-            Save changes and continue
+            Save Changes
           </button>
           <button
             className={styles.cancelButton}
@@ -78,7 +80,7 @@ const UnsavedChanges = ({
                 );
             }}
           >
-            Continue Without Saving
+            Continue
           </button>
         </div>
       </Modal>
