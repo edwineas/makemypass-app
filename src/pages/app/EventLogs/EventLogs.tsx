@@ -76,6 +76,19 @@ const EventLogs = () => {
                       {
                         <BiChevronDown
                           size={25}
+                          onClick={() => {
+                            if (mail.id == selectedMailLog.id && selectedMailLog.body.length > 0) {
+                              setSelectedMailLog({
+                                id: '',
+                                body: '',
+                              });
+                            } else {
+                              setSelectedMailLog({
+                                id: mail.id,
+                                body: '',
+                              });
+                            }
+                          }}
                           style={{
                             transform:
                               mail.id == selectedMailLog.id && selectedMailLog.body.length > 0

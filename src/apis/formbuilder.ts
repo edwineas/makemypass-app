@@ -8,7 +8,10 @@ import type { ErrorResponse, Field } from '../pages/app/FormBuilder/types';
 export const getFormBuilderForm = (
   eventId: string,
   setFormFields: React.Dispatch<React.SetStateAction<Field[]>>,
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
+  setIsLoading && setIsLoading(true);
+
   privateGateway
     .get(makeMyPass.formBuilderForm(eventId))
     .then((response) => {
@@ -16,6 +19,9 @@ export const getFormBuilderForm = (
     })
     .catch((error) => {
       throw error;
+    })
+    .finally(() => {
+      setIsLoading && setIsLoading(false);
     });
 };
 

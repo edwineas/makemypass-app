@@ -89,6 +89,7 @@ const Events = () => {
 
   const CreateEvent = () => {
     if (newEvent.eventName) {
+      console.log(newEvent.orgId);
       createEvent(newEvent, setNewEvent, setShowCreateModal);
     } else {
       setNewEvent((prevState) => ({
@@ -173,10 +174,11 @@ const Events = () => {
                     }
                     onChange={(selectedOption) => {
                       if (selectedOption) {
+                        setNewEvent((prevState) => ({
+                          ...prevState!,
+                          orgId: selectedOption.value,
+                        }));
                         setSelectedOrgName(selectedOption.label);
-                        if (selectedOption.value !== 'Personal') {
-                          getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
-                        }
                       }
                     }}
                   />
@@ -281,6 +283,10 @@ const Events = () => {
                           onChange={(selectedOption) => {
                             if (selectedOption) {
                               setSelectedOrgName(selectedOption.label);
+                              setNewEvent((prevState) => ({
+                                ...prevState!,
+                                orgId: selectedOption.value,
+                              }));
                               if (selectedOption.value !== 'Personal') {
                                 getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
                               } else if (selectedOption.value === 'Personal') {

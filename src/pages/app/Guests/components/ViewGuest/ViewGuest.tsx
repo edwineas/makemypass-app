@@ -67,6 +67,7 @@ const ViewGuest = ({
   const [initateRefundClicked, setInitateRefundClicked] = useState(false);
 
   const toggleMailContent = (id: string) => {
+    console.log(id);
     setMailLog((prevState) => ({
       ...prevState,
       logs: prevState.logs.map((mail) => {
@@ -75,8 +76,12 @@ const ViewGuest = ({
             ...mail,
             show_content: !mail.show_content as boolean,
           };
+        } else {
+          return {
+            ...mail,
+            show_content: false,
+          };
         }
-        return mail;
       }),
     }));
   };
@@ -234,15 +239,16 @@ const ViewGuest = ({
               return (
                 <div className={styles.mail} key={index} onClick={() => toggleMailContent(mail.id)}>
                   <div className={styles.expandIcon}>
-                    {
-                      <BiChevronDown
-                        onClick={() => toggleMailContent(mail.id)}
-                        size={25}
-                        style={{
-                          transform: mail.show_content ? 'rotate(180deg)' : 'rotate(0deg)',
-                        }}
-                      />
-                    }
+                    <BiChevronDown
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleMailContent(mail.id);
+                      }}
+                      size={25}
+                      style={{
+                        transform: mail.show_content ? 'rotate(180deg)' : 'rotate(0deg)',
+                      }}
+                    />
                   </div>
 
                   <div className={styles.mailHeader}>

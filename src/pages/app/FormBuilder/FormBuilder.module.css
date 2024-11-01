@@ -436,6 +436,14 @@ li {
   margin-top: 0.5rem;
 }
 
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 20rem;
+}
+
 .followUpMessage {
   margin-top: 1rem;
 }
