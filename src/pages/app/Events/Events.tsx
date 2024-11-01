@@ -89,7 +89,6 @@ const Events = () => {
 
   const CreateEvent = () => {
     if (newEvent.eventName) {
-      console.log(newEvent.orgId);
       createEvent(newEvent, setNewEvent, setShowCreateModal);
     } else {
       setNewEvent((prevState) => ({
@@ -204,18 +203,17 @@ const Events = () => {
                       There is a 250 participant limit for regular events. Please contact our sales
                       team to increase the limit.
                     </p>
-                    <a href='https://wa.me/916238450178' target='_blank' rel='noopener noreferrer'>
-                      <button className={styles.createEventButton}>Contact Sales</button>
-                    </a>
-
                     <button
                       onClick={() => {
                         window.location.href = `/${newEvent.eventName}/manage`;
                       }}
-                      className={styles.createEventButtonSecondary}
+                      className={styles.createEventButton}
                     >
                       Continue
                     </button>
+                    <a href='https://wa.me/916238450178' target='_blank' rel='noopener noreferrer'>
+                      <button className={styles.createEventButtonSecondary}>Contact Sales</button>
+                    </a>
 
                     <p className={styles.helperText}>
                       You will be redirected to the dashboard in 7 seconds.

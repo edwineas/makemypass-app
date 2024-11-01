@@ -113,7 +113,7 @@ export const createEvent = (
   setShowCreateModal?: Dispatch<SetStateAction<boolean>>,
 ) => {
   const payload: { title: string; organization_id?: string } = { title: newEvent.eventName };
-  if (newEvent.orgId) {
+  if (newEvent.orgId && newEvent.orgId !== 'Personal') {
     payload.organization_id = newEvent.orgId;
   }
 
