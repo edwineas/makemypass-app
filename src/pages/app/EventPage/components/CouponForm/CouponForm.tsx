@@ -3,7 +3,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { FaBookOpen, FaDollarSign } from 'react-icons/fa';
+import { FaBookOpen } from 'react-icons/fa';
 import { RiInformationFill } from 'react-icons/ri';
 
 import { validateFormCoupon } from '../../../../../apis/publicpage';
@@ -683,7 +683,6 @@ const CouponForm = ({
           0 && (
           <div className={styles.totalPriceMessage}>
             <div>
-              <FaDollarSign color='#4eff99' size={20} />
               <span>
                 Total Price: Rs.{' '}
                 {billReceipt.reduce(
