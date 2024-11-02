@@ -52,7 +52,8 @@ const SubEventDashboard = () => {
             isUserAuthorized(TillRoles.VIEWER) ? (
               <SecondaryButton
                 onClick={() => {
-                  if (eventId && subEventId) downloadSubEventCSV(eventId, subEventId);
+                  if (eventId && subEventId)
+                    downloadSubEventCSV(eventId, subEventId, subevent.title);
                 }}
                 buttonText='Download CSV'
               />

@@ -9,6 +9,15 @@ import { FormEventData, GuestsType, ResentTicket, SelectedGuest } from '../pages
 import type { RegistrationDataType } from '../pages/app/Overview/Overview/types';
 import { ErrorMessages, FormDataType } from './types';
 
+const options: Intl.DateTimeFormatOptions = {
+  year: '2-digit',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+};
+
 export const resentGuestTicket = async (
   ticketData: ResentTicket,
   setResentTicket: Dispatch<React.SetStateAction<ResentTicket>>,
@@ -151,6 +160,7 @@ export const downloadRegisterCSVData = async (
   showApprovedOnly: boolean,
 ) => {
   const params = new URLSearchParams();
+  const eventTitle = JSON.parse(sessionStorage.getItem('eventData')!).title;
   if (showCheckedInOnly) params.append('checkin_only', 'true');
   if (showApprovedOnly) params.append('approved_only', 'true');
 
@@ -162,7 +172,13 @@ export const downloadRegisterCSVData = async (
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'data.csv');
+      const timestamp = new Date()
+        .toLocaleString('en-GB', options)
+        .replace(/\//g, '') // Remove slashes
+        .replace(/, /g, '_') // Replace comma-space with underscore
+        .replace(/:/g, ''); // Remove colons
+
+      link.setAttribute('download', `${eventTitle}-guests-${timestamp}.csv`);
       document.body.appendChild(link);
       link.click();
     })

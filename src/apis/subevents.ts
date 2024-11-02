@@ -12,6 +12,15 @@ import type { SubEventCRUDType } from '../pages/app/SubEvents/Admin/Dashboard/ty
 import type { SelectedSubEventsType } from '../pages/app/SubEvents/User/types';
 import type { FormFieldType, SubEventType } from './types';
 
+const options: Intl.DateTimeFormatOptions = {
+  year: '2-digit',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+};
+
 export const getSubEvents = (
   eventId: string,
   eventRegisterId: string,
@@ -325,7 +334,11 @@ export const listSubEventGuests = async (
     });
 };
 
-export const downloadSubEventCSV = async (eventId: string, subEventId: string) => {
+export const downloadSubEventCSV = async (
+  eventId: string,
+  subEventId: string,
+  subEventTitle: string,
+) => {
   privateGateway
     .get(makeMyPass.subEventCSVDownload(eventId, subEventId))
     .then((response) => {
@@ -334,7 +347,15 @@ export const downloadSubEventCSV = async (eventId: string, subEventId: string) =
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'data.csv');
+      const eventTitle = JSON.parse(sessionStorage.getItem('eventData') || '{}').title;
+      const timestamp = new Date()
+        .toLocaleString('en-GB', options)
+        .replace(/\//g, '') // Remove slashes
+        .replace(/, /g, '_') // Replace comma-space with underscore
+        .replace(/:/g, ''); // Remove colons
+
+      link.setAttribute('download', `${eventTitle}-${subEventTitle}-guests-${timestamp}.csv`);
+
       document.body.appendChild(link);
       link.click();
     })
