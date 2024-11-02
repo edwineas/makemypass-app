@@ -174,9 +174,9 @@ export const downloadRegisterCSVData = async (
       link.setAttribute('href', encodedUri);
       const timestamp = new Date()
         .toLocaleString('en-GB', options)
-        .replace(/\//g, '') // Remove slashes
+        .replace(/\//g, '-') // Replace slashes with hyphens
         .replace(/, /g, '_') // Replace comma-space with underscore
-        .replace(/:/g, ''); // Remove colons
+        .replace(/:/g, '-'); // Replace colons with hyphens
 
       link.setAttribute('download', `${eventTitle}-guests-${timestamp}.csv`);
       document.body.appendChild(link);

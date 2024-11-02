@@ -350,9 +350,9 @@ export const downloadSubEventCSV = async (
       const eventTitle = JSON.parse(sessionStorage.getItem('eventData') || '{}').title;
       const timestamp = new Date()
         .toLocaleString('en-GB', options)
-        .replace(/\//g, '') // Remove slashes
+        .replace(/\//g, '-') // Replace slashes with hyphens
         .replace(/, /g, '_') // Replace comma-space with underscore
-        .replace(/:/g, ''); // Remove colons
+        .replace(/:/g, '-'); // Replace colons with hyphens
 
       link.setAttribute('download', `${eventTitle}-${subEventTitle}-guests-${timestamp}.csv`);
 
