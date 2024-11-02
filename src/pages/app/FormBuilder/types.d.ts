@@ -24,6 +24,7 @@ export type Field = {
   team_field: boolean;
   description: string | null;
   sub_event_ids?: string[] | null;
+  placeholder: string | null;
 };
 
 export type ErrorResponse = {

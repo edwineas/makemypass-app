@@ -109,7 +109,7 @@ const DynamicForm = ({
               <CommonRenderStructure formErrors={formErrors} field={field}>
                 <ValidateInput
                   name={field.field_key}
-                  placeholder={field?.title}
+                  placeholder={field.placeholder}
                   id={field.id}
                   key={field.id}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -127,6 +127,7 @@ const DynamicForm = ({
                 <InputField
                   name={field.field_key}
                   title={field?.title}
+                  placeholder={field.placeholder}
                   id={field.id}
                   key={field.id}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -154,6 +155,7 @@ const DynamicForm = ({
                     type='text'
                     id={field.field_key}
                     name={field?.title}
+                    placeholder={field.placeholder}
                     value={formData[field.field_key]}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       if (!/^\d*$/.test(e.target.value)) return;
@@ -274,6 +276,7 @@ const DynamicForm = ({
                       <input
                         type='radio'
                         id={option}
+                        placeholder={field.placeholder}
                         name={field.field_key}
                         value={option}
                         checked={formData[field.field_key] === option}
@@ -299,6 +302,7 @@ const DynamicForm = ({
                 <input
                   type='date'
                   id={field.field_key}
+                  placeholder={field.placeholder}
                   name={field?.title}
                   value={formData[field.field_key]}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -318,6 +322,7 @@ const DynamicForm = ({
               >
                 <input
                   type='datetime-local'
+                  placeholder={field.placeholder}
                   id={field.field_key}
                   name={field?.title}
                   value={formData[field.field_key]}
@@ -339,6 +344,7 @@ const DynamicForm = ({
                 <input
                   type='time'
                   id={field.field_key}
+                  placeholder={field.placeholder}
                   name={field?.title}
                   value={formData[field.field_key]}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -359,6 +365,7 @@ const DynamicForm = ({
                 <input
                   type='number'
                   id={field.field_key}
+                  placeholder={field.placeholder}
                   name={field?.title}
                   value={formData[field.field_key]}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

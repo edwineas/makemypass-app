@@ -88,7 +88,7 @@ const FormBuilder = () => {
     const defaultField = {
       id: uuidv4(),
       type: type || FieldType.Text,
-      title: title || 'Field Name',
+      title: title || '',
       hidden: false,
       unique: null,
       options: [],
@@ -98,6 +98,7 @@ const FormBuilder = () => {
       conditions: [],
       team_field: false,
       description: null,
+      placeholder: '',
     };
     setFormFields([...formFields, defaultField]);
   };
@@ -460,6 +461,7 @@ const FormBuilder = () => {
                                 <input
                                   type='text'
                                   title='Field Name'
+                                  placeholder='Field Name'
                                   disabled={!isUserEditor()}
                                   value={field.title}
                                   onChange={(event) => {
@@ -484,11 +486,27 @@ const FormBuilder = () => {
                                 <input
                                   type='text'
                                   disabled={!isUserEditor()}
+                                  placeholder='Field Description'
                                   title='Add Some help text.'
                                   value={field.description || ''}
                                   onChange={(event) => {
                                     if (isUserEditor()) {
                                       field.description = event.target.value;
+                                      updateFormStateVariable();
+                                    }
+                                  }}
+                                />
+                              </div>
+                              <div className={styles.customFieldName}>
+                                <input
+                                  type='text'
+                                  disabled={!isUserEditor()}
+                                  placeholder='Field Placeholder'
+                                  title='Add Some help text.'
+                                  value={field.placeholder || ''}
+                                  onChange={(event) => {
+                                    if (isUserEditor()) {
+                                      field.placeholder = event.target.value;
                                       updateFormStateVariable();
                                     }
                                   }}

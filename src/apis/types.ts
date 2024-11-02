@@ -65,6 +65,8 @@ export type FormFieldType = {
   title: string;
   hidden: boolean;
   unique: number;
+
+  placeholder: string;
   required: boolean;
   field_key: string;
   description?: string;
