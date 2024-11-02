@@ -41,6 +41,7 @@ const LandingPage = () => {
                 DID YOU KNOW?
               </p>
               <p className={styles.ssHeading}>
+                You’re Wasting{' '}
                 <span
                   style={{
                     display: 'inline-block',
@@ -49,9 +50,9 @@ const LandingPage = () => {
                   }}
                 >
                   {' '}
-                  17+ Hours
+                  Over 17 Hours
                 </span>
-                of Your Time is Wasted/Event
+                Per Event!
               </p>
             </div>
             <ul className={styles.timeWastedContainer}>
@@ -81,7 +82,6 @@ const LandingPage = () => {
           <div className={styles.thirdSection}>
             <div className={styles.tsTexts}>
               <p className={styles.tsHeading}>
-                You Can Send Custom{' '}
                 <span
                   style={{
                     display: 'inline-block',
@@ -89,10 +89,10 @@ const LandingPage = () => {
                     marginRight: '1rem',
                   }}
                 >
-                  {' '}
-                  Mails & Tickets,
+                  Customize
                 </span>
-                and Even{' '}
+                Your Emails & <br />
+                Tickets and Even
                 <span
                   style={{
                     display: 'inline-block',
@@ -101,16 +101,16 @@ const LandingPage = () => {
                   }}
                 >
                   {' '}
-                  Schedule Them.
+                  Schedule It!
                 </span>
               </p>
               <p className={styles.tsSubHeading}>
-                We had to revamp our previous landing page because it didn't communicate the value,
-                similarly, communication is key to any successful event. Why do it the hard way when
-                you can do it the easy way?
+                Our landing page wasn’t vibing the way we wanted, and let’s be honest—communication
+                is everything! We’ve given ourselves a makeover, so how about you? Keep it simple
+                and go the easy route!
               </p>
               <p className={styles.theEasyWay}>
-                We've already send 34,563+ emails and 15,345+ tickets for our users.
+                To date, we’ve sent 154,563+ emails and issued over 51,345 tickets for our users!
               </p>
             </div>
 
@@ -119,7 +119,6 @@ const LandingPage = () => {
               alt='features of makemypass.com'
               className={styles.tsImage}
               width={400}
-              // height={800}
             />
           </div>
 
@@ -139,7 +138,7 @@ const LandingPage = () => {
             </a>
             <div className={styles.frsTexts}>
               <p className={styles.frHeading}>
-                Looking at CSVs aren't Insightful. <br />
+                Ditch The Dull CSV’s! ‘Cause <br /> We’ve Got Stunning{' '}
                 <span
                   style={{
                     display: 'inline-block',
@@ -147,27 +146,15 @@ const LandingPage = () => {
                     marginRight: '1rem',
                   }}
                 >
-                  {' '}
-                  But We Have
-                </span>
-                Something{' '}
-                <span
-                  style={{
-                    display: 'inline-block',
-                    transform: 'rotate(-2deg)',
-                    marginRight: '1rem',
-                  }}
-                >
-                  {' '}
-                  Insightful
+                  Insights!
                 </span>
               </p>
               <p className={styles.frSubHeading}>
-                Insights Tada!, Who doesn't love having a graphical view at their data?. What if
-                they are realtime. You guessed it. We've got it too.
+                Imagine your data brought to life with vibrant graphics! Now picture all that in
+                real-time. Sounds insightful, right? We’ve got that covered too!
               </p>
               <p className={styles.theEasyWay}>
-                Try clicking the image aside, whoo know what it beholds.
+                Curious? Give that image a quick tap for an ‘insightful’ surprise!
               </p>
             </div>
           </div>
@@ -175,7 +162,7 @@ const LandingPage = () => {
           <div className={styles.thirdSection}>
             <div className={styles.tsTexts}>
               <p className={styles.tsHeading}>
-                Just Like That, You Can{' '}
+                Ready, Set,{' '}
                 <span
                   style={{
                     display: 'inline-block',
@@ -183,10 +170,9 @@ const LandingPage = () => {
                     marginRight: '1rem',
                   }}
                 >
-                  {' '}
-                  Check In
+                  Check In!
                 </span>
-                Attendees. Yeah{' '}
+                With Just{' '}
                 <span
                   style={{
                     display: 'inline-block',
@@ -194,12 +180,13 @@ const LandingPage = () => {
                     marginRight: '1rem',
                   }}
                 >
-                  Just 3 Clicks.
+                  3 Clicks,
                 </span>
+                You’re Done!
               </p>
               <p className={styles.tsSubHeading}>
-                One of the biggest time consuming thing is checkin, but not anymore. Just 3 clicks
-                and you're done. No more long queues.
+                Wave goodbye to long queues and say hello to effortless check-ins with MakeMyPass’s
+                seamless 3- click formula!
               </p>
             </div>
 
@@ -226,7 +213,7 @@ const LandingPage = () => {
                 Ready,
               </span>
               <br />
-              Are You?{' '}
+              for You!{' '}
               <span
                 style={{
                   display: 'inline-block',
@@ -235,14 +222,14 @@ const LandingPage = () => {
                 }}
               >
                 {' '}
-                Let's Get Started.
+                Let’s Get Started!
               </span>
             </p>
           </div>
           <PricingSection />
           <div className={styles.tsTexts}>
             <p className={styles.tsHeading}>
-              Don't Believe Us{' '}
+              Don’t Just Take Our Word For It - Listen To{' '}
               <span
                 style={{
                   display: 'inline-block',
@@ -250,20 +237,9 @@ const LandingPage = () => {
                   marginRight: '1rem',
                 }}
               >
-                Hear
+                Our Users!
               </span>
               <br />
-              From{' '}
-              <span
-                style={{
-                  display: 'inline-block',
-                  transform: 'rotate(-2deg)',
-                  marginRight: '1rem',
-                }}
-              >
-                {' '}
-                Our Users.
-              </span>
             </p>
           </div>
           <TestimonialSection />

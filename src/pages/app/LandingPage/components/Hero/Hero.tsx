@@ -30,18 +30,22 @@ const Hero = () => {
         }}
       >
         <p className={styles.fsHeading}>
-          Organize Events
           <span
             style={{ display: 'inline-block', transform: 'rotate(-2deg)', marginRight: '1rem' }}
           >
-            {' '}
-            Smart Way
-          </span>
-          Not The Hard Way.
+            Simplify
+          </span>{' '}
+          Event Planning,
+          <span
+            style={{ display: 'inline-block', transform: 'rotate(-2deg)', marginRight: '1rem' }}
+          >
+            Amplify
+          </span>{' '}
+          Event Experience
         </p>
         <p className={styles.fsSubHeading}>
-          Unforgettable Moments Commence with Tickets in your Digital Grasp. At MakeMyPass,
-          Anticipation Meets Convenience, without the Chaos of Pass Logistics!
+          Why wrestle with Event Chaos when you can be smooth sailing into Event Clarity? With
+          MakeMyPass, forget about paper – ‘cause your tickets are safe and sound in your phone!
         </p>
         <div className={styles.row}>
           <a href='https://wa.me/916238450178' target='_blank' rel='noopener noreferrer'>
@@ -67,7 +71,7 @@ const Hero = () => {
       </div>
 
       <img
-        src='/app/landing/landingimg.webp'
+        src='/app/landing/landing.png'
         alt='features of makemypass.com'
         className={styles.fsImage}
       />

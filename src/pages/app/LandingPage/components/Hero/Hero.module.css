@@ -65,15 +65,15 @@
 
 .fsImage {
   width: 100%;
-  max-width: 35rem;
+  max-width: 25rem;
   margin-top: 2rem;
 }
 
 .fsSubHeading {
   font-family: 'Aeonik';
-  max-width: 28rem;
+  max-width: 35rem;
   font-size: 1.1rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .requestDemo {
@@ -93,6 +93,12 @@
   .fsHeading {
     font-size: 4rem;
     max-width: 20rem;
+  }
+
+  .fsImage {
+    width: 100%;
+    max-width: 20rem;
+    margin-top: 2rem;
   }
 
   .fsSubHeading {

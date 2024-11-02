@@ -1,28 +1,78 @@
 .eventPartnersContainer {
+  width: 100%;
   overflow: hidden;
-  white-space: nowrap;
-  position: relative;
-  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.25rem 0;
   margin-top: 3rem;
+  display: flex;
+  justify-content: center;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04);
 }
 
-@keyframes slide {
-  from {
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: scroll 60s linear infinite;
+  gap: 3rem;
+}
+
+.logo {
+  height: 3rem; /* Base height for logos */
+  max-height: 3rem;
+  max-width: 7rem;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.horizontalLogo {
+  max-width: 8rem; /* Slightly larger width for horizontal logos */
+  height: 3.5rem; /* Slightly taller height for horizontal logos */
+}
+
+.logo:hover {
+  transform: scale(1.1); /* Slightly enlarges the logo on hover */
+}
+
+@keyframes scroll {
+  0% {
     transform: translateX(0);
   }
-  to {
-    transform: translateX(-100%);
+  100% {
+    transform: translateX(-50%);
   }
 }
 
-.eventPartners {
-  display: inline-block;
-  animation: 25s slide infinite linear;
+.marquee:hover {
+  animation-play-state: paused;
 }
 
-.eventPartners img {
-  height: 30px;
-  margin: 0 30px;
+@media screen and (max-width: 768px) {
+  .eventPartnersContainer {
+    padding: 2rem 0;
+  }
+
+  .logo {
+    height: 2.5rem;
+    max-height: 2.5rem;
+    max-width: 4rem;
+  }
+
+  .horizontalLogo {
+    max-width: 5rem;
+    height: 3rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .logo {
+    height: 2rem;
+    max-height: 2rem;
+    max-width: 3.5rem;
+  }
+
+  .horizontalLogo {
+    max-width: 4rem;
+    height: 2.5rem;
+  }
 }
