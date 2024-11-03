@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router';
 
 import { getOrgData } from '../../../../apis/orgs';
 import Theme from '../../../../components/Theme/Theme';
-import styles from './OrganizationGlance.module.css';
 import type { OrganizationType } from '../EditOrganization/types';
+import styles from './OrganizationGlance.module.css';
 
 const OrganizationGlance = () => {
   const location = useLocation();
@@ -30,7 +30,11 @@ const OrganizationGlance = () => {
       <div className={styles.organizationContainer}>
         <div className={styles.bannerContainer}>
           {organization.banner ? (
-            <img src={organization.banner} alt='' className={styles.banner} />
+            <img
+              src={typeof organization.banner === 'string' ? organization.banner : ''}
+              alt=''
+              className={styles.banner}
+            />
           ) : (
             <svg height='250' width='100%' className={styles.banner}>
               <rect width='100%' height='100%' className={styles.banner} />

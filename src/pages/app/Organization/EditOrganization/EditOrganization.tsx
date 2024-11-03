@@ -6,7 +6,6 @@ import { BeatLoader } from 'react-spinners';
 
 import { updateOrg } from '../../../../apis/orgs';
 import { isUserEditor } from '../../../../common/commonFunctions';
-import Editor from '../../../../components/Editor/Editor';
 import Theme from '../../../../components/Theme/Theme';
 import InputField from '../../../auth/Login/InputField';
 import styles from './EditOrganization.module.css';
@@ -18,7 +17,6 @@ const EditOrganization = () => {
 
   const organization = useMemo(() => location.state || {}, [location.state]);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [newDescription, setNewDescription] = useState<string>('');
   const [organizationState, setOrganizationState] = useState<OrganizationType>({
     id: '',
     banner: null,
@@ -42,10 +40,6 @@ const EditOrganization = () => {
   }, [organization]);
 
   const updateOrganization = () => {
-    if (newDescription) {
-      setOrganizationState({ ...organizationState, description: newDescription });
-    }
-
     updateOrg(organization?.id, organizationState, setIsUpdating);
   };
 
@@ -59,7 +53,7 @@ const EditOrganization = () => {
           id='organizationName'
           name='organizationName'
           type='text'
-          value={organization?.name}
+          value={organizationState.name}
           placeholder='Organization Name'
           disabled={!isUserEditor()}
           onChange={(e) => setOrganizationState({ ...organizationState, name: e.target.value })}
@@ -71,12 +65,29 @@ const EditOrganization = () => {
           id='organizationTitle'
           name='organizationTitle'
           type='text'
-          value={organization?.title}
+          value={organizationState.title}
           placeholder='Organization Title'
           disabled={!isUserEditor()}
           onChange={(e) => setOrganizationState({ ...organizationState, title: e.target.value })}
           style={{ marginTop: '0' }}
         />
+
+        <InputField
+          title='Description'
+          description='This will be shown thoughout the platform.'
+          icon={<LuPencil size={15} color='#949597' />}
+          id='description'
+          name='description'
+          type='text'
+          value={organizationState.description || ''}
+          placeholder='Description'
+          disabled={!isUserEditor()}
+          onChange={(e) =>
+            setOrganizationState({ ...organizationState, description: e.target.value })
+          }
+          style={{ marginTop: '0' }}
+        />
+
         <div className={styles.uploadLogoContainerParent}>
           <div
             className='row'
@@ -206,16 +217,6 @@ const EditOrganization = () => {
               )}
             </>
           )}
-        </div>
-
-        <div className={styles.descriptionContainer}>
-          <p className={styles.descriptionHeader}>About Organization</p>
-
-          <br />
-          <Editor
-            description={organization?.description || ''}
-            setNewDescription={setNewDescription}
-          />
         </div>
 
         <div className={styles.buttonsContainer}>
