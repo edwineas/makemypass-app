@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
+import { NavigateFunction } from 'react-router';
 
 import { privateGateway } from '../../services/apiGateway';
 import { makeMyPass } from '../../services/urls';
@@ -50,6 +51,7 @@ export const updateOrg = (
   orgId: string,
   organizationState: OrganizationType,
   setIsUpdating: Dispatch<SetStateAction<boolean>>,
+  navigate: NavigateFunction,
 ) => {
   setIsUpdating(true);
   const formData = new FormData();
@@ -67,11 +69,27 @@ export const updateOrg = (
     })
     .then((response) => {
       toast.success(response.data.message.general[0] || 'Org Updated Successfully');
+      navigate(`/organization/${organizationState.name}`);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
     })
     .finally(() => {
       setIsUpdating(false);
+    });
+};
+
+export const OrgInfoFromName = (
+  orgName: string,
+  setOrganization: Dispatch<SetStateAction<OrganizationType>>,
+) => {
+  privateGateway
+    .get(makeMyPass.orgInfo(orgName))
+    .then((response) => {
+      console.log(response.data.response);
+      setOrganization(response.data.response);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
     });
 };

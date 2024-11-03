@@ -244,6 +244,12 @@ const Events = () => {
                 </div>
               )}
               <div className={styles.selectRow}>
+                {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
+                  <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
+                    <IoIosCreate size={20} /> Create Event
+                  </button>
+                )}
+
                 {tags && tags.length > 0 && (
                   <Select
                     styles={customStyles}
@@ -260,13 +266,6 @@ const Events = () => {
 
                 {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
                   <>
-                    <button
-                      className={styles.createButton}
-                      onClick={() => setShowCreateModal(true)}
-                    >
-                      <IoIosCreate size={20} /> Create Event
-                    </button>
-
                     {orgs && orgs.length > 0 && (
                       <>
                         <Select
