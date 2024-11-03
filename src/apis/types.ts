@@ -130,6 +130,23 @@ export interface TicketType {
     value: string;
     operator: string;
   }[];
+  image?: {
+    qr: {
+      border: string;
+      box_size: string;
+      position: string;
+    };
+    content: {
+      text: string;
+      max_len: string;
+      position: string;
+      font_size: string;
+      font_type: string;
+      max_lines: string;
+      font_color: string;
+    }[];
+    file_path: string;
+  };
 }
 
 interface CouponType {
