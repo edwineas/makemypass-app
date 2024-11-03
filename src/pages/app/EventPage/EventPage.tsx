@@ -2,6 +2,8 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { IoImageOutline } from 'react-icons/io5';
+import ReactPlayer from 'react-player';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { HashLoader } from 'react-spinners';
 
@@ -82,6 +84,7 @@ const EventPage = () => {
 
   useEffect(() => {
     setFormNumber(eventData?.show_ticket_first ? 1 : 0);
+    console.log('eventData', eventData);
   }, [eventData]);
 
   const showEventHeader = () => {
@@ -136,12 +139,49 @@ const EventPage = () => {
               transition={{ duration: 0.5 }}
               className={styles.eventPageContainer}
               style={{
-                maxWidth: '32rem',
                 margin: 'auto',
                 padding: '0 1rem',
+                width: 'fit-content',
               }}
             >
               <EventPageHeader eventData={eventData} />
+              {eventData?.post_content &&
+                (eventData.post_content.photos.length > 0 ||
+                  eventData.post_content.video_link ||
+                  eventData.post_content.more_photo_link) && (
+                  <div className={styles.galleryContainer}>
+                    <p className={styles.eventGalleryTitle}>
+                      <IoImageOutline color='white' size={20} />
+                      <span>Gallery</span>
+                    </p>
+                    <hr className={styles.line} />
+                    {eventData.post_content?.video_link && (
+                      <div className={styles.videoContainer}>
+                        <ReactPlayer
+                          url={eventData.post_content?.video_link}
+                          controls
+                          width={'95%'}
+                        />
+                      </div>
+                    )}
+
+                    <div className={styles.photolisting}>
+                      {eventData.post_content?.photos.map((photo) => (
+                        <div className={styles.photoContainer}>
+                          <img src={photo} alt='event photo' className={styles.eventPhoto} />
+                        </div>
+                      ))}
+                      {eventData?.post_content?.more_photo_link && (
+                        <button
+                          className={styles.morePhotos}
+                          onClick={() => window.open(eventData.post_content?.more_photo_link)}
+                        >
+                          View More
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
             </motion.div>
             <p
               className={styles.privateEventText}
