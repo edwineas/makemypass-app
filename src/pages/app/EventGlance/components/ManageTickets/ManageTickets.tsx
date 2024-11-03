@@ -81,7 +81,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         price: 0,
         perks: [],
         registration_count: 0,
-        capacity: 0,
+        capacity: null,
         default_selected: true,
         platform_fee: 0,
         event_capacity: 0,
@@ -135,7 +135,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
     if (!paidTicket) {
       selection = { ...selection, price: 0 } as TicketType;
     }
-    if (isNaN(selection?.capacity as number)) {
+    if (isNaN(selection?.capacity as number) || !limitCapacity) {
       selection = { ...selection, capacity: null } as TicketType;
       setLimitCapacity(false);
     }
@@ -163,6 +163,8 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
             );
           } else if (changedData[key] != null) {
             value = changedData[key].toString();
+          } else if (changedData[key] == null) {
+            value = 'null';
           }
         }
 
@@ -472,7 +474,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                           capacity:
                             sameIdTicket?.capacity && sameIdTicket?.capacity > 0
                               ? sameIdTicket.capacity
-                              : 100,
+                              : 0,
                         } as TicketType);
                       }
                       if (isNaN(selectedTicket?.capacity as number)) {

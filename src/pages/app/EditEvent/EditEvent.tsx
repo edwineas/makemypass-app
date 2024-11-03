@@ -1157,7 +1157,7 @@ const EditEvent = () => {
                         <div>
                           <input
                             type='number'
-                            placeholder='enter capacity'
+                            placeholder={eventData?.max_capacity ? '0' : 'Unlimited'}
                             className={styles.capcityInput}
                             title='Capacity'
                             value={eventData?.capacity}
