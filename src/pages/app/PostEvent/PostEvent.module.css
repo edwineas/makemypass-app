@@ -77,3 +77,11 @@
 .saveButton:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
+.uploadImage {
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  color: #fafafa;
+  margin-top: 1rem;
+}

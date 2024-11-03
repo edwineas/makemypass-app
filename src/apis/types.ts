@@ -201,6 +201,11 @@ export interface EventType {
     whatsapp: string;
     instagram: string;
   };
+  post_content?: {
+    more_photo_link: string;
+    photos: string[];
+    video_link: string;
+  };
 }
 
 export type EventDetails = {
