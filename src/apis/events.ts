@@ -63,7 +63,9 @@ export const setEventInfoLocal = async (eventName: string): Promise<EventData> =
         resolve(eventData); // Now correctly resolving with an EventData object
       })
       .catch((error) => {
-        toast.error('Event Not Found');
+        toast.error('Event Not Found', {
+          id: 'event-not-found',
+        });
         reject(error); // Reject the promise on error
       });
   });

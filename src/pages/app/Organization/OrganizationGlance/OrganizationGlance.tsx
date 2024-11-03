@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { getOrgData } from '../../../../apis/orgs';
 import Theme from '../../../../components/Theme/Theme';
 import styles from './OrganizationGlance.module.css';
-import type { OrganizationType } from './types';
+import type { OrganizationType } from '../EditOrganization/types';
 
 const OrganizationGlance = () => {
   const location = useLocation();
