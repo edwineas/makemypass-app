@@ -70,7 +70,10 @@ export type FormFieldType = {
   required: boolean;
   field_key: string;
   description?: string;
-  options?: string[];
+  options?: {
+    values: string[];
+    conditions: ConditionType[];
+  }[];
   validate?: boolean;
   integration?: {
     url: string;

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Select, { MultiValue } from 'react-select';
 
-import { ErrorMessages, FormDataType, FormFieldType } from '../../apis/types';
+import { ConditionType, ErrorMessages, FormDataType, FormFieldType } from '../../apis/types';
 import UploadAttachement from '../../pages/app/EventGlance/components/MailModals/UpdateMail/components/UploadAttachement/UploadAttachements.tsx';
 import type { previewType } from '../../pages/app/EventGlance/components/MailModals/UpdateMail/types.ts';
 import {
@@ -96,6 +96,23 @@ const DynamicForm = ({
   handleFileChange?: (event: React.ChangeEvent<HTMLInputElement>, field: FormFieldType) => void;
   handleDeleteAttachment?: (index: number) => void;
 }) => {
+  const findValidatingOptions = (
+    options:
+      | {
+          values: string[];
+          conditions: ConditionType[];
+        }[]
+      | undefined,
+  ) => {
+    if (!options) return options;
+
+    const filteredOptions = options.find((option) =>
+      validateCondition(option.conditions, formData, formFields),
+    )?.values;
+
+    return filteredOptions;
+  };
+
   return (
     <>
       <div className={styles.formFields}>
@@ -182,22 +199,26 @@ const DynamicForm = ({
                   className={styles.dropdown}
                 >
                   <Select
-                    options={field.options?.map((option: string) => ({
-                      value: option,
-                      label: option,
-                    }))}
+                    options={
+                      findValidatingOptions(field.options)?.map((option) => ({
+                        value: option,
+                        label: option,
+                      })) ?? []
+                    }
                     styles={dynamicFormCustomStyles}
                     onChange={(selectedOption: { value: string } | null) =>
                       onFieldChange(field.field_key, selectedOption?.value || '')
                     }
-                    value={field.options
-                      ?.map((option: string) => ({
-                        value: option,
-                        label: option,
-                      }))
-                      .filter(
-                        (option: { value: string }) => option.value === formData[field.field_key],
-                      )}
+                    value={
+                      findValidatingOptions(field.options)
+                        ?.map((option) => ({
+                          value: option,
+                          label: option,
+                        }))
+                        .filter(
+                          (option: { value: string }) => option.value === formData[field.field_key],
+                        ) || []
+                    }
                     placeholder={`Select an option`}
                     isSearchable={true}
                   />
@@ -228,7 +249,7 @@ const DynamicForm = ({
             );
           } else if (field.type === 'multiselect') {
             const selectValues =
-              field.options?.map((option: string) => ({
+              findValidatingOptions(field.options)?.map((option) => ({
                 value: option,
                 label: option,
               })) ?? [];
@@ -271,7 +292,7 @@ const DynamicForm = ({
                 description={field.description}
               >
                 <div className={styles.radioContainer}>
-                  {field.options?.map((option: string) => (
+                  {findValidatingOptions(field.options)?.map((option: string) => (
                     <div key={option} className={styles.radio}>
                       <input
                         type='radio'
@@ -405,7 +426,7 @@ const DynamicForm = ({
                 description={field.description}
               >
                 <div className={styles.checkboxContainer}>
-                  {field.options?.map((option: string) => (
+                  {findValidatingOptions(field.options)?.map((option: string) => (
                     <>
                       <div key={option} className={styles.checkbox}>
                         <input
