@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { BsArrowRight, BsThreeDots } from 'react-icons/bs';
-import { FaTags } from 'react-icons/fa';
+import { FaSearch, FaTags } from 'react-icons/fa';
 import { GoPeople } from 'react-icons/go';
 import { IoIosCreate, IoMdSettings } from 'react-icons/io';
 import { TbAlertTriangleFilled } from 'react-icons/tb';
@@ -240,13 +240,26 @@ const Events = () => {
               }}
             >
               {Object.values(events).length > 0 && isDataLoaded && (
+                // <div className={styles.selectRow1}>
+                //   <input
+                //     className={styles.searchInput}
+                //     type='text'
+                //     placeholder='Search Events'
+                //     value={searchTerm}
+                //     onChange={(e) => setSearchTerm(e.target.value)}
+                //   />
+                // </div>
                 <div className={styles.selectRow1}>
-                  <input
-                    className={styles.searchInput}
+                  <InputField
+                    id='searchInput'
                     type='text'
+                    name='searchInput'
+                    icon={<FaSearch size={15} color='#9e9e9e' />}
+                    title=''
                     placeholder='Search Events'
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ width: '22rem' }}
                   />
                 </div>
               )}
