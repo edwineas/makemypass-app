@@ -111,7 +111,9 @@ export const createEvent = (
   newEvent: NewEventStateType,
   setNewEvent?: Dispatch<SetStateAction<NewEventStateType>>,
   setShowCreateModal?: Dispatch<SetStateAction<boolean>>,
+  setIsCreating?: Dispatch<SetStateAction<boolean>>,
 ) => {
+  setIsCreating && setIsCreating(true);
   const payload: { title: string; organization_id?: string } = { title: newEvent.eventName };
   if (newEvent.orgId && newEvent.orgId !== 'Personal') {
     payload.organization_id = newEvent.orgId;
@@ -131,6 +133,9 @@ export const createEvent = (
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    })
+    .finally(() => {
+      setIsCreating && setIsCreating(false);
     });
 };
 
