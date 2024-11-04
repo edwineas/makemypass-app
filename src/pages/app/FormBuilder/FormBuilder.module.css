@@ -337,6 +337,7 @@
 
 .customFieldOption {
   margin: 1rem;
+  margin-top: 0.25rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -351,19 +352,17 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.04);
   border: none;
+  border-radius: 8px;
   padding: 0.55rem;
   font-family: 'Inter', sans-serif;
   column-gap: 0.5rem;
   font-size: 0.9rem;
   color: white;
   width: 12rem;
-}
 
-.optionInput:focus {
-  outline: 1px solid #ffffff;
-  border-radius: 8px;
+  margin-top: 0.5rem;
 }
 
 .addOption {

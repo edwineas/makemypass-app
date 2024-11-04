@@ -4,7 +4,14 @@ export type Field = {
   title: string;
   hidden: boolean;
   unique: number | null;
-  options: string[];
+  options: {
+    values: string[];
+    conditions: {
+      field: string;
+      operator: string;
+      value: string | string[];
+    }[];
+  }[];
   property:
     | {
         extension_types: string[];

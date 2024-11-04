@@ -74,13 +74,13 @@ const FormBuilder = () => {
     return '';
   };
 
-  const removeOption = (field: Field, index: number) => {
-    field.options.splice(index, 1);
+  const removeOption = (field: Field, optionIndex: number, valueIndex: number) => {
+    field.options[optionIndex].values.splice(valueIndex, 1);
     updateFormStateVariable();
   };
 
-  const addOption = (field: Field) => {
-    field.options.push('');
+  const addOption = (field: Field, optionIndex: number) => {
+    field.options[optionIndex].values.push('');
     updateFormStateVariable();
   };
 
@@ -519,43 +519,47 @@ const FormBuilder = () => {
                                   field.type === FieldType.SingleSelect ||
                                   field.type === FieldType.MultiSelect) && (
                                   <div className={styles.customFieldOption}>
-                                    {field.options.map((option, index) => (
-                                      <div className='row' key={index}>
-                                        <input
-                                          className={styles.optionInput}
-                                          type='text'
-                                          disabled={!isUserEditor()}
-                                          title='Option'
-                                          value={option}
-                                          onChange={(event) => {
-                                            if (isUserEditor()) {
-                                              const updatedOptions = field.options;
-                                              updatedOptions[index] = event.target.value;
-                                              field.options = updatedOptions;
-                                              updateFormStateVariable();
-                                            }
-                                          }}
-                                        />
-                                        <IoCloseSharp
-                                          className='pointer'
-                                          onClick={() => {
-                                            isUserEditor() && removeOption(field, index);
-                                          }}
-                                          size={20}
-                                          color='#606264'
-                                        />
+                                    {field.options.map((optionsObject, optionIndex) => (
+                                      <div className={styles.optionValuesContainer}>
+                                        {optionsObject.values.map((option, valueIndex) => (
+                                          <div className='row' key={valueIndex}>
+                                            <input
+                                              className={styles.optionInput}
+                                              type='text'
+                                              disabled={!isUserEditor()}
+                                              title='Option'
+                                              value={option}
+                                              onChange={(event) => {
+                                                if (isUserEditor()) {
+                                                  field.options[optionIndex].values[valueIndex] =
+                                                    event.target.value;
+                                                  updateFormStateVariable();
+                                                }
+                                              }}
+                                            />
+                                            <IoCloseSharp
+                                              className='pointer'
+                                              onClick={() => {
+                                                isUserEditor() &&
+                                                  removeOption(field, optionIndex, valueIndex);
+                                              }}
+                                              size={20}
+                                              color='#606264'
+                                            />
+                                          </div>
+                                        ))}
+                                        {isUserEditor() && (
+                                          <p
+                                            onClick={() => {
+                                              if (isUserEditor()) addOption(field, optionIndex);
+                                            }}
+                                            className={`pointer ${styles.addOption}`}
+                                          >
+                                            <span>+</span> Add Option
+                                          </p>
+                                        )}
                                       </div>
                                     ))}
-                                    {isUserEditor() && (
-                                      <p
-                                        onClick={() => {
-                                          if (isUserEditor()) addOption(field);
-                                        }}
-                                        className={`pointer ${styles.addOption}`}
-                                      >
-                                        <span>+</span> Add Option
-                                      </p>
-                                    )}
                                   </div>
                                 )}
 
@@ -789,9 +793,10 @@ const FormBuilder = () => {
                                                 options={
                                                   formFields
                                                     .find((field) => field.id === condition.field)
-                                                    ?.options?.map((option) => ({
-                                                      value: option,
-                                                      label: option,
+                                                    ?.options?.flatMap((option) => option.values)
+                                                    .map((value) => ({
+                                                      value,
+                                                      label: value,
                                                     })) || []
                                                 }
                                                 className='basic-multi-select'
@@ -808,9 +813,10 @@ const FormBuilder = () => {
                                                 options={
                                                   formFields
                                                     .find((field) => field.id === condition.field)
-                                                    ?.options?.map((option) => ({
-                                                      value: option,
-                                                      label: option,
+                                                    ?.options?.flatMap((option) => option.values)
+                                                    .map((value) => ({
+                                                      value,
+                                                      label: value,
                                                     })) || []
                                                 }
                                                 value={
@@ -837,9 +843,10 @@ const FormBuilder = () => {
                                               options={
                                                 formFields
                                                   .find((field) => field.id === condition.field)
-                                                  ?.options?.map((option) => ({
-                                                    value: option,
-                                                    label: option,
+                                                  ?.options?.flatMap((option) => option.values)
+                                                  .map((value) => ({
+                                                    value,
+                                                    label: value,
                                                   })) || []
                                               }
                                               value={
