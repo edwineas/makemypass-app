@@ -27,6 +27,7 @@ import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryBut
 import styles from './Events.module.css';
 import RightClickMenu from './RightClickMenu';
 import type { NewEventStateType } from './types';
+import { BeatLoader } from 'react-spinners';
 
 const Events = () => {
   interface Position {
@@ -38,6 +39,7 @@ const Events = () => {
   const [tags, setTags] = useState([] as string[]);
   const [orgs, setOrgs] = useState([] as DefaultListType[]);
   const [selectedTags, setSelectedTags] = useState([] as string[]);
+  const [isCreating, setIsCreating] = useState(false);
   const [selectedOrgName, setSelectedOrgName] = useState('Personal');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState<Position>({ x: 0, y: 0 });
@@ -89,7 +91,7 @@ const Events = () => {
 
   const CreateEvent = () => {
     if (newEvent.eventName) {
-      createEvent(newEvent, setNewEvent, setShowCreateModal);
+      createEvent(newEvent, setNewEvent, setShowCreateModal, setIsCreating);
     } else {
       setNewEvent((prevState) => ({
         ...prevState!,
@@ -187,7 +189,11 @@ const Events = () => {
                       CreateEvent();
                     }}
                   >
-                    Create
+                    {isCreating ? (
+                      <BeatLoader color='#1d1d1d' size={8} margin={2} />
+                    ) : (
+                      <span>Create Event</span>
+                    )}
                   </button>
                 </>
               ) : (

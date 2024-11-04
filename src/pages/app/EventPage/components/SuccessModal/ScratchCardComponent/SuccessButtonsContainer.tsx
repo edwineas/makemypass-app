@@ -80,7 +80,7 @@ const SuccessButtonsContainer = ({
           )}
 
           <p className={styles.contactUs}>
-            If you create similar events connect us at hello@makemypass.com
+            Planning similar events? contact us at hello@makemypass.com
           </p>
         </div>
       ) : (

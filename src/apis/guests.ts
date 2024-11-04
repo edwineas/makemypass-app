@@ -276,6 +276,7 @@ export const getBulkImportCSV = (eventId: string) => {
 export const getGuestBulkImportList = (
   eventId: string,
   setFileStatus: Dispatch<React.SetStateAction<BulkUploadType[]>>,
+  setIsUploading?: Dispatch<React.SetStateAction<boolean>>,
 ) => {
   privateGateway
     .get(makeMyPass.bulkGuestList(eventId))
@@ -284,17 +285,24 @@ export const getGuestBulkImportList = (
     })
     .catch(() => {
       setFileStatus([]);
+    })
+    .finally(() => {
+      setIsUploading && setIsUploading(false);
     });
 };
 
 export const uploadBulkGuestData = (
   eventId: string,
   file: File,
+  setFile: Dispatch<React.SetStateAction<File | null>>,
   selectedTickets: string[],
   setFileStatus: Dispatch<React.SetStateAction<BulkUploadType[]>>,
   sendTicket: boolean,
   sendInvoice: boolean,
+  setIsUploading: Dispatch<React.SetStateAction<boolean>>,
+  fileInputRef: React.RefObject<HTMLInputElement>,
 ) => {
+  setIsUploading(true);
   const formData = new FormData();
   formData.append('file', file);
   formData.append('send_ticket', sendTicket ? 'true' : 'false');
@@ -303,6 +311,7 @@ export const uploadBulkGuestData = (
   selectedTickets.forEach((ticket) => {
     formData.append('tickets[]', ticket);
   });
+  console.log('Dye Dey23 ', formData);
 
   privateGateway
     .post(makeMyPass.bulkGuestUpload(eventId), formData, {
@@ -310,14 +319,16 @@ export const uploadBulkGuestData = (
         'Content-Type': 'multipart/form-data',
       },
     })
-    .then((response) => {
-      toast.success(response.data.message.general[0] || 'File uploaded successfully');
+    .then(() => {
+      toast.success('File uploaded successfully');
+      fileInputRef.current?.value && (fileInputRef.current.value = '');
+      setFile(null);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Something went wrong');
     })
     .finally(() => {
-      getGuestBulkImportList(eventId, setFileStatus);
+      getGuestBulkImportList(eventId, setFileStatus, setIsUploading);
     });
 };
 
