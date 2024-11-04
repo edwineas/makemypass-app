@@ -2,6 +2,7 @@ import { createRef, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiSolidReport } from 'react-icons/bi';
 import Select from 'react-select';
+import { BeatLoader } from 'react-spinners';
 
 import {
   getBulkImportCSV,
@@ -16,7 +17,6 @@ import Slider from '../../../../../components/SliderButton/Slider';
 import { customStyles } from '../../../EventPage/constants';
 import styles from './BulkUpload.module.css';
 import type { BulkUploadType } from './types';
-import { BeatLoader } from 'react-spinners';
 
 const BulkUpload = ({ onClose }: { onClose: () => void }) => {
   const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);

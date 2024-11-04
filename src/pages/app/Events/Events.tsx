@@ -7,6 +7,7 @@ import { IoIosCreate, IoMdSettings } from 'react-icons/io';
 import { TbAlertTriangleFilled } from 'react-icons/tb';
 import { useNavigate } from 'react-router';
 import Select from 'react-select';
+import { BeatLoader } from 'react-spinners';
 
 import {
   createDuplicateEvent,
@@ -27,7 +28,6 @@ import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryBut
 import styles from './Events.module.css';
 import RightClickMenu from './RightClickMenu';
 import type { NewEventStateType } from './types';
-import { BeatLoader } from 'react-spinners';
 
 const Events = () => {
   interface Position {
@@ -161,6 +161,7 @@ const Events = () => {
                       container: (provided) => ({
                         ...provided,
                         width: '100%',
+                        maxWidth: '15rem',
                       }),
                     }}
                     options={[

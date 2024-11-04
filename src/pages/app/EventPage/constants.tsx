@@ -17,6 +17,7 @@ export const customStyles = {
     fontWeight: 400,
     fontSize: '0.9rem',
     minWidth: '10rem',
+    maxWidth: '15rem',
     boxShadow: state.isFocused ? 'none' : 'none', // Remove blue border on focus
     position: 'relative', // Add this to establish a positioning context
     zIndex: 10001, // Ensure the control stays above the menu
