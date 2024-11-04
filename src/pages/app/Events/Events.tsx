@@ -240,15 +240,6 @@ const Events = () => {
               }}
             >
               {Object.values(events).length > 0 && isDataLoaded && (
-                // <div className={styles.selectRow1}>
-                //   <input
-                //     className={styles.searchInput}
-                //     type='text'
-                //     placeholder='Search Events'
-                //     value={searchTerm}
-                //     onChange={(e) => setSearchTerm(e.target.value)}
-                //   />
-                // </div>
                 <div className={styles.selectRow1}>
                   <InputField
                     id='searchInput'
@@ -433,6 +424,9 @@ const Events = () => {
                                             title={
                                               event.tags.length > 0 ? event.tags.join(', ') : ''
                                             }
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                            }}
                                           />
                                         </div>
                                       )}
@@ -442,6 +436,7 @@ const Events = () => {
                                             onClick={(
                                               e: React.MouseEvent<SVGElement, MouseEvent>,
                                             ) => {
+                                              e.stopPropagation();
                                               handleButtonClick(e);
                                               setDuplicateEventId(event?.id);
                                             }}
