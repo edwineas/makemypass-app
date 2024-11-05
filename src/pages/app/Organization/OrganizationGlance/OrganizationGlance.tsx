@@ -21,16 +21,21 @@ const OrganizationGlance = () => {
   });
 
   const [showEditModal, setShowEditModal] = useState(false);
+  const [triggerFetch, setTriggerFetch] = useState(false);
 
   useEffect(() => {
     if (orgName) OrgInfoFromName(orgName, setOrganization);
-  }, [orgName]);
+  }, [orgName, triggerFetch]);
 
   return (
     <Theme>
       {showEditModal && (
         <Modal type='side' onClose={() => setShowEditModal(false)} title='Edit Organization'>
-          <EditOrganization organization={organization} />
+          <EditOrganization
+            organization={organization}
+            setShowEditModal={setShowEditModal}
+            setTriggerFetch={setTriggerFetch}
+          />
         </Modal>
       )}
       <div className={styles.organizationContainer}>

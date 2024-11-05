@@ -1,16 +1,23 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 import { LuPencil } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 import { BeatLoader } from 'react-spinners';
 
 import { updateOrg } from '../../../../apis/orgs';
-import { isUserEditor } from '../../../../common/commonFunctions';
 import InputField from '../../../auth/Login/InputField';
 import styles from './EditOrganization.module.css';
 import type { OrganizationType } from './types';
 
-const EditOrganization = ({ organization }: { organization: OrganizationType }) => {
+const EditOrganization = ({
+  organization,
+  setShowEditModal,
+  setTriggerFetch,
+}: {
+  organization: OrganizationType;
+  setShowEditModal: Dispatch<SetStateAction<boolean>>;
+  setTriggerFetch: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [organizationState, setOrganizationState] = useState<OrganizationType>({
     id: '',
@@ -25,9 +32,9 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
     if (organization) {
       setOrganizationState({
         id: organization.id,
-        banner: null,
+        banner: organization.banner,
         description: organization.description,
-        logo: null,
+        logo: organization.logo,
         name: organization.name,
         title: organization.title,
       });
@@ -37,7 +44,14 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
   const navigate = useNavigate();
 
   const updateOrganization = () => {
-    updateOrg(organization?.id, organizationState, setIsUpdating, navigate);
+    updateOrg(
+      organization,
+      organizationState,
+      setIsUpdating,
+      navigate,
+      setShowEditModal,
+      setTriggerFetch,
+    );
   };
 
   return (
@@ -51,7 +65,6 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
         type='text'
         value={organizationState.name}
         placeholder='Organization Name'
-        disabled={!isUserEditor()}
         onChange={(e) => setOrganizationState({ ...organizationState, name: e.target.value })}
       />
       <InputField
@@ -63,7 +76,6 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
         type='text'
         value={organizationState.title}
         placeholder='Organization Title'
-        disabled={!isUserEditor()}
         onChange={(e) => setOrganizationState({ ...organizationState, title: e.target.value })}
         style={{ marginTop: '0' }}
       />
@@ -77,7 +89,6 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
         type='text'
         value={organizationState.description || ''}
         placeholder='Description'
-        disabled={!isUserEditor()}
         onChange={(e) =>
           setOrganizationState({ ...organizationState, description: e.target.value })
         }
@@ -118,12 +129,10 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
               </p>
             </div>
             <input
-              disabled={!isUserEditor()}
               type='file'
               className={styles.fileUpload}
               accept='image/*'
               onChange={(e) =>
-                isUserEditor() &&
                 setOrganizationState({
                   ...organizationState,
                   logo: e.target.files ? e.target.files[0] : null,
@@ -138,9 +147,7 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
             className={styles.uploadCloseIcon}
             color='#949597'
             onClick={() => {
-              if (isUserEditor()) {
-                setOrganizationState({ ...organizationState, logo: null });
-              }
+              setOrganizationState({ ...organizationState, logo: null });
             }}
             style={
               !organizationState.logo && !organization?.logo
@@ -154,10 +161,8 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
         <input
           type='file'
           className={styles.fileUpload}
-          disabled={!isUserEditor()}
           accept='image/*'
           onChange={(e) =>
-            isUserEditor() &&
             setOrganizationState({
               ...organizationState,
               banner: e.target.files ? e.target.files[0] : null,
@@ -170,11 +175,20 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
               className={styles.closeIcon}
               color='#949597'
               onClick={() => {
-                isUserEditor() && setOrganizationState({ ...organizationState, banner: null });
+                setOrganizationState({ ...organizationState, banner: null });
               }}
             />
-            {organization?.banner && typeof organization?.banner === 'string' && (
-              <img src={organization?.banner} alt='' className={styles.banner} />
+            {organizationState?.banner && typeof organizationState?.banner === 'string' ? (
+              <img src={organizationState?.banner} alt='' className={styles.banner} />
+            ) : (
+              organizationState?.banner &&
+              organizationState.banner instanceof Blob && (
+                <img
+                  src={URL.createObjectURL(organizationState?.banner)}
+                  alt=''
+                  className={styles.banner}
+                />
+              )
             )}
           </>
         ) : (
@@ -185,8 +199,7 @@ const EditOrganization = ({ organization }: { organization: OrganizationType }) 
                   className={styles.closeIcon}
                   color='#949597'
                   onClick={() => {
-                    isUserEditor() &&
-                      organization?.banner &&
+                    organization?.banner &&
                       setOrganizationState({ ...organizationState, banner: null });
                     setOrganizationState({ ...organizationState, banner: null });
                   }}

@@ -48,35 +48,49 @@ export const getOrgData = (
 };
 
 export const updateOrg = (
-  orgId: string,
+  organization: OrganizationType,
   organizationState: OrganizationType,
   setIsUpdating: Dispatch<SetStateAction<boolean>>,
   navigate: NavigateFunction,
+  setShowEditModal: Dispatch<SetStateAction<boolean>>,
+  setTriggerFetch: Dispatch<SetStateAction<boolean>>,
 ) => {
   setIsUpdating(true);
   const formData = new FormData();
-  formData.append('title', organizationState.title);
-  formData.append('name', organizationState.name);
-  formData.append('description', organizationState.description || '');
-  formData.append('banner', organizationState.banner || '');
-  formData.append('logo', organizationState.logo || '');
+  const fieldsToUpdate = ['title', 'name', 'description', 'banner', 'logo'] as const;
+  let hasChanges = false;
+  fieldsToUpdate.forEach((field) => {
+    if (organizationState[field] !== organization[field]) {
+      hasChanges = true;
+      formData.append(field, organizationState[field] || '');
+    }
+  });
 
-  privateGateway
-    .patch(makeMyPass.orgCRUD(orgId), formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    .then((response) => {
-      toast.success(response.data.message.general[0] || 'Org Updated Successfully');
-      navigate(`/organization/${organizationState.name}`);
-    })
-    .catch((error) => {
-      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
-    })
-    .finally(() => {
-      setIsUpdating(false);
+  if (hasChanges)
+    privateGateway
+      .patch(makeMyPass.orgCRUD(organization.id), formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        toast.success(response.data.message.general[0] || 'Org Updated Successfully');
+        setShowEditModal(false);
+        setTriggerFetch((prev) => !prev);
+        navigate(`/organization/${organizationState.name}`);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+      })
+      .finally(() => {
+        setIsUpdating(false);
+      });
+  else {
+    toast.error('No changes detected', {
+      id: 'no-changes',
     });
+    setIsUpdating(false);
+  }
 };
 
 export const OrgInfoFromName = (
