@@ -5,6 +5,7 @@ import { NavigateFunction } from 'react-router';
 import { privateGateway } from '../../services/apiGateway';
 import { makeMyPass } from '../../services/urls';
 import type { OrganizationType } from '../pages/app/Organization/EditOrganization/types';
+import type { MemberType } from '../pages/app/Organization/OrganizationGlance/types';
 import { DefaultListType } from './types';
 
 export const createOrg = (eventTitle: string) => {
@@ -102,6 +103,82 @@ export const OrgInfoFromName = (
     .then((response) => {
       console.log(response.data.response);
       setOrganization(response.data.response);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    });
+};
+export const listOrgMembers = (
+  orgId: string,
+  setMembers: Dispatch<SetStateAction<MemberType[] | undefined>>,
+) => {
+  privateGateway
+    .get(makeMyPass.orgMembersList(orgId))
+    .then((response) => {
+      setMembers(response.data.response);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    });
+};
+
+export const addOrgMember = (
+  orgId: string,
+  memberEmail: string,
+  role: string,
+  setTriggerFetch: Dispatch<SetStateAction<boolean>>,
+) => {
+  privateGateway
+    .post(makeMyPass.orgMembersAdd(orgId), {
+      member_email: memberEmail,
+      role: role,
+    })
+    .then((response) => {
+      toast.success(response.data.message.general[0] || 'Member Added Successfully');
+      setTriggerFetch((prev) => !prev);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    });
+};
+
+export const removeOrgMember = (
+  orgId: string,
+  memberId: string,
+  setIsDeleting: Dispatch<SetStateAction<boolean>>,
+  setTriggerFetch: Dispatch<SetStateAction<boolean>>,
+) => {
+  setIsDeleting(true);
+  privateGateway
+    .delete(makeMyPass.orgMembersRemove(orgId), {
+      data: { member_id: memberId },
+    })
+    .then((response) => {
+      toast.success(response.data.message.general[0] || 'Member Removed Successfully');
+      setTriggerFetch((prev) => !prev);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    })
+    .finally(() => {
+      setIsDeleting(false);
+    });
+};
+
+export const updateOrgMember = (
+  orgId: string,
+  memberId: string,
+  role: string,
+  setTriggerFetch: Dispatch<SetStateAction<boolean>>,
+) => {
+  privateGateway
+    .patch(makeMyPass.orgMembersUpdate(orgId), {
+      member_id: memberId,
+      role: role,
+    })
+    .then((response) => {
+      toast.success(response.data.message.general[0] || 'Member Updated Successfully');
+      setTriggerFetch((prev) => !prev);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
