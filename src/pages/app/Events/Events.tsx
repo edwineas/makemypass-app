@@ -411,8 +411,8 @@ const Events = () => {
                                         </motion.div>
                                       )}
                                       <p className={styles.eventName}>
-                                        {event.title.substring(0, 40)}
-                                        {event.title.length > 40 ? '...' : ''}
+                                        {event.title.substring(0, 35)}
+                                        {event.title.length > 35 ? '...' : ''}
                                       </p>
                                     </div>
                                     <div className={styles.absoluteButtons}>
