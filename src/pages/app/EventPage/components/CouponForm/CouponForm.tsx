@@ -619,7 +619,6 @@ const CouponForm = ({
             icon={getIcon('coupon_code')}
             value={coupon.value}
             style={{
-              marginTop: '-1rem',
               border:
                 discount.discount_value > 0 && discount.ticket.length > 0
                   ? styles.borderClassDefault
