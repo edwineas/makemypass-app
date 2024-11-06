@@ -33,7 +33,8 @@ type TicketType = {
   limit: number | null;
   capacity: number;
   default_selected: boolean;
-  platform_fee: number;
+  platform_perc_fee: number;
+  platform_const_fee: number;
   platform_fee_from_user: boolean;
   entry_date: {
     date: string;
