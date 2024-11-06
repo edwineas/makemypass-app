@@ -6,7 +6,7 @@ import { privateGateway } from '../../services/apiGateway';
 import { makeMyPass } from '../../services/urls';
 import type { OrganizationType } from '../pages/app/Organization/EditOrganization/types';
 import type { MemberType } from '../pages/app/Organization/OrganizationGlance/types';
-import { DefaultListType } from './types';
+import { DefaultListType, hostId } from './types';
 
 export const createOrg = (eventTitle: string) => {
   const userEmail = localStorage.getItem('userEmail');
@@ -147,6 +147,7 @@ export const removeOrgMember = (
   memberId: string,
   setIsDeleting: Dispatch<SetStateAction<boolean>>,
   setTriggerFetch: Dispatch<SetStateAction<boolean>>,
+  setSelectedMemberId: Dispatch<SetStateAction<hostId>>,
 ) => {
   setIsDeleting(true);
   privateGateway
@@ -155,13 +156,16 @@ export const removeOrgMember = (
     })
     .then((response) => {
       toast.success(response.data.message.general[0] || 'Member Removed Successfully');
-      setTriggerFetch((prev) => !prev);
+      setTimeout(() => {
+        setTriggerFetch((prev) => !prev);
+      }, 1000);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
     })
     .finally(() => {
       setIsDeleting(false);
+      setSelectedMemberId({ id: '', type: null });
     });
 };
 
