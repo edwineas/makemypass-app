@@ -660,6 +660,7 @@ const FormBuilder = () => {
                                                 type='text'
                                                 disabled={!isUserEditor()}
                                                 title='Option'
+                                                placeholder='Option Value'
                                                 value={option}
                                                 onChange={(event) => {
                                                   if (isUserEditor()) {

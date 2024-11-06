@@ -86,12 +86,6 @@ const CouponForm = ({
     ) {
       firstCategory = [
         ...new Set(
-          filteredTickets.filter((ticket) => ticket.category).map((ticket) => ticket.category),
-        ),
-      ][0];
-    } else {
-      firstCategory = [
-        ...new Set(
           filteredTickets
             .filter((ticket) => ticket.category && ticket.default_selected)
             .map((ticket) => ticket.category),
@@ -99,7 +93,7 @@ const CouponForm = ({
       ][0];
     }
 
-    if (!selectedTicketCategory) setSelectedTicketCategory(firstCategory);
+    if (!selectedTicketCategory && firstCategory) setSelectedTicketCategory(firstCategory);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredTickets]);
 
@@ -175,9 +169,8 @@ const CouponForm = ({
 
   useEffect(() => {
     if (tickets.length === 0 && filteredTickets.length > 0) {
-      const defaultTicket =
-        filteredTickets.find((ticket: TicketType) => ticket.default_selected) || filteredTickets[0];
-      setTickets([{ ticket_id: defaultTicket.id, count: 1, my_ticket: true }]);
+      const defaultTicket = filteredTickets.find((ticket: TicketType) => ticket.default_selected);
+      if (defaultTicket) setTickets([{ ticket_id: defaultTicket.id, count: 1, my_ticket: true }]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredTickets]);
