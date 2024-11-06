@@ -116,7 +116,7 @@ const CouponForm = ({
           ticketCount: ticket.count,
           total: findPriceAfterCharge(
             ticketData.price * ticket.count,
-            ticketData.platform_fee,
+            ticketData.platform_perc_fee,
             ticketData.gateway_fee,
             ticketData.platform_fee_from_user,
           ),
@@ -125,7 +125,7 @@ const CouponForm = ({
           currency: ticketData.currency,
           is_fee:
             ticketData.platform_fee_from_user &&
-            ticketData.platform_fee + ticketData.gateway_fee > 0,
+            ticketData.platform_perc_fee + ticketData.gateway_fee > 0,
         });
       }
     });
@@ -431,9 +431,9 @@ const CouponForm = ({
                       <p className={styles.extraCharges}>
                         {filteredTicket.platform_fee_from_user && filteredTicket.price > 0 && (
                           <>
-                            {filteredTicket.platform_fee > 0 && (
+                            {filteredTicket.platform_perc_fee > 0 && (
                               <p className={styles.extraCharges}>
-                                {filteredTicket.platform_fee}% Extra Platform Fee
+                                {filteredTicket.platform_perc_fee}% Extra Platform Fee
                               </p>
                             )}
                             {filteredTicket.gateway_fee > 0 && (
@@ -573,9 +573,9 @@ const CouponForm = ({
                       <p className={styles.extraCharges}>
                         {filteredTicket.platform_fee_from_user && filteredTicket.price > 0 && (
                           <>
-                            {filteredTicket.platform_fee > 0 && (
+                            {filteredTicket.platform_perc_fee > 0 && (
                               <p className={styles.extraCharges}>
-                                {filteredTicket.platform_fee}% Extra Platform Fee
+                                {filteredTicket.platform_perc_fee}% Extra Platform Fee
                               </p>
                             )}
                             {filteredTicket.gateway_fee > 0 && (

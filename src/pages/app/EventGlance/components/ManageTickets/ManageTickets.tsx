@@ -83,7 +83,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         registration_count: 0,
         capacity: null,
         default_selected: true,
-        platform_fee: 0,
+        platform_perc_fee: 0,
         event_capacity: 0,
         platform_fee_from_user: false,
         currency: '',
@@ -206,11 +206,11 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
   const calcTotalExtraFee = () => {
     if (!selectedTicket?.platform_fee_from_user) {
       return (
-        (((selectedTicket?.platform_fee ?? 0) + (selectedTicket?.gateway_fee ?? 0)) / 100) *
+        (((selectedTicket?.platform_perc_fee ?? 0) + (selectedTicket?.gateway_fee ?? 0)) / 100) *
         (selectedTicket?.price ?? 0)
       );
     } else {
-      const target_amount = selectedTicket?.price * (1 + selectedTicket?.platform_fee / 100);
+      const target_amount = selectedTicket?.price * (1 + selectedTicket?.platform_perc_fee / 100);
 
       const total_amount = target_amount / (1 - selectedTicket?.gateway_fee / 100);
       const gateway_amount = (selectedTicket?.gateway_fee / 100) * total_amount;
@@ -571,7 +571,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                     </div>
                   </div>
 
-                  {selectedTicket?.platform_fee + selectedTicket?.gateway_fee > 0 && (
+                  {selectedTicket?.platform_perc_fee + selectedTicket?.gateway_fee > 0 && (
                     <>
                       <div className={styles.ticketSlider}>
                         <p className={styles.ticketSliderLabel}>
@@ -593,7 +593,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                         />
                       </div>
                       <div className={styles.feeReminder}>
-                        Platform Fee: {selectedTicket?.platform_fee}%
+                        Platform Fee: {selectedTicket?.platform_perc_fee}%
                       </div>
                       <div className={styles.feeReminder}>
                         Gateway Fee: {selectedTicket?.gateway_fee}%
