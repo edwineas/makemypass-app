@@ -84,6 +84,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         capacity: null,
         default_selected: true,
         platform_perc_fee: 0,
+        platform_const_fee: 0,
         event_capacity: 0,
         platform_fee_from_user: false,
         currency: '',

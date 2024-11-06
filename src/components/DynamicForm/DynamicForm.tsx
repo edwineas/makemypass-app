@@ -113,6 +113,29 @@ const DynamicForm = ({
     return filteredOptions;
   };
 
+  const resetValuesOfConditionallyRelatedFields = (field: FormFieldType) => {
+    // iterate through all the fields and for each of the field check whether it has field.options and for
+    // each of the field.options check whether it has conditions and if it has conditions then check whether
+    // the current field id matches with the field of the condition and if it matches then reset the value
+    // of the field to empty
+
+    formFields.forEach((formField) => {
+      if (formField.options) {
+        formField.options.forEach((option) => {
+          if (option.conditions) {
+            option.conditions.forEach((condition) => {
+              if (condition.field === field.id) {
+                onFieldChange(formField.field_key, '');
+                // Check if the resetting field also has options and conditions
+                resetValuesOfConditionallyRelatedFields(formField);
+              }
+            });
+          }
+        });
+      }
+    });
+  };
+
   return (
     <>
       <div className={styles.formFields}>
@@ -206,9 +229,10 @@ const DynamicForm = ({
                       })) ?? []
                     }
                     styles={dynamicFormCustomStyles}
-                    onChange={(selectedOption: { value: string } | null) =>
-                      onFieldChange(field.field_key, selectedOption?.value || '')
-                    }
+                    onChange={(selectedOption: { value: string } | null) => {
+                      resetValuesOfConditionallyRelatedFields(field);
+                      onFieldChange(field.field_key, selectedOption?.value || '');
+                    }}
                     value={
                       findValidatingOptions(field.options)
                         ?.map((option) => ({
