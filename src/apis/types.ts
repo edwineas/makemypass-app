@@ -459,3 +459,8 @@ export type SubEventType = {
   conflicting_event?: string;
   capacity: number;
 };
+
+export type hostId = {
+  id: string;
+  type: 'edit' | 'delete' | null;
+};

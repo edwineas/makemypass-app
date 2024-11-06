@@ -82,7 +82,17 @@ const OrganizationGlance = () => {
 
   const agreeToDelete = () => {
     setIsDeleting(true);
-    removeOrgMember(organization.id, selectedMemberId.id, setIsDeleting, setTriggerFetch);
+    const selectedMemberUserId = organizationMembers?.find(
+      (member) => member.id === selectedMemberId.id,
+    )?.user_id;
+    if (selectedMemberUserId)
+      removeOrgMember(
+        organization.id,
+        selectedMemberUserId,
+        setIsDeleting,
+        setTriggerFetch,
+        setSelectedMemberId,
+      );
   };
 
   const onSubmit = () => {
