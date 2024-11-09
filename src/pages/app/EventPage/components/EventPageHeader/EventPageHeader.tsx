@@ -176,54 +176,54 @@ const EventPageHeader = ({ eventData }: { eventData: EventType | undefined }) =>
                 </div>
               </div>
             )}
-            {eventData?.host_communicate && (
+            {eventData?.socials && (
               <div className={styles.hostCommunicate}>
-                {Object.values(eventData?.host_communicate).filter((social) => social != null)
-                  .length > 0 && (
+                {Object.values(eventData?.socials).filter((social) => social != null).length >
+                  0 && (
                   <div className={styles.socialBox}>
                     <MdContacts size={20} className={styles.locationIcon} />
                   </div>
                 )}
                 <div className={styles.hostCommunicateIcons}>
-                  {eventData.host_communicate.phone && (
-                    <a href={`tel:${eventData.host_communicate.phone}`}>
+                  {eventData.socials.phone && (
+                    <a href={`tel:${eventData.socials.phone}`}>
                       <IoCallOutline size={20} />
                     </a>
                   )}
-                  {eventData.host_communicate.whatsapp && (
+                  {eventData.socials.whatsapp && (
                     <a
                       href={
-                        eventData.host_communicate.whatsapp.startsWith('https://')
-                          ? eventData.host_communicate.whatsapp
-                          : `https://${eventData.host_communicate.whatsapp}`
+                        eventData.socials.whatsapp.startsWith('https://')
+                          ? eventData.socials.whatsapp
+                          : `https://${eventData.socials.whatsapp}`
                       }
                       target='_blank'
                     >
                       <IoLogoWhatsapp size={20} />
                     </a>
                   )}
-                  {eventData.host_communicate.email && (
-                    <a href={`mailto:${eventData.host_communicate.email}`}>
+                  {eventData.socials.email && (
+                    <a href={`mailto:${eventData.socials.email}`}>
                       <IoMailOutline size={20} />
                     </a>
                   )}
-                  {eventData.host_communicate.instagram && (
-                    <a href={normalizeUrl(eventData.host_communicate.instagram)} target='_blank'>
+                  {eventData.socials.instagram && (
+                    <a href={normalizeUrl(eventData.socials.instagram)} target='_blank'>
                       <IoLogoInstagram size={20} />
                     </a>
                   )}
-                  {eventData.host_communicate.facebook && (
-                    <a href={normalizeUrl(eventData.host_communicate.facebook)} target='_blank'>
+                  {eventData.socials.facebook && (
+                    <a href={normalizeUrl(eventData.socials.facebook)} target='_blank'>
                       <IoLogoFacebook size={20} />
                     </a>
                   )}
-                  {eventData.host_communicate.twitter && (
-                    <a href={normalizeUrl(eventData.host_communicate.twitter)} target='_blank'>
+                  {eventData.socials.twitter && (
+                    <a href={normalizeUrl(eventData.socials.twitter)} target='_blank'>
                       <IoLogoTwitter size={20} />
                     </a>
                   )}
-                  {eventData.host_communicate.linkedin && (
-                    <a href={normalizeUrl(eventData.host_communicate.linkedin)} target='_blank'>
+                  {eventData.socials.linkedin && (
+                    <a href={normalizeUrl(eventData.socials.linkedin)} target='_blank'>
                       <IoLogoLinkedin size={20} />
                     </a>
                   )}

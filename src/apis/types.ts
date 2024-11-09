@@ -196,7 +196,7 @@ export interface EventType {
     type: string;
     value: string;
   }[];
-  host_communicate: {
+  socials: {
     email: string;
     phone: string;
     facebook: string;
