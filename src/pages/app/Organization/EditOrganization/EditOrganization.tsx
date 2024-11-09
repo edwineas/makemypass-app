@@ -229,7 +229,9 @@ const EditOrganization = ({
       </div>
 
       <div className={styles.buttonsContainer}>
-        <button className={styles.cancelButton}>Cancel</button>
+        <button className={styles.cancelButton} onClick={() => setShowEditModal(false)}>
+          Cancel
+        </button>
         <button className={styles.saveButton} onClick={updateOrganization}>
           {isUpdating ? <BeatLoader color='#272727' size={10} /> : 'Save'}
         </button>

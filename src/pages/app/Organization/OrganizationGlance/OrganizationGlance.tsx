@@ -59,6 +59,14 @@ const OrganizationGlance = () => {
   }, [organization]);
 
   useEffect(() => {
+    const selectedMemberData = organizationMembers?.find(
+      (member) => member.id === selectedMemberId.id,
+    );
+    setMemberData(selectedMemberData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedMemberId]);
+
+  useEffect(() => {
     const hostListMapping = {
       name: 'name',
       email: 'email',
@@ -99,7 +107,7 @@ const OrganizationGlance = () => {
     if (memberData && !memberData.id)
       addOrgMember(organization.id, memberData.email, memberData.role, setTriggerFetch);
     if (memberData && memberData.id)
-      updateOrgMember(organization.id, memberData.id, memberData.role, setTriggerFetch);
+      updateOrgMember(organization.id, memberData.user_id, memberData.role, setTriggerFetch);
 
     setSelectedMemberId({ id: '', type: null });
     setAddMember(false);
@@ -189,7 +197,7 @@ const OrganizationGlance = () => {
 
       <div id='members' className={styles.membersContainer}>
         <Table
-          tableHeading='Event Hosts'
+          tableHeading='Organization Members'
           tableData={transformedMembers}
           secondaryButton={
             <SecondaryButton

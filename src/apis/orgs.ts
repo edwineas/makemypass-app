@@ -183,7 +183,7 @@ export const updateOrgMember = (
   setTriggerFetch: Dispatch<SetStateAction<boolean>>,
 ) => {
   privateGateway
-    .patch(makeMyPass.orgMembersUpdate(orgId), {
+    .put(makeMyPass.orgMembersUpdate(orgId), {
       member_id: memberId,
       role: role,
     })
