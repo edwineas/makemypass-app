@@ -70,7 +70,10 @@ export type FormFieldType = {
   required: boolean;
   field_key: string;
   description?: string;
-  options?: string[];
+  options?: {
+    values: string[];
+    conditions: ConditionType[];
+  }[];
   validate?: boolean;
   integration?: {
     url: string;
@@ -114,7 +117,8 @@ export interface TicketType {
   user_count: number;
   capacity: number | null;
   default_selected: boolean;
-  platform_fee: number;
+  platform_perc_fee: number;
+  platform_const_fee: number;
   gateway_fee: number;
   platform_fee_from_user: boolean;
   currency: string;
@@ -455,4 +459,9 @@ export type SubEventType = {
   already_booked: boolean;
   conflicting_event?: string;
   capacity: number;
+};
+
+export type hostId = {
+  id: string;
+  type: 'edit' | 'delete' | null;
 };

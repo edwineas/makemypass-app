@@ -28,6 +28,7 @@ export type hostId = {
   id: string;
   type: 'edit' | 'delete' | null;
 };
+
 export type RegistrationDataType = {
   id: string;
   registered_at: string;

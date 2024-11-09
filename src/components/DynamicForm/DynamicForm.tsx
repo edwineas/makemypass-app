@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Select, { MultiValue } from 'react-select';
 
-import { ErrorMessages, FormDataType, FormFieldType } from '../../apis/types';
+import { ConditionType, ErrorMessages, FormDataType, FormFieldType } from '../../apis/types';
 import UploadAttachement from '../../pages/app/EventGlance/components/MailModals/UpdateMail/components/UploadAttachement/UploadAttachements.tsx';
 import type { previewType } from '../../pages/app/EventGlance/components/MailModals/UpdateMail/types.ts';
 import {
@@ -96,6 +96,46 @@ const DynamicForm = ({
   handleFileChange?: (event: React.ChangeEvent<HTMLInputElement>, field: FormFieldType) => void;
   handleDeleteAttachment?: (index: number) => void;
 }) => {
+  const findValidatingOptions = (
+    options:
+      | {
+          values: string[];
+          conditions: ConditionType[];
+        }[]
+      | undefined,
+  ) => {
+    if (!options) return options;
+
+    const filteredOptions = options.find((option) =>
+      validateCondition(option.conditions, formData, formFields),
+    )?.values;
+
+    return filteredOptions;
+  };
+
+  const resetValuesOfConditionallyRelatedFields = (field: FormFieldType) => {
+    // iterate through all the fields and for each of the field check whether it has field.options and for
+    // each of the field.options check whether it has conditions and if it has conditions then check whether
+    // the current field id matches with the field of the condition and if it matches then reset the value
+    // of the field to empty
+
+    formFields.forEach((formField) => {
+      if (formField.options) {
+        formField.options.forEach((option) => {
+          if (option.conditions) {
+            option.conditions.forEach((condition) => {
+              if (condition.field === field.id) {
+                onFieldChange(formField.field_key, '');
+                // Check if the resetting field also has options and conditions
+                resetValuesOfConditionallyRelatedFields(formField);
+              }
+            });
+          }
+        });
+      }
+    });
+  };
+
   return (
     <>
       <div className={styles.formFields}>
@@ -182,22 +222,27 @@ const DynamicForm = ({
                   className={styles.dropdown}
                 >
                   <Select
-                    options={field.options?.map((option: string) => ({
-                      value: option,
-                      label: option,
-                    }))}
-                    styles={dynamicFormCustomStyles}
-                    onChange={(selectedOption: { value: string } | null) =>
-                      onFieldChange(field.field_key, selectedOption?.value || '')
-                    }
-                    value={field.options
-                      ?.map((option: string) => ({
+                    options={
+                      findValidatingOptions(field.options)?.map((option) => ({
                         value: option,
                         label: option,
-                      }))
-                      .filter(
-                        (option: { value: string }) => option.value === formData[field.field_key],
-                      )}
+                      })) ?? []
+                    }
+                    styles={dynamicFormCustomStyles}
+                    onChange={(selectedOption: { value: string } | null) => {
+                      resetValuesOfConditionallyRelatedFields(field);
+                      onFieldChange(field.field_key, selectedOption?.value || '');
+                    }}
+                    value={
+                      findValidatingOptions(field.options)
+                        ?.map((option) => ({
+                          value: option,
+                          label: option,
+                        }))
+                        .filter(
+                          (option: { value: string }) => option.value === formData[field.field_key],
+                        ) || []
+                    }
                     placeholder={`Select an option`}
                     isSearchable={true}
                   />
@@ -228,7 +273,7 @@ const DynamicForm = ({
             );
           } else if (field.type === 'multiselect') {
             const selectValues =
-              field.options?.map((option: string) => ({
+              findValidatingOptions(field.options)?.map((option) => ({
                 value: option,
                 label: option,
               })) ?? [];
@@ -271,7 +316,7 @@ const DynamicForm = ({
                 description={field.description}
               >
                 <div className={styles.radioContainer}>
-                  {field.options?.map((option: string) => (
+                  {findValidatingOptions(field.options)?.map((option: string) => (
                     <div key={option} className={styles.radio}>
                       <input
                         type='radio'
@@ -405,7 +450,7 @@ const DynamicForm = ({
                 description={field.description}
               >
                 <div className={styles.checkboxContainer}>
-                  {field.options?.map((option: string) => (
+                  {findValidatingOptions(field.options)?.map((option: string) => (
                     <>
                       <div key={option} className={styles.checkbox}>
                         <input

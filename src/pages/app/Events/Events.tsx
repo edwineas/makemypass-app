@@ -40,7 +40,9 @@ const Events = () => {
   const [orgs, setOrgs] = useState([] as DefaultListType[]);
   const [selectedTags, setSelectedTags] = useState([] as string[]);
   const [isCreating, setIsCreating] = useState(false);
-  const [selectedOrgName, setSelectedOrgName] = useState('Personal');
+  const [selectedOrgName, setSelectedOrgName] = useState(
+    localStorage.getItem('orgId') === 'Personal' ? 'Personal' : localStorage.getItem('orgId'),
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState<Position>({ x: 0, y: 0 });
   const [showModal, setShowModal] = useState(false);
@@ -59,6 +61,7 @@ const Events = () => {
     showLimitationMessage: false,
   });
 
+  const [orgsLoaded, setOrgsLoaded] = useState(false);
   const handleMenuClose = () => {
     setIsMenuOpen(false);
   };
@@ -72,10 +75,20 @@ const Events = () => {
   const [events, setEvents] = useState([] as Event[]);
 
   useEffect(() => {
-    getEventsList(setEvents, setIsDataLoaded);
     getCommonTags(setTags);
-    listOrgs(setOrgs);
+    listOrgs(setOrgs, setOrgsLoaded);
   }, []);
+
+  useEffect(() => {
+    if (orgsLoaded) {
+      const orgId = orgs.find((org) => org.name === selectedOrgName)?.id;
+      if (selectedOrgName) {
+        getEventsList(setEvents, setIsDataLoaded, orgId);
+      } else {
+        getEventsList(setEvents, setIsDataLoaded);
+      }
+    }
+  }, [orgs, selectedOrgName, orgsLoaded]);
 
   const navigate = useNavigate();
 
@@ -158,10 +171,26 @@ const Events = () => {
                   <Select
                     styles={{
                       ...customStyles,
-                      container: (provided) => ({
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      container: (provided: any) => ({
                         ...provided,
                         width: '100%',
-                        maxWidth: '15rem',
+                        margin: '0.5rem 0',
+                      }),
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      control: (provided: any, state: any) => ({
+                        ...provided,
+                        minWidth: '100%',
+                        maxWidth: '100%',
+                        border: 'none',
+                        backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                        fontFamily: 'Inter, sans-serif',
+                        fontStyle: 'normal',
+                        fontWeight: 400,
+                        fontSize: '0.9rem',
+                        boxShadow: state.isFocused ? 'none' : 'none',
+                        position: 'relative',
+                        zIndex: 10001,
                       }),
                     }}
                     options={[
@@ -181,6 +210,7 @@ const Events = () => {
                           orgId: selectedOption.value,
                         }));
                         setSelectedOrgName(selectedOption.label);
+                        localStorage.setItem('orgId', selectedOption.label);
                       }
                     }}
                   />
@@ -285,6 +315,11 @@ const Events = () => {
                             { value: 'Personal', label: 'Personal' },
                             ...orgs.map((org) => ({ value: org.id, label: org.name })),
                           ]}
+                          value={
+                            selectedOrgName
+                              ? { value: selectedOrgName, label: selectedOrgName }
+                              : null
+                          }
                           className='select'
                           classNamePrefix='select'
                           placeholder='Select Organization'
@@ -295,6 +330,7 @@ const Events = () => {
                                 ...prevState!,
                                 orgId: selectedOption.value,
                               }));
+                              localStorage.setItem('orgId', selectedOption.label);
                               if (selectedOption.value !== 'Personal') {
                                 getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
                               } else if (selectedOption.value === 'Personal') {
@@ -411,8 +447,8 @@ const Events = () => {
                                         </motion.div>
                                       )}
                                       <p className={styles.eventName}>
-                                        {event.title.substring(0, 40)}
-                                        {event.title.length > 40 ? '...' : ''}
+                                        {event.title.substring(0, 35)}
+                                        {event.title.length > 35 ? '...' : ''}
                                       </p>
                                     </div>
                                     <div className={styles.absoluteButtons}>

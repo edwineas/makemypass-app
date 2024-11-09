@@ -583,6 +583,25 @@ const FormBuilder = () => {
                                   field.type === FieldType.SingleSelect ||
                                   field.type === FieldType.MultiSelect) && (
                                   <div className={styles.customFieldOption}>
+                                    {field.options.length == 0 && (
+                                      <button
+                                        onClick={() => {
+                                          if (isUserEditor()) {
+                                            field.options.push({
+                                              values: [''],
+                                              conditions: [],
+                                            });
+                                            updateFormStateVariable();
+                                          }
+                                        }}
+                                        style={{
+                                          marginTop: '1rem',
+                                        }}
+                                        className={styles.addOption}
+                                      >
+                                        Add Option Group
+                                      </button>
+                                    )}
                                     {field.options.map((optionsObject, optionIndex) => (
                                       <div className={styles.optionValuesContainer}>
                                         <div
@@ -641,6 +660,7 @@ const FormBuilder = () => {
                                                 type='text'
                                                 disabled={!isUserEditor()}
                                                 title='Option'
+                                                placeholder='Option Value'
                                                 value={option}
                                                 onChange={(event) => {
                                                   if (isUserEditor()) {

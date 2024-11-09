@@ -308,7 +308,8 @@ const ViewGuest = ({
                     <span>
                       {Array.isArray(selectedGuestData.submissions) &&
                         selectedGuestData.submissions.find(
-                          (submission) => submission.title === 'Name',
+                          (submission) =>
+                            submission.title === 'Name' || submission.title === 'Full Name',
                         )?.value}{' '}
                     </span>
                     {selectedGuestData['is_approved'] && (
