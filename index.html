@@ -67,6 +67,38 @@
 
       gtag('config', 'G-Z7S2JM2J9B');
     </script>
+    <script>
+      window.addEventListener('message', function (event) {
+        if (event.data.type === 'applyStyles' && event.data.styles) {
+          const styles = event.data.styles;
+
+          // Apply styles to the h1 elements
+          if (styles.h1) {
+            document.querySelectorAll('h1').forEach((h1) => {
+              h1.style.color = styles.h1.color;
+              h1.style.fontWeight = styles.h1.fontWeight;
+              h1.style.textTransform = styles.h1.textTransform;
+            });
+          }
+
+          // Apply styles to input fields
+          if (styles.input) {
+            document.querySelectorAll('input').forEach((input) => {
+              input.style.backgroundColor = styles.input.backgroundColor;
+              input.style.color = styles.input.color;
+            });
+          }
+
+          // Apply styles to buttons
+          if (styles.button) {
+            document.querySelectorAll('button').forEach((button) => {
+              button.style.backgroundColor = styles.button.backgroundColor;
+              button.style.color = styles.button.color;
+            });
+          }
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="dropdown"></div>
