@@ -23,7 +23,11 @@ export const createOrg = (eventTitle: string) => {
     });
 };
 
-export const listOrgs = (setOrgs: Dispatch<SetStateAction<DefaultListType[]>>) => {
+export const listOrgs = (
+  setOrgs: Dispatch<SetStateAction<DefaultListType[]>>,
+  setOrgsLoaded: Dispatch<SetStateAction<boolean>>,
+) => {
+  setOrgsLoaded(false);
   privateGateway
     .get(makeMyPass.listOrgs)
     .then((response) => {
@@ -31,6 +35,9 @@ export const listOrgs = (setOrgs: Dispatch<SetStateAction<DefaultListType[]>>) =
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    })
+    .finally(() => {
+      setOrgsLoaded(true);
     });
 };
 
