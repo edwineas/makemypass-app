@@ -159,7 +159,7 @@ const EditEvent = () => {
     }
 
     if (eventData?.socials != fetchedEvent?.socials) {
-      changedData['host_communicate'] = JSON.stringify(eventData?.socials).replace(/""/g, 'null');
+      changedData['socials'] = JSON.stringify(eventData?.socials).replace(/""/g, 'null');
     }
 
     if (logo) changedData['logo'] = logo;
