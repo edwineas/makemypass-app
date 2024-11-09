@@ -240,60 +240,62 @@ const EventPageHeader = ({ eventData }: { eventData: EventType | undefined }) =>
       </motion.div>
 
       <div className={styles.row1} style={showFullDesc ? { flexDirection: 'column' } : {}}>
-        {eventData?.description && eventData?.description.length > 0 && (
-          <div className={styles.eventDescriptionContainer}>
-            <motion.div
-              initial={{ opacity: 0, y: 35 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.5 }}
-              style={{ width: '100%' }}
-            >
-              <p className={styles.eventDescHeading}>
-                <IoAlertCircleOutline color='white' size={20} />
-                <span>About the Event</span>
-              </p>
-              <hr className={styles.line} />
-              <motion.p
-                className={styles.eventDescription}
-                initial={{ height: 'fit-content' }}
+        {eventData?.description &&
+          eventData?.description.length > 0 &&
+          eventData.description != '<p class="bn-inline-content"></p>' && (
+            <div className={styles.eventDescriptionContainer}>
+              <motion.div
+                initial={{ opacity: 0, y: 35 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.5 }}
+                style={{ width: '100%' }}
               >
-                {showFullDesc ? (
-                  <p dangerouslySetInnerHTML={{ __html: eventData.description }}></p>
-                ) : (
-                  <p
-                    dangerouslySetInnerHTML={
-                      eventData.description.length > 275
-                        ? {
-                            __html: eventData?.description?.substring(0, 275).concat('...'),
-                          }
-                        : { __html: eventData.description }
-                    }
-                  ></p>
-                )}
-              </motion.p>
-              {eventData.description.length > 275 && (
-                <div className={styles.expandIcon}>
-                  {!showFullDesc ? (
-                    <FaExpandAlt
-                      onClick={() => {
-                        setShowFullDesc((prev) => !prev);
-                      }}
-                    />
+                <p className={styles.eventDescHeading}>
+                  <IoAlertCircleOutline color='white' size={20} />
+                  <span>About the Event</span>
+                </p>
+                <hr className={styles.line} />
+                <motion.p
+                  className={styles.eventDescription}
+                  initial={{ height: 'fit-content' }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {showFullDesc ? (
+                    <p dangerouslySetInnerHTML={{ __html: eventData.description }}></p>
                   ) : (
-                    <IoContract
-                      size={20}
-                      onClick={() => {
-                        setShowFullDesc((prev) => !prev);
-                      }}
-                    />
+                    <p
+                      dangerouslySetInnerHTML={
+                        eventData.description.length > 275
+                          ? {
+                              __html: eventData?.description?.substring(0, 275).concat('...'),
+                            }
+                          : { __html: eventData.description }
+                      }
+                    ></p>
                   )}
-                </div>
-              )}
-            </motion.div>
-          </div>
-        )}
+                </motion.p>
+                {eventData.description.length > 275 && (
+                  <div className={styles.expandIcon}>
+                    {!showFullDesc ? (
+                      <FaExpandAlt
+                        onClick={() => {
+                          setShowFullDesc((prev) => !prev);
+                        }}
+                      />
+                    ) : (
+                      <IoContract
+                        size={20}
+                        onClick={() => {
+                          setShowFullDesc((prev) => !prev);
+                        }}
+                      />
+                    )}
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          )}
 
         {eventData?.location && (
           <div className={styles.googleContainer}>
