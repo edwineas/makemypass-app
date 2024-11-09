@@ -102,7 +102,7 @@ export const getFormCategories = async (
   privateGateway
     .get(makeMyPass.guestListFormCategories(eventId))
     .then((response) => {
-      setCategories(response.data.response);
+      setCategories(response.data.response[0].values);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');

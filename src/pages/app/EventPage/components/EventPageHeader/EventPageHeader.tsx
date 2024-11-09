@@ -324,16 +324,15 @@ const EventPageHeader = ({ eventData }: { eventData: EventType | undefined }) =>
             </p>
             <hr className={styles.line} />
             <div className={styles.speakersListing}>
-              {eventData.speakers.map((speaker) => {
+              {eventData.speakers.map((speaker, index) => {
                 return (
-                  <div className={styles.speakerContainer}>
-                    {speaker.image && (
-                      <img
-                        src={speaker.image}
-                        alt='speaker profile'
-                        className={styles.speakerProfilePic}
-                      />
-                    )}
+                  <div className={styles.speakerContainer} key={index}>
+                    <img
+                      src={speaker.image ?? `/app/profilepics/default${(index % 5) + 1}.png`}
+                      alt='speaker profile'
+                      className={styles.speakerProfilePic}
+                    />
+
                     <motion.div className={styles.speakerInfo}>
                       <p className={styles.speakerName}>{speaker.name}</p>
                       <p className={styles.speakerPosition}>

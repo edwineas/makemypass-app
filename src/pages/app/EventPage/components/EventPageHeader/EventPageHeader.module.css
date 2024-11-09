@@ -367,11 +367,11 @@
 .speakersListing {
   padding: 1rem 1rem;
   display: grid;
-  grid-auto-flow: column dense; /* column flow with "dense" to fill all the cells */
-  grid-template-rows: 8rem 8rem; /* 2 rows */
-  grid-auto-columns: 8rem;
+  grid-template-columns: repeat(auto-fill, 7rem); /* fill columns first */
+  grid-template-rows: auto; /* adjust rows automatically */
   row-gap: 1rem;
   column-gap: 0.5rem;
+  justify-content: space-evenly; /* space-evenly like in flex */
   max-height: 25rem;
   overflow: auto;
 }
@@ -383,11 +383,14 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
+
+  width: 7rem;
+  height: 7rem;
 }
 
 .speakerProfilePic {
-  width: 8rem;
-  height: 8rem;
+  width: 7rem;
+  height: 7rem;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -397,8 +400,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 0.25rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+  padding: 0.5rem;
+  background: linear-gradient(to top, rgb(67 67 67 / 80%) 0%, rgba(0, 0, 0, 0) 100%);
   text-align: flex-start;
 }
 

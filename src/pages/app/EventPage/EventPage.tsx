@@ -141,7 +141,13 @@ const EventPage = () => {
               style={{
                 margin: 'auto',
                 padding: '0 1rem',
-                width: 'fit-content',
+                width:
+                  eventData?.post_content &&
+                  (eventData.post_content.photos.length > 0 ||
+                    eventData.post_content.video_link ||
+                    eventData.post_content.more_photo_link)
+                    ? 'fit-content'
+                    : '97%',
               }}
             >
               <EventPageHeader eventData={eventData} />
