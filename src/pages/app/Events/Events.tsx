@@ -82,10 +82,10 @@ const Events = () => {
   useEffect(() => {
     if (orgsLoaded) {
       const orgId = orgs.find((org) => org.name === selectedOrgName)?.id;
-      if (selectedOrgName === 'Personal') {
-        getEventsList(setEvents, setIsDataLoaded);
-      } else if (selectedOrgName) {
+      if (selectedOrgName) {
         getEventsList(setEvents, setIsDataLoaded, orgId);
+      } else {
+        getEventsList(setEvents, setIsDataLoaded);
       }
     }
   }, [orgs, selectedOrgName, orgsLoaded]);
