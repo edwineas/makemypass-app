@@ -171,6 +171,7 @@ export const updateEventData = ({
   setLoading?: Dispatch<boolean>;
 }) => {
   setLoading && setLoading(true);
+
   privateGateway
     .patch(makeMyPass.event(eventId), eventData, {
       headers: {
@@ -181,6 +182,33 @@ export const updateEventData = ({
       toast.success(response.data.message.general[0] || 'Event Updated Successfully');
       // if (!setIsPublished) window.location.href = `/${response.data.response.name}/manage`;
       setIsPublished && setIsPublished(eventData.get('is_public_insight') === 'true');
+
+      const newEventTitle = eventData.get('title') as string;
+      const newEventName = eventData.get('name') as string;
+
+      if (newEventTitle) {
+        const currentSessionData = JSON.parse(sessionStorage.getItem('eventData') || '{}');
+
+        if (currentSessionData.title !== newEventTitle) {
+          sessionStorage.setItem(
+            'eventData',
+            JSON.stringify({
+              ...currentSessionData,
+              title: newEventTitle,
+            }),
+          );
+        }
+        if (newEventName) {
+          sessionStorage.setItem(
+            'eventData',
+            JSON.stringify({
+              ...currentSessionData,
+              title: newEventTitle,
+              event_name: newEventName,
+            }),
+          );
+        }
+      }
     })
     .catch((error) => {
       setIsPublished && setIsPublished(false);
