@@ -521,3 +521,21 @@
 .publicLink:focus {
   outline: none;
 }
+
+.glanceTexts {
+  max-width: 35rem;
+}
+
+@media screen and (max-width: 1078px) {
+  .glanceTexts {
+    max-width: 25rem;
+    padding-bottom: 3rem;
+  }
+}
+
+@media screen and (max-width: 924px) {
+  .glanceTexts {
+    max-width: fit-content;
+    padding: 0.5rem;
+  }
+}

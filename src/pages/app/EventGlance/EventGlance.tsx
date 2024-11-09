@@ -451,7 +451,7 @@ const EventGlance = () => {
                 </svg>
               )}
 
-              <div>
+              <div className={styles.glanceTexts}>
                 <div className={styles.headingTexts}>
                   <p className={styles.eventTitle}>{eventData?.title}</p>
                 </div>
