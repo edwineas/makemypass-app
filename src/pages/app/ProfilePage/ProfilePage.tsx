@@ -1,53 +1,44 @@
 import { motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { BiUser } from 'react-icons/bi';
-import { BsEye, BsEyeSlash } from 'react-icons/bs';
-import { FaCamera } from 'react-icons/fa';
-import { FiEdit3 } from 'react-icons/fi';
-import { useLocation } from 'react-router-dom';
+import { BiLock, BiUser } from 'react-icons/bi';
+import { BeatLoader } from 'react-spinners';
 
+import { generateOTP, resetUserPassword } from '../../../apis/auth';
+// import { useLocation } from 'react-router-dom';
 import { getEventsList } from '../../../apis/events';
 import { Event } from '../../../apis/types';
-import {
-  getProfileInfo,
-  setUserData,
-  udpateUserProfile,
-  updateProfilePassword,
-} from '../../../apis/user';
+import { getProfileInfo, updateUserProfile } from '../../../apis/user';
 import Loader from '../../../components/Loader';
-import ButtonLoader from '../../../components/LoaderButton/LoaderButton';
 import Modal from '../../../components/Modal/Modal';
 import Theme from '../../../components/Theme/Theme';
+import InputField from '../../auth/Login/InputField';
 import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton';
 import EventBox from './components/EventBox/EventBox';
 import styles from './ProfilePage.module.css';
+import type { userData, userPasswordData } from './types';
 
 const ProfilePage = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get('token')?.replace(/\/+$/, '') as string;
-  const [user, setUser] = React.useState<{
-    name?: string;
-    email?: string;
-    profile_pic?: string;
-  }>();
-  const [editUser, setEditUser] = React.useState<{
-    name?: string;
-    email?: string;
-    profile_pic?: Blob | File;
-  }>();
-  const NameRef = useRef<HTMLInputElement>(null);
-  const EmailRef = useRef<HTMLInputElement>(null);
-  const ProfilePicRef = useRef<HTMLInputElement>(null);
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // const token = queryParams.get('token')?.replace(/\/+$/, '') as string;
+
   const [loading, setLoading] = React.useState(false);
   const [dataLoading, setDataLoading] = React.useState(false);
-  const [isOpenModal, setIsOpenModal] = useState(false);
   // const [currentTab, setCurrentTab] = useState('owner');
   const [eventsData, setEventsData] = useState<Event[]>([]);
-  const [showCurrentPassword, setShowCurrentPassword] = useState<boolean>(false);
-  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+
+  const [editBasicInfo, setEditBasicInfo] = useState(false);
+  const [userData, setUserData] = React.useState<userData>();
+  const [originalUserData, setOriginalUserData] = useState<userData>();
+  const ProfilePicRef = useRef<HTMLInputElement>(null);
+
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [passwordData, setPasswordData] = useState<userPasswordData>({
+    OTP: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
 
   enum EventStatus {
     Published = 'Published',
@@ -55,250 +46,220 @@ const ProfilePage = () => {
     Draft = 'Draft',
   }
 
-  const handleUpdateProfile = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.target as HTMLFormElement);
-    if (token) {
-      setUserData({ formData, token, setLoading });
-    } else {
-      udpateUserProfile({ data: formData }, setLoading);
-    }
-  };
+  // const handleUpdateProfile = () => {
 
-  const handleUpdatePassword = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.target as HTMLFormElement);
+  //   const formData = new FormData(event.target as HTMLFormElement);
+  //   if (token) {
+  //     setUserData({ formData, token, setLoading });
+  //   } else {
 
-    if (formData.get('new_password') !== formData.get('confirm_new_password')) {
-      toast.error('Passwords do not match');
-      return;
-    }
-
-    updateProfilePassword({ data: formData }, setLoading);
-  };
+  //   }
+  // };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const userInfo = await getProfileInfo();
-      await getEventsList(setEventsData, setDataLoading);
-      setUser(userInfo);
-      if (userInfo) {
-        setEditUser({
-          name: userInfo.name,
-          email: userInfo.email,
-        });
-      }
-    };
-    fetchData();
+    getEventsList(setEventsData, setDataLoading);
+    getProfileInfo({ setUserData, setOriginalUserData });
   }, []);
-
-  useEffect(() => {
-    if (user && NameRef.current && EmailRef.current) {
-      setEditUser({
-        name: user.name,
-        email: user.email,
-      });
-    }
-  }, [isOpenModal, user]);
 
   return (
     <>
-      {user && dataLoading ? (
+      {userData && dataLoading ? (
         <>
           <Theme>
-            {isOpenModal && (
-              <Modal type='side' onClose={() => setIsOpenModal(false)} title='Edit Profile'>
-                <div className={styles.modalContainer}>
-                  <form onSubmit={handleUpdateProfile}>
-                    <div className={styles.userDetailsContainer}>
-                      {user?.profile_pic?.includes('.png') && !editUser?.profile_pic && (
-                        <>
-                          <img
-                            src={user?.profile_pic}
-                            alt='profile picture'
-                            className={styles.profilePic}
-                            style={{ objectFit: 'cover' }}
-                          />
-                          <FaCamera
-                            className={styles.cameraIcon}
-                            onClick={() => ProfilePicRef.current?.click()}
-                          />
-                        </>
-                      )}
-                      {editUser?.profile_pic && (
-                        <>
-                          <img
-                            src={URL.createObjectURL(editUser?.profile_pic)}
-                            alt='profile picture'
-                            style={{ objectFit: 'cover' }}
-                            className={styles.profilePic}
-                          />
-                          <FaCamera
-                            className={styles.cameraIcon}
-                            onClick={() => ProfilePicRef.current?.click()}
-                          />
-                        </>
-                      )}
-                      {!user?.profile_pic?.includes('.png') && !editUser?.profile_pic && (
-                        <>
-                          <BiUser
-                            className={styles.profilePic}
-                            style={{
-                              padding: '10px',
-                              color: 'black',
-                              width: '80px',
-                              height: '80px',
-                            }}
-                          />
-                          <FaCamera
-                            className={styles.cameraIcon}
-                            onClick={() => ProfilePicRef.current?.click()}
-                          />
-                        </>
-                      )}
-                      <div className={styles.modalUserDetails}>
-                        <label className={styles.modalUserName}>{editUser?.name}</label>
-                        <label className={styles.modalUserMail}>{editUser?.email}</label>
-                      </div>
-                    </div>{' '}
-                    <div className={styles.formGroupContainer}>
-                      <div className={styles.formGroup}>
-                        <label htmlFor='name'>Full Name</label>
-                        <input
-                          type='text'
-                          id='name'
-                          name='name'
-                          autoComplete='off'
-                          onChange={(e) => setEditUser({ ...editUser, name: e.target.value })}
-                          value={editUser?.name}
-                        />
-                      </div>
-                      {token ? (
-                        <div className={styles.formGroup}>
-                          <label htmlFor='password'>Password</label>
-                          <input type='password' id='password' name='password' />
-                        </div>
-                      ) : (
-                        <div className={styles.formGroup}>
-                          <label htmlFor='email' style={{ opacity: 0.5 }}>
-                            Email Address
-                          </label>
-                          <input
-                            required
-                            type='email'
-                            id='email'
-                            name='email'
-                            value={editUser?.email}
-                            onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
-                            disabled={true}
-                            style={{ opacity: 0.5 }}
-                          />
-                        </div>
-                      )}
-                      <div className={styles.formGroup}>
-                        <input
-                          type='file'
-                          id='profile_pic'
-                          name='profile_pic'
-                          className={styles.fileInput}
-                          onChange={(e) =>
-                            setEditUser({ ...editUser, profile_pic: e.target?.files?.[0] })
-                          }
-                          ref={ProfilePicRef}
-                        />
-                      </div>
-                      <button type='submit' className={styles.updateButton}>
-                        <span className={styles.buttonText}>Update details</span>
-                        <ButtonLoader loading={loading} />
-                      </button>
+            {editBasicInfo && (
+              <Modal title='Edit Basic Info' onClose={() => setEditBasicInfo(false)}>
+                <div className={styles.EditBasicInfoContainer}>
+                  <div className={styles.userDetailsContainer}>
+                    <div className={styles.basicProfileImageEdit}>
+                      <img
+                        src={
+                          userData?.profile_pic
+                            ? typeof userData?.profile_pic === 'string'
+                              ? userData?.profile_pic
+                              : URL.createObjectURL(userData?.profile_pic)
+                            : '/app/profilepics/default1.png'
+                        }
+                        alt='profile picture'
+                        style={{ objectFit: 'cover' }}
+                        className={styles.profilePic}
+                      />
+                      <SecondaryButton
+                        style={{ marginTop: '1rem' }}
+                        buttonText='Change'
+                        onClick={() => ProfilePicRef.current?.click()}
+                      />
+                      <input
+                        type='file'
+                        id='profile_pic'
+                        name='profile_pic'
+                        className={styles.fileInput}
+                        accept='.png, .jpg, .jpeg'
+                        onChange={(e) =>
+                          setUserData({ ...userData, profile_pic: e.target.files?.[0] })
+                        }
+                        ref={ProfilePicRef}
+                      />
                     </div>
-                  </form>
-                  <div className={styles.lineContainer} />
-                  <form onSubmit={handleUpdatePassword}>
-                    <div className={styles.formGroup}>
-                      <label htmlFor='current_password'>Current Password</label>
-                      <div className={styles.passwordContainer}>
-                        <input
-                          type={showCurrentPassword ? 'text' : 'password'}
-                          id='current_password'
-                          name='current_password'
-                          style={{
-                            backgroundColor: 'transparent',
-                            width: '100%',
-                            borderRadius: '0',
-                            padding: '0',
-                          }}
-                          required
-                        />
-                        <div onClick={() => setShowCurrentPassword((prevPass) => !prevPass)}>
-                          {showCurrentPassword ? <BsEye /> : <BsEyeSlash />}
-                        </div>
-                      </div>
+
+                    <div className={styles.EditBasicInfoContainer}>
+                      <InputField
+                        type='text'
+                        name='name'
+                        id='name'
+                        title='Name'
+                        icon={<BiUser />}
+                        value={userData?.name}
+                        onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                        style={{ marginBottom: '0' }}
+                      />
+                      <InputField
+                        type='email'
+                        name='email'
+                        id='email'
+                        title='Email'
+                        icon={<BiUser />}
+                        disabled={true}
+                        value={userData?.email}
+                        onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                      />
                     </div>
-                    <div className={styles.formGroup}>
-                      <label htmlFor='new_password'>New Password</label>
-                      <div className={styles.passwordContainer}>
-                        <input
-                          type={showNewPassword ? 'text' : 'password'}
-                          id='new_password'
-                          name='new_password'
-                          style={{
-                            backgroundColor: 'transparent',
-                            width: '100%',
-                            borderRadius: '0',
-                            padding: '0',
-                          }}
-                          required
-                        />
-                        <div onClick={() => setShowNewPassword((prevPass) => !prevPass)}>
-                          {showNewPassword ? <BsEye /> : <BsEyeSlash />}
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label htmlFor='confirm_new_password'>Confirm New Password</label>
-                      <div className={styles.passwordContainer}>
-                        <input
-                          type={showConfirmPassword ? 'text' : 'password'}
-                          id='confirm_new_password'
-                          name='confirm_new_password'
-                          style={{
-                            backgroundColor: 'transparent',
-                            width: '100%',
-                            borderRadius: '0',
-                            padding: '0',
-                          }}
-                          required
-                        />
-                        <div onClick={() => setShowConfirmPassword((prevPass) => !prevPass)}>
-                          {showConfirmPassword ? <BsEye /> : <BsEyeSlash />}
-                        </div>
-                      </div>
-                    </div>
-                    <button type='submit' className={styles.updateButton2}>
-                      <span className={styles.buttonText}>Update Password</span>
-                      <ButtonLoader loading={loading} />
+                  </div>
+                  <div className={styles.basicEditModalButtons}>
+                    <button
+                      className={styles.confirmButton}
+                      onClick={() => {
+                        console.log(userData);
+                        console.log(originalUserData);
+                        updateUserProfile(userData, originalUserData, setLoading);
+                        setEditBasicInfo(false);
+                      }}
+                    >
+                      {loading ? <BeatLoader color='#000' size={8} /> : 'Save'}
                     </button>
-                  </form>
+                    <button
+                      onClick={() => {
+                        setEditBasicInfo(false);
+                      }}
+                      className={styles.cancelButton}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </Modal>
             )}
+            {showChangePasswordModal && (
+              <Modal title='Change Password' onClose={() => setShowChangePasswordModal(false)}>
+                <div className={styles.EditPasswordContainer}>
+                  <div className={styles.passwordFieldsContainer}>
+                    <InputField
+                      type='text'
+                      name='otp'
+                      id='otp'
+                      placeholder='Enter OTP sent to your email'
+                      title='One Time Password'
+                      icon={<BiLock />}
+                      value={passwordData.OTP}
+                      onChange={(e) => setPasswordData({ ...passwordData, OTP: e.target.value })}
+                      style={{ marginBottom: '1rem' }}
+                    />
+
+                    <InputField
+                      type='password'
+                      name='new_password'
+                      id='new_password'
+                      placeholder='Enter New Password'
+                      title='New Password'
+                      icon={<BiLock />}
+                      value={passwordData.newPassword}
+                      onChange={(e) =>
+                        setPasswordData({ ...passwordData, newPassword: e.target.value })
+                      }
+                      style={{ marginBottom: '1rem' }}
+                    />
+
+                    <InputField
+                      type='password'
+                      name='confirm_password'
+                      id='confirm_password'
+                      placeholder='Confirm Password'
+                      title='Confirm Password'
+                      icon={<BiLock />}
+                      value={passwordData.confirmPassword}
+                      onChange={(e) =>
+                        setPasswordData({ ...passwordData, confirmPassword: e.target.value })
+                      }
+                      style={{ marginBottom: '1rem' }}
+                    />
+                  </div>
+
+                  <div className={styles.basicEditModalButtons}>
+                    <button
+                      className={styles.confirmButton}
+                      onClick={() => {
+                        if (passwordData.newPassword === passwordData.confirmPassword) {
+                          resetUserPassword(
+                            userData.email,
+                            passwordData.OTP,
+                            passwordData.newPassword,
+                          );
+                          setShowChangePasswordModal(false);
+                        } else {
+                          toast.error('New Password and Confirm Password do not match!');
+                        }
+                      }}
+                    >
+                      {loading ? <BeatLoader color='#000' size={8} /> : 'Update'}
+                    </button>
+                    <button
+                      onClick={() => setShowChangePasswordModal(false)}
+                      className={styles.cancelButton}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </Modal>
+            )}
+
             <div className={styles.profilePageContainer}>
               <div className={styles.profileSection}>
-                {user?.profile_pic?.includes('.png') ? (
-                  <img src={user?.profile_pic} className={styles.profilePic} />
-                ) : (
-                  <div>
-                    <BiUser className={styles.profilePic} style={{ padding: '10px' }} />
-                  </div>
-                )}
+                <img
+                  src={
+                    userData?.profile_pic
+                      ? typeof userData?.profile_pic === 'string'
+                        ? userData?.profile_pic
+                        : URL.createObjectURL(userData?.profile_pic)
+                      : '/app/profilepics/default1.png'
+                  }
+                  alt='profile picture'
+                  style={{ objectFit: 'cover' }}
+                  className={styles.profilePic}
+                />
+
                 <div className={styles.profileInfo}>
-                  <label className={styles.infoName}>{user?.name}</label>
-                  <label className={styles.infoEmail}>{user?.email}</label>
+                  <label className={styles.infoName}>{originalUserData?.name}</label>
+                  <label className={styles.infoEmail}>{originalUserData?.email}</label>
+
+                  <label className={styles.hostedCount}>
+                    Hosted: {eventsData.filter((event) => event.status === 'Completed').length}{' '}
+                    Events
+                  </label>
+                </div>
+
+                <div className={styles.buttonsContainer}>
                   <SecondaryButton
-                    onClick={() => setIsOpenModal(true)}
-                    buttonText='Edit Profile'
-                    icon={<FiEdit3 />}
+                    buttonText='Edit Basic Info'
+                    onClick={() => {
+                      setEditBasicInfo(!editBasicInfo);
+                    }}
+                  />
+
+                  <SecondaryButton
+                    buttonText='Change Password'
+                    onClick={() => {
+                      generateOTP(userData.email, setShowChangePasswordModal, 'Forget Password');
+                    }}
                   />
                 </div>
               </div>

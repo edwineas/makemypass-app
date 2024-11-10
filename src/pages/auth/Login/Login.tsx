@@ -118,8 +118,8 @@ const Login = () => {
         generateOTP(
           emailRef.current?.value,
           setIsOtpSent,
-          setIsRegistered,
           isForgetPassword ? 'Forget Password' : 'Login',
+          setIsRegistered,
         );
       }
     } else {
@@ -163,7 +163,7 @@ const Login = () => {
   useEffect(() => {
     if (isForgetPassword && emailRef.current?.value) {
       passwordRef.current!.value = '';
-      generateOTP(emailRef.current?.value, setIsOtpSent, setIsRegistered, 'Forget Password');
+      generateOTP(emailRef.current?.value, setIsOtpSent, 'Forget Password', setIsRegistered);
       setIsForgetPassword(true);
       setTimer(18);
     } else if (isForgetPassword && !emailRef.current?.value) {
@@ -357,15 +357,15 @@ const Login = () => {
                         generateOTP(
                           emailRef.current?.value,
                           setIsOtpSent,
-                          setIsRegistered,
                           'Forget Password',
+                          setIsRegistered,
                         );
                       else if (isRegistered) {
                         generateOTP(
                           emailRef.current?.value,
                           setIsOtpSent,
-                          setIsRegistered,
                           'Login',
+                          setIsRegistered,
                         );
                       } else initiatePreRegistration(emailRef.current?.value, setIsOtpSent);
 

@@ -74,8 +74,8 @@ export const onboardUser = async () => {
 export const generateOTP = async (
   email: string,
   setIsOtpSent: (arg0: boolean) => void,
-  setIsRegistered: Dispatch<React.SetStateAction<boolean>>,
   type: string,
+  setIsRegistered?: Dispatch<React.SetStateAction<boolean>>,
 ) => {
   publicGateway
     .post(buildVerse.generateOTP, {
@@ -91,7 +91,7 @@ export const generateOTP = async (
       return response.data;
     })
     .catch((error) => {
-      if (error.response.data.statusCode === 1001) {
+      if (error.response.data.statusCode === 1001 && setIsRegistered) {
         setIsRegistered(false);
         initiatePreRegistration(email, setIsOtpSent);
       }
@@ -165,7 +165,7 @@ export const resetUserPassword = (
   email: string,
   otp: string,
   password: string,
-  setError: Dispatch<React.SetStateAction<errorType | undefined>>,
+  setError?: Dispatch<React.SetStateAction<errorType | undefined>>,
 ): Promise<AuthApiSuccessResponse> => {
   return new Promise((resolve, reject) => {
     publicGateway
@@ -178,15 +178,18 @@ export const resetUserPassword = (
         resolve(response.data);
       })
       .catch((error) => {
-        setError({
-          email: error.response.data.message.email ? error.response.data.message.email : undefined,
-          password: error.response.data.message.password
-            ? error.response.data.message.password
-            : error.response.data.message.general[0],
-          otp: error.response.data.message.otp
-            ? error.response.data.message.otp
-            : error.response.data.message.general[0],
-        });
+        setError &&
+          setError({
+            email: error.response.data.message.email
+              ? error.response.data.message.email
+              : undefined,
+            password: error.response.data.message.password
+              ? error.response.data.message.password
+              : error.response.data.message.general[0],
+            otp: error.response.data.message.otp
+              ? error.response.data.message.otp
+              : error.response.data.message.general[0],
+          });
         reject(error);
       });
   });

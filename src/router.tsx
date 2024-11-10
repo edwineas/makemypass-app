@@ -38,7 +38,6 @@ import PrivacyPolicy from './pages/app/PrivacyPolicy/PrivacyPolicy';
 import ProfilePage from './pages/app/ProfilePage/ProfilePage';
 import Randomizer from './pages/app/Randomizer/Randomizer';
 import SelfCheckIn from './pages/app/SelfCheckIn/SelfCheckIn';
-import SetProfilePage from './pages/app/SetProfilePage/SetProfilePage';
 import Spinwheel from './pages/app/Spinwheel/Spinwheel';
 import Dashboard from './pages/app/SubEvents/Admin/Dashboard/Dashboard';
 import SubEventDashboard from './pages/app/SubEvents/Admin/SubEventDashboard/SubEventDashboard';
@@ -80,10 +79,6 @@ const routes: RouteObject[] = [
   {
     path: '/profile',
     element: <ProfilePage />,
-  },
-  {
-    path: '/set-profile',
-    element: <SetProfilePage />,
   },
   {
     path: '/:eventTitle/public/insights',

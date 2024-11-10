@@ -46,7 +46,12 @@ const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, type, ...inp
       {inputProps.description && (
         <p className={styles.fieldDescription}>{inputProps.description}</p>
       )}
-      <div className={styles.inputField}>
+      <div
+        className={styles.inputField}
+        style={{
+          opacity: inputProps.disabled ? 0.5 : 1,
+        }}
+      >
         {icon}
         <input
           {...inputProps}
@@ -58,6 +63,7 @@ const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, type, ...inp
           style={{
             width: '100%',
             fontFamily: 'Inter',
+            opacity: inputProps.disabled ? 0.5 : 1,
           }}
         />
         {type === 'password' && (

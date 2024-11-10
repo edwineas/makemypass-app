@@ -2,13 +2,30 @@ import toast from 'react-hot-toast';
 
 import { privateGateway } from '../../services/apiGateway';
 import { buildVerse } from '../../services/urls';
+import type { userData } from '../pages/app/ProfilePage/types';
 
-export const udpateUserProfile = async (
-  { data }: { [k: string]: FormData },
+export const updateUserProfile = async (
+  userData: userData | undefined,
+  originalData: userData | undefined,
   setLoading?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   setLoading && setLoading(true);
   const toastId = toast.loading('Updating Profile...');
+
+  const data = new FormData();
+
+  if (userData?.name !== originalData?.name) {
+    data.append('name', userData?.name || '');
+  }
+  if (userData?.email !== originalData?.email) {
+    data.append('email', userData?.email || '');
+  }
+  if (userData?.profile_pic !== originalData?.profile_pic) {
+    if (userData?.profile_pic) {
+      data.append('profile_pic', userData.profile_pic);
+    }
+  }
+
   return privateGateway
     .put(buildVerse.updateProfile, data, {
       headers: {
@@ -22,39 +39,6 @@ export const udpateUserProfile = async (
     })
     .catch((error) => {
       toast.error(error.response?.data?.message?.general[0] || 'Error in Updating Profile', {
-        id: toastId,
-      });
-    })
-    .finally(() => {
-      setLoading && setLoading(false);
-    });
-};
-
-export const updateProfilePassword = async (
-  { data }: { [k: string]: FormData },
-  setLoading?: React.Dispatch<React.SetStateAction<boolean>>,
-) => {
-  const toastId = toast.loading('Updating Password...');
-  return privateGateway
-    .post(
-      buildVerse.updateProfilePassword,
-      {
-        old_password: data.get('current_password'),
-        new_password: data.get('new_password'),
-      },
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      },
-    )
-    .then(() => {
-      toast.success('Password Updated Successfully', {
-        id: toastId,
-      });
-    })
-    .catch((error) => {
-      toast.error(error.response?.data?.message?.general[0] || 'Error in Updating Password', {
         id: toastId,
       });
     })
@@ -90,15 +74,18 @@ export const setUserData = async ({
     });
 };
 
-export const getProfileInfo = (): Promise<{
-  name?: string;
-  email?: string;
-  profile_pic?: string;
-}> => {
+export const getProfileInfo = async ({
+  setUserData,
+  setOriginalUserData,
+}: {
+  setUserData: React.Dispatch<React.SetStateAction<userData | undefined>>;
+  setOriginalUserData: React.Dispatch<React.SetStateAction<userData | undefined>>;
+}) => {
   return privateGateway
     .get(buildVerse.profileInfo)
     .then((response) => {
-      return response.data.response;
+      setUserData(response.data.response);
+      setOriginalUserData(response.data.response);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Error in Fetching Profile Info');
