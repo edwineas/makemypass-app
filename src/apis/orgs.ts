@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
 import { NavigateFunction } from 'react-router';
 
-import { privateGateway } from '../../services/apiGateway';
+import { privateGateway, publicGateway } from '../../services/apiGateway';
 import { makeMyPass } from '../../services/urls';
 import type { OrganizationType } from '../pages/app/Organization/EditOrganization/types';
 import type { MemberType } from '../pages/app/Organization/OrganizationGlance/types';
@@ -106,7 +106,7 @@ export const OrgInfoFromName = (
   setOrganization: Dispatch<SetStateAction<OrganizationType>>,
 ) => {
   privateGateway
-    .get(makeMyPass.orgInfo(orgName))
+    .get(makeMyPass.orgInfoPriv(orgName))
     .then((response) => {
       console.log(response.data.response);
       setOrganization(response.data.response);
@@ -115,6 +115,32 @@ export const OrgInfoFromName = (
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
     });
 };
+
+export const OrgInfoFromNamePublic = (
+  orgName: string,
+  setOrganization: Dispatch<SetStateAction<OrganizationType>>,
+) => {
+  publicGateway
+    .get(makeMyPass.orgInfoPublic(orgName))
+    .then((response) => {
+      console.log(response.data.response);
+      const org = response.data.response;
+
+      setOrganization({
+        id: org.id,
+        title: org.title,
+        name: org.name,
+        banner: org.banner,
+        logo: org.logo,
+        description: org.description,
+        events: org.events,
+      });
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    });
+};
+
 export const listOrgMembers = (
   orgId: string,
   setMembers: Dispatch<SetStateAction<MemberType[] | undefined>>,

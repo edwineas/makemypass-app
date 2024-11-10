@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { BsArrowRight } from 'react-icons/bs';
 import { TbAlertTriangleFilled } from 'react-icons/tb';
 import { useParams } from 'react-router';
 import { BeatLoader } from 'react-spinners';
@@ -7,9 +9,12 @@ import {
   addOrgMember,
   listOrgMembers,
   OrgInfoFromName,
+  OrgInfoFromNamePublic,
   removeOrgMember,
   updateOrgMember,
 } from '../../../../apis/orgs';
+import { formatDate } from '../../../../common/commonFunctions';
+import EventHeader from '../../../../components/EventHeader/EventHeader';
 import Modal from '../../../../components/Modal/Modal';
 import Table from '../../../../components/Table/Table';
 import { TableType } from '../../../../components/Table/types';
@@ -22,7 +27,7 @@ import type { OrganizationType } from '../EditOrganization/types';
 import styles from './OrganizationGlance.module.css';
 import type { MemberType } from './types';
 
-const OrganizationGlance = () => {
+const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
   const { orgName } = useParams<{ orgName: string }>();
 
   const [organization, setOrganization] = useState<OrganizationType>({
@@ -47,13 +52,15 @@ const OrganizationGlance = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    if (orgName) {
+    if (orgName && type === 'public') {
+      OrgInfoFromNamePublic(orgName, setOrganization);
+    } else if (orgName && type === 'private') {
       OrgInfoFromName(orgName, setOrganization);
     }
   }, [orgName, triggerFetch]);
 
   useEffect(() => {
-    if (organization.id) {
+    if (organization.id && type === 'private') {
       listOrgMembers(organization.id, setOrganizationMembers);
     }
   }, [organization]);
@@ -67,24 +74,26 @@ const OrganizationGlance = () => {
   }, [selectedMemberId]);
 
   useEffect(() => {
-    const hostListMapping = {
-      name: 'name',
-      email: 'email',
-      role: 'category',
-      is_private: 'is_private',
-      id: 'id',
-    };
+    if (type === 'private') {
+      const hostListMapping = {
+        name: 'name',
+        email: 'email',
+        role: 'category',
+        is_private: 'is_private',
+        id: 'id',
+      };
 
-    if (organizationMembers) {
-      const transformedData = organizationMembers.map((member) => {
-        const transformedMember = Object.keys(hostListMapping).reduce((acc, key) => {
-          acc[hostListMapping[key as keyof typeof hostListMapping]] =
-            member[key as keyof MemberType];
-          return acc;
-        }, {} as TableType);
-        return transformedMember;
-      });
-      setTransformedMembers(transformedData);
+      if (organizationMembers) {
+        const transformedData = organizationMembers.map((member) => {
+          const transformedMember = Object.keys(hostListMapping).reduce((acc, key) => {
+            acc[hostListMapping[key as keyof typeof hostListMapping]] =
+              member[key as keyof MemberType];
+            return acc;
+          }, {} as TableType);
+          return transformedMember;
+        });
+        setTransformedMembers(transformedData);
+      }
     }
   }, [organizationMembers]);
 
@@ -115,7 +124,7 @@ const OrganizationGlance = () => {
 
   return (
     <Theme>
-      {(selectedMemberId.type === 'edit' || addMember) && (
+      {type === 'private' && (selectedMemberId.type === 'edit' || addMember) && (
         <AddEditMember
           memberData={memberData}
           setMemberData={setMemberData}
@@ -124,7 +133,7 @@ const OrganizationGlance = () => {
           add={false}
         />
       )}
-      {selectedMemberId.type === 'delete' && (
+      {type === 'private' && selectedMemberId.type === 'delete' && (
         <Modal
           onClose={() => setSelectedMemberId({ id: '', type: null })}
           title='Delete Confirmation'
@@ -153,7 +162,7 @@ const OrganizationGlance = () => {
           </div>
         </Modal>
       )}
-      {showEditModal && (
+      {type === 'private' && showEditModal && (
         <Modal type='side' onClose={() => setShowEditModal(false)} title='Edit Organization'>
           <EditOrganization
             organization={organization}
@@ -163,6 +172,7 @@ const OrganizationGlance = () => {
         </Modal>
       )}
       <div className={styles.organizationContainer}>
+        {type === 'private' && <EventHeader previousPageNavigate='-1' />}
         <div className={styles.bannerContainer}>
           {organization.banner ? (
             <img
@@ -189,27 +199,97 @@ const OrganizationGlance = () => {
             </div>
           </div>
 
-          <div className={styles.buttons} onClick={() => setShowEditModal(true)}>
-            <button className={styles.editEventButton}>Edit Organization</button>
-          </div>
+          {type === 'private' && (
+            <div className={styles.buttons} onClick={() => setShowEditModal(true)}>
+              <button className={styles.editEventButton}>Edit Organization</button>
+            </div>
+          )}
         </div>
       </div>
 
-      <div id='members' className={styles.membersContainer}>
-        <Table
-          tableHeading='Organization Members'
-          tableData={transformedMembers}
-          secondaryButton={
-            <SecondaryButton
-              buttonText='Add Member +'
-              onClick={() => {
-                setAddMember(true);
-              }}
-            />
-          }
-          setHostId={setSelectedMemberId}
-          showSearch={true}
-        />
+      {type === 'private' && (
+        <div id='members' className={styles.membersContainer}>
+          <Table
+            tableHeading='Organization Members'
+            tableData={transformedMembers}
+            secondaryButton={
+              <SecondaryButton
+                buttonText='Add Member +'
+                onClick={() => {
+                  setAddMember(true);
+                }}
+              />
+            }
+            setHostId={setSelectedMemberId}
+            showSearch={true}
+          />
+        </div>
+      )}
+      {organization.events && organization.events?.Published.length > 0 && (
+        <div className={styles.eventsHeader}>
+          <p className={styles.eventsHeaderTitle}>Ongoing Events</p>
+        </div>
+      )}
+      <div className={styles.eventsContainer}>
+        {type === 'public' &&
+          organization.events &&
+          organization.events?.Published.length > 0 &&
+          organization.events?.Published.map((event) => (
+            <div key={event.id} className={styles.event}>
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className={styles.eventCard}
+                  style={{
+                    zIndex: 0,
+                  }}
+                >
+                  <div className={styles.innerCard}>
+                    {event.logo ? (
+                      <motion.img
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        src={event.logo}
+                        alt='event logo depicting event information'
+                        className={styles.eventImage}
+                      />
+                    ) : (
+                      <div className={styles.eventImage}>{event.title.charAt(0).toUpperCase()}</div>
+                    )}
+                    <div className={styles.eventDetails}>
+                      <div className={styles.eventDetailsHeader}>
+                        <div>
+                          {event.event_start_date && (
+                            <motion.div className={styles.eventDate}>
+                              <p className={styles.date}>{formatDate(event?.event_start_date)}</p>
+                            </motion.div>
+                          )}
+                          <p className={styles.eventName}>
+                            {event.title.substring(0, 35)}
+                            {event.title.length > 35 ? '...' : ''}
+                          </p>
+                        </div>
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        className={styles.manage}
+                        onClick={() => {
+                          window.location.href = `/${event.name}/manage`;
+                        }}
+                      >
+                        Manage
+                        <BsArrowRight size={15} />
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          ))}
       </div>
     </Theme>
   );

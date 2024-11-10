@@ -98,6 +98,10 @@ const routes: RouteObject[] = [
     element: <SelfCheckIn />,
   },
   {
+    path: '/organizations/:orgName',
+    element: <OrganizationGlance type='public' />,
+  },
+  {
     path: '/',
     element: <AuthCheck />,
     children: [
@@ -204,7 +208,7 @@ const routes: RouteObject[] = [
       },
       {
         path: 'organization/:orgName',
-        element: <OrganizationGlance />,
+        element: <OrganizationGlance type='private' />,
       },
       {
         path: '/:eventTitle/manage',
