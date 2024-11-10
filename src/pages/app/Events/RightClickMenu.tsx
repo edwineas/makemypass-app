@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import styles from './Events.module.css';
 
@@ -21,11 +21,14 @@ const RightClickMenu: React.FC<RightClickMenuProps> = ({
   onClose,
   setShowModal,
 }) => {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [elementWidth, setElementWidth] = React.useState(0);
   useEffect(() => {
+    if (menuRef.current) {
+      setElementWidth(menuRef.current.offsetWidth);
+    }
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const isMenuClicked = target.closest('.rightClickMenu');
-      if (isMenuClicked) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
@@ -44,16 +47,20 @@ const RightClickMenu: React.FC<RightClickMenuProps> = ({
 
   return (
     <div
+      ref={menuRef}
       className={styles.rightClickMenu}
       style={{
         position: 'absolute',
-        top: position.y,
-        left: position.x,
+        top: '20%',
+        left: '95%',
+        transform: `translate(${position.x + 10 + elementWidth > window.innerWidth ? -elementWidth : 0}px`,
+        zIndex: 1000,
       }}
     >
       <ul>
         <li
-          onClick={() => {
+          onClick={(event) => {
+            event.stopPropagation();
             setShowModal(true);
             onClose();
           }}
