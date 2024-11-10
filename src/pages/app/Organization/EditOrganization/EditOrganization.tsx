@@ -235,7 +235,7 @@ const EditOrganization = ({
           <div className={styles.communicationMediumIcons}>
             <a href='tel:+1234567890'>
               <FiPhone
-                size={25}
+                size={20}
                 color={organizationState?.socials?.phone ? '#46BF75' : '#949597'}
               />
             </a>
@@ -245,7 +245,7 @@ const EditOrganization = ({
               rel='noopener noreferrer'
             >
               <FaWhatsapp
-                size={25}
+                size={20}
                 color={organizationState?.socials?.whatsapp ? '#46BF75' : '#949597'}
               />
             </a>
@@ -254,7 +254,7 @@ const EditOrganization = ({
               target='_blank'
               rel='noopener noreferrer'
             >
-              <FiMail size={25} color={organizationState?.socials?.email ? '#46BF75' : '#949597'} />
+              <FiMail size={20} color={organizationState?.socials?.email ? '#46BF75' : '#949597'} />
             </a>
             <a
               href={organizationState?.socials?.instagram}
@@ -262,7 +262,7 @@ const EditOrganization = ({
               rel='noopener noreferrer'
             >
               <FaInstagram
-                size={25}
+                size={20}
                 color={organizationState?.socials?.instagram ? '#46BF75' : '#949597'}
               />
             </a>
@@ -272,13 +272,13 @@ const EditOrganization = ({
               rel='noopener noreferrer'
             >
               <FaFacebook
-                size={25}
+                size={20}
                 color={organizationState?.socials?.facebook ? '#46BF75' : '#949597'}
               />
             </a>
             <a href={organizationState?.socials?.twitter} target='_blank' rel='noopener noreferrer'>
               <FaTwitter
-                size={25}
+                size={20}
                 color={organizationState?.socials?.twitter ? '#46BF75' : '#949597'}
               />
             </a>
@@ -288,13 +288,13 @@ const EditOrganization = ({
               rel='noopener noreferrer'
             >
               <FaLinkedin
-                size={25}
+                size={20}
                 color={organizationState?.socials?.linkedin ? '#46BF75' : '#949597'}
               />
             </a>
           </div>
           <LuPencil
-            size={20}
+            size={18}
             color='#949597'
             onClick={() => {
               setShowCommunicationMediumModal(true);
