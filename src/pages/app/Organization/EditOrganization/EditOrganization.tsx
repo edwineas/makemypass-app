@@ -1,4 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa';
+import { FiMail, FiPhone } from 'react-icons/fi';
 import { IoCloseOutline } from 'react-icons/io5';
 import { LuPencil } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
@@ -11,22 +13,20 @@ import type { OrganizationType } from './types';
 
 const EditOrganization = ({
   organization,
+  organizationState,
+  setOrganizationState,
   setShowEditModal,
   setTriggerFetch,
+  setShowCommunicationMediumModal,
 }: {
   organization: OrganizationType;
+  organizationState: OrganizationType;
+  setOrganizationState: Dispatch<SetStateAction<OrganizationType>>;
   setShowEditModal: Dispatch<SetStateAction<boolean>>;
   setTriggerFetch: Dispatch<SetStateAction<boolean>>;
+  setShowCommunicationMediumModal: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [organizationState, setOrganizationState] = useState<OrganizationType>({
-    id: '',
-    banner: null,
-    description: '',
-    logo: null,
-    name: '',
-    title: '',
-  });
 
   useEffect(() => {
     if (organization) {
@@ -37,6 +37,7 @@ const EditOrganization = ({
         logo: organization.logo,
         name: organization.name,
         title: organization.title,
+        socials: organization.socials,
       });
     }
   }, [organization]);
@@ -226,6 +227,80 @@ const EditOrganization = ({
             )}
           </>
         )}
+      </div>
+
+      <div className={styles.socialMediaContainer}>
+        <p className={styles.socialMediaContainerHeader}>Communication Mediums</p>
+        <div className={styles.communcationMediumInnerContainer}>
+          <div className={styles.communicationMediumIcons}>
+            <a href='tel:+1234567890'>
+              <FiPhone
+                size={25}
+                color={organizationState?.socials?.phone ? '#46BF75' : '#949597'}
+              />
+            </a>
+            <a
+              href={`https://wa.me/${organizationState?.socials?.whatsapp}`}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FaWhatsapp
+                size={25}
+                color={organizationState?.socials?.whatsapp ? '#46BF75' : '#949597'}
+              />
+            </a>
+            <a
+              href={`mailto:${organizationState?.socials?.email}`}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FiMail size={25} color={organizationState?.socials?.email ? '#46BF75' : '#949597'} />
+            </a>
+            <a
+              href={organizationState?.socials?.instagram}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FaInstagram
+                size={25}
+                color={organizationState?.socials?.instagram ? '#46BF75' : '#949597'}
+              />
+            </a>
+            <a
+              href={organizationState?.socials?.facebook}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FaFacebook
+                size={25}
+                color={organizationState?.socials?.facebook ? '#46BF75' : '#949597'}
+              />
+            </a>
+            <a href={organizationState?.socials?.twitter} target='_blank' rel='noopener noreferrer'>
+              <FaTwitter
+                size={25}
+                color={organizationState?.socials?.twitter ? '#46BF75' : '#949597'}
+              />
+            </a>
+            <a
+              href={organizationState?.socials?.linkedin}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FaLinkedin
+                size={25}
+                color={organizationState?.socials?.linkedin ? '#46BF75' : '#949597'}
+              />
+            </a>
+          </div>
+          <LuPencil
+            size={20}
+            color='#949597'
+            onClick={() => {
+              setShowCommunicationMediumModal(true);
+            }}
+          />
+        </div>
       </div>
 
       <div className={styles.buttonsContainer}>

@@ -24,6 +24,7 @@ import type { hostId } from '../../Overview/Overview/types';
 import AddEditMember from '../AddEditMember/AddEditMember';
 import EditOrganization from '../EditOrganization/EditOrganization';
 import type { OrganizationType } from '../EditOrganization/types';
+import OrganizationEditSocialsModal from '../OrganizationEditSocialsModal/OrganizationEditSocialsModal';
 import styles from './OrganizationGlance.module.css';
 import type { MemberType } from './types';
 
@@ -37,6 +38,33 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
     banner: '',
     logo: '',
     description: '',
+    socials: {
+      email: '',
+      phone: '',
+      facebook: '',
+      linkedin: '',
+      twitter: '',
+      whatsapp: '',
+      instagram: '',
+    },
+  });
+
+  const [organizationState, setOrganizationState] = useState<OrganizationType>({
+    id: '',
+    banner: null,
+    description: '',
+    logo: null,
+    name: '',
+    title: '',
+    socials: {
+      email: '',
+      phone: '',
+      facebook: '',
+      linkedin: '',
+      twitter: '',
+      whatsapp: '',
+      instagram: '',
+    },
   });
 
   const [showEditModal, setShowEditModal] = useState(false);
@@ -48,6 +76,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
   const [addMember, setAddMember] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<hostId>({ id: '', type: null });
   const [memberData, setMemberData] = useState<MemberType>();
+  const [showCommunicationMediumModal, setShowCommunicationMediumModal] = useState<boolean>(false);
 
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -169,11 +198,22 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
         <Modal type='side' onClose={() => setShowEditModal(false)} title='Edit Organization'>
           <EditOrganization
             organization={organization}
+            organizationState={organizationState}
+            setOrganizationState={setOrganizationState}
             setShowEditModal={setShowEditModal}
             setTriggerFetch={setTriggerFetch}
+            setShowCommunicationMediumModal={setShowCommunicationMediumModal}
           />
         </Modal>
       )}
+      {showCommunicationMediumModal && (
+        <OrganizationEditSocialsModal
+          setShowCommunicationMediumModal={setShowCommunicationMediumModal}
+          organizationState={organizationState}
+          setorganizationState={setOrganizationState}
+        />
+      )}
+
       <div className={styles.organizationContainer}>
         {type === 'private' && <EventHeader previousPageNavigate='-1' />}
         <div className={styles.bannerContainer}>

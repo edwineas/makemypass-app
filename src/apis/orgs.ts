@@ -63,14 +63,21 @@ export const updateOrg = (
   setShowEditModal: Dispatch<SetStateAction<boolean>>,
   setTriggerFetch: Dispatch<SetStateAction<boolean>>,
 ) => {
+  console.log(organizationState);
+  console.log(organization);
   setIsUpdating(true);
   const formData = new FormData();
-  const fieldsToUpdate = ['title', 'name', 'description', 'banner', 'logo'] as const;
+  const fieldsToUpdate = ['title', 'name', 'description', 'banner', 'logo', 'socials'] as const;
   let hasChanges = false;
   fieldsToUpdate.forEach((field) => {
     if (organizationState[field] !== organization[field]) {
       hasChanges = true;
-      formData.append(field, organizationState[field] || '');
+      if (field === 'socials') {
+        const socials = organizationState[field];
+        formData.append(field, JSON.stringify(socials));
+      } else {
+        formData.append(field, organizationState[field] || '');
+      }
     }
   });
 
@@ -134,6 +141,7 @@ export const OrgInfoFromNamePublic = (
         logo: org.logo,
         description: org.description,
         events: org.events,
+        socials: org.socials,
       });
     })
     .catch((error) => {

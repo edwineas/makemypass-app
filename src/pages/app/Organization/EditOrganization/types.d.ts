@@ -9,6 +9,15 @@ export type OrganizationType = {
     Published: OrganizationEventType[];
     Completed: OrganizationEventType[];
   };
+  socials: {
+    email: string;
+    phone: string;
+    facebook: string;
+    linkedin: string;
+    twitter: string;
+    whatsapp: string;
+    instagram: string;
+  };
 };
 
 type OrganizationEventType = {
