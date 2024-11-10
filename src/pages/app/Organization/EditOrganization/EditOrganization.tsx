@@ -40,6 +40,7 @@ const EditOrganization = ({
         socials: organization.socials,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [organization]);
 
   const navigate = useNavigate();
