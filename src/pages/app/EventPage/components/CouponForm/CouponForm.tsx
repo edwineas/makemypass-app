@@ -86,12 +86,6 @@ const CouponForm = ({
     ) {
       firstCategory = [
         ...new Set(
-          filteredTickets.filter((ticket) => ticket.category).map((ticket) => ticket.category),
-        ),
-      ][0];
-    } else {
-      firstCategory = [
-        ...new Set(
           filteredTickets
             .filter((ticket) => ticket.category && ticket.default_selected)
             .map((ticket) => ticket.category),
@@ -99,7 +93,7 @@ const CouponForm = ({
       ][0];
     }
 
-    if (!selectedTicketCategory) setSelectedTicketCategory(firstCategory);
+    if (!selectedTicketCategory && firstCategory) setSelectedTicketCategory(firstCategory);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredTickets]);
 
@@ -116,7 +110,7 @@ const CouponForm = ({
           ticketCount: ticket.count,
           total: findPriceAfterCharge(
             ticketData.price * ticket.count,
-            ticketData.platform_fee,
+            ticketData.platform_perc_fee,
             ticketData.gateway_fee,
             ticketData.platform_fee_from_user,
           ),
@@ -125,7 +119,7 @@ const CouponForm = ({
           currency: ticketData.currency,
           is_fee:
             ticketData.platform_fee_from_user &&
-            ticketData.platform_fee + ticketData.gateway_fee > 0,
+            ticketData.platform_perc_fee + ticketData.gateway_fee > 0,
         });
       }
     });
@@ -175,9 +169,8 @@ const CouponForm = ({
 
   useEffect(() => {
     if (tickets.length === 0 && filteredTickets.length > 0) {
-      const defaultTicket =
-        filteredTickets.find((ticket: TicketType) => ticket.default_selected) || filteredTickets[0];
-      setTickets([{ ticket_id: defaultTicket.id, count: 1, my_ticket: true }]);
+      const defaultTicket = filteredTickets.find((ticket: TicketType) => ticket.default_selected);
+      if (defaultTicket) setTickets([{ ticket_id: defaultTicket.id, count: 1, my_ticket: true }]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredTickets]);
@@ -303,11 +296,12 @@ const CouponForm = ({
             ...new Set(
               filteredTickets.filter((ticket) => ticket.category).map((ticket) => ticket.category),
             ),
-          ].map((category) => (
+          ].map((category, index) => (
             <p
+              key={index}
               className={styles.couponTypesTitle}
               style={
-                selectedTicketCategory === category
+                selectedTicketCategory === category || (!selectedTicketCategory && index === 0)
                   ? { borderBottom: '2px solid #ffffff', color: '#ffffff' }
                   : undefined
               }
@@ -319,146 +313,10 @@ const CouponForm = ({
         </div>
 
         {filteredTickets
-          .filter((filteredTicket) => filteredTicket.category === selectedTicketCategory)
-          .map((filteredTicket) => {
-            return (
-              <div
-                key={filteredTicket.id}
-                onClick={() => {
-                  filteredTicket.capacity && filteredTicket.capacity <= 0
-                    ? ticketSoldAlert()
-                    : onSelectTicket(filteredTicket.id);
-                }}
-                className={`${styles.ticketType} ${isTicketActive(filteredTicket) ? styles.borderClassWhite : styles.borderClassDefault}`}
-                style={
-                  filteredTicket.capacity && filteredTicket.capacity <= 0
-                    ? { opacity: '0.5' }
-                    : undefined
-                }
-              >
-                {eventFormData?.select_multi_ticket && (
-                  <div className={styles.ticketCountContainer}>
-                    <div className='row' style={{ columnGap: 0 }}>
-                      <button
-                        className={styles.ticketCountUpdateButton}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          filteredTicket.capacity && filteredTicket.capacity <= 0
-                            ? ticketSoldAlert()
-                            : updateTicketCount(filteredTicket.id, false);
-                        }}
-                      >
-                        -
-                      </button>
-                      <p className={styles.ticketCount}>
-                        {tickets.find((ticket) => ticket.ticket_id === filteredTicket.id)?.count ??
-                          0}
-                      </p>
-                      <button
-                        className={styles.ticketCountUpdateButton}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          const currentTicketCount = tickets.find(
-                            (ticket) => ticket.ticket_id === filteredTicket.id,
-                          )?.count;
-
-                          if (
-                            currentTicketCount === filteredTicket.capacity ||
-                            (filteredTicket.capacity != null && filteredTicket.capacity <= 0)
-                          ) {
-                            toast.error('Ticket limit reached');
-                            return;
-                          }
-                          updateTicketCount(filteredTicket.id, true);
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {filteredTicket.capacity != null &&
-                  filteredTicket.capacity >= 0 &&
-                  filteredTicket.capacity <= 10 && (
-                    <div className={styles.dateContainer}>
-                      <p className={styles.capacity}>{filteredTicket.capacity} tickets left</p>
-                    </div>
-                  )}
-
-                <div>
-                  <div className={styles.passText}>
-                    <p className={styles.ticketTypeTitle}>
-                      {filteredTicket.title?.toUpperCase()}{' '}
-                      {filteredTicket.user_count > 1 && <span>x {filteredTicket.user_count}</span>}
-                    </p>
-
-                    <div className={styles.perks}>
-                      {filteredTicket.perks &&
-                        filteredTicket.perks.length > 0 &&
-                        filteredTicket.perks.map((perk) => (
-                          <div key={perk.id} className={styles.perk}>
-                            {perk.name}: {perk.count}
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-
-                  <div className={styles.ticketPriceData}>
-                    {discount.discount_value > 0 &&
-                      filteredTicket.price > 0 &&
-                      discount.ticket.some((ticket) => ticket.id == filteredTicket.id) && (
-                        <div className={styles.discountData}>
-                          <p className={styles.discountAmount}>
-                            {discount.discount_type.toLowerCase() === 'percentage'
-                              ? `${discount.discount_value}% off`
-                              : `${filteredTicket.currency} ${discount.discount_value} off`}
-                          </p>
-                          <p className={styles.originalPrice}>
-                            <del>
-                              {filteredTicket.currency} {filteredTicket.show_price}
-                            </del>
-                          </p>
-                        </div>
-                      )}
-
-                    <div className={styles.priceData}>
-                      <p className={styles.ticketPrice}>
-                        {filteredTicket.price > 0 && filteredTicket.currency}{' '}
-                        {filteredTicket.price === 0 ? 'FREE' : filteredTicket.price}
-                      </p>
-                      <br />
-                      <p className={styles.extraCharges}>
-                        {filteredTicket.platform_fee_from_user && filteredTicket.price > 0 && (
-                          <>
-                            {filteredTicket.platform_fee > 0 && (
-                              <p className={styles.extraCharges}>
-                                {filteredTicket.platform_fee}% Extra Platform Fee
-                              </p>
-                            )}
-                            {filteredTicket.gateway_fee > 0 && (
-                              <p className={styles.extraCharges}>
-                                {filteredTicket.gateway_fee}% Extra Gateway Fee
-                              </p>
-                            )}
-                          </>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-
-                  <p
-                    className={styles.ticketTypeDescription}
-                    dangerouslySetInnerHTML={{ __html: filteredTicket.description }}
-                  ></p>
-                </div>
-              </div>
-            );
-          })}
-
-        {filteredTickets
-          .filter(
-            (filteredTicket) => filteredTicket.category === null || filteredTicket.category === '',
+          .filter((filteredTicket) =>
+            selectedTicketCategory
+              ? filteredTicket.category === selectedTicketCategory
+              : filteredTicket.category === filteredTickets[0]?.category,
           )
           .map((filteredTicket) => {
             return (
@@ -532,10 +390,7 @@ const CouponForm = ({
                       {filteredTicket.title?.toUpperCase()}{' '}
                       {filteredTicket.user_count > 1 && <span>x {filteredTicket.user_count}</span>}
                     </p>
-                    <p
-                      className={styles.ticketTypeDescription}
-                      dangerouslySetInnerHTML={{ __html: filteredTicket.description }}
-                    ></p>
+
                     <div className={styles.perks}>
                       {filteredTicket.perks &&
                         filteredTicket.perks.length > 0 &&
@@ -546,6 +401,7 @@ const CouponForm = ({
                         ))}
                     </div>
                   </div>
+
                   <div className={styles.ticketPriceData}>
                     {discount.discount_value > 0 &&
                       filteredTicket.price > 0 &&
@@ -573,9 +429,9 @@ const CouponForm = ({
                       <p className={styles.extraCharges}>
                         {filteredTicket.platform_fee_from_user && filteredTicket.price > 0 && (
                           <>
-                            {filteredTicket.platform_fee > 0 && (
+                            {filteredTicket.platform_perc_fee > 0 && (
                               <p className={styles.extraCharges}>
-                                {filteredTicket.platform_fee}% Extra Platform Fee
+                                {filteredTicket.platform_perc_fee}% Extra Platform Fee
                               </p>
                             )}
                             {filteredTicket.gateway_fee > 0 && (
@@ -588,6 +444,11 @@ const CouponForm = ({
                       </p>
                     </div>
                   </div>
+
+                  <p
+                    className={styles.ticketTypeDescription}
+                    dangerouslySetInnerHTML={{ __html: filteredTicket.description }}
+                  ></p>
                 </div>
               </div>
             );
@@ -619,7 +480,6 @@ const CouponForm = ({
             icon={getIcon('coupon_code')}
             value={coupon.value}
             style={{
-              marginTop: '-1rem',
               border:
                 discount.discount_value > 0 && discount.ticket.length > 0
                   ? styles.borderClassDefault

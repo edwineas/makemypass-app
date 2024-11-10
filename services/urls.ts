@@ -38,6 +38,12 @@ export const makeMyPass = {
   //Manage Org
   orgCreate: makeMyPassURL(`/manage-org/create/`), // SuperUser
   orgCRUD: (orgId: string) => makeMyPassURL(`/manage-org/${orgId}/org`),
+  orgInfoPublic: (orgName: string) => makeMyPassURL(`/manage-org/${orgName}/info/`),
+  orgInfoPriv: (orgName: string) => makeMyPassURL(`/manage-org/${orgName}/org/`),
+  orgMembersList: (orgId: string) => makeMyPassURL(`/manage-org/${orgId}/members/list/`),
+  orgMembersAdd: (orgId: string) => makeMyPassURL(`/manage-org/${orgId}/members/add/`),
+  orgMembersRemove: (orgId: string) => makeMyPassURL(`/manage-org/${orgId}/members/remove/`),
+  orgMembersUpdate: (orgId: string) => makeMyPassURL(`/manage-org/${orgId}/members/update/`),
 
   guestVisitedVenues: (eventId: string, eventRegisterId: string) =>
     makeMyPassURL(`/manage-guest/${eventId}/guest/${eventRegisterId}/visited-venues/`),

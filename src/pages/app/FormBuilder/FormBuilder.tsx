@@ -1,7 +1,8 @@
 import { AnimatePresence, Reorder } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { CgArrowsExpandRight } from 'react-icons/cg';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown, FaPlus } from 'react-icons/fa';
 import { FaAddressCard, FaRegEye, FaRegEyeSlash, FaWandMagicSparkles } from 'react-icons/fa6';
 import { GrContract } from 'react-icons/gr';
 import { IoCloseSharp } from 'react-icons/io5';
@@ -29,6 +30,7 @@ import Slider from '../../../components/SliderButton/Slider';
 import Theme from '../../../components/Theme/Theme';
 import InputField from '../../auth/Login/InputField';
 import { customStyles } from '../EventPage/constants';
+import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton';
 import ChangeTypeModal from './ChangeTypeModal/ChangeTypeModal';
 import GenerateWithAI from './components/GenerateWithAI';
 import { DefaultFiledTypeMapping, FileExtensions, getConditions } from './constant';
@@ -66,6 +68,21 @@ const FormBuilder = () => {
     return formFields.slice(0, index).map((field) => ({ label: field.title, value: field.id }));
   };
 
+  const getConditionalFieldsForOptions = (currentField: Field, optionIndex: number) => {
+    const index = formFields.findIndex((field) => field.id === currentField.id);
+    return formFields
+      .slice(0, index)
+      .map((field) => ({
+        label: field.title,
+        value: field.id,
+      }))
+      .concat(
+        currentField.options
+          .slice(0, optionIndex)
+          .map((option) => ({ label: option.values.join(', '), value: option.values.join(', ') })),
+      );
+  };
+
   const getFieldType = (fieldId: string) => {
     const field = formFields.find((f) => f.id === fieldId);
     if (field) {
@@ -74,14 +91,23 @@ const FormBuilder = () => {
     return '';
   };
 
-  const removeOption = (field: Field, index: number) => {
-    field.options.splice(index, 1);
+  const removeOption = (field: Field, optionIndex: number, valueIndex: number) => {
+    field.options[optionIndex].values.splice(valueIndex, 1);
     updateFormStateVariable();
   };
 
-  const addOption = (field: Field) => {
-    field.options.push('');
-    updateFormStateVariable();
+  const addOption = (field: Field, optionIndex: number) => {
+    if (
+      field.options[optionIndex].values.length > 0 &&
+      !field.options[optionIndex].values[field.options[optionIndex].values.length - 1]
+    ) {
+      toast.error("Please fill the previous option's value first", {
+        id: 'addOption',
+      });
+    } else {
+      field.options[optionIndex].values.push('');
+      updateFormStateVariable();
+    }
   };
 
   const addField = (type?: FieldType, title?: string, field_key?: string) => {
@@ -122,8 +148,36 @@ const FormBuilder = () => {
     updateFormStateVariable();
   };
 
+  const addOrRemoveOptionCondition = (field: Field, optionIndex: number) => {
+    if (formFieldErrors[field.field_key]) {
+      delete formFieldErrors[field.field_key];
+    }
+
+    if (field.options[optionIndex].conditions.length > 0) {
+      field.options[optionIndex].conditions = [];
+    } else {
+      field.options[optionIndex].conditions = [
+        {
+          field: '',
+          operator: '',
+          value: '',
+        },
+      ];
+    }
+    updateFormStateVariable();
+  };
+
   const addCondition = (field: Field) => {
     field.conditions.push({
+      field: '',
+      operator: '',
+      value: '',
+    });
+    updateFormStateVariable();
+  };
+
+  const addOptionCondition = (field: Field, optionIndex: number) => {
+    field.options[optionIndex].conditions.push({
       field: '',
       operator: '',
       value: '',
@@ -136,6 +190,11 @@ const FormBuilder = () => {
     updateFormStateVariable();
   };
 
+  const removeOptionCondition = (field: Field, optionIndex: number, index: number) => {
+    field.options[optionIndex].conditions.splice(index, 1);
+    updateFormStateVariable();
+  };
+
   const removeField = () => {
     formFields.splice(
       formFields.findIndex((field) => field.id === selectedField.id),
@@ -144,6 +203,11 @@ const FormBuilder = () => {
     updateFormStateVariable();
     setShowConfirmationModal(false);
   };
+
+  // const removeConditionField = (field: Field, index: number) => {
+  //   field.conditions.splice(index, 1);
+  //   updateFormStateVariable();
+  // };
 
   const addOrRemoveDefaultField = (title: keyof typeof DefaultFieldTypes) => {
     if (
@@ -519,43 +583,368 @@ const FormBuilder = () => {
                                   field.type === FieldType.SingleSelect ||
                                   field.type === FieldType.MultiSelect) && (
                                   <div className={styles.customFieldOption}>
-                                    {field.options.map((option, index) => (
-                                      <div className='row' key={index}>
-                                        <input
-                                          className={styles.optionInput}
-                                          type='text'
-                                          disabled={!isUserEditor()}
-                                          title='Option'
-                                          value={option}
-                                          onChange={(event) => {
-                                            if (isUserEditor()) {
-                                              const updatedOptions = field.options;
-                                              updatedOptions[index] = event.target.value;
-                                              field.options = updatedOptions;
-                                              updateFormStateVariable();
-                                            }
-                                          }}
-                                        />
-                                        <IoCloseSharp
-                                          className='pointer'
-                                          onClick={() => {
-                                            isUserEditor() && removeOption(field, index);
-                                          }}
-                                          size={20}
-                                          color='#606264'
-                                        />
+                                    {field.options.length == 0 && (
+                                      <button
+                                        onClick={() => {
+                                          if (isUserEditor()) {
+                                            field.options.push({
+                                              values: [''],
+                                              conditions: [],
+                                            });
+                                            updateFormStateVariable();
+                                          }
+                                        }}
+                                        style={{
+                                          marginTop: '1rem',
+                                        }}
+                                        className={styles.addOption}
+                                      >
+                                        Add Option Group
+                                      </button>
+                                    )}
+                                    {field.options.map((optionsObject, optionIndex) => (
+                                      <div className={styles.optionValuesContainer}>
+                                        <div
+                                          className='row'
+                                          style={{ justifyContent: 'space-between' }}
+                                        >
+                                          <p className={styles.optionHeader}>
+                                            Option Group {optionIndex + 1}
+                                          </p>
+                                          <div className='row'>
+                                            <SecondaryButton
+                                              buttonText='Add'
+                                              icon={<FaPlus size={10} color='#fff' />}
+                                              onClick={() => {
+                                                if (
+                                                  (field.options.length > 0 &&
+                                                    field.options[field.options.length - 1].values
+                                                      .length === 0) ||
+                                                  field.options[field.options.length - 1].values[0]
+                                                    .length === 0
+                                                ) {
+                                                  toast.error(
+                                                    "Please fill the previous option group's value first",
+                                                    {
+                                                      id: 'addOptionGroup',
+                                                    },
+                                                  );
+                                                  return;
+                                                }
+                                                if (isUserEditor()) {
+                                                  field.options.push({
+                                                    values: [''],
+                                                    conditions: [],
+                                                  });
+                                                  updateFormStateVariable();
+                                                }
+                                              }}
+                                            />
+                                            <SecondaryButton
+                                              buttonText='Remove'
+                                              icon={<MdDelete size={15} color='#fff' />}
+                                              onClick={() => {
+                                                if (isUserEditor()) {
+                                                  field.options.splice(optionIndex, 1);
+                                                  updateFormStateVariable();
+                                                }
+                                              }}
+                                            />
+                                          </div>
+                                        </div>
+                                        <div className={styles.optionValues}>
+                                          {optionsObject.values.map((option, valueIndex) => (
+                                            <div className='row' key={valueIndex}>
+                                              <input
+                                                className={styles.optionInput}
+                                                type='text'
+                                                disabled={!isUserEditor()}
+                                                title='Option'
+                                                placeholder='Option Value'
+                                                value={option}
+                                                onChange={(event) => {
+                                                  if (isUserEditor()) {
+                                                    field.options[optionIndex].values[valueIndex] =
+                                                      event.target.value;
+                                                    updateFormStateVariable();
+                                                  }
+                                                }}
+                                              />
+                                              <IoCloseSharp
+                                                className='pointer'
+                                                onClick={() => {
+                                                  isUserEditor() &&
+                                                    removeOption(field, optionIndex, valueIndex);
+                                                }}
+                                                size={20}
+                                                color='#606264'
+                                              />
+                                            </div>
+                                          ))}
+                                          {isUserEditor() && (
+                                            <button
+                                              onClick={() => {
+                                                if (isUserEditor()) addOption(field, optionIndex);
+                                              }}
+                                              className={styles.addOption}
+                                            >
+                                              Add New Option
+                                            </button>
+                                          )}
+                                        </div>
+                                        {getConditionalFieldsForOptions(field, optionIndex)
+                                          .length >= 0 && (
+                                          <div
+                                            className={styles.row1}
+                                            style={{
+                                              marginTop: '1rem',
+                                            }}
+                                          >
+                                            <Slider
+                                              checked={
+                                                field.options[optionIndex].conditions.length > 0
+                                              }
+                                              text={''}
+                                              onChange={() => {
+                                                isUserEditor() &&
+                                                  addOrRemoveOptionCondition(field, optionIndex);
+                                              }}
+                                              size='small'
+                                            />
+                                            <p className={styles.customFieldLabel}>Add Condition</p>
+                                          </div>
+                                        )}
+
+                                        {field.options[optionIndex].conditions.length > 0 && (
+                                          <div className={styles.conditions}>
+                                            {field.options[optionIndex].conditions.map(
+                                              (condition, idx) => (
+                                                <div
+                                                  className={styles.optionConditionRow}
+                                                  key={idx}
+                                                >
+                                                  <p className={styles.when}>
+                                                    {idx === 0 ? 'When' : 'And'}
+                                                  </p>
+                                                  <div className={styles.conditionsSelect}>
+                                                    <SelectComponent
+                                                      options={getConditionalFieldsForOptions(
+                                                        field,
+                                                        optionIndex,
+                                                      )}
+                                                      value={condition.field}
+                                                      onChange={(
+                                                        option: {
+                                                          value: string;
+                                                          label: string;
+                                                        } | null,
+                                                      ) => {
+                                                        if (isUserEditor()) {
+                                                          if (!option) condition.field = '';
+                                                          else condition.field = option.value;
+
+                                                          updateFormStateVariable();
+                                                        }
+                                                      }}
+                                                    />
+                                                    <SelectComponent
+                                                      options={[
+                                                        ...getConditions(
+                                                          getFieldType(condition.field),
+                                                        ).map((condition) => ({
+                                                          value: condition.value,
+                                                          label: condition.label,
+                                                        })),
+                                                      ]}
+                                                      value={condition.operator}
+                                                      onChange={(
+                                                        option: {
+                                                          value: string;
+                                                          label: string;
+                                                        } | null,
+                                                      ) => {
+                                                        if (isUserEditor()) {
+                                                          if (!option) condition.operator = '';
+                                                          else condition.operator = option.value;
+                                                          updateFormStateVariable();
+                                                        }
+                                                      }}
+                                                    />
+                                                    {condition.operator !== 'empty' &&
+                                                      condition.operator !== 'not empty' &&
+                                                      ([
+                                                        FieldType.SingleSelect,
+                                                        FieldType.MultiSelect,
+                                                        FieldType.Checkbox,
+                                                        FieldType.Radio,
+                                                      ].includes(
+                                                        formFields.find(
+                                                          (field) => field.id === condition.field,
+                                                        )?.type ?? FieldType.Text,
+                                                      ) ? (
+                                                        condition.operator === 'in' ||
+                                                        condition.operator === 'not in' ? (
+                                                          <Select
+                                                            isDisabled={!isUserEditor()}
+                                                            isMulti
+                                                            styles={{
+                                                              ...customStyles,
+                                                              control: (provided) => ({
+                                                                ...provided,
+                                                                minWidth: '15rem',
+                                                              }),
+                                                            }}
+                                                            name='colors'
+                                                            value={
+                                                              !Array.isArray(condition.value)
+                                                                ? []
+                                                                : condition.value.map((value) => ({
+                                                                    value,
+                                                                    label: value,
+                                                                  }))
+                                                            }
+                                                            options={
+                                                              formFields
+                                                                .find(
+                                                                  (field) =>
+                                                                    field.id === condition.field,
+                                                                )
+                                                                ?.options?.flatMap(
+                                                                  (option) => option.values,
+                                                                )
+                                                                .map((value) => ({
+                                                                  value,
+                                                                  label: value,
+                                                                })) || []
+                                                            }
+                                                            className='basic-multi-select'
+                                                            classNamePrefix='select'
+                                                            onChange={(selectedOptions) => {
+                                                              condition.value = selectedOptions.map(
+                                                                (option) => option.value,
+                                                              );
+                                                              updateFormStateVariable();
+                                                            }}
+                                                          />
+                                                        ) : (
+                                                          <SelectComponent
+                                                            options={
+                                                              formFields
+                                                                .find(
+                                                                  (field) =>
+                                                                    field.id === condition.field,
+                                                                )
+                                                                ?.options?.flatMap(
+                                                                  (option) => option.values,
+                                                                )
+                                                                .map((value) => ({
+                                                                  value,
+                                                                  label: value,
+                                                                })) || []
+                                                            }
+                                                            value={
+                                                              !Array.isArray(condition.value)
+                                                                ? condition.value
+                                                                : ''
+                                                            }
+                                                            onChange={(
+                                                              option: {
+                                                                value: string;
+                                                                label: string;
+                                                              } | null,
+                                                            ) => {
+                                                              if (isUserEditor()) {
+                                                                if (!option) condition.value = '';
+                                                                else condition.value = option.value;
+                                                                updateFormStateVariable();
+                                                              }
+                                                            }}
+                                                          />
+                                                        )
+                                                      ) : condition.operator === 'in' ||
+                                                        condition.operator === 'not in' ? (
+                                                        <CreatableSelect
+                                                          isDisabled={!isUserEditor()}
+                                                          styles={customStyles}
+                                                          options={
+                                                            formFields
+                                                              .find(
+                                                                (field) =>
+                                                                  field.id === condition.field,
+                                                              )
+                                                              ?.options?.flatMap(
+                                                                (option) => option.values,
+                                                              )
+                                                              .map((value) => ({
+                                                                value,
+                                                                label: value,
+                                                              })) || []
+                                                          }
+                                                          value={
+                                                            condition.value &&
+                                                            Array.isArray(condition.value)
+                                                              ? condition.value.map((value) => ({
+                                                                  value,
+                                                                  label: value,
+                                                                }))
+                                                              : []
+                                                          }
+                                                          onChange={(selectedOptions) => {
+                                                            condition.value = selectedOptions.map(
+                                                              (option) => option.value,
+                                                            );
+
+                                                            updateFormStateVariable();
+                                                          }}
+                                                          isMulti
+                                                        />
+                                                      ) : (
+                                                        <input
+                                                          disabled={!isUserEditor()}
+                                                          type='text'
+                                                          title='Value'
+                                                          value={condition.value}
+                                                          onChange={(event) => {
+                                                            condition.value = event.target.value;
+                                                            updateFormStateVariable();
+                                                          }}
+                                                        />
+                                                      ))}
+                                                    {isUserEditor() && (
+                                                      <>
+                                                        <RiDeleteBinLine
+                                                          className='pointer'
+                                                          size={20}
+                                                          color='#606264'
+                                                          onClick={() => {
+                                                            removeOptionCondition(
+                                                              field,
+                                                              optionIndex,
+                                                              idx,
+                                                            );
+                                                          }}
+                                                        />
+                                                        <LuPlus
+                                                          className='pointer'
+                                                          style={{
+                                                            marginLeft: '0.5rem',
+                                                          }}
+                                                          size={20}
+                                                          color='#606264'
+                                                          onClick={() => {
+                                                            addOptionCondition(field, optionIndex);
+                                                          }}
+                                                        />
+                                                      </>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                              ),
+                                            )}
+                                          </div>
+                                        )}
                                       </div>
                                     ))}
-                                    {isUserEditor() && (
-                                      <p
-                                        onClick={() => {
-                                          if (isUserEditor()) addOption(field);
-                                        }}
-                                        className={`pointer ${styles.addOption}`}
-                                      >
-                                        <span>+</span> Add Option
-                                      </p>
-                                    )}
                                   </div>
                                 )}
 
@@ -703,7 +1092,7 @@ const FormBuilder = () => {
                                   className={styles.row1}
                                   style={{
                                     marginTop: '1rem',
-                                    marginLeft: '1rem',
+                                    marginLeft: '1.25rem',
                                   }}
                                 >
                                   <Slider
@@ -723,7 +1112,13 @@ const FormBuilder = () => {
                               {field.conditions?.length > 0 && (
                                 <div className={styles.conditions}>
                                   {field.conditions.map((condition, idx) => (
-                                    <div className={styles.conditionRow} key={idx}>
+                                    <div
+                                      className={styles.optionConditionRow}
+                                      key={idx}
+                                      style={{
+                                        marginLeft: '1.75rem',
+                                      }}
+                                    >
                                       <p className={styles.when}>{idx === 0 ? 'When' : 'And'}</p>
                                       <div className={styles.conditionsSelect}>
                                         <SelectComponent
@@ -789,9 +1184,10 @@ const FormBuilder = () => {
                                                 options={
                                                   formFields
                                                     .find((field) => field.id === condition.field)
-                                                    ?.options?.map((option) => ({
-                                                      value: option,
-                                                      label: option,
+                                                    ?.options?.flatMap((option) => option.values)
+                                                    .map((value) => ({
+                                                      value,
+                                                      label: value,
                                                     })) || []
                                                 }
                                                 className='basic-multi-select'
@@ -808,9 +1204,10 @@ const FormBuilder = () => {
                                                 options={
                                                   formFields
                                                     .find((field) => field.id === condition.field)
-                                                    ?.options?.map((option) => ({
-                                                      value: option,
-                                                      label: option,
+                                                    ?.options?.flatMap((option) => option.values)
+                                                    .map((value) => ({
+                                                      value,
+                                                      label: value,
                                                     })) || []
                                                 }
                                                 value={
@@ -837,9 +1234,10 @@ const FormBuilder = () => {
                                               options={
                                                 formFields
                                                   .find((field) => field.id === condition.field)
-                                                  ?.options?.map((option) => ({
-                                                    value: option,
-                                                    label: option,
+                                                  ?.options?.flatMap((option) => option.values)
+                                                  .map((value) => ({
+                                                    value,
+                                                    label: value,
                                                   })) || []
                                               }
                                               value={

@@ -330,6 +330,10 @@
   font-size: 0.9rem;
   cursor: pointer;
   margin-top: 0.75rem;
+
+  span {
+    margin-left: -36px;
+  }
 }
 
 .createEventButtonSecondary {

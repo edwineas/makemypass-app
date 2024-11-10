@@ -1,8 +1,7 @@
-export type OrganizationType = {
+export type MemberType = {
   id: string;
-  title: string;
+  user_id: string;
   name: string;
-  banner: string | null;
-  logo: string | null;
-  description: string | null;
+  email: string;
+  role: string;
 };

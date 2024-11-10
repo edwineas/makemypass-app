@@ -1,0 +1,235 @@
+.editOrganizationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 35rem;
+  margin: 0 auto;
+}
+
+.eventNameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 35rem;
+}
+
+.inputEventName {
+  vertical-align: middle;
+  padding-top: 0.5rem;
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #d7d7d7;
+  font-family: 'Inter';
+  font-size: 2.25rem;
+  font-weight: 600;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  resize: none;
+  margin-bottom: 1rem;
+}
+
+.inputEventName:focus {
+  outline: none;
+}
+
+.bannerContainer {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.5rem;
+  min-height: 3rem;
+  max-width: 24rem;
+  width: 100%;
+  position: relative;
+}
+
+.fileUpload {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.banner {
+  max-width: 35rem;
+  width: 100%;
+  border-radius: 7px;
+  fill: #d8ffff11;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  scale: 1;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.closeIcon:hover {
+  transform: scale(1.25);
+}
+
+.uploadCloseIcon {
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.svgText {
+  color: #fff;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  position: relative;
+}
+
+.descriptionContainer {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.5rem;
+  max-width: 35rem;
+  width: 100%;
+  position: relative;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+  overflow: auto;
+  height: 20rem;
+}
+
+@media screen and (max-width: 1085px) {
+  .descriptionContainer {
+    height: auto;
+  }
+}
+
+.descriptionHeader {
+  color: white;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  font-family: 'Inter', sans-serif;
+}
+
+.uploadLogoContainerParent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.uploadLogoContainer {
+  position: relative;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.04);
+  color: #d7d7d7;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+}
+
+.noImage {
+  width: 25px;
+  height: 25px;
+  background-color: #d7d7d72a;
+  border-radius: 2px;
+  margin-right: 0.5rem;
+}
+
+.uploadLogo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.uploadLogo p {
+  font-size: 0.8rem;
+  color: #d7d7d7a5;
+}
+
+.logoName {
+  color: #d7d7d7 !important;
+  width: 100%;
+  word-break: break-all;
+}
+
+.fileUpload {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.pencil {
+  margin-left: auto;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.uploadLogoContainer:hover > .pencil {
+  transform: scale(1.1);
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  /* flex-wrap: wrap; */
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+}
+
+.saveButton {
+  background: #fdfdfd;
+  color: rgb(43, 42, 42);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  /* max-width: 5rem; */
+  width: 100%;
+  border: none;
+}
+
+.cancelButton {
+  color: #fdfdfd;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  /* max-width: 5rem; */
+  width: 100%;
+}

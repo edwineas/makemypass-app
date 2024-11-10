@@ -163,7 +163,7 @@
 }
 
 .updateButton:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgb(241, 240, 240);
 }
 
 .buttonContainer {

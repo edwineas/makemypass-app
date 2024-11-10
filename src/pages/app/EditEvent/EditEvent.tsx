@@ -158,11 +158,8 @@ const EditEvent = () => {
       if (eventData?.is_grouped_ticket) changedData['is_grouped_ticket'] = false;
     }
 
-    if (eventData?.host_communicate != fetchedEvent?.host_communicate) {
-      changedData['host_communicate'] = JSON.stringify(eventData?.host_communicate).replace(
-        /""/g,
-        'null',
-      );
+    if (eventData?.socials != fetchedEvent?.socials) {
+      changedData['socials'] = JSON.stringify(eventData?.socials).replace(/""/g, 'null');
     }
 
     if (logo) changedData['logo'] = logo;
@@ -535,15 +532,15 @@ const EditEvent = () => {
                 placeholder='wa.me/+919234567890'
                 icon={<AiOutlineTeam size={20} color='#949597' />}
                 title='Add WhatsApp Link'
-                value={eventData?.host_communicate?.whatsapp}
+                value={eventData?.socials?.whatsapp}
                 onChange={
                   isUserEditor()
                     ? (e) => {
                         if (eventData) {
                           setEventData({
                             ...eventData,
-                            host_communicate: {
-                              ...eventData.host_communicate,
+                            socials: {
+                              ...eventData.socials,
                               whatsapp: e.target.value,
                             },
                           });
@@ -558,15 +555,15 @@ const EditEvent = () => {
                 id='email'
                 icon={<AiOutlineTeam size={20} color='#949597' />}
                 title='Add Email'
-                value={eventData?.host_communicate?.email}
+                value={eventData?.socials?.email}
                 onChange={
                   isUserEditor()
                     ? (e) => {
                         if (eventData) {
                           setEventData({
                             ...eventData,
-                            host_communicate: {
-                              ...eventData.host_communicate,
+                            socials: {
+                              ...eventData.socials,
                               email: e.target.value,
                             },
                           });
@@ -582,15 +579,15 @@ const EditEvent = () => {
                 placeholder='+91854696520'
                 icon={<AiOutlineTeam size={20} color='#949597' />}
                 title='Add Phone Number'
-                value={eventData?.host_communicate?.phone}
+                value={eventData?.socials?.phone}
                 onChange={
                   isUserEditor()
                     ? (e) => {
                         if (eventData) {
                           setEventData({
                             ...eventData,
-                            host_communicate: {
-                              ...eventData.host_communicate,
+                            socials: {
+                              ...eventData.socials,
                               phone: e.target.value,
                             },
                           });
@@ -607,15 +604,15 @@ const EditEvent = () => {
                 icon={<AiOutlineTeam size={20} color='#949597' />}
                 title='Add Facebook Link'
                 placeholder='facebook.com/username'
-                value={eventData?.host_communicate?.facebook}
+                value={eventData?.socials?.facebook}
                 onChange={
                   isUserEditor()
                     ? (e) => {
                         if (eventData) {
                           setEventData({
                             ...eventData,
-                            host_communicate: {
-                              ...eventData.host_communicate,
+                            socials: {
+                              ...eventData.socials,
                               facebook: e.target.value,
                             },
                           });
@@ -631,15 +628,15 @@ const EditEvent = () => {
                 icon={<AiOutlineTeam size={20} color='#949597' />}
                 title='Add Instagram Link'
                 placeholder='instagram.com/username'
-                value={eventData?.host_communicate?.instagram}
+                value={eventData?.socials?.instagram}
                 onChange={
                   isUserEditor()
                     ? (e) => {
                         if (eventData) {
                           setEventData({
                             ...eventData,
-                            host_communicate: {
-                              ...eventData.host_communicate,
+                            socials: {
+                              ...eventData.socials,
                               instagram: e.target.value,
                             },
                           });
@@ -654,7 +651,7 @@ const EditEvent = () => {
                 id='twitter'
                 icon={<AiOutlineTeam size={20} color='#949597' />}
                 title='Add Twitter Link'
-                value={eventData?.host_communicate?.twitter}
+                value={eventData?.socials?.twitter}
                 placeholder='x.com/username'
                 onChange={
                   isUserEditor()
@@ -662,8 +659,8 @@ const EditEvent = () => {
                         if (eventData) {
                           setEventData({
                             ...eventData,
-                            host_communicate: {
-                              ...eventData.host_communicate,
+                            socials: {
+                              ...eventData.socials,
                               twitter: e.target.value,
                             },
                           });
@@ -678,7 +675,7 @@ const EditEvent = () => {
                 id='linkedin'
                 icon={<AiOutlineTeam size={20} color='#949597' />}
                 title='Add LinkedIn Link'
-                value={eventData?.host_communicate?.linkedin}
+                value={eventData?.socials?.linkedin}
                 placeholder='linkedin.com/in/username'
                 onChange={
                   isUserEditor()
@@ -686,8 +683,8 @@ const EditEvent = () => {
                         if (eventData) {
                           setEventData({
                             ...eventData,
-                            host_communicate: {
-                              ...eventData.host_communicate,
+                            socials: {
+                              ...eventData.socials,
                               linkedin: e.target.value,
                             },
                           });
@@ -842,67 +839,67 @@ const EditEvent = () => {
                         <a href='tel:+1234567890'>
                           <FiPhone
                             size={25}
-                            color={eventData?.host_communicate?.phone ? '#46BF75' : '#949597'}
+                            color={eventData?.socials?.phone ? '#46BF75' : '#949597'}
                           />
                         </a>
                         <a
-                          href={`https://wa.me/${eventData?.host_communicate?.whatsapp}`}
+                          href={`https://wa.me/${eventData?.socials?.whatsapp}`}
                           target='_blank'
                           rel='noopener noreferrer'
                         >
                           <FaWhatsapp
                             size={25}
-                            color={eventData?.host_communicate?.whatsapp ? '#46BF75' : '#949597'}
+                            color={eventData?.socials?.whatsapp ? '#46BF75' : '#949597'}
                           />
                         </a>
                         <a
-                          href={`mailto:${eventData?.host_communicate?.email}`}
+                          href={`mailto:${eventData?.socials?.email}`}
                           target='_blank'
                           rel='noopener noreferrer'
                         >
                           <FiMail
                             size={25}
-                            color={eventData?.host_communicate?.email ? '#46BF75' : '#949597'}
+                            color={eventData?.socials?.email ? '#46BF75' : '#949597'}
                           />
                         </a>
                         <a
-                          href={eventData?.host_communicate?.instagram}
+                          href={eventData?.socials?.instagram}
                           target='_blank'
                           rel='noopener noreferrer'
                         >
                           <FaInstagram
                             size={25}
-                            color={eventData?.host_communicate?.instagram ? '#46BF75' : '#949597'}
+                            color={eventData?.socials?.instagram ? '#46BF75' : '#949597'}
                           />
                         </a>
                         <a
-                          href={eventData?.host_communicate?.facebook}
+                          href={eventData?.socials?.facebook}
                           target='_blank'
                           rel='noopener noreferrer'
                         >
                           <FaFacebook
                             size={25}
-                            color={eventData?.host_communicate?.facebook ? '#46BF75' : '#949597'}
+                            color={eventData?.socials?.facebook ? '#46BF75' : '#949597'}
                           />
                         </a>
                         <a
-                          href={eventData?.host_communicate?.twitter}
+                          href={eventData?.socials?.twitter}
                           target='_blank'
                           rel='noopener noreferrer'
                         >
                           <FaTwitter
                             size={25}
-                            color={eventData?.host_communicate?.twitter ? '#46BF75' : '#949597'}
+                            color={eventData?.socials?.twitter ? '#46BF75' : '#949597'}
                           />
                         </a>
                         <a
-                          href={eventData?.host_communicate?.linkedin}
+                          href={eventData?.socials?.linkedin}
                           target='_blank'
                           rel='noopener noreferrer'
                         >
                           <FaLinkedin
                             size={25}
-                            color={eventData?.host_communicate?.linkedin ? '#46BF75' : '#949597'}
+                            color={eventData?.socials?.linkedin ? '#46BF75' : '#949597'}
                           />
                         </a>
                       </div>
@@ -1157,7 +1154,7 @@ const EditEvent = () => {
                         <div>
                           <input
                             type='number'
-                            placeholder='enter capacity'
+                            placeholder={eventData?.max_capacity ? '0' : 'Unlimited'}
                             className={styles.capcityInput}
                             title='Capacity'
                             value={eventData?.capacity}

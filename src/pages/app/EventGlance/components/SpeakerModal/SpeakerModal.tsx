@@ -43,6 +43,7 @@ const SpeakerModal = ({
               showModal: false,
             }));
           }}
+          zIndexCount={110}
         >
           <>
             <div className={styles.bulkUploadContainer}>
@@ -207,90 +208,89 @@ const SpeakerModal = ({
           <div className={styles.logsListingContainer}>
             {speakers.speakerList &&
               speakers.speakerList.length > 0 &&
-              speakers.speakerList.map((speaker) => (
-                <div className={styles.log}>
-                  <div className={styles.logDetails}>
-                    {(typeof speaker?.image === 'string' || speaker.image instanceof File) && (
+              speakers.speakerList.map((speaker) => {
+                const randomIndex = Math.floor(Math.random() * 5) + 1;
+                return (
+                  <div className={styles.log}>
+                    <div className={styles.logDetails}>
                       <img
                         className={styles.speakerImage}
                         src={
                           typeof speaker.image === 'string'
                             ? speaker.image
-                            : speaker.image
-                              ? URL.createObjectURL(speaker.image)
-                              : ''
+                            : `/app/profilepics/default${randomIndex}.png`
                         }
                         alt=''
                       />
-                    )}
-                    <div>
-                      {speaker?.name && <p className={styles.venueName}>{speaker.name}</p>}
-                      {speaker?.position && (
-                        <p className={styles.total} style={{ marginTop: '0.25rem' }}>
-                          {speaker.position}
-                        </p>
-                      )}
+                      <div>
+                        {speaker?.name && <p className={styles.venueName}>{speaker.name}</p>}
+                        {speaker?.position && (
+                          <p className={styles.total} style={{ marginTop: '0.25rem' }}>
+                            {speaker.position}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  {isUserEditor() && (
-                    <div className='row'>
-                      <FaTrash
-                        title='Delete User'
-                        color='#8e8e8e'
-                        className={styles.reportIcon}
-                        onClick={() => {
-                          setSpeakerData({
-                            id: speaker.id,
-                            name: speaker.name,
-                            position: speaker.position,
-                            image: null,
-                            type: 'DELETE',
-                          });
-                        }}
-                      />
-                      <FaEdit
-                        title='Edit Speaker'
-                        color='#8e8e8e'
-                        className={styles.reportIcon}
-                        onClick={() => {
-                          if (!speaker) return;
-                          const imageURL = speaker?.image;
-                          if (typeof imageURL === 'string')
-                            fetch(imageURL)
-                              .then((response) => response.blob())
-                              .then((blob) => {
-                                const file = new File([blob], speaker.name);
-                                setSpeakerData((prev) => ({
-                                  ...prev,
-                                  image: file,
-                                }));
-                              })
-                              .catch((error) => {
-                                toast.error(
-                                  error.response.data.message.general[0] ||
-                                    'Unable to process the request',
-                                );
-                              });
-                          else
+                    {isUserEditor() && (
+                      <div className='row'>
+                        <FaTrash
+                          title='Delete User'
+                          color='#8e8e8e'
+                          className={styles.reportIcon}
+                          onClick={() => {
+                            setSpeakerData({
+                              id: speaker.id,
+                              name: speaker.name,
+                              position: speaker.position,
+                              image: null,
+                              type: 'DELETE',
+                            });
+                          }}
+                        />
+                        <FaEdit
+                          title='Edit Speaker'
+                          color='#8e8e8e'
+                          className={styles.reportIcon}
+                          onClick={() => {
+                            if (!speaker) return;
+                            const imageURL = speaker?.image;
+                            if (typeof imageURL === 'string')
+                              fetch(imageURL)
+                                .then((response) => response.blob())
+                                .then((blob) => {
+                                  const file = new File([blob], speaker.name);
+                                  setSpeakerData((prev) => ({
+                                    ...prev,
+                                    image: file,
+                                  }));
+                                })
+                                .catch((error) => {
+                                  toast.error(
+                                    error.response.data.message.general[0] ||
+                                      'Unable to process the request',
+                                  );
+                                });
+                            else
+                              setSpeakerData((prev) => ({
+                                ...prev,
+                                image: speaker.image,
+                              }));
+
                             setSpeakerData((prev) => ({
                               ...prev,
-                              image: speaker.image,
+                              id: speaker.id,
+                              name: speaker.name,
+                              position: speaker.position,
+                              type: 'EDIT',
                             }));
-
-                          setSpeakerData((prev) => ({
-                            ...prev,
-                            id: speaker.id,
-                            name: speaker.name,
-                            position: speaker.position,
-                            type: 'EDIT',
-                          }));
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
           </div>
         </Modal>
       )}

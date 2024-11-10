@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiSolidReport } from 'react-icons/bi';
 import Select from 'react-select';
+import { BeatLoader } from 'react-spinners';
 
 import {
   getBulkImportCSV,
@@ -23,9 +24,11 @@ const BulkUpload = ({ onClose }: { onClose: () => void }) => {
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [fileStatus, setFileStatus] = useState<BulkUploadType[]>([]);
-
+  const [isUploading, setIsUploading] = useState(false);
   const [sendTicket, setSendTicket] = useState(false);
   const [sendInvoice, setSendInvoice] = useState(false);
+
+  const fileInputRef = createRef<HTMLInputElement>();
 
   useEffect(() => {
     getTicketsList(eventId, setTickets);
@@ -51,6 +54,7 @@ const BulkUpload = ({ onClose }: { onClose: () => void }) => {
             setFile(e.target.files![0]);
           }}
           className={styles.fileInput}
+          ref={fileInputRef}
         />
         <p
           className={`pointer ${styles.downloadTemplate}`}
@@ -112,18 +116,21 @@ const BulkUpload = ({ onClose }: { onClose: () => void }) => {
             uploadBulkGuestData(
               eventId,
               file,
+              setFile,
               selectedTickets,
               setFileStatus,
               sendTicket,
               sendInvoice,
+              setIsUploading,
+              fileInputRef,
             );
           else toast.error('Please select a file');
         }}
       >
-        Upload
+        {isUploading ? <BeatLoader color='#1d1d1d' size={8} /> : 'Upload'}
       </button>
 
-      {fileStatus.length > 0 && <hr className={styles.line} />}
+      <hr className={styles.line} />
 
       <p className={styles.sectionHeader}>Upload Logs</p>
       <div className={styles.logsListingContainer}>

@@ -15,7 +15,7 @@ const Footer = () => {
             }}
             className={styles.row}
           >
-            <a href='https://www.theparentcompany.xyz/' target='_blank' rel='noopener noreferrer'>
+            <a href='https://www.hoomansproject.com/' target='_blank' rel='noopener noreferrer'>
               <img
                 className={styles.hoomansLogo}
                 src='/app/hoomans.webp'

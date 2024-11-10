@@ -1,7 +1,12 @@
+import { useEffect } from 'react';
+
 import Theme from '../../../components/Theme/Theme';
 import styles from './PrivacyPolicy.module.css';
 
 const PrivacyPolicy = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <Theme>

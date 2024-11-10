@@ -63,7 +63,9 @@ export const setEventInfoLocal = async (eventName: string): Promise<EventData> =
         resolve(eventData); // Now correctly resolving with an EventData object
       })
       .catch((error) => {
-        toast.error('Event Not Found');
+        toast.error('Event Not Found', {
+          id: 'event-not-found',
+        });
         reject(error); // Reject the promise on error
       });
   });
@@ -100,7 +102,7 @@ export const getFormCategories = async (
   privateGateway
     .get(makeMyPass.guestListFormCategories(eventId))
     .then((response) => {
-      setCategories(response.data.response);
+      setCategories(response.data.response[0].values);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
@@ -111,7 +113,9 @@ export const createEvent = (
   newEvent: NewEventStateType,
   setNewEvent?: Dispatch<SetStateAction<NewEventStateType>>,
   setShowCreateModal?: Dispatch<SetStateAction<boolean>>,
+  setIsCreating?: Dispatch<SetStateAction<boolean>>,
 ) => {
+  setIsCreating && setIsCreating(true);
   const payload: { title: string; organization_id?: string } = { title: newEvent.eventName };
   if (newEvent.orgId && newEvent.orgId !== 'Personal') {
     payload.organization_id = newEvent.orgId;
@@ -131,6 +135,9 @@ export const createEvent = (
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    })
+    .finally(() => {
+      setIsCreating && setIsCreating(false);
     });
 };
 
@@ -164,6 +171,7 @@ export const updateEventData = ({
   setLoading?: Dispatch<boolean>;
 }) => {
   setLoading && setLoading(true);
+
   privateGateway
     .patch(makeMyPass.event(eventId), eventData, {
       headers: {
@@ -174,6 +182,33 @@ export const updateEventData = ({
       toast.success(response.data.message.general[0] || 'Event Updated Successfully');
       // if (!setIsPublished) window.location.href = `/${response.data.response.name}/manage`;
       setIsPublished && setIsPublished(eventData.get('is_public_insight') === 'true');
+
+      const newEventTitle = eventData.get('title') as string;
+      const newEventName = eventData.get('name') as string;
+
+      if (newEventTitle) {
+        const currentSessionData = JSON.parse(sessionStorage.getItem('eventData') || '{}');
+
+        if (currentSessionData.title !== newEventTitle) {
+          sessionStorage.setItem(
+            'eventData',
+            JSON.stringify({
+              ...currentSessionData,
+              title: newEventTitle,
+            }),
+          );
+        }
+        if (newEventName) {
+          sessionStorage.setItem(
+            'eventData',
+            JSON.stringify({
+              ...currentSessionData,
+              title: newEventTitle,
+              event_name: newEventName,
+            }),
+          );
+        }
+      }
     })
     .catch((error) => {
       setIsPublished && setIsPublished(false);
