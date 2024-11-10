@@ -57,12 +57,14 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
     } else if (orgName && type === 'private') {
       OrgInfoFromName(orgName, setOrganization);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orgName, triggerFetch]);
 
   useEffect(() => {
     if (organization.id && type === 'private') {
       listOrgMembers(organization.id, setOrganizationMembers);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [organization]);
 
   useEffect(() => {
@@ -95,6 +97,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
         setTransformedMembers(transformedData);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [organizationMembers]);
 
   const agreeToDelete = () => {
