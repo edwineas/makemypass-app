@@ -118,6 +118,7 @@ export const initiatePreRegistration = async (
 export const registerUser = async (
   email: string,
   otp: string,
+  name: string,
   setIsRegistered: Dispatch<React.SetStateAction<boolean>>,
   setIsOtpSent: Dispatch<React.SetStateAction<boolean>>,
   setIsAuthenticated: Dispatch<React.SetStateAction<boolean>>,
@@ -127,6 +128,7 @@ export const registerUser = async (
     .post(buildVerse.register, {
       email: email,
       otp: otp,
+      name: name,
     })
     .then((response) => {
       toast.success(response.data.message.general[0] || 'Registered successfully');

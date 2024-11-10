@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { FaGoogle } from 'react-icons/fa6';
 import { GoPerson } from 'react-icons/go';
 import { IoIosArrowRoundForward } from 'react-icons/io';
-import { LuKey } from 'react-icons/lu';
+import { LuKey, LuText } from 'react-icons/lu';
 import { TbAlertTriangleFilled } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,6 +27,7 @@ const Login = () => {
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   const otpRef = useRef<HTMLInputElement>(null);
 
@@ -125,10 +126,16 @@ const Login = () => {
     } else {
       if (!isOtpSent && emailRef.current?.value)
         initiatePreRegistration(emailRef.current?.value, setIsOtpSent);
-      else if (isOtpSent && emailRef.current?.value && otpRef.current?.value)
+      else if (
+        isOtpSent &&
+        emailRef.current?.value &&
+        otpRef.current?.value &&
+        nameRef.current?.value
+      )
         registerUser(
           emailRef.current?.value,
           otpRef.current?.value,
+          nameRef.current?.value,
           setIsRegistered,
           setIsOtpSent,
           setIsAuthenticated,
@@ -240,6 +247,25 @@ const Login = () => {
                 />
                 {error && error.email && <p className={styles.alertMessage}>{error.email}</p>}
 
+                {isOtpSent && !isRegistered && (
+                  <InputField
+                    ref={nameRef}
+                    type='text'
+                    name='name'
+                    id='name'
+                    title='Enter Your Name'
+                    icon={<LuText color='#A4A4A4' />}
+                    onChange={() =>
+                      setError((prevError) => {
+                        return {
+                          ...prevError,
+                          otp: '',
+                        };
+                      })
+                    }
+                  />
+                )}
+
                 {((isOtpSent && !isPassword) ||
                   (isOtpSent && isForgetPassword) ||
                   isLoginWithOtp) && (
@@ -255,12 +281,12 @@ const Login = () => {
                         setError((prevError) => {
                           return {
                             ...prevError,
-                            otp: '',
+                            name: '',
                           };
                         })
                       }
                     />
-                    {error && error.otp && <p className={styles.alertMessage}>{error.otp}</p>}
+                    {error && error.name && <p className={styles.alertMessage}>{error.name}</p>}
                   </>
                 )}
 

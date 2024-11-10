@@ -39,12 +39,27 @@ const ProfilePage = () => {
     newPassword: '',
     confirmPassword: '',
   });
+  const [resendTimer, setResendTimer] = useState(0);
 
   enum EventStatus {
     Published = 'Published',
     Completed = 'Completed',
     Draft = 'Draft',
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (resendTimer > 0) {
+        setResendTimer(resendTimer - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [resendTimer]);
+
+  useEffect(() => {
+    setResendTimer(60);
+  }, [showChangePasswordModal]);
 
   // const handleUpdateProfile = () => {
 
@@ -154,9 +169,10 @@ const ProfilePage = () => {
                   <div className={styles.passwordFieldsContainer}>
                     <InputField
                       type='text'
+                      description='An OTP has been sent to your email. Please enter it here.'
                       name='otp'
                       id='otp'
-                      placeholder='Enter OTP sent to your email'
+                      placeholder='Enter the One Time Password'
                       title='One Time Password'
                       icon={<BiLock />}
                       value={passwordData.OTP}
@@ -204,6 +220,7 @@ const ProfilePage = () => {
                             passwordData.newPassword,
                           );
                           setShowChangePasswordModal(false);
+                          setResendTimer(0);
                         } else {
                           toast.error('New Password and Confirm Password do not match!');
                         }
@@ -212,10 +229,18 @@ const ProfilePage = () => {
                       {loading ? <BeatLoader color='#000' size={8} /> : 'Update'}
                     </button>
                     <button
-                      onClick={() => setShowChangePasswordModal(false)}
+                      onClick={() =>
+                        generateOTP(userData.email, setShowChangePasswordModal, 'Forget Password')
+                      }
                       className={styles.cancelButton}
+                      disabled={resendTimer > 0}
+                      style={
+                        resendTimer > 0
+                          ? { cursor: 'not-allowed', opacity: 0.5 }
+                          : { cursor: 'pointer', opacity: 1 }
+                      }
                     >
-                      Cancel
+                      {resendTimer > 0 ? `Resend OTP in ${resendTimer}s` : 'Resend OTP'}
                     </button>
                   </div>
                 </div>
