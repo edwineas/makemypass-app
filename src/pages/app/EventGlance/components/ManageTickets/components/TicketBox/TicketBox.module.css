@@ -31,14 +31,23 @@
 
 .ticket {
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.04);
+  /* border: 1px solid rgba(255, 255, 255, 0.04); */
+  /* background: rgba(255, 255, 255, 0.04); */
   width: 50%;
   height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* .ticket:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+} */
+
 .availableDot {
-  background-color: #00ff006e; /*#ff00008e*/
+  background-color: #00ff006e;
+  /*#ff00008e*/
   border-radius: 50%;
   font-size: 0.2rem;
   padding: 0.2rem;
