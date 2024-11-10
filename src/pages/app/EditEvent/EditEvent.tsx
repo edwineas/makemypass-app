@@ -627,9 +627,7 @@ const EditEvent = () => {
                             <IoCloseOutline
                               className={styles.bannerCloseIcon}
                               onClick={() => {
-                                isUserEditor() &&
-                                  eventData?.banner &&
-                                  setEventData({ ...eventData, banner: '' });
+                                isUserEditor() && setBanner(null);
                               }}
                             />
                             <img
