@@ -611,7 +611,7 @@ const EditEvent = () => {
                     {eventData?.banner && !banner?.name ? (
                       <>
                         <IoCloseOutline
-                          className={styles.closeIcon}
+                          className={styles.bannerCloseIcon}
                           onClick={() => {
                             isUserEditor() && setEventData({ ...eventData, banner: '' });
                           }}
@@ -625,12 +625,11 @@ const EditEvent = () => {
                         {banner?.name ? (
                           <>
                             <IoCloseOutline
-                              className={styles.closeIcon}
+                              className={styles.bannerCloseIcon}
                               onClick={() => {
                                 isUserEditor() &&
                                   eventData?.banner &&
                                   setEventData({ ...eventData, banner: '' });
-                                setBanner(null);
                               }}
                             />
                             <img

@@ -694,6 +694,16 @@ input[type='color']::-webkit-color-swatch {
   transform: scale(1.05);
 }
 
+.bannerCloseIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  scale: 1;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #1d1d1d;
+}
+
 .settingsButton {
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.04);
