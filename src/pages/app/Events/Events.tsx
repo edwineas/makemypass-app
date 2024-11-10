@@ -470,10 +470,10 @@ const Events = () => {
                                         <div className={styles.rightMenuButton}>
                                           <BsThreeDots
                                             onClick={(
-                                              e: React.MouseEvent<SVGElement, MouseEvent>,
+                                              eventClick: React.MouseEvent<SVGElement, MouseEvent>,
                                             ) => {
-                                              e.stopPropagation();
-                                              handleButtonClick(e);
+                                              eventClick.stopPropagation();
+                                              handleButtonClick(eventClick);
                                               setDuplicateEventId(event?.id);
                                             }}
                                             size={15}
@@ -487,7 +487,7 @@ const Events = () => {
                                       )}
                                     </div>
                                   </div>
-                                  {isMenuOpen && (
+                                  {isMenuOpen && duplicateEventId == event.id && (
                                     <RightClickMenu
                                       isOpen={isMenuOpen}
                                       position={menuPosition}
