@@ -281,10 +281,76 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
                         whileHover={{ scale: 1.05 }}
                         className={styles.manage}
                         onClick={() => {
-                          window.location.href = `/${event.name}/manage`;
+                          window.location.href = `/${event.name}`;
                         }}
                       >
-                        Manage
+                        View Event
+                        <BsArrowRight size={15} />
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          ))}
+      </div>
+      {organization.events && organization.events?.Completed.length > 0 && (
+        <div className={styles.eventsHeader}>
+          <p className={styles.eventsHeaderTitle}>Completed Events</p>
+        </div>
+      )}
+      <div className={styles.eventsContainer}>
+        {type === 'public' &&
+          organization.events &&
+          organization.events?.Completed.length > 0 &&
+          organization.events?.Completed.map((event) => (
+            <div key={event.id} className={styles.event}>
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className={styles.eventCard}
+                  style={{
+                    zIndex: 0,
+                  }}
+                >
+                  <div className={styles.innerCard}>
+                    {event.logo ? (
+                      <motion.img
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        src={event.logo}
+                        alt='event logo depicting event information'
+                        className={styles.eventImage}
+                      />
+                    ) : (
+                      <div className={styles.eventImage}>{event.title.charAt(0).toUpperCase()}</div>
+                    )}
+                    <div className={styles.eventDetails}>
+                      <div className={styles.eventDetailsHeader}>
+                        <div>
+                          {event.event_start_date && (
+                            <motion.div className={styles.eventDate}>
+                              <p className={styles.date}>{formatDate(event?.event_start_date)}</p>
+                            </motion.div>
+                          )}
+                          <p className={styles.eventName}>
+                            {event.title.substring(0, 35)}
+                            {event.title.length > 35 ? '...' : ''}
+                          </p>
+                        </div>
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        className={styles.manage}
+                        onClick={() => {
+                          window.location.href = `/${event.name}`;
+                        }}
+                      >
+                        View Event
                         <BsArrowRight size={15} />
                       </motion.button>
                     </div>

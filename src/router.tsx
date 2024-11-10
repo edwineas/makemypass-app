@@ -98,7 +98,7 @@ const routes: RouteObject[] = [
     element: <SelfCheckIn />,
   },
   {
-    path: '/organizations/:orgName',
+    path: '/org/:orgName',
     element: <OrganizationGlance type='public' />,
   },
   {
