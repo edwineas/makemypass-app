@@ -20,6 +20,7 @@ import Slider from '../../../../../components/SliderButton/Slider';
 import { useOverrideCtrlS } from '../../../../../hooks/common';
 import AdvancedSetting from './components/AdvancedSetting/AdvancedSetting';
 import TicketBox from './components/TicketBox/TicketBox';
+import TicketEditor from './components/TicketEditor/TicketEditor';
 import UnsavedChanges from './components/UnsavedChanges/UnsavedChanges';
 import styles from './ManageTickets.module.css';
 
@@ -41,6 +42,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
   const [tickets, setTickets] = useState<TicketType[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<TicketType>();
   const [isOpen, setIsOpen] = useState(false);
+  const [isTicketEditor, setIsTicketEditor] = useState(false);
   const [wantToClose, setWantToClose] = useState(false);
   const [isChangedModal, setIsChangedModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -97,6 +99,15 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         user_count: 0,
         category: '',
         allowed_dates: [],
+        image: {
+          qr: {
+            border: '',
+            box_size: '',
+            position: '',
+          },
+          content: [],
+          file_path: '',
+        },
       };
       const newTicketId = await createTicket(eventId, newTicket as TicketType);
       if (newTicketId) {
@@ -308,6 +319,10 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
     closeTicketModal,
   }));
 
+  const handleTicketClick = () => {
+    setIsTicketEditor(true);
+  };
+
   useEffect(() => {
     if (eventId && !ticketData.length && !hasFetched) {
       getTicketsList(eventId, setTicketData);
@@ -339,6 +354,13 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
 
   return (
     <>
+      {isTicketEditor && (
+        <>
+          <Modal onClose={() => setIsTicketEditor(false)} style={{ zIndex: 999 }} zIndexCount={100}>
+            <TicketEditor selectedTicket={selectedTicket} />
+          </Modal>
+        </>
+      )}
       {isOpen && (
         <Modal
           type='side'
@@ -405,7 +427,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                 }
                 handleDefaultSelected={changeDefaultSelected}
                 hasUnsavedChanges={hasUnsavedChanges}
-                // handleTicketClick={handleTicketClick}
+                handleTicketClick={handleTicketClick}
               />
             ))}
           </div>
