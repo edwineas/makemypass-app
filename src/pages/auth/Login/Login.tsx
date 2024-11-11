@@ -1,3 +1,4 @@
+import { useGoogleLogin } from '@react-oauth/google';
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -43,6 +44,16 @@ const Login = () => {
   const [error, setError] = useState<errorType>();
 
   const ruri = window.location.href.split('=')[1];
+
+  const handleGoogleLogin = useGoogleLogin({
+    // flow: 'auth-code',
+    onSuccess: (credentialResponse) => {
+      loginUsingGoogle(credentialResponse, setIsAuthenticated);
+    },
+    onError: () => {
+      console.error('Google Sign-In was unsuccessful');
+    },
+  });
 
   const handleSubmit = () => {
     setError({
@@ -184,9 +195,9 @@ const Login = () => {
     }
   }, [isForgetPassword]);
 
-  function handleGoogleLogin(): void {
-    loginUsingGoogle();
-  }
+  // function handleGoogleLogin(): void {
+  //   loginUsingGoogle();
+  // }
 
   return (
     <>
