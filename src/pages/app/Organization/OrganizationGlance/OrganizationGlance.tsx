@@ -215,7 +215,13 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
       )}
 
       <div className={styles.organizationContainer}>
-        {type === 'private' && <EventHeader previousPageNavigate='-1' />}
+        {type === 'private' && (
+          <EventHeader
+            previousPageNavigate='-1'
+            custom={true}
+            customName={organization.title ? `${organization.title} (org)` : ''}
+          />
+        )}
         <div className={styles.bannerContainer}>
           {organization.banner ? (
             <img

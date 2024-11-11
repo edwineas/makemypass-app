@@ -214,9 +214,24 @@ const Glance = ({ tab }: { tab: string }) => {
                     color: data.color,
                   }}
                 >
-                  <p className={styles.dataCount}>
-                    • ({data.value}) {data.type.substring(0, 8)}..
-                  </p>
+                  <motion.p
+                    className={styles.dataCount}
+                    initial={{
+                      width: '80px',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      textOverflow: 'ellipsis',
+                    }}
+                    whileHover={{
+                      width: 'auto',
+                      overflow: 'visible',
+                      whiteSpace: 'normal',
+                      textWrap: 'nowrap',
+                      textOverflow: 'none',
+                    }}
+                  >
+                    • ({data.value}) {data.type}
+                  </motion.p>
                 </motion.li>
               </ul>
             ))}
