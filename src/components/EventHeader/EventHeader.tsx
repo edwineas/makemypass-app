@@ -6,9 +6,13 @@ import styles from './EventHeader.module.css';
 const EventHeader = ({
   previousPageNavigate,
   isLive,
+  custom,
+  customName,
 }: {
   previousPageNavigate?: string;
   isLive?: boolean;
+  custom?: boolean;
+  customName?: string;
 }) => {
   const localEventData = JSON.parse(sessionStorage.getItem('eventData')!);
 
@@ -16,7 +20,36 @@ const EventHeader = ({
 
   return (
     <>
-      {localEventData && localEventData.title && (
+      {custom && (
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className={styles.headerRow}
+        >
+          <div className='row'>
+            {previousPageNavigate && (
+              <button
+                onClick={() => {
+                  if (previousPageNavigate === '-1') {
+                    navigate(-1);
+                  } else {
+                    navigate(previousPageNavigate);
+                  }
+                }}
+                className={styles.goBack}
+              >
+                {'<'}
+              </button>
+            )}
+            <div className={styles.headerText}>
+              <p className={styles.headerImage}>{customName?.charAt(0).toUpperCase()}</p>
+              {customName}
+            </div>
+          </div>
+        </motion.div>
+      )}
+      {!custom && localEventData && localEventData.title && (
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
