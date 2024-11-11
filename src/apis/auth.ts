@@ -173,11 +173,9 @@ export const loginUsingGoogle = async (
     setIsAuthenticated(true);
     onboardUser();
 
-    console.log('Google User Info:', response.data);
-    alert(`Welcome, ${response.data.name}!`);
   } catch (error) {
     console.error('Google login error:', error);
-    toast.error('Google login ');
+    toast.error('Google login Failed');
   }
 };
 
