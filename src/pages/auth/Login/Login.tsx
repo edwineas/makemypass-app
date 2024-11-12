@@ -99,6 +99,7 @@ const Login = () => {
             localStorage.setItem('accessToken', responseData.response.access_token);
             localStorage.setItem('refreshToken', responseData.response.refresh_token);
             if (userEmail) localStorage.setItem('userEmail', userEmail);
+            localStorage.setItem('userImage', responseData.response.profile_pic_url);
 
             toast.success('Password reset successfully');
 
