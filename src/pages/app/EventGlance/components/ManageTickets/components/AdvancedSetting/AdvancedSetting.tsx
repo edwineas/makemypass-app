@@ -82,6 +82,18 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
         }
       />
 
+      <InputField
+        type='number'
+        name='commission'
+        id='Commission'
+        icon={<></>}
+        title='Commission'
+        value={selectedTicket?.commission?.toString()}
+        onChange={(e) =>
+          setSelectedTicket({ ...selectedTicket, commission: Number(e.target.value) })
+        }
+      />
+
       <div className={styles.ticketSlider}>
         <p className={styles.perksLabel}>Perks</p>
         <Slider
