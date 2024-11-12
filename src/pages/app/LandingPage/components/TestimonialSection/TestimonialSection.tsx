@@ -9,10 +9,20 @@ interface Testimonial {
 }
 
 const TestimonialCard: React.FC<Testimonial> = ({ company, content }) => {
+  const [isExpanded, setIsExpanded] = React.useState(content.length <= 300);
+  const toggleExpand = () => setIsExpanded(!isExpanded);
   return (
     <div className={styles.testimonialCard}>
       <FaQuoteLeft className={styles.quoteIcon} />
-      <p className={styles.testimonialContent}>{content}</p>
+      <div className={`${styles.testimonialContent} ${isExpanded ? styles.expanded : ''}`}>
+        {isExpanded ? `${content}   ` : `${content.substring(0, 300)}...  `}
+        {content.length > 300 && (
+          <button className={styles.readMoreBtn} onClick={toggleExpand}>
+            {isExpanded ? 'READ LESS' : 'READ MORE'}
+          </button>
+        )}
+      </div>
+
       <div className={styles.testimonialAuthor}>
         <div className={styles.authorInfo}>
           <p className={styles.authorRole}>{company}</p>
