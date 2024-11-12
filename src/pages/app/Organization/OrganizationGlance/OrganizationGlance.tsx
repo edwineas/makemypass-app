@@ -1,6 +1,16 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { BsArrowRight } from 'react-icons/bs';
+import {
+  IoCallOutline,
+  IoLogoFacebook,
+  IoLogoInstagram,
+  IoLogoLinkedin,
+  IoLogoTwitter,
+  IoLogoWhatsapp,
+  IoMailOutline,
+} from 'react-icons/io5';
 import { TbAlertTriangleFilled } from 'react-icons/tb';
 import { useParams } from 'react-router';
 import { BeatLoader } from 'react-spinners';
@@ -13,7 +23,7 @@ import {
   removeOrgMember,
   updateOrgMember,
 } from '../../../../apis/orgs';
-import { formatDate } from '../../../../common/commonFunctions';
+import { formatDate, normalizeUrl } from '../../../../common/commonFunctions';
 import EventHeader from '../../../../components/EventHeader/EventHeader';
 import Modal from '../../../../components/Modal/Modal';
 import Table from '../../../../components/Table/Table';
@@ -244,13 +254,74 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
           <div className={styles.bannerTexts}>
             <div className={styles.headingTexts}>
               <p className={styles.eventTitle}>{organization.title}</p>
+              {organization?.socials && (
+                <div className={styles.hostCommunicate}>
+                  <div className={styles.hostCommunicateIcons}>
+                    {organization.socials.phone && (
+                      <a href={`tel:${organization.socials.phone}`}>
+                        <IoCallOutline size={20} />
+                      </a>
+                    )}
+                    {organization.socials.whatsapp && (
+                      <a
+                        href={
+                          organization.socials.whatsapp.startsWith('https://')
+                            ? organization.socials.whatsapp
+                            : `https://${organization.socials.whatsapp}`
+                        }
+                        target='_blank'
+                      >
+                        <IoLogoWhatsapp size={20} />
+                      </a>
+                    )}
+                    {organization.socials.email && (
+                      <a href={`mailto:${organization.socials.email}`}>
+                        <IoMailOutline size={20} />
+                      </a>
+                    )}
+                    {organization.socials.instagram && (
+                      <a href={normalizeUrl(organization.socials.instagram)} target='_blank'>
+                        <IoLogoInstagram size={20} />
+                      </a>
+                    )}
+                    {organization.socials.facebook && (
+                      <a href={normalizeUrl(organization.socials.facebook)} target='_blank'>
+                        <IoLogoFacebook size={20} />
+                      </a>
+                    )}
+                    {organization.socials.twitter && (
+                      <a href={normalizeUrl(organization.socials.twitter)} target='_blank'>
+                        <IoLogoTwitter size={20} />
+                      </a>
+                    )}
+                    {organization.socials.linkedin && (
+                      <a href={normalizeUrl(organization.socials.linkedin)} target='_blank'>
+                        <IoLogoLinkedin size={20} />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
               <p className={styles.eventDescription}>{organization.description}</p>
             </div>
           </div>
 
           {type === 'private' && (
-            <div className={styles.buttons} onClick={() => setShowEditModal(true)}>
-              <button className={styles.editEventButton}>Edit Organization</button>
+            <div className={styles.buttons}>
+              <button onClick={() => setShowEditModal(true)} className={styles.editEventButton}>
+                Edit Organization
+              </button>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `${window.location.origin}/org/${organization.name}`,
+                  );
+                  toast.success('Link copied to clipboard');
+                }}
+                className={styles.editEventButton}
+              >
+                Share Organization
+              </button>
             </div>
           )}
         </div>

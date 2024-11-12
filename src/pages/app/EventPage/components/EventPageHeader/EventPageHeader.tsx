@@ -19,25 +19,12 @@ import { MdContacts } from 'react-icons/md';
 import { useNavigate } from 'react-router';
 
 import { EventHosts, EventType } from '../../../../../apis/types';
+import { normalizeUrl } from '../../../../../common/commonFunctions';
 import { getDay, getMonthAbbreviation } from '../../constants';
 import styles from './EventPageHeader.module.css';
 import { getFormatedStartAndEndTime } from './functions';
 
 const EventPageHeader = ({ eventData }: { eventData: EventType | undefined }) => {
-  function normalizeUrl(url: string) {
-    if (!url) return '';
-
-    if (!url.startsWith('http')) {
-      url = `https://${url}`;
-    }
-
-    if (!url.includes('www.')) {
-      url = url.replace(/https?:\/\//, '$&www.');
-    }
-
-    return url;
-  }
-
   const [showFullDesc, setShowFullDesc] = useState(false);
   const [timer, setTimer] = useState({
     days: 0 as number | string,

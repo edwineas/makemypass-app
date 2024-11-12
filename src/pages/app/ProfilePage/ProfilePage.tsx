@@ -109,9 +109,13 @@ const ProfilePage = () => {
                         name='profile_pic'
                         className={styles.fileInput}
                         accept='.png, .jpg, .jpeg'
-                        onChange={(e) =>
-                          setUserData({ ...userData, profile_pic: e.target.files?.[0] })
-                        }
+                        onChange={(e) => {
+                          setUserData({ ...userData, profile_pic: e.target.files?.[0] });
+                          localStorage.setItem(
+                            'userImage',
+                            URL.createObjectURL(e.target.files?.[0] as Blob),
+                          );
+                        }}
                         ref={ProfilePicRef}
                       />
                     </div>

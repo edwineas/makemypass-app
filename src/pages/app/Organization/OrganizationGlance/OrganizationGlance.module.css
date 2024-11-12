@@ -97,11 +97,20 @@
 .buttons {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  align-self: flex-end;
-  margin-left: auto;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: 1rem;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 923px) {
+  .buttons {
+    margin-left: auto;
+    align-items: flex-end;
+    align-self: flex-end;
+  }
 }
 
 .editEventButton {
@@ -324,4 +333,22 @@
   .eventsHeaderTitle {
     padding: 0 1.25rem;
   }
+}
+
+.hostCommunicate {
+  position: absolute;
+
+  top: 1rem;
+  right: 1rem;
+}
+
+.hostCommunicateIcons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  opacity: 0.8;
+}
+
+.hostCommunicateIcons:hover {
+  color: #47c97e;
 }

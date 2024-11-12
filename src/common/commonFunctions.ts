@@ -189,3 +189,17 @@ export const formatTime = (dateString: string) => {
 
   return `${formattedHours}:${formattedMinutes} ${ampm}`;
 };
+
+export function normalizeUrl(url: string) {
+  if (!url) return '';
+
+  if (!url.startsWith('http')) {
+    url = `https://${url}`;
+  }
+
+  if (!url.includes('www.')) {
+    url = url.replace(/https?:\/\//, '$&www.');
+  }
+
+  return url;
+}
