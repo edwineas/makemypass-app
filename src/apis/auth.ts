@@ -171,6 +171,7 @@ export const loginUsingGoogle = async (
     localStorage.setItem('accessToken', response.data.response.access_token);
     localStorage.setItem('refreshToken', response.data.response.refresh_token);
     localStorage.setItem('userEmail', response.data.response.email);
+    localStorage.setItem('userImage', response.data.response.profile_pic_url);
     setIsAuthenticated(true);
     onboardUser();
 
