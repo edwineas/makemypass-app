@@ -297,7 +297,7 @@ const Login = () => {
                         })
                       }
                     />
-                    {error && error.name && <p className={styles.alertMessage}>{error.name}</p>}
+                    {error && error.otp && <p className={styles.alertMessage}>{error.otp}</p>}
                   </>
                 )}
 
