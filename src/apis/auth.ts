@@ -1,3 +1,4 @@
+import { TokenResponse } from '@react-oauth/google';
 import { Dispatch } from 'react';
 import toast from 'react-hot-toast';
 
@@ -43,6 +44,7 @@ export const userLogin = async (
       localStorage.setItem('accessToken', response.data.response.access_token);
       localStorage.setItem('refreshToken', response.data.response.refresh_token);
       localStorage.setItem('userEmail', userEmail);
+      localStorage.setItem('userImage', response.data.response.profile_pic_url);
       setIsAuthenticated(true);
       onboardUser();
     })
@@ -152,15 +154,31 @@ export const registerUser = async (
     });
 };
 
-export const loginUsingGoogle = async () => {
-  publicGateway
-    .get(buildVerse.googleLogin)
-    .then((response) => {
-      toast.success(response.data.message.general[0] || 'Logged in successfully');
-    })
-    .catch((error) => {
-      toast.error(error.response.data.message.general[0] || 'Something went wrong');
+export const loginUsingGoogle = async (
+  credentialResponse: Omit<TokenResponse, 'error' | 'error_description' | 'error_uri'>,
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+  try {
+    const { access_token } = credentialResponse;
+    if (!access_token) {
+      console.error('No Google access token received');
+      return;
+    }
+    // Send the token to FastAPI backend for verification
+    const response = await publicGateway.post(buildVerse.googleLogin, {
+      token: access_token,
     });
+    localStorage.setItem('accessToken', response.data.response.access_token);
+    localStorage.setItem('refreshToken', response.data.response.refresh_token);
+    localStorage.setItem('userEmail', response.data.response.email);
+    localStorage.setItem('userImage', response.data.response.profile_pic_url);
+    setIsAuthenticated(true);
+    onboardUser();
+
+  } catch (error) {
+    console.error('Google login error:', error);
+    toast.error('Google login Failed');
+  }
 };
 
 export const resetUserPassword = (

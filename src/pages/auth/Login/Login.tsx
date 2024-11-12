@@ -1,3 +1,4 @@
+import { useGoogleLogin } from '@react-oauth/google';
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -44,6 +45,16 @@ const Login = () => {
 
   const ruri = window.location.href.split('=')[1];
 
+  const handleGoogleLogin = useGoogleLogin({
+    // flow: 'auth-code',
+    onSuccess: (credentialResponse) => {
+      loginUsingGoogle(credentialResponse, setIsAuthenticated);
+    },
+    onError: () => {
+      console.error('Google Sign-In was unsuccessful');
+    },
+  });
+
   const handleSubmit = () => {
     setError({
       email: '',
@@ -88,6 +99,7 @@ const Login = () => {
             localStorage.setItem('accessToken', responseData.response.access_token);
             localStorage.setItem('refreshToken', responseData.response.refresh_token);
             if (userEmail) localStorage.setItem('userEmail', userEmail);
+            localStorage.setItem('userImage', responseData.response.profile_pic_url);
 
             toast.success('Password reset successfully');
 
@@ -184,9 +196,9 @@ const Login = () => {
     }
   }, [isForgetPassword]);
 
-  function handleGoogleLogin(): void {
-    loginUsingGoogle();
-  }
+  // function handleGoogleLogin(): void {
+  //   loginUsingGoogle();
+  // }
 
   return (
     <>
@@ -286,7 +298,7 @@ const Login = () => {
                         })
                       }
                     />
-                    {error && error.name && <p className={styles.alertMessage}>{error.name}</p>}
+                    {error && error.otp && <p className={styles.alertMessage}>{error.otp}</p>}
                   </>
                 )}
 
@@ -362,10 +374,10 @@ const Login = () => {
                   Login with {isPassword ? 'OTP' : 'Password'}
                 </p>
                 {isOtpSent && (
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
                     className={styles.submitButton}
                     style={{
-                      minHeight: '2.3rem',
                       width: 'fit-content',
                       display: 'flex',
                       whiteSpace: 'nowrap',
@@ -400,7 +412,7 @@ const Login = () => {
                     disabled={timer > 0} // Disable button when timer is still running
                   >
                     {timer > 0 ? `Resend (${timer}s)` : 'Resend'}
-                  </button>
+                  </motion.button>
                 )}
                 <motion.button
                   whileHover={{ scale: 1.05 }}

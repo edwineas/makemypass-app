@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { FaUser } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+// import { FaUser } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 
 import SecondaryButton from '../../pages/app/Overview/components/SecondaryButton/SecondaryButton';
 import styles from './Header.module.css';
@@ -13,10 +13,11 @@ const Header = ({
   type?: string | undefined;
   hideLogin: boolean | undefined;
 }) => {
-  const [openSettings, setOpenSettings] = useState(false);
-
+  // const [openSettings, setOpenSettings] = useState(false);
+  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const userEmail = localStorage.getItem('userEmail');
+  const userImage = localStorage.getItem('userImage');
 
   useEffect(() => {
     if (localStorage.getItem('accessToken') && !isAuthenticated) {
@@ -24,26 +25,26 @@ const Header = ({
     }
   }, [isAuthenticated]);
 
-  const variants = {
-    fadein: {
-      display: 'block',
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.2,
-      },
-    },
-    fadeout: {
-      opacity: 0,
-      y: -10,
-      transition: {
-        duration: 0.2,
-      },
-      transitionEnd: {
-        display: 'none',
-      },
-    },
-  };
+  // const variants = {
+  //   fadein: {
+  //     display: 'block',
+  //     opacity: 1,
+  //     y: 0,
+  //     transition: {
+  //       duration: 0.2,
+  //     },
+  //   },
+  //   fadeout: {
+  //     opacity: 0,
+  //     y: -10,
+  //     transition: {
+  //       duration: 0.2,
+  //     },
+  //     transitionEnd: {
+  //       display: 'none',
+  //     },
+  //   },
+  // };
 
   const [formattedTime, setFormattedTime] = useState('');
 
@@ -101,19 +102,25 @@ const Header = ({
                   <>
                     <div className='row'>
                       <div className={styles.dropdown}>
-                        <p
+                        <motion.p
+                          whileHover='hover'
                           onClick={() => {
-                            setOpenSettings(!openSettings);
+                            // setOpenSettings(!openSettings);
+                            navigate('/profile');
                           }}
                           className={`pointer ${styles.userName}`}
                         >
                           Hello, {userEmail?.split('@')[0]}
                           <span className={styles.avatar}>
-                            {userEmail?.split('')[0].toUpperCase()}
+                            {userImage ? (
+                              <img src={userImage} className={styles.avatar} alt='User avatar' />
+                            ) : (
+                              userEmail?.split('')[0].toUpperCase()
+                            )}
                           </span>
-                        </p>
+                        </motion.p>
 
-                        {window.location.pathname !== '/profile' &&
+                        {/* {window.location.pathname !== '/profile' &&
                           window.location.pathname !== '/set-profile' &&
                           import.meta.env.VITE_CURRENT_ENV === 'dev' && (
                             <motion.div
@@ -129,7 +136,7 @@ const Header = ({
                                 </div>
                               </Link>
                             </motion.div>
-                          )}
+                          )} */}
                       </div>
 
                       <Link to='/login'>
