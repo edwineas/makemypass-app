@@ -373,10 +373,10 @@ const Login = () => {
                   Login with {isPassword ? 'OTP' : 'Password'}
                 </p>
                 {isOtpSent && (
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
                     className={styles.submitButton}
                     style={{
-                      minHeight: '2.3rem',
                       width: 'fit-content',
                       display: 'flex',
                       whiteSpace: 'nowrap',
@@ -411,7 +411,7 @@ const Login = () => {
                     disabled={timer > 0} // Disable button when timer is still running
                   >
                     {timer > 0 ? `Resend (${timer}s)` : 'Resend'}
-                  </button>
+                  </motion.button>
                 )}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
