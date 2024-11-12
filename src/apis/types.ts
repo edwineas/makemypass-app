@@ -346,6 +346,7 @@ export type AuthApiSuccessResponse = {
   response: {
     access_token: string;
     refresh_token: string;
+    profile_pic_url: string;
   };
 };
 
