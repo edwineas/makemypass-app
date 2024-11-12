@@ -136,13 +136,11 @@
 
   border-radius: 8px;
   border: none;
-
   color: #a4a4a4;
   font-family: 'Inter', sans-serif;
   background: rgba(255, 255, 255, 0.08);
-
+  height: 2rem;
   width: 8rem;
-
   float: right;
 }
 
