@@ -151,6 +151,7 @@ export interface TicketType {
     }[];
     file_path: string;
   };
+  commission?: number;
 }
 
 interface CouponType {

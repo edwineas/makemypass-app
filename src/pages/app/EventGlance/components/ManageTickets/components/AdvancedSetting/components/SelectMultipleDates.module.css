@@ -7,16 +7,19 @@
 }
 
 .datePicker input {
-  margin-top: 1rem;
+  margin-top: 0.25rem;
   margin-bottom: 1rem;
   background: rgba(255, 255, 255, 0.04);
   border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  width: 95%;
+  padding: 0.75rem 0.75rem;
+  width: 100%;
   display: flex;
   font-family: 'Inter', sans-serif;
-
   border: none;
+}
+
+.datePicker {
+  width: 100%;
 }
 
 .selectDateContainer {
@@ -54,6 +57,12 @@
   justify-content: flex-start;
   align-items: flex-start;
   column-gap: 1rem;
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+.selectionContainer {
+  width: 100%;
 }
 
 .line {
@@ -73,4 +82,11 @@
   display: flex;
   font-family: 'Inter', sans-serif;
   border: none;
+}
+
+.formLabel {
+  color: #a4a4a4;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
 }

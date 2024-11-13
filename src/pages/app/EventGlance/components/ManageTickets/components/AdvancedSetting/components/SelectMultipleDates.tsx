@@ -7,8 +7,10 @@ import styles from './SelectMultipleDates.module.css';
 interface SelectDateProps {
   selectedTicket: TicketType;
   setSelectedTicket: React.Dispatch<React.SetStateAction<TicketType | undefined>>;
+  title?: string;
 }
-const SelectMultipleDates = ({ selectedTicket, setSelectedTicket }: SelectDateProps) => {
+
+const SelectMultipleDates = ({ selectedTicket, setSelectedTicket, title }: SelectDateProps) => {
   const getDatesArray = () => {
     return selectedTicket.allowed_dates?.map((dateStr: string) => new Date(dateStr));
   };
@@ -26,6 +28,7 @@ const SelectMultipleDates = ({ selectedTicket, setSelectedTicket }: SelectDatePr
       <div className={styles.selectDateContainerAddGuest}>
         {
           <>
+            <label className={styles.formLabel}>{title}</label>
             <div className={styles.selectionContainer}>
               <DatePicker
                 wrapperClassName={styles.datePicker}
