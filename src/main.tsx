@@ -1,6 +1,6 @@
 import './index.css';
 
-// import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import * as React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Toaster, ToastPosition } from 'react-hot-toast';
@@ -23,7 +23,9 @@ const toasterProps = {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Routes />
-    <Toaster {...toasterProps} />
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <Routes />
+      <Toaster {...toasterProps} />
+    </GoogleOAuthProvider>
   </React.StrictMode>,
 );
