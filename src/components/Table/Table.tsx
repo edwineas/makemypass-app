@@ -7,7 +7,11 @@ import { HashLoader } from 'react-spinners';
 import { FixedSizeList } from 'react-window';
 
 import { Roles, TillRoles } from '../../../services/enums';
-import { isUserAuthorized, isUserEditor, timeAgo } from '../../common/commonFunctions';
+import {
+  isUserAuthorizedForEvent,
+  isUserEditorForEvent,
+  timeAgo,
+} from '../../common/commonFunctions';
 import { PaginationDataType, ResentTicket, SelectedGuest } from '../../pages/app/Guests/types';
 import { checkUserHierarchy } from '../../pages/app/Overview/Overview/functions';
 import type { hostId } from '../../pages/app/Overview/Overview/types';
@@ -90,7 +94,7 @@ const RowComponent = React.memo(({ index, data }: { index: number; data: ItemDat
               <p className={styles.rowDate}>{timeAgo(item.registered_at)}</p>
               {setResentTicket && (
                 <>
-                  {(isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER)) && (
+                  {(isUserEditorForEvent() || isUserAuthorizedForEvent(TillRoles.VOLUNTEER)) && (
                     <div className={styles.icon}>
                       <MdEdit
                         className='pointer'
@@ -124,40 +128,42 @@ const RowComponent = React.memo(({ index, data }: { index: number; data: ItemDat
                   </div>
                 </>
               )}
-              {setHostId && isUserEditor() && checkUserHierarchy(item.category as Roles) && (
-                <>
-                  <div className={styles.icon}>
-                    <MdEdit
-                      className='pointer'
-                      onClick={() => {
-                        if (setHostId) {
-                          setHostId((prevState) => ({
-                            ...prevState,
-                            id: item.id,
-                            type: 'edit',
-                          }));
-                        }
-                      }}
-                      color='#8E8E8E'
-                    />
-                  </div>
-                  <div className={styles.icon}>
-                    <MdDelete
-                      className='pointer'
-                      onClick={() => {
-                        if (setHostId) {
-                          setHostId((prevState) => ({
-                            ...prevState,
-                            id: item.id,
-                            type: 'delete',
-                          }));
-                        }
-                      }}
-                      color='#8E8E8E'
-                    />
-                  </div>
-                </>
-              )}
+              {setHostId &&
+                isUserEditorForEvent() &&
+                checkUserHierarchy(item.category as Roles) && (
+                  <>
+                    <div className={styles.icon}>
+                      <MdEdit
+                        className='pointer'
+                        onClick={() => {
+                          if (setHostId) {
+                            setHostId((prevState) => ({
+                              ...prevState,
+                              id: item.id,
+                              type: 'edit',
+                            }));
+                          }
+                        }}
+                        color='#8E8E8E'
+                      />
+                    </div>
+                    <div className={styles.icon}>
+                      <MdDelete
+                        className='pointer'
+                        onClick={() => {
+                          if (setHostId) {
+                            setHostId((prevState) => ({
+                              ...prevState,
+                              id: item.id,
+                              type: 'delete',
+                            }));
+                          }
+                        }}
+                        color='#8E8E8E'
+                      />
+                    </div>
+                  </>
+                )}
             </div>
           </motion.div>
         ))}

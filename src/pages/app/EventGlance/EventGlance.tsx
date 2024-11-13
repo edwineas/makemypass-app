@@ -29,7 +29,7 @@ import {
   VenueCRUDType,
 } from '../../../apis/types';
 import { listEventVenues } from '../../../apis/venue';
-import { isUserAuthorized, isUserEditor } from '../../../common/commonFunctions';
+import { isUserAuthorizedForEvent, isUserEditorForEvent } from '../../../common/commonFunctions';
 import DashboardLayout from '../../../components/DashboardLayout/DashboardLayout';
 import Modal from '../../../components/Modal/Modal';
 import SectionButton from '../../../components/SectionButton/SectionButton';
@@ -419,7 +419,7 @@ const EventGlance = () => {
             {UTMData.showUTM && <UTMManager UTMData={UTMData} setUTMData={setUTMData} />}
 
             <div className={styles.bannerContainer}>
-              {isUserAuthorized(TillRoles.ADMIN) && (
+              {isUserAuthorizedForEvent(TillRoles.ADMIN) && (
                 <FaTags
                   size={20}
                   color='#FFFFFF'
@@ -514,7 +514,7 @@ const EventGlance = () => {
                       </>
                     )}
                   </div>
-                  {isUserEditor() && (
+                  {isUserEditorForEvent() && (
                     <div className={styles.buttons}>
                       <button
                         onClick={() => setShowEmbedModal(true)}
@@ -629,7 +629,7 @@ const EventGlance = () => {
                           <LuMail color='#939597' size={20} />
                           <p className={styles.scheduleHeading}>
                             {mail.type}{' '}
-                            {isUserEditor() && (
+                            {isUserEditorForEvent() && (
                               <span
                                 className={styles.testMail}
                                 onClick={() => {

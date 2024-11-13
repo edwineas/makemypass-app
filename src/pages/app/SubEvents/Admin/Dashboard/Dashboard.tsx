@@ -10,7 +10,7 @@ import {
   getSubEventData,
   listDashboardSubEvents,
 } from '../../../../../apis/subevents';
-import { isUserEditor } from '../../../../../common/commonFunctions';
+import { isUserEditorForEvent } from '../../../../../common/commonFunctions';
 import Editor from '../../../../../components/Editor/Editor';
 import EventHeader from '../../../../../components/EventHeader/EventHeader';
 import Modal from '../../../../../components/Modal/Modal';
@@ -185,7 +185,7 @@ const Dashboard = () => {
                 icon={<></>}
                 value={selectedSubEvent?.title}
                 onChange={(e) => {
-                  if (isUserEditor())
+                  if (isUserEditorForEvent())
                     setSelectedSubEvent((prev) => {
                       return {
                         ...prev,
@@ -203,7 +203,7 @@ const Dashboard = () => {
                 icon={<></>}
                 value={selectedSubEvent.start_time}
                 onChange={(e) => {
-                  if (isUserEditor())
+                  if (isUserEditorForEvent())
                     setSelectedSubEvent((prev) => {
                       return {
                         ...prev,
@@ -223,7 +223,7 @@ const Dashboard = () => {
                 icon={<></>}
                 value={selectedSubEvent.end_time}
                 onChange={(e) => {
-                  if (isUserEditor())
+                  if (isUserEditorForEvent())
                     setSelectedSubEvent((prev) => {
                       return {
                         ...prev,
@@ -243,7 +243,7 @@ const Dashboard = () => {
                 icon={<></>}
                 value={selectedSubEvent?.place}
                 onChange={(e) => {
-                  if (isUserEditor())
+                  if (isUserEditorForEvent())
                     setSelectedSubEvent((prev) => {
                       return {
                         ...prev,
@@ -266,7 +266,7 @@ const Dashboard = () => {
                 <Slider
                   checked={selectedSubEvent?.capacity !== null && limitCapacity}
                   onChange={() => {
-                    if (isUserEditor()) {
+                    if (isUserEditorForEvent()) {
                       setLimitCapacity(!limitCapacity);
                       setSelectedSubEvent((prev) => {
                         return {
@@ -292,10 +292,10 @@ const Dashboard = () => {
                     <input
                       type='text'
                       placeholder='Unlimited'
-                      disabled={!isUserEditor()}
+                      disabled={!isUserEditorForEvent()}
                       value={selectedSubEvent?.capacity}
                       onChange={(e) => {
-                        if (!isUserEditor()) return;
+                        if (!isUserEditorForEvent()) return;
 
                         if (isNaN(Number(e.target.value))) {
                           return;
@@ -325,7 +325,7 @@ const Dashboard = () => {
                 <Slider
                   checked={selectedSubEvent?.approval_required}
                   onChange={() => {
-                    if (isUserEditor())
+                    if (isUserEditorForEvent())
                       setSelectedSubEvent({
                         ...selectedSubEvent,
                         approval_required: !selectedSubEvent.approval_required,
@@ -340,7 +340,7 @@ const Dashboard = () => {
                 <Slider
                   checked={selectedSubEvent?.active}
                   onChange={() => {
-                    if (isUserEditor())
+                    if (isUserEditorForEvent())
                       setSelectedSubEvent({
                         ...selectedSubEvent,
                         active: !selectedSubEvent.active,
@@ -350,7 +350,7 @@ const Dashboard = () => {
                 />
               </div>
               <br />
-              {isUserEditor() && (
+              {isUserEditorForEvent() && (
                 <button className={styles.submitButton} onClick={handleSubmit}>
                   {currentSelectType === 'edit' ? 'Edit Sub Event' : 'Add Sub Event'}
                 </button>
@@ -418,7 +418,7 @@ const Dashboard = () => {
                             <div className={styles.event}>
                               <div>
                                 <div className={styles.eventCard}>
-                                  {isUserEditor() && (
+                                  {isUserEditorForEvent() && (
                                     <div className={styles.deleteIcon}>
                                       <MdDelete
                                         color={'#fff'}
@@ -451,7 +451,7 @@ const Dashboard = () => {
                                           alignItems: 'flex-end',
                                         }}
                                       >
-                                        {isUserEditor() && (
+                                        {isUserEditorForEvent() && (
                                           <motion.button
                                             whileHover={{ scale: 1.05 }}
                                             className={styles.cardSecondaryButton}

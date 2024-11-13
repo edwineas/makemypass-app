@@ -21,7 +21,7 @@ import {
 } from '../../../apis/guests';
 import { checkSpinWheelPickUser } from '../../../apis/randomizer';
 import { FormDataType } from '../../../apis/types';
-import { isUserAuthorized, isUserEditor } from '../../../common/commonFunctions';
+import { isUserAuthorizedForEvent, isUserEditorForEvent } from '../../../common/commonFunctions';
 import DashboardLayout from '../../../components/DashboardLayout/DashboardLayout';
 import Glance from '../../../components/Glance/Glance';
 import Modal from '../../../components/Modal/Modal';
@@ -101,7 +101,7 @@ const Guests = () => {
       selectedGuestId &&
       selectedGuestId.id &&
       selectedGuestId.type == 'edit' &&
-      (isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER))
+      (isUserEditorForEvent() || isUserAuthorizedForEvent(TillRoles.VOLUNTEER))
     ) {
       getGuestEditPrefillData(eventId, selectedGuestId.id, setSelectedGuest, setFormData);
     } else if (selectedGuestId && selectedGuestId.id && selectedGuestId.type == 'view')
@@ -147,7 +147,7 @@ const Guests = () => {
   }, [eventId, triggerFetch, showCheckedInOnly, searchKeyword, showApprovedOnly]);
 
   useEffect(() => {
-    if (eventId && isUserEditor()) {
+    if (eventId && isUserEditorForEvent()) {
       getFormCategories(eventId, setCategories);
       checkSpinWheelPickUser(eventId, setShowPicker);
     }
@@ -216,7 +216,7 @@ const Guests = () => {
 
         {selectedGuestId &&
           selectedGuestId.type === 'add' &&
-          (isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER)) && (
+          (isUserEditorForEvent() || isUserAuthorizedForEvent(TillRoles.VOLUNTEER)) && (
             <Modal title='Invite Guest' onClose={onClose} type='side'>
               <div
                 className={styles.userInfoModalContainer}
@@ -414,7 +414,7 @@ const Guests = () => {
                       text='Shortlisted-Only'
                     />
 
-                    {showPicker && isUserAuthorized(TillRoles.ADMIN) && (
+                    {showPicker && isUserAuthorizedForEvent(TillRoles.ADMIN) && (
                       <SecondaryButton
                         buttonText='Pick User'
                         onClick={() => {
@@ -458,7 +458,7 @@ const Guests = () => {
                       />
                     )}
 
-                    {isUserAuthorized(TillRoles.ADMIN) && (
+                    {isUserAuthorizedForEvent(TillRoles.ADMIN) && (
                       <FaFileCsv
                         onClick={() => {
                           downloadRegisterCSVData(eventId, showCheckedInOnly, showApprovedOnly);
@@ -469,7 +469,7 @@ const Guests = () => {
                       />
                     )}
 
-                    {(isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER)) && (
+                    {(isUserEditorForEvent() || isUserAuthorizedForEvent(TillRoles.VOLUNTEER)) && (
                       <TiUserAdd
                         onClick={() => {
                           setSelectedGuestId({

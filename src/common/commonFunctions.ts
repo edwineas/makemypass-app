@@ -159,20 +159,22 @@ const getRemSizeFromCss = () => {
   return parseFloat(fontSize);
 };
 
-export const isUserAuthorized = (allowedRoles: string[]) => {
+export const isUserAuthorizedForEvent = (allowedRoles: string[]) => {
   const eventData = sessionStorage.getItem('eventData');
+  const role: string = eventData ? JSON.parse(eventData).current_user_role : null;
+
+  if (!role) return false;
+
+  return allowedRoles.includes(role);
+};
+
+export const isUserAuthorizedForOrganization = (allowedRoles: string[]) => {
   const organizationData = sessionStorage.getItem('orgData');
+  const role: string = organizationData ? JSON.parse(organizationData).role : null;
 
-  const getRole = (data: string | null, key: string) => {
-    if (!data) return null;
-    const parsedData = JSON.parse(data);
-    return parsedData[key] || null;
-  };
+  if (!role) return false;
 
-  const eventRole = getRole(eventData, 'current_user_role');
-  const orgRole = getRole(organizationData, 'role');
-
-  return allowedRoles.includes(eventRole) || allowedRoles.includes(orgRole);
+  return allowedRoles.includes(role);
 };
 
 export const getLoggedInUserEventRole = () => {
@@ -185,8 +187,12 @@ export const getLoggedInUserOrganizationRole = () => {
   return organizationData ? JSON.parse(organizationData).role : null;
 };
 
-export const isUserEditor = () => {
-  return isUserAuthorized(['Admin', 'Owner', 'Editor']);
+export const isUserEditorForEvent = () => {
+  return isUserAuthorizedForEvent(['Admin', 'Owner', 'Editor']);
+};
+
+export const isUserEditorForOrganization = () => {
+  return isUserAuthorizedForOrganization(['Admin', 'Owner']);
 };
 
 export const RemSize = getRemSizeFromCss();

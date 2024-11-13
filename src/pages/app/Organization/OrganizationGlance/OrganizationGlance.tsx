@@ -26,7 +26,11 @@ import {
   removeOrgMember,
   updateOrgMember,
 } from '../../../../apis/orgs';
-import { formatDate, isUserEditor, normalizeUrl } from '../../../../common/commonFunctions';
+import {
+  formatDate,
+  isUserEditorForOrganization,
+  normalizeUrl,
+} from '../../../../common/commonFunctions';
 import EventHeader from '../../../../components/EventHeader/EventHeader';
 import Modal from '../../../../components/Modal/Modal';
 import Table from '../../../../components/Table/Table';
@@ -314,7 +318,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
 
           {type === 'private' && (
             <div className={styles.buttons}>
-              {isUserEditor() && (
+              {isUserEditorForOrganization() && (
                 <button onClick={() => setShowEditModal(true)} className={styles.editEventButton}>
                   Edit Organization
                 </button>

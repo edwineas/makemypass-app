@@ -12,7 +12,7 @@ import {
   updateTicketData,
 } from '../../../../../apis/tickets';
 import { TicketType } from '../../../../../apis/types';
-import { isUserEditor } from '../../../../../common/commonFunctions';
+import { isUserEditorForEvent } from '../../../../../common/commonFunctions';
 import Editor from '../../../../../components/Editor/Editor';
 import DeleteModal from '../../../../../components/Modal/DeleteModal/DeleteModal';
 import Modal from '../../../../../components/Modal/Modal';
@@ -403,7 +403,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         <div className={styles.manageTicketsContainer}>
           <div className={styles.ticketHeader}>
             <div className={styles.ticketHeaderTitle}>Current Tickets</div>
-            {isUserEditor() && (
+            {isUserEditorForEvent() && (
               <button className={styles.ticketHeaderButton} onClick={onNewTicket}>
                 + New Ticket Type
               </button>
@@ -445,7 +445,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                 <input
                   className={styles.ticketTitle}
                   placeholder='Ticket Title'
-                  disabled={!isUserEditor()}
+                  disabled={!isUserEditorForEvent()}
                   value={selectedTicket?.title}
                   onChange={(e) =>
                     setSelectedTicket({ ...selectedTicket, title: e.target.value } as TicketType)
@@ -468,7 +468,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                 <Slider
                   checked={selectedTicket?.approval_required}
                   onChange={() => {
-                    isUserEditor() &&
+                    isUserEditorForEvent() &&
                       setSelectedTicket({
                         ...selectedTicket,
                         approval_required: !selectedTicket?.approval_required,
@@ -484,7 +484,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                 <Slider
                   checked={selectedTicket?.capacity != null && limitCapacity}
                   onChange={() => {
-                    if (isUserEditor()) {
+                    if (isUserEditorForEvent()) {
                       if (selectedTicket?.capacity != null && selectedTicket?.capacity >= 0) {
                         setSelectedTicket({
                           ...selectedTicket,
@@ -521,7 +521,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                     <input
                       type='number'
                       placeholder='0'
-                      disabled={!isUserEditor()}
+                      disabled={!isUserEditorForEvent()}
                       value={selectedTicket?.capacity}
                       onChange={(e) => {
                         if (Number(e.target.value) < 0) {
@@ -553,7 +553,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                 <Slider
                   checked={paidTicket}
                   onChange={() => {
-                    isUserEditor() && setPaidTicket((prev) => !prev);
+                    isUserEditorForEvent() && setPaidTicket((prev) => !prev);
                   }}
                 />
               </div>
@@ -570,7 +570,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                       <input
                         type='number'
                         placeholder='0'
-                        disabled={!isUserEditor()}
+                        disabled={!isUserEditorForEvent()}
                         value={selectedTicket?.price}
                         onChange={(e) => {
                           if (Number(e.target.value) < 0) {
@@ -608,7 +608,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                           checked={selectedTicket?.platform_fee_from_user}
                           onChange={() => {
                             selectedTicket &&
-                              isUserEditor() &&
+                              isUserEditorForEvent() &&
                               setSelectedTicket({
                                 ...selectedTicket,
                                 platform_fee_from_user: !selectedTicket.platform_fee_from_user,
@@ -631,7 +631,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                 <Slider
                   checked={!selectedTicket?.is_active}
                   onChange={() => {
-                    isUserEditor() &&
+                    isUserEditorForEvent() &&
                       setSelectedTicket({
                         ...selectedTicket,
                         is_active: !selectedTicket.is_active,
@@ -642,7 +642,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
 
               <div className={styles.buttonContainer}>
                 <div className={styles.buttonGroup}>
-                  {isUserEditor() && (
+                  {isUserEditorForEvent() && (
                     <button className={styles.deleteButton} onClick={() => setDeleteModal(true)}>
                       Delete
                     </button>
@@ -653,7 +653,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                     Advanced Settings
                   </button>
                 </div>
-                {isUserEditor() && (
+                {isUserEditorForEvent() && (
                   <button className={styles.updateButton} onClick={() => updateTicket()}>
                     {'Update Ticket'}
                   </button>

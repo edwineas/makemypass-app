@@ -4,7 +4,10 @@ import { HashLoader } from 'react-spinners';
 import { TillRoles } from '../../../../../../../services/enums';
 import { getEventMailData, updateEventMail } from '../../../../../../apis/mails';
 import { MailType } from '../../../../../../apis/types';
-import { isUserAuthorized, isUserEditor } from '../../../../../../common/commonFunctions';
+import {
+  isUserAuthorizedForEvent,
+  isUserEditorForEvent,
+} from '../../../../../../common/commonFunctions';
 import UploadAttachement from './components/UploadAttachement/UploadAttachements';
 import type { previewType, PropTypes } from './types';
 import styles from './UpdateMail.module.css';
@@ -65,7 +68,7 @@ const UpdateMail = ({ selectedMail, setCustomMail, setSelectedMail, setMails }: 
   };
 
   const handleDeleteAttachment = (index: number) => {
-    if (isUserEditor()) {
+    if (isUserEditorForEvent()) {
       const newAttachments = attachments.filter((_, i) => i !== index);
 
       setAttachments(newAttachments);
@@ -148,7 +151,7 @@ const UpdateMail = ({ selectedMail, setCustomMail, setSelectedMail, setMails }: 
                 <input
                   type='text'
                   placeholder='Enter Subject'
-                  disabled={!isUserEditor()}
+                  disabled={!isUserEditorForEvent()}
                   className={styles.input}
                   value={mailData?.subject}
                   onChange={(e) =>
@@ -162,7 +165,7 @@ const UpdateMail = ({ selectedMail, setCustomMail, setSelectedMail, setMails }: 
 
                 <textarea
                   placeholder='Enter Email Body'
-                  disabled={!isUserEditor()}
+                  disabled={!isUserEditorForEvent()}
                   className={styles.textarea}
                   value={mailData?.body}
                   onChange={(e) => mailData && setMailData({ ...mailData, body: e.target.value })}
@@ -178,7 +181,7 @@ const UpdateMail = ({ selectedMail, setCustomMail, setSelectedMail, setMails }: 
                 />
               </div>
 
-              {isUserAuthorized(TillRoles.ADMIN) && (
+              {isUserAuthorizedForEvent(TillRoles.ADMIN) && (
                 <div className={styles.inputContainer}>
                   <p
                     className={styles.inputLink}

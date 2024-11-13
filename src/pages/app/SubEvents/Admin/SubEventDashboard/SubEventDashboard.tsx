@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router';
 
 import { TillRoles } from '../../../../../../services/enums';
 import { downloadSubEventCSV, listSubEventGuests } from '../../../../../apis/subevents';
-import { isUserAuthorized } from '../../../../../common/commonFunctions';
+import { isUserAuthorizedForEvent } from '../../../../../common/commonFunctions';
 import EventHeader from '../../../../../components/EventHeader/EventHeader';
 import Table from '../../../../../components/Table/Table';
 import { TableType } from '../../../../../components/Table/types';
@@ -49,7 +49,7 @@ const SubEventDashboard = () => {
           paginationData={paginationData}
           setPaginationData={setPaginationData}
           secondaryButton={
-            isUserAuthorized(TillRoles.VIEWER) ? (
+            isUserAuthorizedForEvent(TillRoles.VIEWER) ? (
               <SecondaryButton
                 onClick={() => {
                   if (eventId && subEventId)

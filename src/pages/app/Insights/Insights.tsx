@@ -24,7 +24,7 @@ import { TillRoles } from '../../../../services/enums';
 import { makeMyPassSocket } from '../../../../services/urls';
 import { getEventId, updateEventData } from '../../../apis/events';
 import { getInsightsVisibility, getSubEventAnalytics } from '../../../apis/insights';
-import { isUserAuthorized, isUserEditor } from '../../../common/commonFunctions';
+import { isUserAuthorizedForEvent, isUserEditorForEvent } from '../../../common/commonFunctions';
 import DashboardLayout from '../../../components/DashboardLayout/DashboardLayout';
 import Modal from '../../../components/Modal/Modal';
 import Theme from '../../../components/Theme/Theme';
@@ -265,7 +265,7 @@ const Insights = ({ type }: { type?: string }) => {
   }, [eventId, eventData]);
 
   const publishPage = () => {
-    if (isUserEditor()) {
+    if (isUserEditorForEvent()) {
       const eventData = new FormData();
       eventData.append('is_public_insight', isPublished ? 'false' : 'true');
       updateEventData({ eventId: eventId.current, eventData, setIsPublished });
@@ -335,7 +335,9 @@ const Insights = ({ type }: { type?: string }) => {
       <DashboardLayout
         prevPage='/events'
         tabName='insights'
-        setShowPublishModal={isUserAuthorized(TillRoles.EDITOR) ? setShowPublishModal : undefined}
+        setShowPublishModal={
+          isUserAuthorizedForEvent(TillRoles.EDITOR) ? setShowPublishModal : undefined
+        }
         isLive={true}
       >
         {showPublishModal && (
@@ -696,7 +698,7 @@ const Insights = ({ type }: { type?: string }) => {
                 </div>
 
                 {(message?.payment_analytics.total_paid_users ?? 0 > 0) &&
-                  isUserAuthorized(TillRoles.ADMIN) && (
+                  isUserAuthorizedForEvent(TillRoles.ADMIN) && (
                     <div className={styles.paymentCounts}>
                       <div className={styles.logButton}>
                         <FaExpandArrowsAlt

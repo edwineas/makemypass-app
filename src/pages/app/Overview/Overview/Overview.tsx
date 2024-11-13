@@ -12,7 +12,7 @@ import { TillRoles } from '../../../../../services/enums';
 import { makeMyPassSocket } from '../../../../../services/urls';
 import { createEventHost, removeEventHost, updateEventHost } from '../../../../apis/host';
 import { getEventHosts } from '../../../../apis/overview';
-import { isUserAuthorized, transformTableData } from '../../../../common/commonFunctions';
+import { isUserAuthorizedForEvent, transformTableData } from '../../../../common/commonFunctions';
 import DashboardLayout from '../../../../components/DashboardLayout/DashboardLayout';
 import Glance from '../../../../components/Glance/Glance';
 import Modal from '../../../../components/Modal/Modal';
@@ -282,7 +282,7 @@ const Overview = () => {
                   />
                 </Link>
 
-                {isUserAuthorized(TillRoles.VOLUNTEER) && (
+                {isUserAuthorizedForEvent(TillRoles.VOLUNTEER) && (
                   <a href='#hosts'>
                     <SectionButton
                       buttonText='Host List'
@@ -317,7 +317,7 @@ const Overview = () => {
                   tableHeading='Event Hosts'
                   tableData={hostListTableData}
                   secondaryButton={
-                    isUserAuthorized(TillRoles.ADMIN) ? (
+                    isUserAuthorizedForEvent(TillRoles.ADMIN) ? (
                       <SecondaryButton buttonText='Add Hosts +' onClick={addHost} />
                     ) : undefined
                   }

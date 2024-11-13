@@ -3,7 +3,7 @@ import { LuPencil, LuPlus, LuSave, LuTrash } from 'react-icons/lu';
 import { MdClose } from 'react-icons/md';
 
 import { createUTM, getUTMList } from '../../../../../apis/utm';
-import { isUserEditor } from '../../../../../common/commonFunctions';
+import { isUserEditorForEvent } from '../../../../../common/commonFunctions';
 import InputField from '../../../../auth/Login/InputField';
 import SecondaryButton from '../../../Overview/components/SecondaryButton/SecondaryButton';
 import type { UTMDataType } from './types';
@@ -134,7 +134,7 @@ const UTMManager = ({
                   }}
                 />
                 <label>{value}</label>
-                {isUserEditor() && (
+                {isUserEditorForEvent() && (
                   <>
                     <LuPencil
                       color='#939597'
@@ -172,7 +172,7 @@ const UTMManager = ({
             ),
           )}
 
-          {isUserEditor() && UTMData.addUTM.type === key && (
+          {isUserEditorForEvent() && UTMData.addUTM.type === key && (
             <div className={styles.utmValue}>
               <InputField
                 icon={<LuPlus size={15} />}
@@ -194,7 +194,7 @@ const UTMManager = ({
             </div>
           )}
 
-          {isUserEditor() && (
+          {isUserEditorForEvent() && (
             <SecondaryButton
               buttonText={UTMData.addUTM.type === key ? 'Save' : 'Add'}
               icon={<LuPlus size={15} />}

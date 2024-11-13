@@ -18,7 +18,11 @@ import {
   removeMappedCode,
 } from '../../../../../apis/guests';
 import { checkInUser } from '../../../../../apis/scan';
-import { formatDate, isUserAuthorized, isUserEditor } from '../../../../../common/commonFunctions';
+import {
+  formatDate,
+  isUserAuthorizedForEvent,
+  isUserEditorForEvent,
+} from '../../../../../common/commonFunctions';
 import Modal from '../../../../../components/Modal/Modal';
 import ScannerResponseModal from '../../../CheckIns/components/ScannerResponseModal/ScannerResponseModal';
 import { multipleTicketCount } from '../../../CheckIns/pages/ScanQR/types';
@@ -372,7 +376,7 @@ const ViewGuest = ({
                   )}
                 </div>
 
-                {selectedGuestData['event_approval_required'] && isUserEditor() && (
+                {selectedGuestData['event_approval_required'] && isUserEditorForEvent() && (
                   <AnimatePresence>
                     <motion.div
                       initial={{ opacity: 0, y: 50 }}
@@ -574,9 +578,9 @@ const ViewGuest = ({
                 </div>
               )}
 
-              {(isUserEditor() || isUserAuthorized(TillRoles.VOLUNTEER)) && (
+              {(isUserEditorForEvent() || isUserAuthorizedForEvent(TillRoles.VOLUNTEER)) && (
                 <div className='row'>
-                  {isUserEditor() && (
+                  {isUserEditorForEvent() && (
                     <div
                       className={styles.deleteIcon}
                       onClick={() => {

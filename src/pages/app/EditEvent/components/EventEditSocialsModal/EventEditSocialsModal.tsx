@@ -2,7 +2,7 @@ import { Dispatch } from 'react';
 import { AiOutlineTeam } from 'react-icons/ai';
 
 import { EventType } from '../../../../../apis/types';
-import { isUserEditor } from '../../../../../common/commonFunctions';
+import { isUserEditorForEvent } from '../../../../../common/commonFunctions';
 import Modal from '../../../../../components/Modal/Modal';
 import InputField from '../../../../auth/Login/InputField';
 import styles from './EventEditSocialsModal.module.css';
@@ -34,7 +34,7 @@ const EventEditSocialsModal = ({
           title='Add WhatsApp Link'
           value={eventData?.socials?.whatsapp}
           onChange={
-            isUserEditor()
+            isUserEditorForEvent()
               ? (e) => {
                   if (eventData) {
                     setEventData({
@@ -57,7 +57,7 @@ const EventEditSocialsModal = ({
           title='Add Email'
           value={eventData?.socials?.email}
           onChange={
-            isUserEditor()
+            isUserEditorForEvent()
               ? (e) => {
                   if (eventData) {
                     setEventData({
@@ -81,7 +81,7 @@ const EventEditSocialsModal = ({
           title='Add Phone Number'
           value={eventData?.socials?.phone}
           onChange={
-            isUserEditor()
+            isUserEditorForEvent()
               ? (e) => {
                   if (eventData) {
                     setEventData({
@@ -106,7 +106,7 @@ const EventEditSocialsModal = ({
           placeholder='facebook.com/username'
           value={eventData?.socials?.facebook}
           onChange={
-            isUserEditor()
+            isUserEditorForEvent()
               ? (e) => {
                   if (eventData) {
                     setEventData({
@@ -130,7 +130,7 @@ const EventEditSocialsModal = ({
           placeholder='instagram.com/username'
           value={eventData?.socials?.instagram}
           onChange={
-            isUserEditor()
+            isUserEditorForEvent()
               ? (e) => {
                   if (eventData) {
                     setEventData({
@@ -154,7 +154,7 @@ const EventEditSocialsModal = ({
           value={eventData?.socials?.twitter}
           placeholder='x.com/username'
           onChange={
-            isUserEditor()
+            isUserEditorForEvent()
               ? (e) => {
                   if (eventData) {
                     setEventData({
@@ -178,7 +178,7 @@ const EventEditSocialsModal = ({
           value={eventData?.socials?.linkedin}
           placeholder='linkedin.com/in/username'
           onChange={
-            isUserEditor()
+            isUserEditorForEvent()
               ? (e) => {
                   if (eventData) {
                     setEventData({
@@ -196,7 +196,7 @@ const EventEditSocialsModal = ({
       </div>
       <button
         className={styles.submitButton}
-        onClick={isUserEditor() ? () => setShowCommunicationMediumModal(false) : undefined}
+        onClick={isUserEditorForEvent() ? () => setShowCommunicationMediumModal(false) : undefined}
       >
         Submit
       </button>

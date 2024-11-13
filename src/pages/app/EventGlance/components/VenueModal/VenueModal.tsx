@@ -4,7 +4,7 @@ import { FaEdit, FaSave, FaTrash } from 'react-icons/fa';
 
 import { VenueCRUDType } from '../../../../../apis/types';
 import { createEventVenue, deleteEventVenue, updateEventVenue } from '../../../../../apis/venue';
-import { isUserEditor } from '../../../../../common/commonFunctions';
+import { isUserEditorForEvent } from '../../../../../common/commonFunctions';
 import Modal from '../../../../../components/Modal/Modal';
 import InputField from '../../../../auth/Login/InputField';
 import SecondaryButton from '../../../Overview/components/SecondaryButton/SecondaryButton';
@@ -103,7 +103,7 @@ const VenueModal = ({
 
           <div className={styles.headerRow}>
             <p className={styles.sectionHeader}>{`Current Venues (${venues.venueList.length})`}</p>
-            {isUserEditor() && (
+            {isUserEditorForEvent() && (
               <SecondaryButton
                 buttonText='Add Venue'
                 icon={<></>}
@@ -122,7 +122,7 @@ const VenueModal = ({
                       name='venue_name'
                       id='venue_name'
                       icon={<></>}
-                      disabled={!isUserEditor()}
+                      disabled={!isUserEditorForEvent()}
                       value={venueData.name}
                       onChange={(e) => setVenueData({ ...venueData, name: e.target.value })}
                       style={{
@@ -154,7 +154,7 @@ const VenueModal = ({
                       />
                     </div>
                   ) : (
-                    isUserEditor() && (
+                    isUserEditorForEvent() && (
                       <div className='row'>
                         <FaTrash
                           title='Delete Venue'

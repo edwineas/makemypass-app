@@ -8,7 +8,7 @@ import {
   updateEventSpeaker,
 } from '../../../../../apis/speakers';
 import { SpeakerCRUDType } from '../../../../../apis/types';
-import { isUserEditor } from '../../../../../common/commonFunctions';
+import { isUserEditorForEvent } from '../../../../../common/commonFunctions';
 import Modal from '../../../../../components/Modal/Modal';
 import InputField from '../../../../auth/Login/InputField';
 import SecondaryButton from '../../../Overview/components/SecondaryButton/SecondaryButton';
@@ -190,7 +190,7 @@ const SpeakerModal = ({
             <p
               className={styles.sectionHeader}
             >{`Current Speaker (${speakers.speakerList.length})`}</p>
-            {isUserEditor() && (
+            {isUserEditorForEvent() && (
               <SecondaryButton
                 buttonText='Add Speaker'
                 onClick={() => {
@@ -232,7 +232,7 @@ const SpeakerModal = ({
                       </div>
                     </div>
 
-                    {isUserEditor() && (
+                    {isUserEditorForEvent() && (
                       <div className='row'>
                         <FaTrash
                           title='Delete User'

@@ -22,7 +22,7 @@ import {
   getFormBuilderForm,
   updateFormBuilderForm,
 } from '../../../apis/formbuilder';
-import { isUserEditor } from '../../../common/commonFunctions';
+import { isUserEditorForEvent } from '../../../common/commonFunctions';
 import DashboardLayout from '../../../components/DashboardLayout/DashboardLayout';
 import Editor from '../../../components/Editor/Editor';
 import Modal from '../../../components/Modal/Modal';
@@ -275,14 +275,14 @@ const FormBuilder = () => {
                   checked={showFollowUpMessage}
                   text={'Close Registration Form'}
                   onChange={() => {
-                    isUserEditor() && setShowFollowUpMessage(!showFollowUpMessage);
+                    isUserEditorForEvent() && setShowFollowUpMessage(!showFollowUpMessage);
                   }}
                   size='small'
                 />
                 <button
                   className={styles.continueButton}
                   onClick={() => {
-                    if (isUserEditor())
+                    if (isUserEditorForEvent())
                       closeFormMessage(event_id, followUpMessage, showFollowUpMessage);
                   }}
                 >
@@ -314,7 +314,7 @@ const FormBuilder = () => {
                         )}
                         text={''}
                         onChange={() =>
-                          isUserEditor() &&
+                          isUserEditorForEvent() &&
                           addOrRemoveDefaultField(key as keyof typeof DefaultFieldTypes)
                         }
                         size='small'
@@ -454,7 +454,7 @@ const FormBuilder = () => {
                                       checked={field.required}
                                       text={'Required'}
                                       onChange={() => {
-                                        if (isUserEditor()) {
+                                        if (isUserEditorForEvent()) {
                                           field.required = !field.required;
                                           updateFormStateVariable();
                                         }
@@ -480,7 +480,7 @@ const FormBuilder = () => {
                                         size={25}
                                         color='#606264'
                                         onClick={() => {
-                                          if (isUserEditor()) {
+                                          if (isUserEditorForEvent()) {
                                             field.hidden = !field.hidden;
                                             updateFormStateVariable();
                                           }
@@ -492,12 +492,12 @@ const FormBuilder = () => {
                                       size={20}
                                       color='#606264'
                                       onClick={() => {
-                                        if (isUserEditor()) setSelectedField({} as Field);
+                                        if (isUserEditorForEvent()) setSelectedField({} as Field);
                                       }}
                                     />
                                   </div>
 
-                                  {isUserEditor() && (
+                                  {isUserEditorForEvent() && (
                                     <MdDelete
                                       className={styles.deleteIcon}
                                       size={25}
@@ -526,10 +526,10 @@ const FormBuilder = () => {
                                   type='text'
                                   title='Field Name'
                                   placeholder='Field Name'
-                                  disabled={!isUserEditor()}
+                                  disabled={!isUserEditorForEvent()}
                                   value={field.title}
                                   onChange={(event) => {
-                                    if (isUserEditor()) {
+                                    if (isUserEditorForEvent()) {
                                       field.title = event.target.value;
 
                                       if (
@@ -549,12 +549,12 @@ const FormBuilder = () => {
                               <div className={styles.customFieldName}>
                                 <input
                                   type='text'
-                                  disabled={!isUserEditor()}
+                                  disabled={!isUserEditorForEvent()}
                                   placeholder='Field Description'
                                   title='Add Some help text.'
                                   value={field.description || ''}
                                   onChange={(event) => {
-                                    if (isUserEditor()) {
+                                    if (isUserEditorForEvent()) {
                                       field.description = event.target.value;
                                       updateFormStateVariable();
                                     }
@@ -564,12 +564,12 @@ const FormBuilder = () => {
                               <div className={styles.customFieldName}>
                                 <input
                                   type='text'
-                                  disabled={!isUserEditor()}
+                                  disabled={!isUserEditorForEvent()}
                                   placeholder='Field Placeholder'
                                   title='Add Some help text.'
                                   value={field.placeholder || ''}
                                   onChange={(event) => {
-                                    if (isUserEditor()) {
+                                    if (isUserEditorForEvent()) {
                                       field.placeholder = event.target.value;
                                       updateFormStateVariable();
                                     }
@@ -586,7 +586,7 @@ const FormBuilder = () => {
                                     {field.options.length == 0 && (
                                       <button
                                         onClick={() => {
-                                          if (isUserEditor()) {
+                                          if (isUserEditorForEvent()) {
                                             field.options.push({
                                               values: [''],
                                               conditions: [],
@@ -631,7 +631,7 @@ const FormBuilder = () => {
                                                   );
                                                   return;
                                                 }
-                                                if (isUserEditor()) {
+                                                if (isUserEditorForEvent()) {
                                                   field.options.push({
                                                     values: [''],
                                                     conditions: [],
@@ -644,7 +644,7 @@ const FormBuilder = () => {
                                               buttonText='Remove'
                                               icon={<MdDelete size={15} color='#fff' />}
                                               onClick={() => {
-                                                if (isUserEditor()) {
+                                                if (isUserEditorForEvent()) {
                                                   field.options.splice(optionIndex, 1);
                                                   updateFormStateVariable();
                                                 }
@@ -658,12 +658,12 @@ const FormBuilder = () => {
                                               <input
                                                 className={styles.optionInput}
                                                 type='text'
-                                                disabled={!isUserEditor()}
+                                                disabled={!isUserEditorForEvent()}
                                                 title='Option'
                                                 placeholder='Option Value'
                                                 value={option}
                                                 onChange={(event) => {
-                                                  if (isUserEditor()) {
+                                                  if (isUserEditorForEvent()) {
                                                     field.options[optionIndex].values[valueIndex] =
                                                       event.target.value;
                                                     updateFormStateVariable();
@@ -673,7 +673,7 @@ const FormBuilder = () => {
                                               <IoCloseSharp
                                                 className='pointer'
                                                 onClick={() => {
-                                                  isUserEditor() &&
+                                                  isUserEditorForEvent() &&
                                                     removeOption(field, optionIndex, valueIndex);
                                                 }}
                                                 size={20}
@@ -681,10 +681,11 @@ const FormBuilder = () => {
                                               />
                                             </div>
                                           ))}
-                                          {isUserEditor() && (
+                                          {isUserEditorForEvent() && (
                                             <button
                                               onClick={() => {
-                                                if (isUserEditor()) addOption(field, optionIndex);
+                                                if (isUserEditorForEvent())
+                                                  addOption(field, optionIndex);
                                               }}
                                               className={styles.addOption}
                                             >
@@ -706,7 +707,7 @@ const FormBuilder = () => {
                                               }
                                               text={''}
                                               onChange={() => {
-                                                isUserEditor() &&
+                                                isUserEditorForEvent() &&
                                                   addOrRemoveOptionCondition(field, optionIndex);
                                               }}
                                               size='small'
@@ -739,7 +740,7 @@ const FormBuilder = () => {
                                                           label: string;
                                                         } | null,
                                                       ) => {
-                                                        if (isUserEditor()) {
+                                                        if (isUserEditorForEvent()) {
                                                           if (!option) condition.field = '';
                                                           else condition.field = option.value;
 
@@ -763,7 +764,7 @@ const FormBuilder = () => {
                                                           label: string;
                                                         } | null,
                                                       ) => {
-                                                        if (isUserEditor()) {
+                                                        if (isUserEditorForEvent()) {
                                                           if (!option) condition.operator = '';
                                                           else condition.operator = option.value;
                                                           updateFormStateVariable();
@@ -785,7 +786,7 @@ const FormBuilder = () => {
                                                         condition.operator === 'in' ||
                                                         condition.operator === 'not in' ? (
                                                           <Select
-                                                            isDisabled={!isUserEditor()}
+                                                            isDisabled={!isUserEditorForEvent()}
                                                             isMulti
                                                             styles={{
                                                               ...customStyles,
@@ -853,7 +854,7 @@ const FormBuilder = () => {
                                                                 label: string;
                                                               } | null,
                                                             ) => {
-                                                              if (isUserEditor()) {
+                                                              if (isUserEditorForEvent()) {
                                                                 if (!option) condition.value = '';
                                                                 else condition.value = option.value;
                                                                 updateFormStateVariable();
@@ -864,7 +865,7 @@ const FormBuilder = () => {
                                                       ) : condition.operator === 'in' ||
                                                         condition.operator === 'not in' ? (
                                                         <CreatableSelect
-                                                          isDisabled={!isUserEditor()}
+                                                          isDisabled={!isUserEditorForEvent()}
                                                           styles={customStyles}
                                                           options={
                                                             formFields
@@ -900,7 +901,7 @@ const FormBuilder = () => {
                                                         />
                                                       ) : (
                                                         <input
-                                                          disabled={!isUserEditor()}
+                                                          disabled={!isUserEditorForEvent()}
                                                           type='text'
                                                           title='Value'
                                                           value={condition.value}
@@ -910,7 +911,7 @@ const FormBuilder = () => {
                                                           }}
                                                         />
                                                       ))}
-                                                    {isUserEditor() && (
+                                                    {isUserEditorForEvent() && (
                                                       <>
                                                         <RiDeleteBinLine
                                                           className='pointer'
@@ -952,7 +953,7 @@ const FormBuilder = () => {
                                 <div className={styles.uniqueField}>
                                   <InputField
                                     name='unique'
-                                    disabled={!isUserEditor()}
+                                    disabled={!isUserEditorForEvent()}
                                     id='unique'
                                     icon={<FaRegEyeSlash size={20} color='#606264' />}
                                     type='number'
@@ -960,7 +961,7 @@ const FormBuilder = () => {
                                     description='This count indicates the number of times a value can be entered uniquely'
                                     value={field.unique?.toString()}
                                     onChange={(event) => {
-                                      if (isUserEditor()) {
+                                      if (isUserEditorForEvent()) {
                                         if (parseInt(event.target.value) < 1)
                                           event.target.value = '1';
                                         field.unique = parseInt(event.target.value);
@@ -974,7 +975,7 @@ const FormBuilder = () => {
                                     <>
                                       <InputField
                                         name='max_length'
-                                        disabled={!isUserEditor()}
+                                        disabled={!isUserEditorForEvent()}
                                         id='max_length'
                                         icon={<></>}
                                         type='number'
@@ -982,7 +983,7 @@ const FormBuilder = () => {
                                         description='Enter the maximum length of the field'
                                         value={field.property?.max_length?.toString()}
                                         onChange={(event) => {
-                                          if (isUserEditor()) {
+                                          if (isUserEditorForEvent()) {
                                             if (parseInt(event.target.value) < 1)
                                               event.target.value = '1';
                                             field.property.max_length = parseInt(
@@ -996,14 +997,14 @@ const FormBuilder = () => {
                                       <InputField
                                         name='min_length'
                                         id='min_length'
-                                        disabled={!isUserEditor()}
+                                        disabled={!isUserEditorForEvent()}
                                         icon={<></>}
                                         type='number'
                                         title='Min Length'
                                         description='Enter the minimum length of the field'
                                         value={field.property?.min_length?.toString()}
                                         onChange={(event) => {
-                                          if (isUserEditor()) {
+                                          if (isUserEditorForEvent()) {
                                             if (parseInt(event.target.value) < 1)
                                               event.target.value = '1';
                                             field.property.min_length = parseInt(
@@ -1030,7 +1031,7 @@ const FormBuilder = () => {
                                       <Select
                                         isMulti
                                         isSearchable
-                                        isDisabled={!isUserEditor()}
+                                        isDisabled={!isUserEditorForEvent()}
                                         styles={customStyles}
                                         options={FileExtensions}
                                         value={field?.property?.extension_types?.map((ext) => ({
@@ -1052,7 +1053,7 @@ const FormBuilder = () => {
                                         icon={<MdOutlineSdStorage size={20} color='#606264' />}
                                         type='number'
                                         title='Maximal File Size'
-                                        disabled={!isUserEditor()}
+                                        disabled={!isUserEditorForEvent()}
                                         description='Maximal file size in KB(1mb = 1024kb)'
                                         value={field?.property?.max_size?.toString()}
                                         onChange={(event) => {
@@ -1067,7 +1068,7 @@ const FormBuilder = () => {
                                       <InputField
                                         name='max_no_of_files'
                                         id='max_no_of_files'
-                                        disabled={!isUserEditor()}
+                                        disabled={!isUserEditorForEvent()}
                                         icon={<MdOutlineSdStorage size={20} color='#606264' />}
                                         type='number'
                                         title='Enter max no of files'
@@ -1099,7 +1100,7 @@ const FormBuilder = () => {
                                     checked={field.conditions?.length > 0}
                                     text={''}
                                     onChange={() => {
-                                      isUserEditor() && addOrRemoveCondition(field);
+                                      isUserEditorForEvent() && addOrRemoveCondition(field);
                                     }}
                                     size='small'
                                   />
@@ -1127,7 +1128,7 @@ const FormBuilder = () => {
                                           onChange={(
                                             option: { value: string; label: string } | null,
                                           ) => {
-                                            if (isUserEditor()) {
+                                            if (isUserEditorForEvent()) {
                                               if (!option) condition.field = '';
                                               else condition.field = option.value;
 
@@ -1148,7 +1149,7 @@ const FormBuilder = () => {
                                           onChange={(
                                             option: { value: string; label: string } | null,
                                           ) => {
-                                            if (isUserEditor()) {
+                                            if (isUserEditorForEvent()) {
                                               if (!option) condition.operator = '';
                                               else condition.operator = option.value;
                                               updateFormStateVariable();
@@ -1169,7 +1170,7 @@ const FormBuilder = () => {
                                             condition.operator === 'in' ||
                                             condition.operator === 'not in' ? (
                                               <Select
-                                                isDisabled={!isUserEditor()}
+                                                isDisabled={!isUserEditorForEvent()}
                                                 isMulti
                                                 styles={customStyles}
                                                 name='colors'
@@ -1218,7 +1219,7 @@ const FormBuilder = () => {
                                                 onChange={(
                                                   option: { value: string; label: string } | null,
                                                 ) => {
-                                                  if (isUserEditor()) {
+                                                  if (isUserEditorForEvent()) {
                                                     if (!option) condition.value = '';
                                                     else condition.value = option.value;
                                                     updateFormStateVariable();
@@ -1229,7 +1230,7 @@ const FormBuilder = () => {
                                           ) : condition.operator === 'in' ||
                                             condition.operator === 'not in' ? (
                                             <CreatableSelect
-                                              isDisabled={!isUserEditor()}
+                                              isDisabled={!isUserEditorForEvent()}
                                               styles={customStyles}
                                               options={
                                                 formFields
@@ -1259,7 +1260,7 @@ const FormBuilder = () => {
                                             />
                                           ) : (
                                             <input
-                                              disabled={!isUserEditor()}
+                                              disabled={!isUserEditorForEvent()}
                                               type='text'
                                               title='Value'
                                               value={condition.value}
@@ -1269,7 +1270,7 @@ const FormBuilder = () => {
                                               }}
                                             />
                                           ))}
-                                        {isUserEditor() && (
+                                        {isUserEditorForEvent() && (
                                           <>
                                             <RiDeleteBinLine
                                               className='pointer'
@@ -1315,7 +1316,7 @@ const FormBuilder = () => {
 
                   <div className={styles.actionButtonsContainer}>
                     <div className={styles.actionButtons}>
-                      {isUserEditor() && (
+                      {isUserEditorForEvent() && (
                         <button
                           onClick={() => {
                             addField();
@@ -1329,7 +1330,7 @@ const FormBuilder = () => {
                     <button
                       onClick={() => {
                         setFormFieldErrors({});
-                        if (isUserEditor())
+                        if (isUserEditorForEvent())
                           updateFormBuilderForm(event_id, formFields, setFormFieldErrors);
                       }}
                       className={styles.saveFormButton}

@@ -7,7 +7,7 @@ import { HashLoader } from 'react-spinners';
 import { TillRoles } from '../../../services/enums';
 import { getEventId } from '../../apis/events';
 import { viewGuestTicket } from '../../apis/guests';
-import { isUserAuthorized } from '../../common/commonFunctions';
+import { isUserAuthorizedForEvent } from '../../common/commonFunctions';
 import EventHeader from '../EventHeader/EventHeader';
 import Theme from '../Theme/Theme';
 import styles from './ViewTicket.module.css';
@@ -51,7 +51,7 @@ const ViewTicket = () => {
     <>
       <Theme>
         <div className={styles.viewEventHeaderContainer}>
-          {isUserAuthorized(TillRoles.VOLUNTEER) && (
+          {isUserAuthorizedForEvent(TillRoles.VOLUNTEER) && (
             <EventHeader
               previousPageNavigate={`/${eventTitle}/guests?eventRegisterId=${eventRegisterId}`}
             />

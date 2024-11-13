@@ -4,7 +4,7 @@ import { MdDelete } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
 
 import { TicketType } from '../../../../../../../apis/types';
-import { isUserEditor } from '../../../../../../../common/commonFunctions';
+import { isUserEditorForEvent } from '../../../../../../../common/commonFunctions';
 import Slider from '../../../../../../../components/SliderButton/Slider';
 import InputField from '../../../../../../auth/Login/InputField';
 // import Slider from '../../../../../../../components/SliderButton/Slider';
@@ -24,7 +24,7 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
         type='text'
         name='code_prefix'
         id='code_prefix'
-        disabled={!isUserEditor()}
+        disabled={!isUserEditorForEvent()}
         icon={<></>}
         title='Code Prefix'
         placeholder='Eg, PS123'
@@ -38,7 +38,7 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
         type='number'
         name='code_suffix'
         id='code_suffix'
-        disabled={!isUserEditor()}
+        disabled={!isUserEditorForEvent()}
         icon={<></>}
         title='No of digits'
         value={selectedTicket?.code_digits.toString()}
@@ -54,7 +54,7 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
         type='number'
         name='user_count'
         id='user_count'
-        disabled={!isUserEditor()}
+        disabled={!isUserEditorForEvent()}
         icon={<></>}
         title='User Count'
         value={selectedTicket?.user_count.toString()}
@@ -73,7 +73,7 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
         type='text'
         name='category'
         id='Category'
-        disabled={!isUserEditor()}
+        disabled={!isUserEditorForEvent()}
         icon={<></>}
         title='Category'
         value={selectedTicket?.category}
@@ -105,7 +105,7 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
         <Slider
           checked={selectedTicket?.perks.length > 0}
           onChange={() => {
-            if (selectedTicket && isUserEditor()) {
+            if (selectedTicket && isUserEditorForEvent()) {
               setSelectedTicket({
                 ...selectedTicket,
                 perks:
@@ -122,7 +122,7 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
             <div key={index} className={styles.perkItem}>
               <input
                 type='text'
-                disabled={!isUserEditor()}
+                disabled={!isUserEditorForEvent()}
                 placeholder='Perk Name'
                 value={perk.name}
                 onChange={(e) => {
@@ -139,7 +139,7 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
               />
               <input
                 type='number'
-                disabled={!isUserEditor()}
+                disabled={!isUserEditorForEvent()}
                 placeholder='Perk Count'
                 value={perk.count}
                 onChange={(e) => {
@@ -155,7 +155,7 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
                 className={styles.perkCountInput}
               />
 
-              {isUserEditor() && (
+              {isUserEditorForEvent() && (
                 <MdDelete
                   size={22}
                   color='rgb(147, 149, 151)'
@@ -174,7 +174,7 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
             </div>
           ))}
 
-          {isUserEditor() && (
+          {isUserEditorForEvent() && (
             <button
               className={styles.addPerkButton}
               onClick={() => {
