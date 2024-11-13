@@ -33,6 +33,7 @@ import Select from 'react-select';
 import { BeatLoader, HashLoader, PulseLoader } from 'react-spinners';
 
 import { deleteEvent, getEventData, updateEventData } from '../../../apis/events';
+import { listOrgs } from '../../../apis/orgs';
 import { getFormKeys } from '../../../apis/publicpage';
 import { ErrorMessages, EventType } from '../../../apis/types';
 import {
@@ -48,6 +49,7 @@ import Theme from '../../../components/Theme/Theme';
 import { useOverrideCtrlS } from '../../../hooks/common';
 import InputField from '../../auth/Login/InputField';
 import { customStyles } from '../EventPage/constants';
+import type { OrgListType } from '../Events/types';
 import EventEditSocialsModal from './components/EventEditSocialsModal/EventEditSocialsModal';
 import styles from './EditEvent.module.css';
 
@@ -74,7 +76,7 @@ const EditEvent = () => {
   const [showContactSalesInfo, setShowContactSalesInfo] = useState(false);
 
   const [formKeys, setFormKeys] = useState<string[]>([]);
-
+  const [orgs, setOrgs] = useState<OrgListType[]>([]);
   const [location, setLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
@@ -224,6 +226,7 @@ const EditEvent = () => {
     if (eventId) {
       getEventData(eventId, setEventTitle, setEventData);
       getFormKeys(eventId, setFormKeys);
+      listOrgs(setOrgs);
     }
   }, [eventId]);
 
@@ -566,31 +569,73 @@ const EditEvent = () => {
               <div className={styles.createEventContainer}>
                 <div className={styles.rightSideContainer}>
                   <div className={styles.eventNameContainer}>
-                    <Select
-                      options={selectOptions}
-                      className={styles.selectDropdown}
-                      styles={{
-                        ...customStyles,
-                        menu: (provided) => ({
-                          ...provided,
-                          border: '1px solid rgba(255, 255, 255, 0.08)',
-                          backgroundColor: '#1C2222',
-                          color: '#fff',
-                          fontFamily: 'Inter, sans-serif',
-                          fontStyle: 'normal',
-                          fontWeight: 400,
-                          fontSize: '0.9rem',
-                          zIndex: 1000,
-                        }),
-                      }}
-                      onChange={(selectedOption: { value: string; label: string } | null) =>
-                        isUserEditorForEvent() &&
-                        setEventData({ ...eventData, status: selectedOption?.label || '' })
-                      }
-                      value={selectOptions.filter((option) => option.label === eventData?.status)}
-                      placeholder={`Select an option`}
-                      isSearchable={false}
-                    />
+                    <div className='row'>
+                      <Select
+                        options={selectOptions}
+                        className={styles.selectDropdown}
+                        styles={{
+                          ...customStyles,
+                          menu: (provided) => ({
+                            ...provided,
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            backgroundColor: '#1C2222',
+                            color: '#fff',
+                            fontFamily: 'Inter, sans-serif',
+                            fontStyle: 'normal',
+                            fontWeight: 400,
+                            fontSize: '0.9rem',
+                            zIndex: 1000,
+                          }),
+                        }}
+                        onChange={(selectedOption: { value: string; label: string } | null) =>
+                          isUserEditorForEvent() &&
+                          setEventData({ ...eventData, status: selectedOption?.label || '' })
+                        }
+                        value={selectOptions.filter((option) => option.label === eventData?.status)}
+                        placeholder={`Select an option`}
+                        isSearchable={false}
+                      />
+
+                      <Select
+                        className={styles.selectDropdown}
+                        styles={{
+                          ...customStyles,
+                          menu: (provided) => ({
+                            ...provided,
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            backgroundColor: '#1C2222',
+                            color: '#fff',
+                            fontFamily: 'Inter, sans-serif',
+                            fontStyle: 'normal',
+                            fontWeight: 400,
+                            fontSize: '0.9rem',
+                            zIndex: 1000,
+                          }),
+                        }}
+                        options={[
+                          { value: 'Personal', label: 'Personal' },
+                          ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                        ]}
+                        value={
+                          eventData?.org_id
+                            ? {
+                                value: eventData.org_id,
+                                label: orgs.find((org) => org.id === eventData.org_id)?.name,
+                              }
+                            : { value: 'Personal', label: 'Personal' }
+                        }
+                        classNamePrefix='select'
+                        placeholder='Select Organization'
+                        onChange={(selectedOption) => {
+                          if (isUserEditorForEvent() && selectedOption) {
+                            setEventData({
+                              ...eventData,
+                              org_id: selectedOption.value,
+                            });
+                          }
+                        }}
+                      />
+                    </div>
 
                     <textarea
                       title='Event Name'

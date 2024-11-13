@@ -1,5 +1,6 @@
 export type userData = {
   name?: string;
+  username?: string;
   email: string;
   profile_pic?: string | Blob | File;
 };

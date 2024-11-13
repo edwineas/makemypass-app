@@ -296,6 +296,13 @@
   width: 100%;
 }
 
+.profileTexts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 15rem;
+}
+
 .infoName {
   font-size: 1.5rem;
   font-weight: 600;
@@ -304,6 +311,12 @@
 }
 
 .infoEmail {
+  font-size: 0.9rem;
+  color: #a4a4a4;
+  font-family: 'Inter', sans-serif;
+}
+
+.infoUserName {
   font-size: 0.9rem;
   color: #a4a4a4;
   font-family: 'Inter', sans-serif;

@@ -296,10 +296,13 @@ const ProfilePage = ({ type }: { type: 'private' | 'public' }) => {
                   style={{ objectFit: 'cover' }}
                   className={styles.profilePic}
                 />
+                <div className={styles.profileTexts}>
+                  <label className={styles.infoName}>{originalUserData?.name}</label>
+                  <label className={styles.infoUserName}>@{originalUserData?.username}</label>
+                  <label className={styles.infoEmail}>{originalUserData?.email}</label>
+                </div>
 
                 <div className={styles.profileInfo}>
-                  <label className={styles.infoName}>{originalUserData?.name}</label>
-                  <label className={styles.infoEmail}>{originalUserData?.email}</label>
                   <div className={styles.hostCommunicate}>
                     <div className={styles.hostCommunicateIcons}>
                       {socials.whatsapp && (
