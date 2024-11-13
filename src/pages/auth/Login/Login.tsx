@@ -433,24 +433,22 @@ const Login = () => {
                   </span>
                 </motion.button>
               </div>
-              {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
-                <>
-                  <div className={styles.orContainer}>
-                    <div className={styles.line}></div>
-                    <div className={styles.or}>OR</div>
-                    <div className={styles.line}></div>
+              <>
+                <div className={styles.orContainer}>
+                  <div className={styles.line}></div>
+                  <div className={styles.or}>OR</div>
+                  <div className={styles.line}></div>
+                </div>
+                <div className={styles.formAltLoginContainer}>
+                  <div
+                    className={`pointer ${styles.googleIcon}`}
+                    onClick={() => handleGoogleLogin()}
+                  >
+                    <FaGoogle />
+                    Continue with Google
                   </div>
-                  <div className={styles.formAltLoginContainer}>
-                    <div
-                      className={`pointer ${styles.googleIcon}`}
-                      onClick={() => handleGoogleLogin()}
-                    >
-                      <FaGoogle />
-                      Continue with Google
-                    </div>
-                  </div>
-                </>
-              )}
+                </div>
+              </>
             </motion.div>
             <motion.img
               initial={{
