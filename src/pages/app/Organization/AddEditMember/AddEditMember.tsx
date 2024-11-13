@@ -3,7 +3,7 @@ import React, { SetStateAction } from 'react';
 import Select from 'react-select';
 
 import { Roles } from '../../../../../services/enums';
-import { getLoggedInUserRole } from '../../../../common/commonFunctions';
+import { getLoggedInUserOrganizationRole } from '../../../../common/commonFunctions';
 import Modal from '../../../../components/Modal/Modal';
 import InputField from '../../../auth/Login/InputField';
 import { customStyles } from '../../EventPage/constants';
@@ -33,7 +33,7 @@ const AddEditMember = ({
   };
 
   function getOptionsForUserRole(): { value: Roles; label: Roles }[] {
-    const userRole = getLoggedInUserRole() as Roles;
+    const userRole = getLoggedInUserOrganizationRole() as Roles;
     const options: { value: Roles; label: Roles }[] = [];
 
     const roleHierarchy: { [key in Roles]?: Roles[] } = {

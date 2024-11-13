@@ -76,10 +76,7 @@ const routes: RouteObject[] = [
     path: '/home',
     element: <LandingPage />,
   },
-  {
-    path: '/profile',
-    element: <ProfilePage />,
-  },
+
   {
     path: '/:eventTitle/public/insights',
     element: <Insights type='public' />,
@@ -97,12 +94,20 @@ const routes: RouteObject[] = [
     element: <OrganizationGlance type='public' />,
   },
   {
+    path: 'user/:userName',
+    element: <ProfilePage type='public' />,
+  },
+  {
     path: '/',
     element: <AuthCheck />,
     children: [
       {
         path: '/events',
         element: <Events />,
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage type='private' />,
       },
       {
         path: '/:eventTitle/overview',

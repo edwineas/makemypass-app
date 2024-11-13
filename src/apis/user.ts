@@ -111,11 +111,7 @@ export const updateUserSocials = async (
   const toastId = toast.loading('Updating Socials...');
 
   return privateGateway
-    .put(makeMyPass.userSocials, socials, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    .put(makeMyPass.userSocials, socials)
     .then(() => {
       toast.success('Socials Updated Successfully', {
         id: toastId,
@@ -128,5 +124,16 @@ export const updateUserSocials = async (
     })
     .finally(() => {
       setLoading && setLoading(false);
+    });
+};
+
+export const getPublicProfile = async (userName: string) => {
+  return privateGateway
+    .get(makeMyPass.publicProfile(userName))
+    .then((response) => {
+      return response.data.response;
+    })
+    .catch((error) => {
+      toast.error(error.response?.data?.message?.general[0] || 'Error in Fetching Public Profile');
     });
 };

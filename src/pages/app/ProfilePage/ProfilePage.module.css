@@ -375,4 +375,12 @@
   flex-direction: row;
   gap: 0.5rem;
   justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.hostCommunicateIcons {
+  display: flex;
+  flex-direction: row;
+  column-gap: 0.25rem;
+  opacity: 0.8;
 }

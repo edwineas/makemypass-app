@@ -20,6 +20,7 @@ const OrganizationEditSocialsModal = ({
       type='side'
       onClose={() => setShowCommunicationMediumModal(false)}
       title='Add Communication Mediums'
+      zIndexCount={100}
     >
       <p className={styles.modalSubHeader}>Regular Communcation Medium</p>
       <div className={styles.modalContents}>

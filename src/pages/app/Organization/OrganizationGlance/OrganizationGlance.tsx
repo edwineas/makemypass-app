@@ -2,8 +2,11 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BsArrowRight } from 'react-icons/bs';
+import { FaExpandAlt } from 'react-icons/fa';
 import {
+  IoAlertCircleOutline,
   IoCallOutline,
+  IoContract,
   IoLogoFacebook,
   IoLogoInstagram,
   IoLogoLinkedin,
@@ -23,7 +26,7 @@ import {
   removeOrgMember,
   updateOrgMember,
 } from '../../../../apis/orgs';
-import { formatDate, normalizeUrl } from '../../../../common/commonFunctions';
+import { formatDate, isUserEditor, normalizeUrl } from '../../../../common/commonFunctions';
 import EventHeader from '../../../../components/EventHeader/EventHeader';
 import Modal from '../../../../components/Modal/Modal';
 import Table from '../../../../components/Table/Table';
@@ -89,6 +92,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
   const [showCommunicationMediumModal, setShowCommunicationMediumModal] = useState<boolean>(false);
 
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showFullDesc, setShowFullDesc] = useState(false);
 
   useEffect(() => {
     if (orgName && type === 'public') {
@@ -171,7 +175,10 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
           memberData={memberData}
           setMemberData={setMemberData}
           onSubmit={() => onSubmit()}
-          onClose={() => setSelectedMemberId({ id: '', type: null })}
+          onClose={() => {
+            setSelectedMemberId({ id: '', type: null });
+            setAddMember(false);
+          }}
           add={false}
         />
       )}
@@ -302,15 +309,16 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
                   </div>
                 </div>
               )}
-              <p className={styles.eventDescription}>{organization.description}</p>
             </div>
           </div>
 
           {type === 'private' && (
             <div className={styles.buttons}>
-              <button onClick={() => setShowEditModal(true)} className={styles.editEventButton}>
-                Edit Organization
-              </button>
+              {isUserEditor() && (
+                <button onClick={() => setShowEditModal(true)} className={styles.editEventButton}>
+                  Edit Organization
+                </button>
+              )}
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(
@@ -325,6 +333,52 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
             </div>
           )}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.5 }}
+          className={styles.organizationDescriptionContainer}
+        >
+          <p className={styles.orgDescHeading}>
+            <IoAlertCircleOutline color='white' size={20} />
+            <span>About the Organization</span>
+          </p>
+          <hr className={styles.line} />
+          <p
+            className={styles.organizationDescription}
+            dangerouslySetInnerHTML={
+              organization.description
+                ? {
+                    __html: showFullDesc
+                      ? organization.description
+                      : organization.description.length > 275
+                        ? organization.description.substring(0, 275) + '...'
+                        : organization.description,
+                  }
+                : undefined
+            }
+          ></p>
+          {organization && organization.description && organization?.description?.length > 275 && (
+            <div className={styles.expandIcon}>
+              {!showFullDesc ? (
+                <FaExpandAlt
+                  onClick={() => {
+                    setShowFullDesc((prev) => !prev);
+                  }}
+                />
+              ) : (
+                <IoContract
+                  size={20}
+                  onClick={() => {
+                    setShowFullDesc((prev) => !prev);
+                  }}
+                />
+              )}
+            </div>
+          )}
+        </motion.div>
       </div>
 
       {type === 'private' && (

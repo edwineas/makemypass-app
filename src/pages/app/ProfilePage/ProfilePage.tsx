@@ -2,13 +2,28 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiLock, BiUser } from 'react-icons/bi';
+import {
+  IoLogoFacebook,
+  IoLogoInstagram,
+  IoLogoLinkedin,
+  IoLogoTwitter,
+  IoLogoWhatsapp,
+  IoMailOutline,
+} from 'react-icons/io5';
+import { useParams } from 'react-router';
 import { BeatLoader } from 'react-spinners';
 
 import { generateOTP, resetUserPassword } from '../../../apis/auth';
 // import { useLocation } from 'react-router-dom';
 import { getEventsList } from '../../../apis/events';
 import { Event } from '../../../apis/types';
-import { getProfileInfo, getUserSocials, updateUserProfile } from '../../../apis/user';
+import {
+  getProfileInfo,
+  getPublicProfile,
+  getUserSocials,
+  updateUserProfile,
+} from '../../../apis/user';
+import { normalizeUrl } from '../../../common/commonFunctions';
 import Loader from '../../../components/Loader';
 import Modal from '../../../components/Modal/Modal';
 import Theme from '../../../components/Theme/Theme';
@@ -19,7 +34,8 @@ import ProfileUpdateSocials from './components/ProfileUpdateSocials/ProfileUpdat
 import styles from './ProfilePage.module.css';
 import type { socialsType, userData, userPasswordData } from './types';
 
-const ProfilePage = () => {
+const ProfilePage = ({ type }: { type: 'private' | 'public' }) => {
+  const { userName } = useParams<{ userName: string }>();
   const [loading, setLoading] = React.useState(false);
   const [dataLoading, setDataLoading] = React.useState(false);
   const [eventsData, setEventsData] = useState<Event[]>([]);
@@ -69,20 +85,19 @@ const ProfilePage = () => {
   }, [showChangePasswordModal]);
 
   useEffect(() => {
-    getEventsList(setEventsData, setDataLoading);
-    getProfileInfo({ setUserData, setOriginalUserData });
-    getUserSocials().then((response) => {
-      const dummySocials = {
-        email: 'example@example.com',
-        phone: '+1234567890',
-        facebook: 'facebook.com/example',
-        linkedin: 'linkedin.com/in/example',
-        twitter: 'x.com/example',
-        whatsapp: 'wa.me/+1234567890',
-        instagram: 'instagram.com/example',
-      };
-      setSocials(dummySocials || response);
-    });
+    if (type === 'private') {
+      getEventsList(setEventsData, setDataLoading);
+      getProfileInfo({ setUserData, setOriginalUserData });
+      getUserSocials().then((response) => {
+        setSocials(response);
+      });
+    } else if (type === 'public' && userName) {
+      getPublicProfile(userName).then((response) => {
+        setUserData(response);
+        setOriginalUserData(response);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -90,7 +105,7 @@ const ProfilePage = () => {
       {userData && dataLoading ? (
         <>
           <Theme>
-            {editBasicInfo && (
+            {type === 'private' && editBasicInfo && (
               <Modal title='Edit Basic Info' onClose={() => setEditBasicInfo(false)}>
                 <div className={styles.EditBasicInfoContainer}>
                   <div className={styles.userDetailsContainer}>
@@ -176,7 +191,7 @@ const ProfilePage = () => {
                 </div>
               </Modal>
             )}
-            {showChangePasswordModal && (
+            {type === 'private' && showChangePasswordModal && (
               <Modal title='Change Password' onClose={() => setShowChangePasswordModal(false)}>
                 <div className={styles.EditPasswordContainer}>
                   <div className={styles.passwordFieldsContainer}>
@@ -259,7 +274,7 @@ const ProfilePage = () => {
                 </div>
               </Modal>
             )}
-            {showChangeSocialModal && (
+            {type === 'private' && showChangeSocialModal && (
               <ProfileUpdateSocials
                 setShowChangeSocialModal={setShowChangeSocialModal}
                 socials={socials}
@@ -285,37 +300,80 @@ const ProfilePage = () => {
                 <div className={styles.profileInfo}>
                   <label className={styles.infoName}>{originalUserData?.name}</label>
                   <label className={styles.infoEmail}>{originalUserData?.email}</label>
+                  <div className={styles.hostCommunicate}>
+                    <div className={styles.hostCommunicateIcons}>
+                      {socials.whatsapp && (
+                        <a
+                          href={
+                            socials.whatsapp.startsWith('https://')
+                              ? socials.whatsapp
+                              : `https://${socials.whatsapp}`
+                          }
+                          target='_blank'
+                        >
+                          <IoLogoWhatsapp size={20} />
+                        </a>
+                      )}
+                      {socials.email && (
+                        <a href={`mailto:${socials.email}`}>
+                          <IoMailOutline size={20} />
+                        </a>
+                      )}
+                      {socials.instagram && (
+                        <a href={normalizeUrl(socials.instagram)} target='_blank'>
+                          <IoLogoInstagram size={20} />
+                        </a>
+                      )}
+                      {socials.facebook && (
+                        <a href={normalizeUrl(socials.facebook)} target='_blank'>
+                          <IoLogoFacebook size={20} />
+                        </a>
+                      )}
+                      {socials.twitter && (
+                        <a href={normalizeUrl(socials.twitter)} target='_blank'>
+                          <IoLogoTwitter size={20} />
+                        </a>
+                      )}
+                      {socials.linkedin && (
+                        <a href={normalizeUrl(socials.linkedin)} target='_blank'>
+                          <IoLogoLinkedin size={20} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
                   <div className={styles.userBannerFooter}>
                     <label className={styles.hostedCount}>
                       Hosted: {eventsData.filter((event) => event.status === 'Completed').length}{' '}
                       Events
                     </label>
 
-                    <div className={styles.buttonsContainer}>
-                      <SecondaryButton
-                        buttonText='Edit Basic Info'
-                        onClick={() => {
-                          setEditBasicInfo(!editBasicInfo);
-                        }}
-                      />
+                    {type === 'private' && (
+                      <div className={styles.buttonsContainer}>
+                        <SecondaryButton
+                          buttonText='Edit Basic Info'
+                          onClick={() => {
+                            setEditBasicInfo(!editBasicInfo);
+                          }}
+                        />
 
-                      <SecondaryButton
-                        buttonText='Change Password'
-                        onClick={() => {
-                          generateOTP(
-                            userData.email,
-                            setShowChangePasswordModal,
-                            'Forget Password',
-                          );
-                        }}
-                      />
-                      <SecondaryButton
-                        buttonText='Update Socials'
-                        onClick={() => {
-                          setShowChangeSocialModal(true);
-                        }}
-                      />
-                    </div>
+                        <SecondaryButton
+                          buttonText='Change Password'
+                          onClick={() => {
+                            generateOTP(
+                              userData.email,
+                              setShowChangePasswordModal,
+                              'Forget Password',
+                            );
+                          }}
+                        />
+                        <SecondaryButton
+                          buttonText='Update Socials'
+                          onClick={() => {
+                            setShowChangeSocialModal(true);
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

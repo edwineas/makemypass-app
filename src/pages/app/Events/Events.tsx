@@ -17,7 +17,7 @@ import {
   setEventInfoLocal,
 } from '../../../apis/events';
 import { listOrgs } from '../../../apis/orgs';
-import { DefaultListType, Event } from '../../../apis/types';
+import { Event } from '../../../apis/types';
 import { formatDate } from '../../../common/commonFunctions';
 import Loader from '../../../components/Loader';
 import Modal from '../../../components/Modal/Modal';
@@ -27,7 +27,7 @@ import { customStyles } from '../EventPage/constants';
 import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton';
 import styles from './Events.module.css';
 import RightClickMenu from './RightClickMenu';
-import type { NewEventStateType } from './types';
+import type { NewEventStateType, OrgListType } from './types';
 
 const Events = () => {
   interface Position {
@@ -37,7 +37,7 @@ const Events = () => {
 
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [tags, setTags] = useState([] as string[]);
-  const [orgs, setOrgs] = useState([] as DefaultListType[]);
+  const [orgs, setOrgs] = useState([] as OrgListType[]);
   const [selectedTags, setSelectedTags] = useState([] as string[]);
   const [isCreating, setIsCreating] = useState(false);
   const [selectedOrgName, setSelectedOrgName] = useState(
@@ -330,7 +330,9 @@ const Events = () => {
                                 ...prevState!,
                                 orgId: selectedOption.value,
                               }));
+
                               localStorage.setItem('orgId', selectedOption.label);
+
                               if (selectedOption.value !== 'Personal') {
                                 getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
                               } else if (selectedOption.value === 'Personal') {
@@ -346,12 +348,11 @@ const Events = () => {
                             color='#ffffff'
                             className='pointer'
                             onClick={() => {
-                              navigate(`/organization/${selectedOrgName}/`, {
-                                state: {
-                                  orgId: orgs.find((org) => org.name === selectedOrgName)?.id,
-                                  orgName: selectedOrgName,
-                                },
-                              });
+                              sessionStorage.setItem(
+                                'orgData',
+                                JSON.stringify(orgs.find((org) => org.name === selectedOrgName)),
+                              );
+                              navigate(`/organization/${selectedOrgName}/`);
                             }}
                           />
                         )}

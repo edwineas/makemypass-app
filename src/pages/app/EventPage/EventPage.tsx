@@ -147,7 +147,7 @@ const EventPage = () => {
                     eventData.post_content.video_link ||
                     eventData.post_content.more_photo_link)
                     ? 'fit-content'
-                    : '97%',
+                    : 'calc(100% - 2rem)',
               }}
             >
               <EventPageHeader eventData={eventData} />

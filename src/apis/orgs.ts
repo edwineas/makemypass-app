@@ -4,9 +4,10 @@ import { NavigateFunction } from 'react-router';
 
 import { privateGateway, publicGateway } from '../../services/apiGateway';
 import { makeMyPass } from '../../services/urls';
+import type { OrgListType } from '../pages/app/Events/types';
 import type { OrganizationType } from '../pages/app/Organization/EditOrganization/types';
 import type { MemberType } from '../pages/app/Organization/OrganizationGlance/types';
-import { DefaultListType, hostId } from './types';
+import { hostId } from './types';
 
 export const createOrg = (eventTitle: string) => {
   const userEmail = localStorage.getItem('userEmail');
@@ -24,7 +25,7 @@ export const createOrg = (eventTitle: string) => {
 };
 
 export const listOrgs = (
-  setOrgs: Dispatch<SetStateAction<DefaultListType[]>>,
+  setOrgs: Dispatch<SetStateAction<OrgListType[]>>,
   setOrgsLoaded: Dispatch<SetStateAction<boolean>>,
 ) => {
   setOrgsLoaded(false);
@@ -62,19 +63,25 @@ export const updateOrg = (
   navigate: NavigateFunction,
   setShowEditModal: Dispatch<SetStateAction<boolean>>,
   setTriggerFetch: Dispatch<SetStateAction<boolean>>,
+  orgDescription: string,
 ) => {
-  console.log(organizationState);
-  console.log(organization);
   setIsUpdating(true);
+
   const formData = new FormData();
   const fieldsToUpdate = ['title', 'name', 'description', 'banner', 'logo', 'socials'] as const;
   let hasChanges = false;
+
   fieldsToUpdate.forEach((field) => {
-    if (organizationState[field] !== organization[field]) {
+    if (
+      organizationState[field] !== organization[field] ||
+      (field === 'description' && orgDescription !== organization.description)
+    ) {
       hasChanges = true;
       if (field === 'socials') {
         const socials = organizationState[field];
         formData.append(field, JSON.stringify(socials));
+      } else if (field === 'description') {
+        formData.append(field, orgDescription);
       } else {
         formData.append(field, organizationState[field] || '');
       }

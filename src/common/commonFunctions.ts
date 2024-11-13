@@ -161,16 +161,28 @@ const getRemSizeFromCss = () => {
 
 export const isUserAuthorized = (allowedRoles: string[]) => {
   const eventData = sessionStorage.getItem('eventData');
-  const role: string = eventData ? JSON.parse(eventData).current_user_role : null;
+  const organizationData = sessionStorage.getItem('orgData');
 
-  if (!role) return false;
+  const getRole = (data: string | null, key: string) => {
+    if (!data) return null;
+    const parsedData = JSON.parse(data);
+    return parsedData[key] || null;
+  };
 
-  return allowedRoles.includes(role);
+  const eventRole = getRole(eventData, 'current_user_role');
+  const orgRole = getRole(organizationData, 'role');
+
+  return allowedRoles.includes(eventRole) || allowedRoles.includes(orgRole);
 };
 
-export const getLoggedInUserRole = () => {
+export const getLoggedInUserEventRole = () => {
   const eventData = sessionStorage.getItem('eventData');
   return eventData ? JSON.parse(eventData).current_user_role : null;
+};
+
+export const getLoggedInUserOrganizationRole = () => {
+  const organizationData = sessionStorage.getItem('orgData');
+  return organizationData ? JSON.parse(organizationData).role : null;
 };
 
 export const isUserEditor = () => {

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import { BeatLoader } from 'react-spinners';
 
 import { updateOrg } from '../../../../apis/orgs';
+import Editor from '../../../../components/Editor/Editor';
 import InputField from '../../../auth/Login/InputField';
 import styles from './EditOrganization.module.css';
 import type { OrganizationType } from './types';
@@ -27,6 +28,7 @@ const EditOrganization = ({
   setShowCommunicationMediumModal: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [orgDescription, setOrgDescription] = useState<string>('');
 
   useEffect(() => {
     if (organization) {
@@ -53,112 +55,12 @@ const EditOrganization = ({
       navigate,
       setShowEditModal,
       setTriggerFetch,
+      orgDescription,
     );
   };
 
   return (
     <div className={styles.editOrganizationContainer}>
-      <InputField
-        title='Organization Name'
-        description='This will be shown thoughout the url.'
-        icon={<LuPencil size={15} color='#949597' />}
-        id='organizationName'
-        name='organizationName'
-        type='text'
-        value={organizationState.name}
-        placeholder='Organization Name'
-        onChange={(e) => setOrganizationState({ ...organizationState, name: e.target.value })}
-      />
-      <InputField
-        title='Organization Title'
-        description='This will be used in the title.'
-        icon={<LuPencil size={15} color='#949597' />}
-        id='organizationTitle'
-        name='organizationTitle'
-        type='text'
-        value={organizationState.title}
-        placeholder='Organization Title'
-        onChange={(e) => setOrganizationState({ ...organizationState, title: e.target.value })}
-        style={{ marginTop: '0' }}
-      />
-
-      <InputField
-        title='Description'
-        description='This will be shown thoughout the platform.'
-        icon={<LuPencil size={15} color='#949597' />}
-        id='description'
-        name='description'
-        type='text'
-        value={organizationState.description || ''}
-        placeholder='Description'
-        onChange={(e) =>
-          setOrganizationState({ ...organizationState, description: e.target.value })
-        }
-        style={{ marginTop: '0' }}
-      />
-
-      <div className={styles.uploadLogoContainerParent}>
-        <div
-          className='row'
-          style={{
-            flexWrap: 'nowrap',
-          }}
-        >
-          <div className={styles.uploadLogoContainer}>
-            <div>
-              {organizationState.logo ? (
-                <img
-                  src={
-                    organizationState.logo instanceof Blob
-                      ? URL.createObjectURL(organizationState.logo)
-                      : organizationState.logo
-                  }
-                  alt='Uploaded Image'
-                  className={styles.noImage}
-                />
-              ) : organization?.logo && typeof organization?.logo === 'string' ? (
-                <img src={organization.logo} className={styles.noImage} />
-              ) : (
-                <div className={styles.noImage}></div>
-              )}
-            </div>
-            <div className={styles.uploadLogo}>
-              <p>Upload {organization?.logo ? 'New' : ''} Logo</p>
-              <p className={styles.logoName}>
-                {organizationState.logo instanceof Blob
-                  ? (organizationState.logo as File).name
-                  : ''}
-              </p>
-            </div>
-            <input
-              type='file'
-              className={styles.fileUpload}
-              accept='image/*'
-              onChange={(e) =>
-                setOrganizationState({
-                  ...organizationState,
-                  logo: e.target.files ? e.target.files[0] : null,
-                })
-              }
-            />
-            <div className={styles.pencil}>
-              <LuPencil size={15} color='#949597' />
-            </div>
-          </div>
-          <IoCloseOutline
-            className={styles.uploadCloseIcon}
-            color='#949597'
-            onClick={() => {
-              setOrganizationState({ ...organizationState, logo: null });
-            }}
-            style={
-              !organizationState.logo && !organization?.logo
-                ? { display: 'none' }
-                : { display: 'block' }
-            }
-          />
-        </div>
-      </div>
       <div className={styles.bannerContainer}>
         <input
           type='file'
@@ -228,6 +130,102 @@ const EditOrganization = ({
             )}
           </>
         )}
+      </div>
+      <br />
+      <hr className={styles.line} />
+      <InputField
+        title='Organization Name'
+        description='This will be shown thoughout the url.'
+        icon={<LuPencil size={15} color='#949597' />}
+        id='organizationName'
+        name='organizationName'
+        type='text'
+        value={organizationState.name}
+        placeholder='Organization Name'
+        onChange={(e) => setOrganizationState({ ...organizationState, name: e.target.value })}
+      />
+      <InputField
+        title='Organization Title'
+        description='This will be used in the title.'
+        icon={<LuPencil size={15} color='#949597' />}
+        id='organizationTitle'
+        name='organizationTitle'
+        type='text'
+        value={organizationState.title}
+        placeholder='Organization Title'
+        onChange={(e) => setOrganizationState({ ...organizationState, title: e.target.value })}
+        style={{ marginTop: '0' }}
+      />
+
+      <p className={styles.editorLabel}>Organization Description</p>
+      <div className={styles.editorDescriptionContainer}>
+        <Editor
+          description={organizationState.description ?? ''}
+          setNewDescription={setOrgDescription}
+        />
+      </div>
+
+      <div className={styles.uploadLogoContainerParent}>
+        <div
+          className='row'
+          style={{
+            flexWrap: 'nowrap',
+          }}
+        >
+          <div className={styles.uploadLogoContainer}>
+            <div>
+              {organizationState.logo ? (
+                <img
+                  src={
+                    organizationState.logo instanceof Blob
+                      ? URL.createObjectURL(organizationState.logo)
+                      : organizationState.logo
+                  }
+                  alt='Uploaded Image'
+                  className={styles.noImage}
+                />
+              ) : organization?.logo && typeof organization?.logo === 'string' ? (
+                <img src={organization.logo} className={styles.noImage} />
+              ) : (
+                <div className={styles.noImage}></div>
+              )}
+            </div>
+            <div className={styles.uploadLogo}>
+              <p>Upload {organization?.logo ? 'New' : ''} Logo</p>
+              <p className={styles.logoName}>
+                {organizationState.logo instanceof Blob
+                  ? (organizationState.logo as File).name
+                  : ''}
+              </p>
+            </div>
+            <input
+              type='file'
+              className={styles.fileUpload}
+              accept='image/*'
+              onChange={(e) =>
+                setOrganizationState({
+                  ...organizationState,
+                  logo: e.target.files ? e.target.files[0] : null,
+                })
+              }
+            />
+            <div className={styles.pencil}>
+              <LuPencil size={15} color='#949597' />
+            </div>
+          </div>
+          <IoCloseOutline
+            className={styles.uploadCloseIcon}
+            color='#949597'
+            onClick={() => {
+              setOrganizationState({ ...organizationState, logo: null });
+            }}
+            style={
+              !organizationState.logo && !organization?.logo
+                ? { display: 'none' }
+                : { display: 'block' }
+            }
+          />
+        </div>
       </div>
 
       <div className={styles.socialMediaContainer}>
