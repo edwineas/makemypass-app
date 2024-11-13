@@ -345,7 +345,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
           />
         </div>
       )}
-      {organization.events && organization.events?.Published.length > 0 && (
+      {organization.events && organization.events?.Published?.length > 0 && (
         <div className={styles.eventsHeader}>
           <p className={styles.eventsHeaderTitle}>Ongoing Events</p>
         </div>
@@ -353,7 +353,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
       <div className={styles.eventsContainer}>
         {type === 'public' &&
           organization.events &&
-          organization.events?.Published.length > 0 &&
+          organization.events?.Published?.length > 0 &&
           organization.events?.Published.map((event) => (
             <div key={event.id} className={styles.event}>
               <div>
@@ -388,8 +388,8 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
                             </motion.div>
                           )}
                           <p className={styles.eventName}>
-                            {event.title.substring(0, 35)}
-                            {event.title.length > 35 ? '...' : ''}
+                            {event.title?.substring(0, 35)}
+                            {event.title?.length > 35 ? '...' : ''}
                           </p>
                         </div>
                       </div>
@@ -411,7 +411,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
             </div>
           ))}
       </div>
-      {organization.events && organization.events?.Completed.length > 0 && (
+      {organization.events && organization.events?.Completed?.length > 0 && (
         <div className={styles.eventsHeader}>
           <p className={styles.eventsHeaderTitle}>Completed Events</p>
         </div>
@@ -419,7 +419,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
       <div className={styles.eventsContainer}>
         {type === 'public' &&
           organization.events &&
-          organization.events?.Completed.length > 0 &&
+          organization.events?.Completed?.length > 0 &&
           organization.events?.Completed.map((event) => (
             <div key={event.id} className={styles.event}>
               <div>
@@ -455,7 +455,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
                           )}
                           <p className={styles.eventName}>
                             {event.title.substring(0, 35)}
-                            {event.title.length > 35 ? '...' : ''}
+                            {event.title?.length > 35 ? '...' : ''}
                           </p>
                         </div>
                       </div>
