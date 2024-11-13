@@ -1,6 +1,5 @@
 import React from 'react';
 import toast from 'react-hot-toast';
-// import SelectMultipleDates from './components/SelectMultipleDates';
 import { MdDelete } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,6 +9,7 @@ import Slider from '../../../../../../../components/SliderButton/Slider';
 import InputField from '../../../../../../auth/Login/InputField';
 // import Slider from '../../../../../../../components/SliderButton/Slider';
 import styles from './AdvancedSetting.module.css';
+import SelectMultipleDates from './components/SelectMultipleDates';
 
 type Props = {
   selectedTicket: TicketType;
@@ -80,6 +80,24 @@ const AdvancedSetting = ({ selectedTicket, setSelectedTicket, setIsOpen }: Props
         onChange={(e) =>
           setSelectedTicket({ ...selectedTicket, category: e.target.value } as TicketType)
         }
+      />
+
+      <InputField
+        type='number'
+        name='commission'
+        id='Commission'
+        icon={<></>}
+        title='Commission'
+        value={selectedTicket?.commission?.toString()}
+        onChange={(e) =>
+          setSelectedTicket({ ...selectedTicket, commission: Number(e.target.value) })
+        }
+      />
+
+      <SelectMultipleDates
+        selectedTicket={selectedTicket}
+        setSelectedTicket={setSelectedTicket}
+        title='Allowed Dates'
       />
 
       <div className={styles.ticketSlider}>

@@ -39,6 +39,17 @@
   line-height: 1.6;
   margin-bottom: 1.5rem;
   flex-grow: 1;
+  height: 280px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.readMoreBtn {
+  background: none;
+  border: none;
+  color: #01f77e;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .testimonialAuthor {

@@ -174,7 +174,6 @@ export const loginUsingGoogle = async (
     localStorage.setItem('userImage', response.data.response.profile_pic_url);
     setIsAuthenticated(true);
     onboardUser();
-
   } catch (error) {
     console.error('Google login error:', error);
     toast.error('Google login Failed');
