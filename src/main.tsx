@@ -23,9 +23,7 @@ const toasterProps = {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <Routes />
-      <Toaster {...toasterProps} />
-    </GoogleOAuthProvider>
+    <Routes />
+    <Toaster {...toasterProps} />
   </React.StrictMode>,
 );
