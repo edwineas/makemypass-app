@@ -391,12 +391,14 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
             tableHeading='Organization Members'
             tableData={transformedMembers}
             secondaryButton={
-              <SecondaryButton
-                buttonText='Add Member +'
-                onClick={() => {
-                  setAddMember(true);
-                }}
-              />
+              isUserEditorForOrganization() ? (
+                <SecondaryButton
+                  buttonText='Add Member +'
+                  onClick={() => {
+                    setAddMember(true);
+                  }}
+                />
+              ) : undefined
             }
             setHostId={setSelectedMemberId}
             showSearch={true}

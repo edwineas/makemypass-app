@@ -5,6 +5,7 @@ import { TillRoles } from '../services/enums';
 import RoleChecker from '../services/RoleChecker';
 import AuthCheck from './components/AuthCheck/AuthCheck';
 import ViewTicket from './components/ViewTicket/ViewTicket';
+import Chat from './pages/app/Chat/Chat';
 import CheckIns from './pages/app/CheckIns/CheckIns';
 import CheckOutScan from './pages/app/CheckIns/pages/CheckOutScan/CheckOutScan';
 import Perks from './pages/app/CheckIns/pages/Perks/Perks';
@@ -343,6 +344,10 @@ const routes: RouteObject[] = [
   {
     path: '/:eventTitle/online-checkin/:eventRegisterId',
     element: <OnlineCheckIn />,
+  },
+  {
+    path: '/chat',
+    element: <Chat />,
   },
   {
     path: '*',

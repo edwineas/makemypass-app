@@ -82,6 +82,7 @@ export const customStyles = {
     fontFamily: 'Inter, sans-serif',
     fontStyle: 'normal',
     fontWeight: 400,
+    height: 'auto',
     fontSize: '0.9rem',
     zIndex: 10000,
     position: 'absolute', // Change from 'relative' to 'absolute'
@@ -92,8 +93,6 @@ export const customStyles = {
     ...provided,
     paddingTop: 0,
     paddingBottom: 0,
-    maxHeight: '200px', // Add a max height to enable scrolling if needed
-    overflowY: 'auto', // Enable vertical scrolling
   }),
 
   noOptionsMessage: (provided: any) => ({

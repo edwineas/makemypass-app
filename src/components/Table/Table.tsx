@@ -10,6 +10,7 @@ import { Roles, TillRoles } from '../../../services/enums';
 import {
   isUserAuthorizedForEvent,
   isUserEditorForEvent,
+  isUserEditorForOrganization,
   timeAgo,
 } from '../../common/commonFunctions';
 import { PaginationDataType, ResentTicket, SelectedGuest } from '../../pages/app/Guests/types';
@@ -94,7 +95,9 @@ const RowComponent = React.memo(({ index, data }: { index: number; data: ItemDat
               <p className={styles.rowDate}>{timeAgo(item.registered_at)}</p>
               {setResentTicket && (
                 <>
-                  {(isUserEditorForEvent() || isUserAuthorizedForEvent(TillRoles.VOLUNTEER)) && (
+                  {(isUserEditorForEvent() ||
+                    isUserAuthorizedForEvent(TillRoles.VOLUNTEER) ||
+                    isUserEditorForOrganization()) && (
                     <div className={styles.icon}>
                       <MdEdit
                         className='pointer'

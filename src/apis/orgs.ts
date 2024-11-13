@@ -122,19 +122,7 @@ export const OrgInfoFromName = (
   privateGateway
     .get(makeMyPass.orgInfoPriv(orgName))
     .then((response) => {
-      const data = response.data.response;
-      data.socials = {
-        facebook: data.socials?.facebook || 'aswinasok@facebook',
-        twitter: data.socials?.twitter || 'aswinasok@twitter',
-        linkedin: data.socials?.linkedin || 'aswinasok@linkedin',
-        instagram: data.socials?.instagram || 'aswinasok@instagram',
-        youtube: data.socials?.youtube || 'aswinasok@youtube',
-        email: data.socials?.email || 'aswinasok@gmail',
-        phone: data.socials?.phone || '1234567890',
-        whatsapp: data.socials?.whatsapp || '1234567890',
-      };
-
-      setOrganization(data);
+      setOrganization(response.data.response);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
@@ -148,19 +136,7 @@ export const OrgInfoFromNamePublic = (
   publicGateway
     .get(makeMyPass.orgInfoPublic(orgName))
     .then((response) => {
-      console.log(response.data.response);
       const org = response.data.response;
-
-      org.socials = {
-        facebook: org.socials?.facebook || 'aswinasok@facebook',
-        twitter: org.socials?.twitter || 'aswinasok@twitter',
-        linkedin: org.socials?.linkedin || 'aswinasok@linkedin',
-        instagram: org.socials?.instagram || 'aswinasok@instagram',
-        youtube: org.socials?.youtube || 'aswinasok@youtube',
-        email: org.socials?.email || 'aswinasok@gmail',
-        phone: org.socials?.phone || '1234567890',
-        whatsapp: org.socials?.whatsapp || '1234567890',
-      };
 
       setOrganization({
         id: org.id,

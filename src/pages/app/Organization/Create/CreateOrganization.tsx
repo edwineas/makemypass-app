@@ -26,7 +26,7 @@ const CreateOrganization = () => {
               id={'name'}
               icon={''}
               value={eventTitle}
-              onChange={(e) => setEventTitle(e.target.value)}
+              onChange={(e) => setEventTitle(e.target.value.trim())}
             />
           </div>
           <SecondaryButton buttonText='Create Organization' onClick={submitCreateEvent} />

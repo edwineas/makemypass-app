@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router';
 import Select from 'react-select';
 import { BeatLoader } from 'react-spinners';
 
+import { TillRoles } from '../../../../services/enums';
 import {
   createDuplicateEvent,
   createEvent,
@@ -18,7 +19,7 @@ import {
 } from '../../../apis/events';
 import { listOrgs } from '../../../apis/orgs';
 import { Event } from '../../../apis/types';
-import { formatDate } from '../../../common/commonFunctions';
+import { formatDate, isUserAuthorizedForOrganization } from '../../../common/commonFunctions';
 import Loader from '../../../components/Loader';
 import Modal from '../../../components/Modal/Modal';
 import Theme from '../../../components/Theme/Theme';
@@ -171,27 +172,6 @@ const Events = () => {
                   <Select
                     styles={{
                       ...customStyles,
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      container: (provided: any) => ({
-                        ...provided,
-                        width: '100%',
-                        margin: '0.5rem 0',
-                      }),
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      control: (provided: any, state: any) => ({
-                        ...provided,
-                        minWidth: '100%',
-                        maxWidth: '100%',
-                        border: 'none',
-                        backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                        fontFamily: 'Inter, sans-serif',
-                        fontStyle: 'normal',
-                        fontWeight: 400,
-                        fontSize: '0.9rem',
-                        boxShadow: state.isFocused ? 'none' : 'none',
-                        position: 'relative',
-                        zIndex: 10001,
-                      }),
                     }}
                     options={[
                       { value: 'Personal', label: 'Personal' },
@@ -214,18 +194,20 @@ const Events = () => {
                       }
                     }}
                   />
-                  <button
-                    className={styles.createEventButton}
-                    onClick={() => {
-                      CreateEvent();
-                    }}
-                  >
-                    {isCreating ? (
-                      <BeatLoader color='#1d1d1d' size={8} margin={2} />
-                    ) : (
-                      <span>Create Event</span>
-                    )}
-                  </button>
+                  {isUserAuthorizedForOrganization(TillRoles.ADMIN) && (
+                    <button
+                      className={styles.createEventButton}
+                      onClick={() => {
+                        CreateEvent();
+                      }}
+                    >
+                      {isCreating ? (
+                        <BeatLoader color='#1d1d1d' size={8} margin={2} />
+                      ) : (
+                        <span>Create Event</span>
+                      )}
+                    </button>
+                  )}
                 </>
               ) : (
                 <>
@@ -523,21 +505,20 @@ const Events = () => {
                 </div>
               );
             })}
+            {Object.values(events).length === 0 && isDataLoaded && (
+              <div className={styles.noEventsContainer}>
+                <p className={styles.noEvents}>
+                  You don't have any events yet. Please connect with our sales team to get started.
+                </p>
+                <SecondaryButton
+                  buttonText='Contact Sales'
+                  onClick={() => {
+                    window.open('https://wa.me/916238450178', '_blank');
+                  }}
+                />
+              </div>
+            )}
           </div>
-
-          {Object.values(events).length === 0 && isDataLoaded && (
-            <div className={styles.noEventsContainer}>
-              <p className={styles.noEvents}>
-                You don't have any events yet. Please connect with our sales team to get started.
-              </p>
-              <SecondaryButton
-                buttonText='Contact Sales'
-                onClick={() => {
-                  window.open('https://wa.me/916238450178', '_blank');
-                }}
-              />
-            </div>
-          )}
         </Theme>
       ) : (
         <Loader />
