@@ -1,6 +1,6 @@
 import './index.css';
 
-import { GoogleOAuthProvider } from '@react-oauth/google';
+// import { GoogleOAuthProvider } from '@react-oauth/google';
 import * as React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Toaster, ToastPosition } from 'react-hot-toast';
