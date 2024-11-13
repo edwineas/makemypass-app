@@ -1,0 +1,29 @@
+/* Modal and content styling */
+.modalContents {
+  width: 100%;
+}
+
+.modalSubHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Submit button styling */
+.submitButton {
+  text-align: center;
+  background: #fdfdfd;
+  color: rgb(43, 42, 42);
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 0.75rem;
+}

@@ -1,8 +1,8 @@
 import toast from 'react-hot-toast';
 
 import { privateGateway } from '../../services/apiGateway';
-import { buildVerse } from '../../services/urls';
-import type { userData } from '../pages/app/ProfilePage/types';
+import { buildVerse, makeMyPass } from '../../services/urls';
+import type { socialsType, userData } from '../pages/app/ProfilePage/types';
 
 export const updateUserProfile = async (
   userData: userData | undefined,
@@ -89,5 +89,44 @@ export const getProfileInfo = async ({
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Error in Fetching Profile Info');
+    });
+};
+
+export const getUserSocials = async () => {
+  return privateGateway
+    .get(makeMyPass.userSocials)
+    .then((response) => {
+      return response.data.response;
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Error in Fetching User Socials');
+    });
+};
+
+export const updateUserSocials = async (
+  socials: socialsType,
+  setLoading?: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+  setLoading && setLoading(true);
+  const toastId = toast.loading('Updating Socials...');
+
+  return privateGateway
+    .put(makeMyPass.userSocials, socials, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(() => {
+      toast.success('Socials Updated Successfully', {
+        id: toastId,
+      });
+    })
+    .catch((error) => {
+      toast.error(error.response?.data?.message?.general[0] || 'Error in Updating Socials', {
+        id: toastId,
+      });
+    })
+    .finally(() => {
+      setLoading && setLoading(false);
     });
 };

@@ -9,3 +9,13 @@ export type userPasswordData = {
   newPassword: string;
   confirmPassword: string;
 };
+
+export type socialsType = {
+  email: string;
+  phone: string;
+  facebook: string;
+  linkedin: string;
+  twitter: string;
+  whatsapp: string;
+  instagram: string;
+};

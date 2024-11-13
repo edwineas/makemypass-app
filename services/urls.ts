@@ -9,6 +9,10 @@ export const makeMyPass = {
   listEvents: makeMyPassURL('/common/user/events/'),
   listCommonTags: makeMyPassURL('/common/user/list-tags/'),
   listOrgs: makeMyPassURL('/common/user/org/list'),
+  userSocials: makeMyPassURL('/common/user/socials/'),
+
+  //User
+  publicProfile: (userName: string) => makeMyPassURL(`/user/${userName}/public-profile/`),
 
   //Scan Guest
   scanGuestCheckin: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/checkin`), //Till Volunteer

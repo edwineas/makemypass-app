@@ -8,30 +8,37 @@ import { generateOTP, resetUserPassword } from '../../../apis/auth';
 // import { useLocation } from 'react-router-dom';
 import { getEventsList } from '../../../apis/events';
 import { Event } from '../../../apis/types';
-import { getProfileInfo, updateUserProfile } from '../../../apis/user';
+import { getProfileInfo, getUserSocials, updateUserProfile } from '../../../apis/user';
 import Loader from '../../../components/Loader';
 import Modal from '../../../components/Modal/Modal';
 import Theme from '../../../components/Theme/Theme';
 import InputField from '../../auth/Login/InputField';
 import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton';
 import EventBox from './components/EventBox/EventBox';
+import ProfileUpdateSocials from './components/ProfileUpdateSocials/ProfileUpdateSocials';
 import styles from './ProfilePage.module.css';
-import type { userData, userPasswordData } from './types';
+import type { socialsType, userData, userPasswordData } from './types';
 
 const ProfilePage = () => {
-  // const location = useLocation();
-  // const queryParams = new URLSearchParams(location.search);
-  // const token = queryParams.get('token')?.replace(/\/+$/, '') as string;
-
   const [loading, setLoading] = React.useState(false);
   const [dataLoading, setDataLoading] = React.useState(false);
-  // const [currentTab, setCurrentTab] = useState('owner');
   const [eventsData, setEventsData] = useState<Event[]>([]);
 
   const [editBasicInfo, setEditBasicInfo] = useState(false);
   const [userData, setUserData] = React.useState<userData>();
   const [originalUserData, setOriginalUserData] = useState<userData>();
   const ProfilePicRef = useRef<HTMLInputElement>(null);
+
+  const [showChangeSocialModal, setShowChangeSocialModal] = useState(false);
+  const [socials, setSocials] = useState<socialsType>({
+    email: '',
+    phone: '',
+    facebook: '',
+    linkedin: '',
+    twitter: '',
+    whatsapp: '',
+    instagram: '',
+  });
 
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [passwordData, setPasswordData] = useState<userPasswordData>({
@@ -61,19 +68,21 @@ const ProfilePage = () => {
     setResendTimer(60);
   }, [showChangePasswordModal]);
 
-  // const handleUpdateProfile = () => {
-
-  //   const formData = new FormData(event.target as HTMLFormElement);
-  //   if (token) {
-  //     setUserData({ formData, token, setLoading });
-  //   } else {
-
-  //   }
-  // };
-
   useEffect(() => {
     getEventsList(setEventsData, setDataLoading);
     getProfileInfo({ setUserData, setOriginalUserData });
+    getUserSocials().then((response) => {
+      const dummySocials = {
+        email: 'example@example.com',
+        phone: '+1234567890',
+        facebook: 'facebook.com/example',
+        linkedin: 'linkedin.com/in/example',
+        twitter: 'x.com/example',
+        whatsapp: 'wa.me/+1234567890',
+        instagram: 'instagram.com/example',
+      };
+      setSocials(dummySocials || response);
+    });
   }, []);
 
   return (
@@ -250,6 +259,13 @@ const ProfilePage = () => {
                 </div>
               </Modal>
             )}
+            {showChangeSocialModal && (
+              <ProfileUpdateSocials
+                setShowChangeSocialModal={setShowChangeSocialModal}
+                socials={socials}
+                setSocials={setSocials}
+              />
+            )}
 
             <div className={styles.profilePageContainer}>
               <div className={styles.profileSection}>
@@ -269,27 +285,38 @@ const ProfilePage = () => {
                 <div className={styles.profileInfo}>
                   <label className={styles.infoName}>{originalUserData?.name}</label>
                   <label className={styles.infoEmail}>{originalUserData?.email}</label>
+                  <div className={styles.userBannerFooter}>
+                    <label className={styles.hostedCount}>
+                      Hosted: {eventsData.filter((event) => event.status === 'Completed').length}{' '}
+                      Events
+                    </label>
 
-                  <label className={styles.hostedCount}>
-                    Hosted: {eventsData.filter((event) => event.status === 'Completed').length}{' '}
-                    Events
-                  </label>
-                </div>
+                    <div className={styles.buttonsContainer}>
+                      <SecondaryButton
+                        buttonText='Edit Basic Info'
+                        onClick={() => {
+                          setEditBasicInfo(!editBasicInfo);
+                        }}
+                      />
 
-                <div className={styles.buttonsContainer}>
-                  <SecondaryButton
-                    buttonText='Edit Basic Info'
-                    onClick={() => {
-                      setEditBasicInfo(!editBasicInfo);
-                    }}
-                  />
-
-                  <SecondaryButton
-                    buttonText='Change Password'
-                    onClick={() => {
-                      generateOTP(userData.email, setShowChangePasswordModal, 'Forget Password');
-                    }}
-                  />
+                      <SecondaryButton
+                        buttonText='Change Password'
+                        onClick={() => {
+                          generateOTP(
+                            userData.email,
+                            setShowChangePasswordModal,
+                            'Forget Password',
+                          );
+                        }}
+                      />
+                      <SecondaryButton
+                        buttonText='Update Socials'
+                        onClick={() => {
+                          setShowChangeSocialModal(true);
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
