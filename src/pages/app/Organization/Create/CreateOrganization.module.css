@@ -31,3 +31,24 @@
   font-size: 2rem;
   font-family: 'Inter', sans-serif;
 }
+
+.confirmButton {
+  margin-top: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: var(--white-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--secondary-color);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.confirmButton:hover {
+  opacity: 1;
+}

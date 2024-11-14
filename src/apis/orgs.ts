@@ -9,8 +9,12 @@ import type { OrganizationType } from '../pages/app/Organization/EditOrganizatio
 import type { MemberType } from '../pages/app/Organization/OrganizationGlance/types';
 import { hostId } from './types';
 
-export const createOrg = (eventTitle: string) => {
-  const userEmail = localStorage.getItem('userEmail');
+export const createOrg = (
+  eventTitle: string,
+  userEmail: string,
+  setIsCreating: Dispatch<SetStateAction<boolean>>,
+) => {
+  setIsCreating(true);
   privateGateway
     .post(makeMyPass.orgCreate, {
       title: eventTitle,
@@ -21,6 +25,9 @@ export const createOrg = (eventTitle: string) => {
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    })
+    .finally(() => {
+      setIsCreating(false);
     });
 };
 
