@@ -11,7 +11,7 @@
   font-weight: 400;
   font-size: 0.9rem;
   margin-top: 0.25rem;
-  color: #bbbaba;
+  color: var(--off-white);
   align-self: start;
 }
 
@@ -21,14 +21,14 @@
   justify-content: flex-start;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 0rem;
+  padding: 1rem 0;
 }
 
 .button {
   padding: 0.5rem 1rem;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   border: none;
   cursor: pointer;
@@ -41,10 +41,8 @@
 .inputContainers {
   display: flex;
   flex-direction: column;
-  row-gap: 0.5rem;
-  margin-top: 1rem;
-  justify-content: flex-start;
   row-gap: 1rem;
+  margin-top: 1rem;
   width: fit-content;
 }
 
@@ -58,18 +56,14 @@
 
 .input {
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  color: #fff;
-  border: none;
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
-  font-style: normal;
   font-weight: 400;
   font-size: 0.9rem;
   margin-top: 0.25rem;
-
   width: 18rem;
 }
 
@@ -78,7 +72,7 @@
   font-size: 0.8rem;
   margin-top: 0.25rem;
   padding-left: 0.5rem;
-  color: #bbbaba;
+  color: var(--off-white);
   cursor: pointer;
   user-select: none;
 }
@@ -104,11 +98,10 @@
   margin-top: 0.25rem;
   border-radius: 8px;
   border: none;
-  padding: 0.75rem 0.75rem;
-  background: rgba(255, 255, 255, 0.04);
-  display: flex;
+  padding: 0.75rem;
+  background: var(--very-transparent-bg);
   font-family: 'Inter', sans-serif;
-  color: white;
+  color: var(--white-color);
   height: 200px;
   width: 30rem;
   resize: none;
@@ -122,6 +115,5 @@
 }
 
 .textarea:focus {
-  border: none;
   outline: none;
 }

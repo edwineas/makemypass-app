@@ -17,11 +17,10 @@
 }
 
 .noTicketFound {
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 400;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,8 +31,8 @@
 .downloadTicketButton {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: var(--very-transparent-bg);
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   border: none;
   cursor: pointer;
@@ -41,7 +40,7 @@
 }
 
 .downloadTicketButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--very-transparent-bg);
 }
 
 @media screen and (max-width: 468px) {

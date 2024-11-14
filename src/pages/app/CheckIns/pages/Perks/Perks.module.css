@@ -5,7 +5,7 @@
   width: 100%;
   margin: 2rem auto;
   font-family: 'Inter', sans-serif;
-  color: white;
+  color: var(--white-color);
 }
 
 .perkClaimHeader {
@@ -25,7 +25,7 @@
 }
 
 .perkClaimItem {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 1.5rem;
@@ -71,11 +71,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.25rem 1rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   margin-bottom: 1rem;
-
   font-size: 0.9rem;
   opacity: 0.8;
 }
@@ -95,13 +94,12 @@
 
 .pageTexts {
   margin-top: 1rem;
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
 }
 
 .pageHeading {
-  color: #fff;
-
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 1.1rem;
   font-style: normal;
@@ -109,7 +107,7 @@
 }
 
 .pageDescription {
-  color: #a4a4a4;
+  color: var(--off-white);
   font-size: 0.9rem;
   font-weight: 400;
   margin-top: 0.25rem;

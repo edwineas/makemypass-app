@@ -8,7 +8,7 @@
 }
 
 .formLabel {
-  color: #a4a4a4;
+  color: var(--off-white);
   font-size: 0.875rem;
   font-weight: 400;
   font-family: 'Inter', sans-serif;
@@ -19,8 +19,7 @@
   border-radius: 8px;
   border: none;
   padding: 0.75rem 0.75rem;
-  background: rgba(255, 255, 255, 0.04);
-
+  background: var(--very-transparent-bg);
   display: flex;
 }
 
@@ -29,10 +28,9 @@
   background: none;
   border: none;
   outline: none;
-  color: #fff;
+  color: var(--white-color);
   margin-left: 0.45rem;
   font-weight: 400;
-
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -47,7 +45,6 @@
 
 @media (max-width: 720px) {
   .formInput {
-    /* max-width: 20.5rem; */
     width: 100%;
   }
 }
@@ -59,7 +56,7 @@
 }
 
 .errorText {
-  color: #f04b4b;
+  color: var(--error-red);
   font-size: 0.875rem;
   font-weight: 400;
   margin-top: 0.25rem;
@@ -67,12 +64,11 @@
 }
 
 .fieldDescription {
-  color: #a4a4a4;
+  color: var(--off-white);
   font-size: 0.8rem;
   font-weight: 400;
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
-
   max-width: 18rem;
 }
 
@@ -81,10 +77,9 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter';
   position: relative;
-
   column-gap: 0.5rem;
 }
 
@@ -93,11 +88,11 @@
   border-radius: 8px;
   border: none;
   padding: 0.75rem 0.75rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   width: 100%;
   display: flex;
   font-family: 'Inter', sans-serif;
-  color: white;
+  color: var(--white-color);
 }
 
 .validateInputButton {
@@ -105,10 +100,9 @@
   border: none;
   background: transparent;
   padding: 14px 20px;
-
   border-radius: 10px;
-  color: #a4a4a487;
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--transparent-bg);
+  background: var(--very-transparent-bg);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }

@@ -27,7 +27,7 @@
 
 .tab {
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--transparent-bg);
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   padding-bottom: 0.5rem;
@@ -41,7 +41,7 @@
 }
 
 .categorySeparator {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--transparent-bg);
   font-size: 0.9rem;
   font-weight: bold;
 }

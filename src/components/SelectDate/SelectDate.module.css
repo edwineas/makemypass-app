@@ -1,7 +1,7 @@
 .datePicker input {
   margin-top: 1rem;
   margin-bottom: 1rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   width: 95%;
@@ -20,22 +20,22 @@
   padding: 1rem 2rem;
   border-radius: 8px;
   margin-bottom: 1rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 2px solid rgb(42, 53, 51);
+  background: var(--very-transparent-bg);
+  border: 2px solid var(--accent-color);
 }
 
 .ticketTypesTitle {
   margin-top: 1rem;
   font-size: 1.25rem;
   font-weight: 500;
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
 }
 
 .eventDescription {
   font-size: 0.9rem;
   font-weight: 400;
-  color: #fff;
+  color: var(--white-color);
   opacity: 0.8;
   font-family: 'Inter', sans-serif;
 }
@@ -52,7 +52,7 @@
   margin: auto;
   width: 100%;
   height: 2px;
-  background: #a4a4a4;
+  background: var(--off-white);
   opacity: 0.2;
   border: none;
   margin-top: 1rem;

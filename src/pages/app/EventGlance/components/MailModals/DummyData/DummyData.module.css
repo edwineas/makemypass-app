@@ -16,33 +16,30 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* flex-wrap: wrap; */
   row-gap: 0.5rem;
   column-gap: 0.5rem;
 }
 
 .confirmButton {
-  background: #fdfdfd;
-  color: rgb(43, 42, 42);
+  background: var(--white-color);
+  color: var(--secondary-color);
   border: none;
   border-radius: 8px;
   padding: 0.5rem 1rem;
   font-size: 0.8rem;
   cursor: pointer;
   margin-top: 1rem;
-  /* max-width: 5rem; */
   width: 100%;
 }
 
 .cancelButton {
-  color: #fdfdfd;
-  background: rgb(43, 42, 42);
+  color: var(--white-color);
+  background: var(--secondary-color);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 0.5rem 1rem;
   font-size: 0.8rem;
   cursor: pointer;
   margin-top: 1rem;
-  /* max-width: 5rem; */
   width: 100%;
 }

@@ -1,8 +1,8 @@
 .ticketBox {
   margin-top: 0.5rem;
   border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid var(--very-transparent-bg);
+  background: var(--very-transparent-bg);
   width: 20rem;
   padding: 0.5rem;
   min-width: 20rem;
@@ -11,8 +11,8 @@
 }
 
 .ticketBox.selected {
-  background: #1b2725;
-  border: 2px solid #f3f3f359;
+  background: var(--accent-color);
+  border: 2px solid rgba(243, 243, 243, 0.35);
 }
 
 @media screen and (max-width: 435px) {
@@ -23,7 +23,7 @@
 
 .ticketInfo {
   margin: 0.5rem;
-  color: #f3f3f3;
+  color: var(--white-color);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -31,8 +31,6 @@
 
 .ticket {
   border-radius: 8px;
-  /* border: 1px solid rgba(255, 255, 255, 0.04); */
-  /* background: rgba(255, 255, 255, 0.04); */
   width: 50%;
   height: 4rem;
   display: flex;
@@ -40,26 +38,20 @@
   justify-content: center;
 }
 
-/* .ticket:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-} */
-
 .availableDot {
-  background-color: #00ff006e;
-  /*#ff00008e*/
+  background-color: rgba(0, 255, 0, 0.43);
   border-radius: 50%;
   font-size: 0.2rem;
   padding: 0.2rem;
 }
 
 .availableDot.unavailable {
-  background-color: #ff00008e;
+  background-color: rgba(255, 0, 0, 0.56);
 }
 
 .ticketFooter {
   display: flex;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid var(--very-transparent-bg);
   padding-top: 0.25rem;
   align-items: center;
 }
@@ -69,7 +61,7 @@
   align-items: center;
   gap: 5px;
   margin-left: 0.5rem;
-  color: #f3f3f3;
+  color: var(--white-color);
   font-size: 0.8rem;
 }
 
@@ -81,7 +73,7 @@
 }
 
 .closeTicketLabel {
-  color: #f3f3f3;
+  color: var(--white-color);
   font-size: 0.8rem;
   font-family: 'Inter', sans-serif;
   cursor: pointer;

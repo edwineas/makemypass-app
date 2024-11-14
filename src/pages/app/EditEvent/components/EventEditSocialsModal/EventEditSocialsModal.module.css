@@ -17,7 +17,7 @@
 /* Submit button styling */
 .submitButton {
   text-align: center;
-  background: #fdfdfd;
+  background: var(--white-color);
   color: rgb(43, 42, 42);
   border: none;
   width: 100%;

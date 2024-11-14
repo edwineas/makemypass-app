@@ -6,8 +6,8 @@
   padding: 0.5rem 1rem;
   border: 1.5px solid rgba(255, 255, 255, 0.18);
   border-radius: 8px;
-  background: rgb(37, 37, 37, 0.9);
-  color: #fff;
+  background: rgba(37, 37, 37, 0.9);
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   cursor: pointer;
   width: 100%;
@@ -51,12 +51,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1rem;
+  padding: 1rem;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.04);
   text-align: left;
   border: 1.5px solid rgba(255, 255, 255, 0.08);
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   margin-bottom: 0.75rem;
 }
@@ -70,21 +70,21 @@
 
 .logDate {
   font-size: 0.85rem;
-  caret-color: #939597;
+  caret-color: var(--off-white);
 }
 
 .logUploadCount {
   font-size: 0.9rem;
   max-width: 8rem;
   font-weight: 400;
-  color: #939597;
+  color: var(--off-white);
 }
 
 .downloadTemplate {
   font-size: 0.8rem;
   font-weight: 400;
   font-family: 'Inter', sans-serif;
-  color: #7f7f7f;
+  color: var(--off-white);
   margin-top: 0.5rem;
   margin-bottom: 1rem;
   text-decoration: underline;
@@ -93,7 +93,7 @@
 .logStatus {
   border-radius: 100px;
   background: rgba(7, 164, 96, 0.13);
-  color: #47c97e;
+  color: var(--primary-color);
   font-family: 'Inter', sans-serif;
   font-size: 0.7rem;
   margin-left: 0.15rem;
@@ -103,8 +103,8 @@
 
 .uploadButton {
   text-align: center;
-  background: #fdfdfd;
-  color: rgb(43, 42, 42);
+  background: var(--white-color);
+  color: var(--secondary-color);
   border: none;
   border-radius: 8px;
   padding: 0.5rem 1rem;
@@ -122,15 +122,11 @@
   column-gap: 0.5rem;
 }
 
-.reportIcon {
-  cursor: pointer;
-}
-
 .line {
   margin: auto;
   width: 100%;
   height: 2px;
-  background: #a4a4a4;
+  background: var(--off-white);
   opacity: 0.1;
   border: none;
   margin-top: 1rem;
@@ -141,12 +137,12 @@
   margin-top: 0.25rem;
   border-radius: 8px;
   border: none;
-  padding: 0.5rem 0.5rem;
-  background: rgba(255, 255, 255, 0.04);
+  padding: 0.5rem;
+  background: var(--very-transparent-bg);
   width: 95%;
   display: flex;
   font-family: 'Inter', sans-serif;
-  color: #a4a4a4;
+  color: var(--off-white);
 }
 
 .fileInput::file-selector-button {
@@ -154,16 +150,15 @@
   margin-right: 20px;
   border: none;
   padding: 10px 20px;
-
   border-radius: 10px;
-  color: #a4a4a487;
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--off-white);
+  background: var(--very-transparent-bg);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .fileInput::file-selector-button:hover {
-  color: #a4a4a4;
+  color: var(--off-white);
   background: rgba(255, 255, 255, 0.08);
 }
 
@@ -177,7 +172,7 @@
 
 .noLogs {
   font-size: 0.9rem;
-  color: #a4a4a4;
+  color: var(--off-white);
   text-align: center;
   margin-bottom: 1rem;
 }
@@ -191,52 +186,39 @@
 }
 
 .success {
-  color: #47c97e;
+  color: var(--primary-color);
 }
 
 .error {
-  color: #fc6568;
+  color: var(--error-red);
 }
 
 .total {
   font-size: 0.9rem;
   max-width: 15rem;
   font-weight: 400;
-  color: #939597;
+  color: var(--off-white);
 }
 
 .speakerImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 50%;
   width: 3rem;
   height: 3rem;
-  border-radius: 100%;
-}
-
-.speakerImageInput {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 .deleteText {
   font-size: 0.95rem;
-  color: #a4a4a4;
+  color: var(--off-white);
   text-align: center;
 }
 
 .deleteButton {
   text-align: center;
-  background: #fdfdfd;
-  color: rgb(43, 42, 42);
+  background: var(--white-color);
+  color: var(--secondary-color);
   border: none;
   border-radius: 8px;
   padding: 0.5rem 1rem;
@@ -244,7 +226,6 @@
   font-weight: 500;
   cursor: pointer;
   margin-top: 1rem;
-
   max-width: 10rem;
   margin-right: 1rem;
 }
@@ -252,7 +233,7 @@
 .cancelButton {
   text-align: center;
   background: rgba(253, 253, 253, 0.1);
-  color: #fdfdfd;
+  color: var(--white-color);
   border: none;
   border-radius: 8px;
   padding: 0.5rem 1rem;
@@ -260,6 +241,5 @@
   font-weight: 500;
   cursor: pointer;
   margin-top: 1rem;
-
   max-width: 10rem;
 }

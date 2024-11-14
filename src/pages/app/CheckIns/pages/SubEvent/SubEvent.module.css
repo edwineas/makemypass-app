@@ -2,28 +2,19 @@
   padding: 0 1.25rem;
 }
 
-.subEventHeading {
+.subEventHeading,
+.checkInHeader,
+.subEventListingHeader,
+.noEventsText,
+.dateHeader {
   font-size: 1.25rem;
   font-weight: 500;
-  color: white;
-  font-family: 'Inter', sans-serif;
-  margin-bottom: 0.25rem;
-}
-
-.checkInHeader {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   margin-bottom: 0.25rem;
 }
 
 .subEventListingHeader {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: white;
-  font-family: 'Inter', sans-serif;
-  margin-bottom: 0.25rem;
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;
@@ -32,7 +23,7 @@
 
 .helperText {
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--off-white);
   font-family: 'Inter', sans-serif;
 }
 
@@ -48,15 +39,6 @@
   width: 100%;
 }
 
-.dateHeader {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  color: white;
-  text-align: left;
-  margin-top: 1rem;
-}
-
 .timeHeaderContainer {
   display: flex;
   justify-content: space-between;
@@ -64,7 +46,7 @@
   cursor: pointer;
   padding: 10px;
   background-color: rgba(255, 255, 255, 0.03);
-  color: white;
+  color: var(--white-color);
   border: 8px;
   width: 100%;
   margin-top: 1rem;
@@ -75,7 +57,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
-  color: #c5c5c5;
+  color: var(--off-white);
   text-align: left;
 }
 
@@ -106,8 +88,8 @@
 
 .eventCard {
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--very-transparent-bg);
+  background: var(--very-transparent-bg);
   max-width: 20rem;
   padding: 1rem;
   display: flex;
@@ -115,7 +97,7 @@
   position: relative;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
-  color: white;
+  color: var(--white-color);
   min-width: 17.5rem;
 }
 
@@ -163,22 +145,14 @@
   margin-top: 2rem;
 }
 
-.noEventsText {
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: white;
-  font-family: 'Inter', sans-serif;
-  margin-bottom: 0.25rem;
-}
-
 .searchInput {
   width: 100%;
   max-width: 8rem;
   padding: 0.7rem 1rem;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   border: none;
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
 }
@@ -199,14 +173,13 @@
 
 .closeButton {
   border-radius: 11px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   border: none;
   padding: 0.5rem 0.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
-  align-items: center;
+  color: var(--white-color);
   cursor: pointer;
   font-size: 1rem;
   font-family: 'Inter';
@@ -215,7 +188,7 @@
 
 .cardPrimaryButton {
   border-radius: 8px;
-  background: white;
+  background: var(--white-color);
   border: none;
   color: #000;
   padding: 0.5rem 1rem;
@@ -230,17 +203,11 @@
   transition: background 0.2s ease-in-out;
 }
 
-.checkInCount {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #9ca3af;
-  opacity: 0.8;
-  font-family: 'Inter', sans-serif;
-}
-
+.checkInCount,
 .checkInText {
   font-size: 0.8rem;
-  color: #9ca3af;
+  font-weight: 500;
+  color: var(--off-white);
   opacity: 0.8;
   font-family: 'Inter', sans-serif;
 }

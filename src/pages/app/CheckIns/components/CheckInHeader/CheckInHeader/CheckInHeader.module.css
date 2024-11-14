@@ -3,7 +3,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
-  color: white;
+  color: var(--white-color);
 }
 
 .checkInHeader {
@@ -14,14 +14,14 @@
 
 .backButton {
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--very-transparent-bg);
+  background: var(--very-transparent-bg);
   border: none;
   padding: 5px 10px;
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--white-color);
   cursor: pointer;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .checkInGlanceHeader {
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 18.75px;
   font-style: normal;
@@ -42,7 +42,7 @@
 }
 
 .guests {
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
   margin-top: 0.5rem;
@@ -51,7 +51,6 @@
 .guests span {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #fff;
+  color: var(--primary-color);
   font-family: 'Inter', sans-serif;
-  color: #47c97e;
 }

@@ -14,7 +14,7 @@
   column-gap: 1rem;
   row-gap: 0.5rem;
   flex-wrap: wrap;
-  color: white;
+  color: var(--white-color);
   width: 100%;
 }
 
@@ -22,7 +22,7 @@
   margin-top: 0.25rem;
   font-size: 0.8rem;
   font-weight: 400;
-  color: #a4a4a4;
+  color: var(--off-white);
   font-family: 'Inter', sans-serif;
 }
 
@@ -30,7 +30,7 @@
   margin-top: 1rem;
   padding-bottom: 1rem;
   position: relative;
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: var(--very-trasnparent-bg);
   padding: 1rem;
   border-radius: 8px;
   margin-right: 0.5rem;
@@ -40,7 +40,7 @@
 .line {
   margin: auto;
   height: 2px;
-  background: #a4a4a4;
+  background: var(--off-white);
   opacity: 0.2;
   border: none;
   margin-top: 1rem;
@@ -51,7 +51,7 @@
   position: absolute;
   right: 1.25rem;
   cursor: pointer;
-  color: white;
+  color: var(--white-color);
   font-size: 0.9rem;
   transition: 0.3s;
 }
@@ -65,18 +65,18 @@
 .mailType {
   font-size: 0.8rem;
   font-weight: 400;
-  color: #a4a4a4;
+  color: var(--off-white);
   margin-bottom: 0.25rem;
 }
 
 .mailDescription {
   font-size: 0.8rem;
   font-weight: 400;
-  color: #d2d4d7;
+  color: var(--white-color);
+}
 
-  span {
-    color: #ff9641;
-  }
+.mailDescription span {
+  color: #ff9641;
 }
 
 .mailContent {
@@ -88,7 +88,7 @@
   text-align: left;
   font-size: 0.8rem;
   line-height: 1.5;
-  color: white;
+  color: var(--white-color);
 }
 
 .mailContent pre {
@@ -101,7 +101,7 @@
 
 .mailLogsHeaders {
   margin-top: 1rem;
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
 }
@@ -115,7 +115,6 @@
 
 .pagination {
   display: flex;
-
   align-items: center;
 }
 
@@ -123,7 +122,6 @@
   color: rgba(255, 255, 255, 0.5);
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
-  font-style: normal;
   font-weight: 400;
   margin-right: 0.5rem;
 }
@@ -136,32 +134,30 @@
   gap: 8px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.08);
-
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   border: none;
-
-  padding: 0.35rem 0.7rem; /* Modified size */
+  padding: 0.35rem 0.7rem;
   max-height: 2rem;
-
   cursor: pointer;
 }
 
 .perPage {
   display: flex;
   align-items: center;
-
-  .paginationText {
-    display: flex;
-    align-items: center;
-  }
 }
+
+.perPage .paginationText {
+  display: flex;
+  align-items: center;
+}
+
 .perPageSelect {
   margin-left: 0.5rem;
   padding: 0.25rem;
   border-radius: 4px;
   background-color: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  color: var(--white-color);
   opacity: 0.5;
   font-family: 'Inter', sans-serif;
   border: none;

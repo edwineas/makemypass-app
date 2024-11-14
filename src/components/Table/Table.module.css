@@ -13,8 +13,7 @@
 }
 
 .tableHeading {
-  color: #fff;
-
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 1.1rem;
   font-style: normal;
@@ -22,7 +21,7 @@
 }
 
 .tableHeading span {
-  color: #d2d4d7;
+  color: var(--off-white);
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   font-style: normal;
@@ -32,13 +31,11 @@
 
 .tableContainer {
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--very-transparent-bg);
+  background: var(--very-transparent-bg);
   margin-top: 1rem;
-
   padding: 1rem;
   max-height: 41vh;
-  /* min-height: 18rem; */
   overflow: auto;
 }
 
@@ -47,7 +44,6 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-
   padding: 0.5rem 0;
 }
 
@@ -68,7 +64,7 @@
 }
 
 .tableRowData .row {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--very-transparent-bg);
 }
 
 .rowData {
@@ -77,7 +73,7 @@
 }
 
 .rowName {
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -87,7 +83,7 @@
 }
 
 .rowEmail {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--transparent-bg);
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -98,7 +94,7 @@
 .rowType {
   border-radius: 100px;
   background: rgba(7, 164, 96, 0.13);
-  color: #47c97e;
+  color: var(--primary-color);
   font-family: 'Inter', sans-serif;
   font-size: 0.7rem;
   margin-left: 0.15rem;
@@ -107,7 +103,7 @@
 }
 
 .rowDate {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--transparent-bg);
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -144,14 +140,13 @@ td {
 }
 
 th {
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   margin-bottom: 1rem;
   opacity: 0.8;
-  font-weight: 600;
 }
 
 .paginationContainer {
@@ -163,12 +158,11 @@ th {
 
 .pagination {
   display: flex;
-
   align-items: center;
 }
 
 .paginationText {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--transparent-bg);
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   font-style: normal;
@@ -183,33 +177,26 @@ th {
   align-items: center;
   gap: 8px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.08);
-
-  color: #fff;
+  background: var(--very-transparent-bg);
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   border: none;
-
-  padding: 0.35rem 0.7rem; /* Modified size */
+  padding: 0.35rem 0.7rem;
   max-height: 2rem;
-
   cursor: pointer;
 }
 
 .perPage {
   display: flex;
   align-items: center;
-
-  .paginationText {
-    display: flex;
-    align-items: center;
-  }
 }
+
 .perPageSelect {
   margin-left: 0.5rem;
   padding: 0.25rem;
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background-color: var(--very-transparent-bg);
+  color: var(--white-color);
   opacity: 0.5;
   font-family: 'Inter', sans-serif;
   border: none;
@@ -221,12 +208,12 @@ select:focus {
 }
 
 option {
-  background-color: #131c1a;
+  background-color: var(--secondary-color);
   opacity: 0.5;
 }
 
 .noData {
-  color: #fff;
+  color: var(--white-color);
   opacity: 0.8;
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
@@ -237,15 +224,14 @@ option {
 .searchInput {
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   padding: 0.5rem 1rem;
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 0.9rem;
   margin-top: 1rem;
-
   display: flex;
   align-items: center;
   column-gap: 0.5rem;
@@ -255,7 +241,7 @@ option {
   background: transparent;
   border: none;
   outline: none;
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;

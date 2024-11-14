@@ -1,7 +1,6 @@
 .checkInsHeading {
   margin-top: 2rem;
-  color: #fff;
-
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 1.1rem;
   font-style: normal;
@@ -26,6 +25,6 @@
 
 .line {
   margin-top: 1rem;
-  color: #a4a4a4;
+  color: var(--off-white);
   opacity: 0.1;
 }

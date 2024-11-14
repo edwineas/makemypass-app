@@ -3,7 +3,7 @@
   border-radius: 8px;
   border: none;
   padding: 0.75rem 0.75rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--transparent-bg);
   width: 100%;
   display: flex;
   font-family: 'Inter', sans-serif;
@@ -17,7 +17,7 @@
 
 .formLabel {
   text-align: left;
-  color: #a4a4a4;
+  color: var(--off-white);
   font-size: 0.875rem;
   font-weight: 400;
   font-family: 'Inter', sans-serif;
@@ -42,11 +42,11 @@
 .checkbox label {
   margin-left: 0.5rem;
   font-size: 0.85rem;
-  color: #a4a4a4;
+  color: var(--off-white);
 }
 
 .formDescription {
-  color: #a4a4a4;
+  color: var(--off-white);
   font-size: 0.8rem;
   font-weight: 400;
   margin-top: -0.25rem;
@@ -60,7 +60,7 @@
 }
 
 .errorText {
-  color: #f04b4b;
+  color: var(--error-red);
   font-size: 0.85rem;
   font-weight: 400;
   font-family: 'Inter', sans-serif;
@@ -80,13 +80,13 @@
 }
 
 .radio label {
-  color: #a4a4a4;
+  color: var(--off-white);
   font-size: 0.8rem;
 }
 
 .radioInput {
   border-radius: 50%;
-  border: 2px solid #a4a4a4;
+  border: 2px solid var(--off-white);
   width: 1rem;
   height: 1rem;
   display: flex;
@@ -100,7 +100,7 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background-color: #a4a4a4;
+  background-color: var(--off-white);
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
 }
@@ -114,11 +114,11 @@
   border-radius: 8px;
   border: none;
   padding: 0.5rem 0.5rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--transparent-bg);
   width: 95%;
   display: flex;
   font-family: 'Inter', sans-serif;
-  color: #a4a4a4;
+  color: var(--off-white);
 }
 
 .dateInput::date-selector-button {
@@ -130,8 +130,8 @@
 
   border-radius: 10px;
   border: none;
-  color: #a4a4a487;
-  background: #1b2725;
+  color: var(--transparent-bg);
+  background: var(--solid-bg);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
@@ -141,7 +141,7 @@ input {
 }
 
 .star {
-  background: #1b2725;
+  background: var(--solid-bg);
   font-size: 1.5rem;
   font-weight: 400;
   font-family: 'Inter', sans-serif;
@@ -152,7 +152,7 @@ input {
   margin: auto;
   width: 95%;
   height: 2px;
-  background: #a4a4a4;
+  background: var(--off-white);
   opacity: 0.2;
   border: none;
   margin-top: 1rem;
@@ -164,7 +164,7 @@ input {
   border-radius: 8px;
   border: none;
   padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--transparent-bg);
   width: 100%;
   display: flex;
   font-family: 'Inter', sans-serif;

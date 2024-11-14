@@ -7,10 +7,8 @@ header {
   position: absolute;
   z-index: 2;
   top: 0;
-
   width: 100%;
-  color: #a4a4a4;
-
+  color: var(--off-white);
   font-family: 'Inter', sans-serif;
   height: 5vh;
   margin-top: 1rem;
@@ -22,9 +20,7 @@ header {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
   max-width: 80rem;
-
   margin: auto;
 }
 
@@ -55,8 +51,7 @@ header {
   width: 1.75rem;
   height: 1.75rem;
   border-radius: 50%;
-  background-color: #57575c;
-
+  background-color: var(--secondary-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,17 +65,15 @@ header {
   .userName {
     font-size: 0.6rem;
   }
-
   .logo {
     display: none;
   }
 }
 
 .loginButton {
-  background-color: #01f77e;
+  background-color: var(--primary-color);
   padding: 0.5rem 1.5rem;
   border: none;
-
   font-family: 'Inter';
   border-radius: 8px;
 }
@@ -102,8 +95,8 @@ header {
   position: absolute;
   top: 2.5rem;
   right: 0;
-  background: #212729;
-  color: white;
+  background: var(--accent-color);
+  color: var(--white-color);
   min-width: 160px;
   z-index: 100;
   font-size: 0.8rem;
@@ -119,15 +112,16 @@ header {
   justify-content: space-between;
   align-items: center;
   column-gap: 0.5rem;
-  background: #212729;
+  background: var(--accent-color);
 }
 
 .dropdownContent .link {
   transition: all 0.2s ease-in-out;
   border-radius: 0px 0 8px 8px;
 }
+
 .dropdownContent:hover .link {
-  background-color: #2d3436;
+  background-color: var(--scrollbar-thumb);
   transform: scale(1.02);
 }
 

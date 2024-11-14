@@ -14,12 +14,10 @@
   margin-top: 1rem;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  /* padding: 0.5rem 0.5rem; */
-
   width: 7.5rem;
   display: flex;
   font-family: 'Inter', sans-serif;
-  color: #a4a4a4;
+  color: var(--off-white);
 }
 
 .fileInput::file-selector-button {
@@ -29,15 +27,15 @@
   background: transparent;
   padding: 10px 20px;
   border-radius: 10px;
-  color: #a4a4a487;
-  background: #1b2725ca;
+  color: rgba(164, 164, 164, 0.53);
+  background: rgba(27, 39, 37, 0.79);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .fileInput::file-selector-button:hover {
-  color: #a4a4a4;
-  background: #1b2725;
+  color: var(--off-white);
+  background: var(--accent-color);
 }
 
 .uploadContainer input[type='file'] {

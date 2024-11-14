@@ -8,6 +8,25 @@
   }
 }
 
+:root {
+  --scrollbar-bg: #282828;
+  --scrollbar-thumb: #333333;
+  --scrollbar-thumb-hover: rgb(70, 70, 70);
+
+  --white-color: #fff;
+
+  --primary-color: #00ff82;
+  --off-white: #a4a4a4;
+  --secondary-color: #282828;
+  --accent-color: #051f1b;
+  --error-red: #f04b4b;
+
+  --transparent-bg: rgba(255, 255, 255, 0.4);
+  --very-transparent-bg: rgba(255, 255, 255, 0.04);
+
+  --solid-bg: #1b2725;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -20,16 +39,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #282828;
+  background: var(--scrollbar-bg);
   padding: 1px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333333;
+  background: var(--scrollbar-thumb);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(70, 70, 70);
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* Firefox scrollbar */
@@ -42,16 +61,16 @@
 }
 
 ::-moz-scrollbar-track {
-  background: #333333;
+  background: var(--scrollbar-bg);
   padding: 1px;
 }
 
 ::-moz-scrollbar-thumb {
-  background: #282828;
+  background: var(--scrollbar-thumb);
 }
 
 ::-moz-scrollbar-thumb:hover {
-  background: #3b3b3b;
+  background: var(--scrollbar-thumb-hover);
 }
 
 .row {
@@ -109,7 +128,7 @@ iframe {
   margin: auto;
   width: 95%;
   height: 2px;
-  background: #a4a4a4;
+  background: var(--off-white);
   opacity: 0.2;
   border: none;
   margin-top: 1rem;
@@ -149,5 +168,5 @@ input[type='number'] {
 
 input[type='checkbox'],
 input[type='radio'] {
-  accent-color: #41df7d;
+  accent-color: var(--primary-color);
 }

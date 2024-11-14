@@ -3,13 +3,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: #1b2725;
-
+  border: none;
+  background: var(--solid-bg);
   padding: 1rem;
-
   max-width: 25rem;
   margin-bottom: 1rem;
   position: fixed;
@@ -20,10 +17,9 @@
   right: 0;
   margin: auto;
   transform: translateY(-50%);
-
   font-family: 'Inter', sans-serif;
   font-style: normal;
-  color: white;
+  color: var(--white-color);
   width: 100%;
   text-align: center;
 }
@@ -33,25 +29,21 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: #1b2725;
+  border: none;
+  background: var(--solid-bg);
   padding: 1rem;
   position: fixed;
   z-index: 100;
   backdrop-filter: blur(800px);
-
   top: 50%;
   left: auto;
   right: 0;
   bottom: 0;
   transform: translateY(-50%);
-
   font-family: 'Inter', sans-serif;
   font-style: normal;
-  color: white;
-  /* width: 50%; */
+  color: var(--white-color);
   height: calc(100vh - 2rem);
   overflow-y: scroll;
   overflow-x: scroll;
@@ -86,7 +78,6 @@
   .onClickModal {
     min-width: 25rem;
   }
-
   .sideModal {
     min-width: 25rem;
     max-width: 30rem;
@@ -122,7 +113,7 @@
 
 .closeButton {
   cursor: pointer;
-  color: #fff;
+  color: var(--white-color);
   font-size: 1rem;
   font-weight: 500;
   font-family: 'Inter', sans-serif;

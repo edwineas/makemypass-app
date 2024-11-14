@@ -1,14 +1,14 @@
 .sectionTitle {
   font-size: 1.1rem;
   font-weight: 500;
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   margin-top: 0.5rem;
 }
 
 .sectionSubTitle {
   font-size: 0.9rem;
-  color: white;
+  color: var(--white-color);
   opacity: 0.8;
   font-family: 'Inter', sans-serif;
   margin-top: 0.5rem;
@@ -17,15 +17,14 @@
 .modalButtons {
   display: flex;
   justify-content: space-between;
-
   width: 100%;
   column-gap: 0.5rem;
 }
 
 .confirmButton {
   text-align: center;
-  background: #fdfdfd;
-  color: rgb(43, 42, 42);
+  background: var(--white-color);
+  color: var(--secondary-color);
   border: none;
   font-weight: 500;
   width: 100%;
@@ -38,7 +37,7 @@
 .cancelButton {
   text-align: center;
   background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  color: var(--white-color);
   border: none;
   font-weight: 500;
   width: 70%;

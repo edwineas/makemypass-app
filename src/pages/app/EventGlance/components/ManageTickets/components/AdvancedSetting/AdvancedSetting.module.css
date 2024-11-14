@@ -5,11 +5,9 @@
 
 .optionsLabel {
   font-size: 0.9rem;
-  color: #d7d7d7;
+  color: var(--off-white);
   font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
   font-weight: 400;
-  color: #d7d7d7;
   margin-top: 0.5rem;
   text-align: left;
   padding-left: 0.5rem;
@@ -24,10 +22,9 @@
 
 .modalTitle {
   font-size: 1.2rem;
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-weight: 500;
-  color: #fff;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   text-align: left;
@@ -35,18 +32,14 @@
 
 .optionInput {
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  color: #fff;
-  border: none;
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
-  font-style: normal;
   font-weight: 400;
   font-size: 0.9rem;
   margin-top: 0.25rem;
-
   width: 18rem;
 }
 
@@ -62,7 +55,7 @@
 
 .ticketSliderSubLabel {
   font-size: 0.8rem;
-  color: #d7d7d7;
+  color: var(--off-white);
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   margin-top: 0.5rem;
@@ -82,17 +75,17 @@
   gap: 1rem;
   margin: 1rem;
 }
+
 .cancelButton {
   margin-top: 1rem;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.04);
-  border: none;
+  border: 1px solid var(--very-transparent-bg);
+  background: var(--very-transparent-bg);
   padding: 0.5rem 1rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
-  color: #d2d4d7;
+  color: var(--off-white);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   width: 100%;
@@ -104,7 +97,7 @@
 
 .perksLabel {
   font-size: 0.85rem;
-  color: #d7d7d7;
+  color: var(--off-white);
 }
 
 .ticketSlider {
@@ -121,7 +114,6 @@
   gap: 1rem;
   margin-top: 0.5rem;
   margin-left: 1rem;
-
   overflow-y: auto;
 }
 
@@ -135,50 +127,39 @@
 
 .perkNameInput {
   font-size: 0.9rem;
-  background: rgba(255, 255, 255, 0.04);
-  color: #d7d7d7;
+  background: var(--very-transparent-bg);
+  color: var(--off-white);
   font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #d7d7d7;
-  outline: none;
   padding: 0.5rem;
   max-width: 11rem;
-  border: none;
   border-radius: 8px 0 0 8px;
-  resize: none;
+  outline: none;
   opacity: 0.8;
   text-align: left;
 }
 
 .perkCountInput {
   font-size: 0.9rem;
-  background: rgba(255, 255, 255, 0.04);
-  color: #d7d7d7;
+  background: var(--very-transparent-bg);
+  color: var(--off-white);
   font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #d7d7d7;
-  outline: none;
   padding: 0.5rem;
   max-width: 5rem;
-  border: none;
   border-radius: 0 8px 8px 0;
-  resize: none;
+  outline: none;
   opacity: 0.8;
   text-align: left;
 }
 
 .addPerkButton {
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.04);
-  border: none;
+  border: 1px solid var(--very-transparent-bg);
+  background: var(--very-transparent-bg);
   padding: 0.5rem 1rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
-  color: #d2d4d7;
+  color: var(--off-white);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   width: fit-content;

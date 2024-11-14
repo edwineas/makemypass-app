@@ -10,7 +10,6 @@
 .message {
   font-family: 'Inter', sans-serif;
   font-size: 1.1rem;
-
   margin-top: 1rem;
   text-align: center;
   max-width: 25rem;
@@ -19,7 +18,7 @@
 .line {
   margin-top: 1rem;
   width: 100%;
-  color: #a4a4a4;
+  color: var(--off-white);
   opacity: 0.1;
 }
 

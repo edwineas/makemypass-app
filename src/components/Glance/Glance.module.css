@@ -6,12 +6,11 @@
 
 .glanceHeader,
 .guests {
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
   margin-top: 1rem;
   display: flex;
-
   align-items: center;
 }
 
@@ -34,9 +33,8 @@
 .guests span {
   font-size: 1rem;
   font-weight: 500;
-  color: #fff;
+  color: var(--primary-color);
   font-family: 'Inter', sans-serif;
-  color: #47c97e;
 }
 
 .progressBar {
@@ -58,7 +56,6 @@
   flex-direction: row;
   list-style-type: disc;
   font-size: 0.9rem;
-  /* margin-top: 1rem; */
   font-family: 'Inter', sans-serif;
 }
 
@@ -100,12 +97,11 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-
   margin-top: 1.5rem;
 }
 
 .lastUpdated {
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   text-align: right;

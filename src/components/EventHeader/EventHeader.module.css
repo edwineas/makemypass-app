@@ -9,7 +9,7 @@
 
 .headerText {
   display: flex;
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
@@ -23,10 +23,10 @@
   border-radius: 50%;
   object-fit: contain;
 
-  background-color: #1d2424;
+  background-color: var(--accent-color);
   font-family: 'Inter', sans-serif;
   display: flex;
-  color: #fff;
+  color: var(--white-color);
   font-size: 1.25rem;
   justify-content: center;
   align-items: center;
@@ -35,13 +35,13 @@
 .date {
   font-size: 1rem;
   font-weight: 500;
-  color: #fff;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
 }
 
 .line {
   margin-top: 1rem;
-  color: #a4a4a4;
+  color: var(--off-white);
   opacity: 0.1;
 }
 
@@ -72,19 +72,15 @@
 
 .goBack {
   border-radius: 11px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.04);
-
   border: none;
-
+  background: var(--very-transparent-bg);
   padding: 0.5rem 0.75rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  color: white;
-  align-items: center;
+  color: var(--white-color);
   cursor: pointer;
   font-size: 1rem;
   font-family: 'Inter';

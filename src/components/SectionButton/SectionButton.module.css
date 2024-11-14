@@ -1,6 +1,6 @@
 .buttonContainer {
   border: 2px solid rgba(255, 255, 255, 0.02);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--very-transparent-bg);
   border-radius: 8px;
   font-size: 0.9rem;
   padding: 0.75rem 1.5rem;
@@ -9,14 +9,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--white-color);
   font-family: 'Inter', sans-serif;
   text-align: center;
   width: fit-content;
 }
 
 .buttonText {
-  color: #fff;
+  color: var(--white-color);
   margin-right: 1rem;
   font-family: 'Inter', sans-serif;
   font-size: 1.1rem;
