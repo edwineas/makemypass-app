@@ -287,58 +287,52 @@ const Events = () => {
                   />
                 )}
 
-                {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
+                {orgs && orgs.length > 0 && (
                   <>
-                    {orgs && orgs.length > 0 && (
-                      <>
-                        <Select
-                          styles={customStyles}
-                          options={[
-                            { value: 'Personal', label: 'Personal' },
-                            ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                          ]}
-                          value={
-                            selectedOrgName
-                              ? { value: selectedOrgName, label: selectedOrgName }
-                              : null
+                    <Select
+                      styles={customStyles}
+                      options={[
+                        { value: 'Personal', label: 'Personal' },
+                        ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                      ]}
+                      value={
+                        selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null
+                      }
+                      className='select'
+                      classNamePrefix='select'
+                      placeholder='Select Organization'
+                      onChange={(selectedOption) => {
+                        if (selectedOption) {
+                          setSelectedOrgName(selectedOption.label);
+                          setNewEvent((prevState) => ({
+                            ...prevState!,
+                            orgId: selectedOption.value,
+                          }));
+
+                          localStorage.setItem('orgId', selectedOption.label);
+
+                          if (selectedOption.value !== 'Personal') {
+                            getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
+                          } else if (selectedOption.value === 'Personal') {
+                            getEventsList(setEvents, setIsDataLoaded);
                           }
-                          className='select'
-                          classNamePrefix='select'
-                          placeholder='Select Organization'
-                          onChange={(selectedOption) => {
-                            if (selectedOption) {
-                              setSelectedOrgName(selectedOption.label);
-                              setNewEvent((prevState) => ({
-                                ...prevState!,
-                                orgId: selectedOption.value,
-                              }));
+                        }
+                      }}
+                    />
 
-                              localStorage.setItem('orgId', selectedOption.label);
-
-                              if (selectedOption.value !== 'Personal') {
-                                getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
-                              } else if (selectedOption.value === 'Personal') {
-                                getEventsList(setEvents, setIsDataLoaded);
-                              }
-                            }
-                          }}
-                        />
-
-                        {selectedOrgName && selectedOrgName != 'Personal' && (
-                          <IoMdSettings
-                            size={20}
-                            color='#ffffff'
-                            className='pointer'
-                            onClick={() => {
-                              sessionStorage.setItem(
-                                'orgData',
-                                JSON.stringify(orgs.find((org) => org.name === selectedOrgName)),
-                              );
-                              navigate(`/organization/${selectedOrgName}/`);
-                            }}
-                          />
-                        )}
-                      </>
+                    {selectedOrgName && selectedOrgName != 'Personal' && (
+                      <IoMdSettings
+                        size={20}
+                        color='#ffffff'
+                        className='pointer'
+                        onClick={() => {
+                          sessionStorage.setItem(
+                            'orgData',
+                            JSON.stringify(orgs.find((org) => org.name === selectedOrgName)),
+                          );
+                          navigate(`/organization/${selectedOrgName}/`);
+                        }}
+                      />
                     )}
                   </>
                 )}
