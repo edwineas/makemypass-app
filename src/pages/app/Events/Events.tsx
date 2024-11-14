@@ -194,7 +194,8 @@ const Events = () => {
                       }
                     }}
                   />
-                  {isUserAuthorizedForOrganization(TillRoles.ADMIN) && (
+                  {(selectedOrgName === 'Personal' ||
+                    isUserAuthorizedForOrganization(TillRoles.ADMIN)) && (
                     <button
                       className={styles.createEventButton}
                       onClick={() => {
