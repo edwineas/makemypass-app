@@ -596,45 +596,47 @@ const EditEvent = () => {
                         isSearchable={false}
                       />
 
-                      <Select
-                        className={styles.selectDropdown}
-                        styles={{
-                          ...customStyles,
-                          menu: (provided) => ({
-                            ...provided,
-                            border: '1px solid rgba(255, 255, 255, 0.08)',
-                            backgroundColor: '#1C2222',
-                            color: '#fff',
-                            fontFamily: 'Inter, sans-serif',
-                            fontStyle: 'normal',
-                            fontWeight: 400,
-                            fontSize: '0.9rem',
-                            zIndex: 1000,
-                          }),
-                        }}
-                        options={[
-                          { value: 'Personal', label: 'Personal' },
-                          ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                        ]}
-                        value={
-                          eventData?.org_id
-                            ? {
-                                value: eventData.org_id,
-                                label: orgs.find((org) => org.id === eventData.org_id)?.name,
-                              }
-                            : { value: 'Personal', label: 'Personal' }
-                        }
-                        classNamePrefix='select'
-                        placeholder='Select Organization'
-                        onChange={(selectedOption) => {
-                          if (isUserEditorForEvent() && selectedOption) {
-                            setEventData({
-                              ...eventData,
-                              org_id: selectedOption.value,
-                            });
+                      {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
+                        <Select
+                          className={styles.selectDropdown}
+                          styles={{
+                            ...customStyles,
+                            menu: (provided) => ({
+                              ...provided,
+                              border: '1px solid rgba(255, 255, 255, 0.08)',
+                              backgroundColor: '#1C2222',
+                              color: '#fff',
+                              fontFamily: 'Inter, sans-serif',
+                              fontStyle: 'normal',
+                              fontWeight: 400,
+                              fontSize: '0.9rem',
+                              zIndex: 1000,
+                            }),
+                          }}
+                          options={[
+                            { value: 'Personal', label: 'Personal' },
+                            ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                          ]}
+                          value={
+                            eventData?.org_id
+                              ? {
+                                  value: eventData.org_id,
+                                  label: orgs.find((org) => org.id === eventData.org_id)?.name,
+                                }
+                              : { value: 'Personal', label: 'Personal' }
                           }
-                        }}
-                      />
+                          classNamePrefix='select'
+                          placeholder='Select Organization'
+                          onChange={(selectedOption) => {
+                            if (isUserEditorForEvent() && selectedOption) {
+                              setEventData({
+                                ...eventData,
+                                org_id: selectedOption.value,
+                              });
+                            }
+                          }}
+                        />
+                      )}
                     </div>
 
                     <textarea
