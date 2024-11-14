@@ -100,19 +100,15 @@ const EventPage = () => {
       <Helmet>
         <meta charSet='utf-8' />
         <title>{eventData?.title}</title>
-        <link
-          rel='shortcut icon'
-          href={typeof eventData?.logo === 'string' ? eventData.logo : undefined}
-          type='image/x-icon'
-        />
-
-        <meta property='og:type' content='website' />
-        <meta property='og:url' content={window.location.href} />
-        <meta property='og:title' content={eventData?.title} />
-        <meta property='og:description' content={eventData?.description} />
+        <link rel='shortcut icon' href='/favicon.ico' type='image/x-icon' />
+        <meta name='title' content={eventData?.title} />
         <meta
-          property='og:image'
-          content={typeof eventData?.banner === 'string' ? eventData.banner : undefined}
+          name='description'
+          content={
+            eventData?.description
+              ? eventData?.description
+              : 'Do not miss out! Register now for this event to learn, network and more. Click the link below to get started.'
+          }
         />
 
         {eventData?.script_injection &&
