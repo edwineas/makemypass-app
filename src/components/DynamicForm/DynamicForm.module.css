@@ -164,7 +164,7 @@ input {
   border-radius: 8px;
   border: none;
   padding: 0.75rem 1rem;
-  background: var(--transparent-bg);
+  background-color: var(--very-transparent-bg);
   width: 100%;
   display: flex;
   font-family: 'Inter', sans-serif;
