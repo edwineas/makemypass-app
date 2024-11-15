@@ -3,7 +3,7 @@
   border-radius: 8px;
   border: none;
   padding: 0.75rem 0.75rem;
-  background: var(--transparent-bg);
+  background: var(--very-transparent-bg);
   width: 100%;
   display: flex;
   font-family: 'Inter', sans-serif;
