@@ -425,7 +425,6 @@ const CouponForm = ({
                         {filteredTicket.price > 0 && filteredTicket.currency}{' '}
                         {filteredTicket.price === 0 ? 'FREE' : filteredTicket.price}
                       </p>
-                      <br />
                       <p className={styles.extraCharges}>
                         {filteredTicket.platform_fee_from_user && filteredTicket.price > 0 && (
                           <>
