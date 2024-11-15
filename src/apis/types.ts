@@ -172,7 +172,6 @@ export interface EventType {
   show_ticket_first: boolean;
   err_message: ReactNode;
   id: string;
-  org_id: string | null;
   name: string;
   title: string;
   description: string;
