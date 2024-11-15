@@ -144,6 +144,7 @@ const Header = ({
                           buttonText='Logout'
                           onClick={() => {
                             localStorage.clear();
+                            sessionStorage.clear();
                           }}
                         />
                       </Link>

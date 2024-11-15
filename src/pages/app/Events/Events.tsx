@@ -172,6 +172,10 @@ const Events = () => {
                   <Select
                     styles={{
                       ...customStyles,
+                      container: (provided) => ({
+                        ...provided,
+                        width: '100%',
+                      }),
                     }}
                     options={[
                       { value: 'Personal', label: 'Personal' },
@@ -268,11 +272,17 @@ const Events = () => {
                 </div>
               )}
               <div className={styles.selectRow}>
-                {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
-                  <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
-                    <IoIosCreate size={20} /> Create Event
-                  </button>
-                )}
+                {selectedOrgName !== 'Personal' &&
+                  isUserAuthorizedForOrganization(TillRoles.ADMIN) && (
+                    <div className={styles.createEvent}>
+                      <button
+                        className={styles.createButton}
+                        onClick={() => setShowCreateModal(true)}
+                      >
+                        <IoIosCreate size={20} /> Create Event
+                      </button>
+                    </div>
+                  )}
 
                 {tags && tags.length > 0 && (
                   <Select
@@ -311,6 +321,10 @@ const Events = () => {
                           }));
 
                           localStorage.setItem('orgId', selectedOption.label);
+                          sessionStorage.setItem(
+                            'orgData',
+                            JSON.stringify(orgs.find((org) => org.name === selectedOption.label)),
+                          );
 
                           if (selectedOption.value !== 'Personal') {
                             getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
