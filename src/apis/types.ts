@@ -121,6 +121,7 @@ export interface TicketType {
   platform_const_fee: number;
   gateway_fee: number;
   platform_fee_from_user: boolean;
+  auto_waitlist_count: number | null;
   currency: string;
   category: string;
   entry_date: {

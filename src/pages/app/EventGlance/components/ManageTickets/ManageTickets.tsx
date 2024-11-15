@@ -47,6 +47,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
   const [isChangedModal, setIsChangedModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [limitCapacity, setLimitCapacity] = useState(true);
+  const [autoWaitlist, setAutoWaitlist] = useState(true);
   const [paidTicket, setPaidTicket] = useState(true);
   const [ticketPair, setTicketPair] = useState<TicketType[]>();
   const [newDescription, setNewDescription] = useState('');
@@ -80,6 +81,7 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         description: '',
         id: '',
         approval_required: false,
+        auto_waitlist_count: null,
         price: 0,
         perks: [],
         registration_count: 0,
@@ -476,6 +478,68 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                   }}
                 />
               </div>
+              <div className={styles.ticketSlider}>
+                <p className={styles.ticketSliderLabel}>Enable Automatic Waitlisting</p>
+                <Slider
+                  checked={selectedTicket?.auto_waitlist_count != null && autoWaitlist}
+                  onChange={() => {
+                    if (isUserEditorForEvent()) {
+                      if (
+                        selectedTicket?.auto_waitlist_count != null &&
+                        selectedTicket?.auto_waitlist_count >= 0
+                      ) {
+                        setSelectedTicket({
+                          ...selectedTicket,
+                          auto_waitlist_count: null,
+                        } as unknown as TicketType);
+                      }
+                      if (selectedTicket?.auto_waitlist_count == null) {
+                        const sameIdTicket = tickets.find((t) => t.id === selectedTicket?.id);
+                        setSelectedTicket({
+                          ...selectedTicket,
+                          auto_waitlist_count:
+                            sameIdTicket?.auto_waitlist_count &&
+                            sameIdTicket?.auto_waitlist_count > 0
+                              ? sameIdTicket.auto_waitlist_count
+                              : 0,
+                        } as TicketType);
+                      }
+                      if (isNaN(selectedTicket?.auto_waitlist_count as number)) {
+                        setAutoWaitlist((prev) => !prev);
+                      }
+                    }
+                  }}
+                />
+              </div>
+
+              {selectedTicket?.auto_waitlist_count != null && autoWaitlist && (
+                <motion.div
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  className={styles.ticketSlider}
+                >
+                  <div className={styles.ticketCapacityContainer}>
+                    <label className={styles.ticketCapacityLabel}>Waitlist On </label>
+                    <input
+                      type='number'
+                      placeholder='0'
+                      disabled={!isUserEditorForEvent()}
+                      value={selectedTicket?.auto_waitlist_count}
+                      onChange={(e) => {
+                        if (Number(e.target.value) < 0) {
+                          return;
+                        }
+                        setSelectedTicket({
+                          ...selectedTicket,
+                          auto_waitlist_count: parseInt(e.target.value),
+                        } as TicketType);
+                      }}
+                      className={styles.ticketCapacityInput}
+                    />
+                  </div>
+                </motion.div>
+              )}
               <div className={styles.ticketSlider}>
                 <p className={styles.ticketSliderLabel}>
                   Limit Capacity
