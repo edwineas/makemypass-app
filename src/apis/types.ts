@@ -166,6 +166,7 @@ export interface EventType {
   capacity?: number;
   is_grouped_ticket: boolean;
   is_multiple_checkin: boolean;
+  multi_day_checkin: boolean;
   thank_you_new_page: boolean;
   is_private: boolean;
   is_team: boolean;

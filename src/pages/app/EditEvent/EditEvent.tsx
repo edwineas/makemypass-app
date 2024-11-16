@@ -469,6 +469,22 @@ const EditEvent = () => {
                       }
                     />
                   </div>
+                  <div className={styles.option}>
+                    <label>
+                      <MdDatasetLinked size={25} color='#949597' />
+                      Multi-Day CheckIn
+                    </label>
+                    <Slider
+                      checked={eventData.multi_day_checkin as boolean}
+                      text={''}
+                      onChange={() =>
+                        setEventData({
+                          ...eventData,
+                          multi_day_checkin: !eventData.multi_day_checkin,
+                        })
+                      }
+                    />
+                  </div>
                   <div className={styles.optionSelect}>
                     <p className={styles.label}>Select Confirmation Fields</p>
                     <Select
