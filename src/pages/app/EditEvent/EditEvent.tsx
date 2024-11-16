@@ -403,7 +403,7 @@ const EditEvent = () => {
                       }
                     />
                   </div>
-               
+
                   <div className={styles.option}>
                     <label>
                       <FaDatabase size={25} color='#949597' />
