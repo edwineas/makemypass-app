@@ -163,6 +163,8 @@ const EditEvent = () => {
       if (eventData?.is_grouped_ticket) changedData['is_grouped_ticket'] = false;
     }
 
+    changedData['multi_day_checkin'] = eventData?.multi_day_checkin;
+
     if (eventData?.socials != fetchedEvent?.socials) {
       changedData['socials'] = JSON.stringify(eventData?.socials).replace(/""/g, 'null');
     }
