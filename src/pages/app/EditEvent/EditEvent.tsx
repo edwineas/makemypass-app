@@ -16,7 +16,7 @@ import {
 } from 'react-icons/fa';
 import { FiGlobe, FiMail, FiPhone } from 'react-icons/fi';
 import { GrLocation } from 'react-icons/gr';
-import { HiOutlineTicket, HiOutlineUserGroup } from 'react-icons/hi2';
+import { HiOutlineTicket } from 'react-icons/hi2';
 import { IoCheckmarkDoneOutline, IoCloseOutline } from 'react-icons/io5';
 import { LuPencil } from 'react-icons/lu';
 import { MdDatasetLinked, MdOutlineShoppingCartCheckout } from 'react-icons/md';
@@ -403,23 +403,7 @@ const EditEvent = () => {
                       }
                     />
                   </div>
-                  <div className={styles.option}>
-                    <label>
-                      <HiOutlineUserGroup size={25} color='#949597' />
-                      Allow Multiple Check-In
-                    </label>
-                    <Slider
-                      checked={eventData.is_multiple_checkin as boolean}
-                      text={''}
-                      onChange={() =>
-                        isUserEditorForEvent() &&
-                        setEventData({
-                          ...eventData,
-                          is_multiple_checkin: !eventData.is_multiple_checkin,
-                        })
-                      }
-                    />
-                  </div>
+               
                   <div className={styles.option}>
                     <label>
                       <FaDatabase size={25} color='#949597' />

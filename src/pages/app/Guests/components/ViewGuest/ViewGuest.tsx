@@ -97,7 +97,7 @@ const ViewGuest = ({
   const [message, setMessage] = useState<string>('');
 
   useEffect(() => {
-    if (selectedGuestData && selectedGuestData['id'] && trigger && message && message.length <= 0) {
+    if (selectedGuestData && selectedGuestData['id'] && trigger && message && message.length >= 0) {
       checkInUser({
         ticketId: selectedGuestData['ticket_code'],
         eventId,
