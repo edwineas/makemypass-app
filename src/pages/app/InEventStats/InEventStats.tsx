@@ -161,33 +161,35 @@ const InEventStats = () => {
           setDistrictData(barData);
           const dates = Object.keys(lineData || {});
           setDailyCount([]);
-          const lineDataSet: LineDataSet[] = dates.map((date, index) => {
-            const colors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'];
-            const borderColor = colors[index % colors.length];
-            const backgroundColor = `rgba(${borderColor}, 0.5)`;
+          const lineDataSet: LineDataSet[] = dates
+            .map((date, index) => {
+              const colors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'];
+              const borderColor = colors[index % colors.length];
+              const backgroundColor = `rgba(${borderColor}, 0.5)`;
 
-            setDailyCount((prev: DailyCount[]) => {
-              const updatedDailyCount = [
-                ...prev,
-                {
-                  day: date,
-                  count: Object.values(lineData[date] || {}).reduce(
-                    (a, b) => (a as number) + (b as number),
-                    0,
-                  ) as number,
-                  color: borderColor,
-                },
-              ];
-              return updatedDailyCount;
-            });
+              setDailyCount((prev: DailyCount[]) => {
+                const updatedDailyCount = [
+                  ...prev,
+                  {
+                    day: date,
+                    count: Object.values(lineData[date] || {}).reduce(
+                      (a, b) => (a as number) + (b as number),
+                      0,
+                    ) as number,
+                    color: borderColor,
+                  },
+                ].sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime());
+                return updatedDailyCount;
+              });
 
-            return {
-              label: date,
-              data: Object.values(lineData[date] || {}),
-              borderColor,
-              backgroundColor,
-            };
-          });
+              return {
+                label: date,
+                data: Object.values(lineData[date] || {}) as number[],
+                borderColor,
+                backgroundColor,
+              };
+            })
+            .sort((a, b) => new Date(b.label).getTime() - new Date(a.label).getTime());
 
           setLineData({
             labels: Object.keys(lineData[dates[0]] || {}),
