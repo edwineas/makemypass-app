@@ -254,3 +254,16 @@ export const createDuplicateEvent = async (eventId: string) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
     });
 };
+
+export const updateEventOrganization = async (eventId: string, orgId: string) => {
+  privateGateway
+    .post(makeMyPass.eventChangeOranization(eventId), {
+      org_id: orgId,
+    })
+    .then((response) => {
+      toast.success(response.data.message.general[0] || 'Organization Updated Successfully');
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    });
+};
