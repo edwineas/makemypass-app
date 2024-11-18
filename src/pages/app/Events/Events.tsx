@@ -410,9 +410,6 @@ const Events = () => {
                               onClick={() => {
                                 handleClick(event.name);
                               }}
-                              style={{
-                                zIndex: 0,
-                              }}
                             >
                               <div className={styles.innerCard}>
                                 {event.logo ? (
