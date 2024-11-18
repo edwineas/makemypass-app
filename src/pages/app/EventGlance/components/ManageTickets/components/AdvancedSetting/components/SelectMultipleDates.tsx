@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import { TicketType } from '../../../../../../../../apis/types';
@@ -11,14 +11,14 @@ interface SelectDateProps {
 }
 
 const SelectMultipleDates = ({ selectedTicket, setSelectedTicket, title }: SelectDateProps) => {
-  // const getDatesArray = () => {
-  //   return selectedTicket.allowed_dates?.map((dateStr: string) => new Date(dateStr));
-  // };
+  const getDatesArray = () => {
+    return selectedTicket.allowed_dates?.map((dateStr: string) => new Date(dateStr));
+  };
 
-  // useEffect(() => {
-  //   setSelectedDates(getDatesArray());
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [selectedTicket]);
+  useEffect(() => {
+    setSelectedDates(getDatesArray());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [selectedDates, setSelectedDates] = useState<Date[] | null | undefined>([]);
 
