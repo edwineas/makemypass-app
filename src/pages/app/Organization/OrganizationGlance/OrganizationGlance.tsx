@@ -102,6 +102,8 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showFullDesc, setShowFullDesc] = useState(false);
 
+  const [showEmbedableModal, setShowEmbedableModal] = useState(false);
+
   useEffect(() => {
     if (orgName && type === 'public') {
       OrgInfoFromNamePublic(orgName, setOrganization);
@@ -231,6 +233,42 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
           />
         </Modal>
       )}
+      {type === 'private' && showEmbedableModal && (
+        <Modal
+          title='Embed Form'
+          onClose={() => {
+            setShowEmbedableModal(false);
+          }}
+        >
+          <div className={styles.publicEventModal}>
+            <div>
+              <div className={styles.sectionContent}>
+                <p className={styles.publicModalText}>Embedable Organization Form Link</p>
+                <div className={styles.publicLinkField}>
+                  <textarea
+                    rows={5}
+                    className={styles.publicLink}
+                    value={`<iframe src="${`${window.location.origin}/org/${organization.name}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`}
+                    readOnly
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `<iframe src="${`${window.location.origin}/org/${organization.name}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`,
+                );
+                toast.success('Link copied to clipboard');
+              }}
+              className={styles.publishButton}
+            >
+              Copy Link
+            </button>
+          </div>
+        </Modal>
+      )}
       {showCommunicationMediumModal && (
         <OrganizationEditSocialsModal
           setShowCommunicationMediumModal={setShowCommunicationMediumModal}
@@ -338,6 +376,14 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
                   className={styles.editEventButton}
                 >
                   Share Organization
+                </button>
+                <button
+                  onClick={() => {
+                    setShowEmbedableModal(true);
+                  }}
+                  className={styles.editEventButton}
+                >
+                  Embed Organization
                 </button>
               </div>
             )}
