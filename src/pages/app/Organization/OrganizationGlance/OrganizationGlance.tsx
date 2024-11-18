@@ -16,6 +16,7 @@ import {
 } from 'react-icons/io5';
 import { TbAlertTriangleFilled } from 'react-icons/tb';
 import { useParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 
 import {
@@ -47,6 +48,9 @@ import type { MemberType } from './types';
 
 const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
   const { orgName } = useParams<{ orgName: string }>();
+
+  const [searchParams] = useSearchParams();
+  const typeParam = searchParams.get('type');
 
   const [organization, setOrganization] = useState<OrganizationType>({
     id: '',
@@ -236,156 +240,162 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
       )}
 
       <div className={styles.organizationContainer}>
-        {type === 'private' && (
+        {typeParam !== 'embed' && type === 'private' && (
           <EventHeader
             previousPageNavigate='-1'
             custom={true}
             customName={organization.title ? `${organization.title} (org)` : ''}
           />
         )}
-        <div className={styles.bannerContainer}>
-          {organization.banner ? (
-            <img
-              src={typeof organization.banner === 'string' ? organization.banner : ''}
-              alt=''
-              className={styles.banner}
-            />
-          ) : (
-            <svg height='250' width='100%' className={styles.banner}>
-              <rect width='100%' height='100%' className={styles.banner} />
-              <text x='40%' y='50%' fill='white' className={styles.svgText}>
-                No Banner. <br />
-              </text>
-              <text x='10%' y='60%' fill='white' className={styles.svgText}>
-                Please Edit Event Details to add a banner
-              </text>
-            </svg>
-          )}
+        {typeParam !== 'embed' && (
+          <div className={styles.bannerContainer}>
+            {organization.banner ? (
+              <img
+                src={typeof organization.banner === 'string' ? organization.banner : ''}
+                alt=''
+                className={styles.banner}
+              />
+            ) : (
+              <svg height='250' width='100%' className={styles.banner}>
+                <rect width='100%' height='100%' className={styles.banner} />
+                <text x='40%' y='50%' fill='white' className={styles.svgText}>
+                  No Banner. <br />
+                </text>
+                <text x='10%' y='60%' fill='white' className={styles.svgText}>
+                  Please Edit Event Details to add a banner
+                </text>
+              </svg>
+            )}
 
-          <div className={styles.bannerTexts}>
-            <div className={styles.headingTexts}>
-              <p className={styles.eventTitle}>{organization.title}</p>
-              {organization?.socials && (
-                <div className={styles.hostCommunicate}>
-                  <div className={styles.hostCommunicateIcons}>
-                    {organization.socials.phone && (
-                      <a href={`tel:${organization.socials.phone}`}>
-                        <IoCallOutline size={20} />
-                      </a>
-                    )}
-                    {organization.socials.whatsapp && (
-                      <a
-                        href={
-                          organization.socials.whatsapp.startsWith('https://')
-                            ? organization.socials.whatsapp
-                            : `https://${organization.socials.whatsapp}`
-                        }
-                        target='_blank'
-                      >
-                        <IoLogoWhatsapp size={20} />
-                      </a>
-                    )}
-                    {organization.socials.email && (
-                      <a href={`mailto:${organization.socials.email}`}>
-                        <IoMailOutline size={20} />
-                      </a>
-                    )}
-                    {organization.socials.instagram && (
-                      <a href={normalizeUrl(organization.socials.instagram)} target='_blank'>
-                        <IoLogoInstagram size={20} />
-                      </a>
-                    )}
-                    {organization.socials.facebook && (
-                      <a href={normalizeUrl(organization.socials.facebook)} target='_blank'>
-                        <IoLogoFacebook size={20} />
-                      </a>
-                    )}
-                    {organization.socials.twitter && (
-                      <a href={normalizeUrl(organization.socials.twitter)} target='_blank'>
-                        <IoLogoTwitter size={20} />
-                      </a>
-                    )}
-                    {organization.socials.linkedin && (
-                      <a href={normalizeUrl(organization.socials.linkedin)} target='_blank'>
-                        <IoLogoLinkedin size={20} />
-                      </a>
-                    )}
+            <div className={styles.bannerTexts}>
+              <div className={styles.headingTexts}>
+                <p className={styles.eventTitle}>{organization.title}</p>
+                {organization?.socials && (
+                  <div className={styles.hostCommunicate}>
+                    <div className={styles.hostCommunicateIcons}>
+                      {organization.socials.phone && (
+                        <a href={`tel:${organization.socials.phone}`}>
+                          <IoCallOutline size={20} />
+                        </a>
+                      )}
+                      {organization.socials.whatsapp && (
+                        <a
+                          href={
+                            organization.socials.whatsapp.startsWith('https://')
+                              ? organization.socials.whatsapp
+                              : `https://${organization.socials.whatsapp}`
+                          }
+                          target='_blank'
+                        >
+                          <IoLogoWhatsapp size={20} />
+                        </a>
+                      )}
+                      {organization.socials.email && (
+                        <a href={`mailto:${organization.socials.email}`}>
+                          <IoMailOutline size={20} />
+                        </a>
+                      )}
+                      {organization.socials.instagram && (
+                        <a href={normalizeUrl(organization.socials.instagram)} target='_blank'>
+                          <IoLogoInstagram size={20} />
+                        </a>
+                      )}
+                      {organization.socials.facebook && (
+                        <a href={normalizeUrl(organization.socials.facebook)} target='_blank'>
+                          <IoLogoFacebook size={20} />
+                        </a>
+                      )}
+                      {organization.socials.twitter && (
+                        <a href={normalizeUrl(organization.socials.twitter)} target='_blank'>
+                          <IoLogoTwitter size={20} />
+                        </a>
+                      )}
+                      {organization.socials.linkedin && (
+                        <a href={normalizeUrl(organization.socials.linkedin)} target='_blank'>
+                          <IoLogoLinkedin size={20} />
+                        </a>
+                      )}
+                    </div>
                   </div>
+                )}
+              </div>
+            </div>
+
+            {type === 'private' && (
+              <div className={styles.buttons}>
+                {isUserEditorForOrganization() && (
+                  <button onClick={() => setShowEditModal(true)} className={styles.editEventButton}>
+                    Edit Organization
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `${window.location.origin}/org/${organization.name}`,
+                    );
+                    toast.success('Link copied to clipboard');
+                  }}
+                  className={styles.editEventButton}
+                >
+                  Share Organization
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {typeParam !== 'embed' && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.5 }}
+            className={styles.organizationDescriptionContainer}
+          >
+            <p className={styles.orgDescHeading}>
+              <IoAlertCircleOutline color='white' size={20} />
+              <span>About the Organization</span>
+            </p>
+            <hr className={styles.line} />
+            <p
+              className={styles.organizationDescription}
+              dangerouslySetInnerHTML={
+                organization.description
+                  ? {
+                      __html: showFullDesc
+                        ? organization.description
+                        : organization.description.length > 275
+                          ? organization.description.substring(0, 275) + '...'
+                          : organization.description,
+                    }
+                  : undefined
+              }
+            ></p>
+            {organization &&
+              organization.description &&
+              organization?.description?.length > 275 && (
+                <div className={styles.expandIcon}>
+                  {!showFullDesc ? (
+                    <FaExpandAlt
+                      onClick={() => {
+                        setShowFullDesc((prev) => !prev);
+                      }}
+                    />
+                  ) : (
+                    <IoContract
+                      size={20}
+                      onClick={() => {
+                        setShowFullDesc((prev) => !prev);
+                      }}
+                    />
+                  )}
                 </div>
               )}
-            </div>
-          </div>
-
-          {type === 'private' && (
-            <div className={styles.buttons}>
-              {isUserEditorForOrganization() && (
-                <button onClick={() => setShowEditModal(true)} className={styles.editEventButton}>
-                  Edit Organization
-                </button>
-              )}
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    `${window.location.origin}/org/${organization.name}`,
-                  );
-                  toast.success('Link copied to clipboard');
-                }}
-                className={styles.editEventButton}
-              >
-                Share Organization
-              </button>
-            </div>
-          )}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.5 }}
-          className={styles.organizationDescriptionContainer}
-        >
-          <p className={styles.orgDescHeading}>
-            <IoAlertCircleOutline color='white' size={20} />
-            <span>About the Organization</span>
-          </p>
-          <hr className={styles.line} />
-          <p
-            className={styles.organizationDescription}
-            dangerouslySetInnerHTML={
-              organization.description
-                ? {
-                    __html: showFullDesc
-                      ? organization.description
-                      : organization.description.length > 275
-                        ? organization.description.substring(0, 275) + '...'
-                        : organization.description,
-                  }
-                : undefined
-            }
-          ></p>
-          {organization && organization.description && organization?.description?.length > 275 && (
-            <div className={styles.expandIcon}>
-              {!showFullDesc ? (
-                <FaExpandAlt
-                  onClick={() => {
-                    setShowFullDesc((prev) => !prev);
-                  }}
-                />
-              ) : (
-                <IoContract
-                  size={20}
-                  onClick={() => {
-                    setShowFullDesc((prev) => !prev);
-                  }}
-                />
-              )}
-            </div>
-          )}
-        </motion.div>
+          </motion.div>
+        )}
       </div>
 
-      {type === 'private' && (
+      {typeParam !== 'embed' && type === 'private' && (
         <div id='members' className={styles.membersContainer}>
           <Table
             tableHeading='Organization Members'
@@ -520,16 +530,12 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
                         </div>
                       </div>
 
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        className={styles.manage}
-                        onClick={() => {
-                          window.location.href = `/${event.name}`;
-                        }}
-                      >
-                        View Event
-                        <BsArrowRight size={15} />
-                      </motion.button>
+                      <a href={`/${event.name}`} target='_blank' rel='noopener noreferrer'>
+                        <motion.button whileHover={{ scale: 1.05 }} className={styles.manage}>
+                          View Event
+                          <BsArrowRight size={15} />
+                        </motion.button>
+                      </a>
                     </div>
                   </div>
                 </motion.div>
