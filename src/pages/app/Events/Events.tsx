@@ -114,6 +114,11 @@ const Events = () => {
     }
   };
 
+  console.log(
+    (selectedOrgName === 'Personal' && import.meta.env.VITE_CURRENT_ENV === 'dev') ||
+      isUserAuthorizedForOrganization(TillRoles.ADMIN),
+  );
+
   return (
     <>
       {isDataLoaded ? (
@@ -273,17 +278,17 @@ const Events = () => {
                 </div>
               )}
               <div className={styles.selectRow}>
-                {selectedOrgName !== 'Personal' &&
-                  isUserAuthorizedForOrganization(TillRoles.ADMIN) && (
-                    <div className={styles.createEvent}>
-                      <button
-                        className={styles.createButton}
-                        onClick={() => setShowCreateModal(true)}
-                      >
-                        <IoIosCreate size={20} /> Create Event
-                      </button>
-                    </div>
-                  )}
+                {((selectedOrgName === 'Personal' && import.meta.env.VITE_CURRENT_ENV === 'dev') ||
+                  isUserAuthorizedForOrganization(TillRoles.ADMIN)) && (
+                  <div className={styles.createEvent}>
+                    <button
+                      className={styles.createButton}
+                      onClick={() => setShowCreateModal(true)}
+                    >
+                      <IoIosCreate size={20} /> Create Event
+                    </button>
+                  </div>
+                )}
 
                 {tags && tags.length > 0 && (
                   <Select
