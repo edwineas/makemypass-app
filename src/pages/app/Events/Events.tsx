@@ -198,7 +198,8 @@ const Events = () => {
                       }
                     }}
                   />
-                  {(selectedOrgName === 'Personal' ||
+                  {((selectedOrgName === 'Personal' &&
+                    import.meta.env.VITE_CURRENT_ENV === 'dev') ||
                     isUserAuthorizedForOrganization(TillRoles.ADMIN)) && (
                     <button
                       className={styles.createEventButton}
