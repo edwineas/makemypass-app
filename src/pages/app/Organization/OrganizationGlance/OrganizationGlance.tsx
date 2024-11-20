@@ -177,7 +177,7 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
   };
 
   return (
-    <Theme>
+    <Theme hideLogin={typeParam === 'embed'}>
       {type === 'private' && (selectedMemberId.type === 'edit' || addMember) && (
         <AddEditMember
           memberData={memberData}
