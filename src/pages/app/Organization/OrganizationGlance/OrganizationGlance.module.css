@@ -376,7 +376,7 @@
   margin: 0.5rem 0;
 }
 
-.organizationDescription ul>li>ul {
+.organizationDescription ul > li > ul {
   margin-left: 1rem;
 }
 
@@ -437,7 +437,6 @@
   bottom: 0;
 }
 
-
 /*CSS Styles for the Org Embed Modal*/
 .publicLinkField {
   display: flex;
@@ -470,7 +469,6 @@
 .publicLink:focus {
   outline: none;
 }
-
 
 .publicEventModal {
   width: 100%;
