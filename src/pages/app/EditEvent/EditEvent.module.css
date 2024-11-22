@@ -881,3 +881,22 @@ input[type='color']::-webkit-color-swatch {
     text-decoration: underline;
   }
 }
+
+.changeOrg {
+  margin-top: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--very-transparent-bg);
+  background: var(--very-transparent-bg);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #d2d4d7;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.changeOrg:hover {
+  background: rgba(255, 255, 255, 0.08);
+}

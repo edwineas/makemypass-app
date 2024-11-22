@@ -174,6 +174,7 @@ export interface EventType {
   is_checkout: boolean;
   show_ticket_first: boolean;
   err_message: ReactNode;
+  org_id: string | null;
   id: string;
   name: string;
   title: string;

@@ -408,3 +408,29 @@
     }
   }
 }
+
+.allowedDatesNote {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #fff;
+  opacity: 0.8;
+  font-family: 'Inter', sans-serif;
+  margin-top: 0.5rem;
+  text-align: left;
+
+  max-width: 20rem;
+}
+
+.allowedDatesNoteText {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  margin-top: 0.25rem;
+  text-align: left;
+}
+
+.allowedDatesNoteText span {
+  margin-top: 0.25rem;
+  color: #4eff99;
+}

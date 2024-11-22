@@ -100,6 +100,8 @@ export const makeMyPass = {
   host: (eventId: string, hostId: string) =>
     makeMyPassURL(`/manage-event/${eventId}/host/${hostId}`), // Till Admin
   eventCreateDuplicate: (eventId: string) => makeMyPassURL(`/manage-event/${eventId}/duplicate/`), // Till Admin
+  eventChangeOranization: (eventId: string) =>
+    makeMyPassURL(`/manage-event/${eventId}/org/link/update`), // Till Admin
 
   eventVenueList: (eventId: string) => makeMyPassURL(`/manage-event/${eventId}/venue/list`), // Till Viewer
   eventVenueCreate: (eventId: string) => makeMyPassURL(`/manage-event/${eventId}/venue/create`), // Till Editor
