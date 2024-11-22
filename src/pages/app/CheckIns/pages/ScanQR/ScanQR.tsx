@@ -160,6 +160,7 @@ const ScanQR = () => {
                 setMultipleTickets={setMultipleTickets}
                 multipleTickets={multipleTickets}
                 type='checkIn'
+                scanLogs={scanLogs}
                 setMappingNewCode={setMappingNewCode}
                 mappingNewCode={mappingNewCode}
               />
