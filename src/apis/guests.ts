@@ -139,12 +139,14 @@ export const viewGuestTicket = async (
   eventId: string,
   eventRegisterId: string,
   setImageUrl: Dispatch<React.SetStateAction<string>>,
+  setTicketCode: Dispatch<React.SetStateAction<string>>,
   setLoading?: Dispatch<React.SetStateAction<boolean>>,
 ) => {
   publicGateway
     .get(makeMyPass.guestDownloadTicket(eventId, eventRegisterId))
     .then((response) => {
       setImageUrl(response.data.response.image);
+      setTicketCode(response.data.response.ticket_code);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Something went wrong');

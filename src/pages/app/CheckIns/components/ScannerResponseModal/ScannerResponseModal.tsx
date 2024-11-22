@@ -1,7 +1,9 @@
 import React, { Dispatch } from 'react';
+import { IoIosWarning } from 'react-icons/io';
 
 import Modal from '../../../../../components/Modal/Modal';
 import { MapNewCode, multipleTicketCount } from '../../pages/ScanQR/types';
+import { LogType } from '../../pages/Venue/Venue';
 import styles from './ScannerResponseModal.module.css';
 
 const ScannerResponseModal = ({
@@ -11,6 +13,7 @@ const ScannerResponseModal = ({
   setTrigger,
   setMultipleTickets,
   multipleTickets,
+  scanLogs,
   type,
   mappingNewCode,
   setMappingNewCode,
@@ -21,6 +24,7 @@ const ScannerResponseModal = ({
   setTicketId?: (ticketId: string) => void;
   setMultipleTickets?: Dispatch<React.SetStateAction<multipleTicketCount>>;
   multipleTickets?: multipleTicketCount;
+  scanLogs?: LogType[];
   type?: string;
   mappingNewCode?: MapNewCode;
   setMappingNewCode?: Dispatch<React.SetStateAction<MapNewCode | undefined>>;
@@ -45,7 +49,19 @@ const ScannerResponseModal = ({
         >
           {multipleTickets && !multipleTickets.hasMultipleTickets && (
             <>
-              <p className={styles.modalSubText}>{message}</p>
+              <p className={styles.modalSubText}>
+                {scanLogs && scanLogs?.length > 0 && scanLogs[scanLogs.length - 1].hasError ? (
+                  <div className={styles.errorMessageContainer}>
+                    <IoIosWarning color='#f04b4b' size={25} />
+                    <p className={styles.errorMessageHeading}>Check-In Failed, {message}</p>
+                    <p className={styles.errorMessageSubText}>
+                      We couldn't check-in the participant. Kindly fix the issue and try again.
+                    </p>
+                  </div>
+                ) : (
+                  message
+                )}
+              </p>
               <button
                 className={styles.modalButton}
                 onClick={() => {
@@ -153,7 +169,19 @@ const ScannerResponseModal = ({
           )}
           {!multipleTickets && (
             <>
-              <p className={styles.modalSubText}>{message}</p>
+              <p className={styles.modalSubText}>
+                {scanLogs && scanLogs?.length > 0 && scanLogs[scanLogs.length - 1].hasError ? (
+                  <div className={styles.errorMessageContainer}>
+                    <IoIosWarning color='#f04b4b' size={25} />
+                    <p className={styles.errorMessageHeading}>Check-In Failed, {message}</p>
+                    <p className={styles.errorMessageSubText}>
+                      We couldn't check-in the participant due to the above reason.
+                    </p>
+                  </div>
+                ) : (
+                  message
+                )}
+              </p>
               <button
                 className={styles.modalButton}
                 onClick={() => {
