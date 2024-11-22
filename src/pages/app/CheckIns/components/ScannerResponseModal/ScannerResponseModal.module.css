@@ -112,3 +112,9 @@
   border: none;
   margin: 0.5rem 0;
 }
+
+.hasError {
+  color: var(--error-red);
+  display: flex;
+  gap: 0.25rem;
+}

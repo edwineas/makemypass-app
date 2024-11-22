@@ -1,7 +1,9 @@
 import React, { Dispatch } from 'react';
+import { IoIosWarning } from 'react-icons/io';
 
 import Modal from '../../../../../components/Modal/Modal';
 import { MapNewCode, multipleTicketCount } from '../../pages/ScanQR/types';
+import { LogType } from '../../pages/Venue/Venue';
 import styles from './ScannerResponseModal.module.css';
 
 const ScannerResponseModal = ({
@@ -11,6 +13,7 @@ const ScannerResponseModal = ({
   setTrigger,
   setMultipleTickets,
   multipleTickets,
+  scanLogs,
   type,
   mappingNewCode,
   setMappingNewCode,
@@ -21,6 +24,7 @@ const ScannerResponseModal = ({
   setTicketId?: (ticketId: string) => void;
   setMultipleTickets?: Dispatch<React.SetStateAction<multipleTicketCount>>;
   multipleTickets?: multipleTicketCount;
+  scanLogs?: LogType[];
   type?: string;
   mappingNewCode?: MapNewCode;
   setMappingNewCode?: Dispatch<React.SetStateAction<MapNewCode | undefined>>;
@@ -45,7 +49,16 @@ const ScannerResponseModal = ({
         >
           {multipleTickets && !multipleTickets.hasMultipleTickets && (
             <>
-              <p className={styles.modalSubText}>{message}</p>
+              <p className={styles.modalSubText}>
+                {scanLogs && scanLogs?.length > 0 && scanLogs[scanLogs.length - 1].hasError ? (
+                  <span className={styles.hasError}>
+                    <IoIosWarning size={20} />
+                    {message}
+                  </span>
+                ) : (
+                  message
+                )}
+              </p>
               <button
                 className={styles.modalButton}
                 onClick={() => {
@@ -153,7 +166,13 @@ const ScannerResponseModal = ({
           )}
           {!multipleTickets && (
             <>
-              <p className={styles.modalSubText}>{message}</p>
+              <p className={styles.modalSubText}>
+                {scanLogs && scanLogs?.length > 0 && scanLogs[scanLogs.length - 1].hasError ? (
+                  <span className={styles.hasError}>{message}</span>
+                ) : (
+                  message
+                )}
+              </p>
               <button
                 className={styles.modalButton}
                 onClick={() => {
