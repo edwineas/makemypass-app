@@ -8,7 +8,7 @@ import { RiInformationFill } from 'react-icons/ri';
 
 import { validateFormCoupon } from '../../../../../apis/publicpage';
 import { FormDataType, TicketType } from '../../../../../apis/types';
-import { findMinDate } from '../../../../../common/commonFunctions';
+import { findMinDate, formatDate } from '../../../../../common/commonFunctions';
 import { filterTickets } from '../../../../../common/coreLogics.ts';
 import SelectDate from '../../../../../components/SelectDate/SelectDate';
 import InputField from '../../../../auth/Login/InputField.tsx';
@@ -448,6 +448,24 @@ const CouponForm = ({
                     className={styles.ticketTypeDescription}
                     dangerouslySetInnerHTML={{ __html: filteredTicket.description }}
                   ></p>
+                </div>
+
+                <div className={styles.allowedDatesNote}>
+                  {filteredTicket.allowed_dates.length > 0 && (
+                    <p className={styles.allowedDatesNoteText}>
+                      Ticket is valid on{' '}
+                      {filteredTicket.allowed_dates.map((date, index) => (
+                        <span key={date}>
+                          {formatDate(date, false, true)}
+                          {index < filteredTicket.allowed_dates.length - 2
+                            ? ', '
+                            : index === filteredTicket.allowed_dates.length - 2
+                              ? ' and '
+                              : ''}
+                        </span>
+                      ))}
+                    </p>
+                  )}
                 </div>
               </div>
             );

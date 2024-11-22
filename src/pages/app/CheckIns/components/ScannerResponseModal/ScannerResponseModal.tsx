@@ -51,10 +51,13 @@ const ScannerResponseModal = ({
             <>
               <p className={styles.modalSubText}>
                 {scanLogs && scanLogs?.length > 0 && scanLogs[scanLogs.length - 1].hasError ? (
-                  <span className={styles.hasError}>
-                    <IoIosWarning size={20} />
-                    {message}
-                  </span>
+                  <div className={styles.errorMessageContainer}>
+                    <IoIosWarning color='#f04b4b' size={25} />
+                    <p className={styles.errorMessageHeading}>Check-In Failed, {message}</p>
+                    <p className={styles.errorMessageSubText}>
+                      We couldn't check-in the participant. Kindly fix the issue and try again.
+                    </p>
+                  </div>
                 ) : (
                   message
                 )}
@@ -168,7 +171,13 @@ const ScannerResponseModal = ({
             <>
               <p className={styles.modalSubText}>
                 {scanLogs && scanLogs?.length > 0 && scanLogs[scanLogs.length - 1].hasError ? (
-                  <span className={styles.hasError}>{message}</span>
+                  <div className={styles.errorMessageContainer}>
+                    <IoIosWarning color='#f04b4b' size={25} />
+                    <p className={styles.errorMessageHeading}>Check-In Failed, {message}</p>
+                    <p className={styles.errorMessageSubText}>
+                      We couldn't check-in the participant due to the above reason.
+                    </p>
+                  </div>
                 ) : (
                   message
                 )}
