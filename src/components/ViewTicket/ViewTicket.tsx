@@ -50,7 +50,7 @@ const ViewTicket = () => {
 
   return (
     <>
-      <Theme>
+      <Theme hideLogin={true}>
         <div className={styles.viewEventHeaderContainer}>
           {isUserAuthorizedForEvent(TillRoles.VOLUNTEER) && (
             <EventHeader

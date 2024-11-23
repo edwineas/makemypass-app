@@ -7,12 +7,13 @@
   row-gap: 1rem;
   column-gap: 1rem;
   flex-wrap: wrap;
+  margin-top: 1rem;
 }
 
 .text {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
   font-weight: 500;
   font-family: 'Inter';
   color: #fafafa;
@@ -62,20 +63,13 @@
 }
 
 .saveButton {
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  font-family: 'Arial', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
+  background: var(--white-color);
+  color: var(--secondary-color);
   border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
   cursor: pointer;
-  margin-top: 1rem;
-}
-
-.saveButton:hover {
-  background: rgba(255, 255, 255, 0.1);
 }
 
 .uploadImage {
@@ -84,4 +78,21 @@
   font-family: 'Inter', sans-serif;
   color: #fafafa;
   margin-top: 1rem;
+}
+
+.subText {
+  font-size: 0.9rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  color: #fafafa;
+  opacity: 0.8;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 35rem;
+  width: 100%;
 }
