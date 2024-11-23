@@ -478,67 +478,76 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
                   }}
                 />
               </div>
-              <div className={styles.ticketSlider}>
-                <p className={styles.ticketSliderLabel}>Enable Automatic Waitlisting</p>
-                <Slider
-                  checked={selectedTicket?.auto_waitlist_count != null && autoWaitlist}
-                  onChange={() => {
-                    if (isUserEditorForEvent()) {
-                      if (
-                        selectedTicket?.auto_waitlist_count != null &&
-                        selectedTicket?.auto_waitlist_count >= 0
-                      ) {
-                        setSelectedTicket({
-                          ...selectedTicket,
-                          auto_waitlist_count: null,
-                        } as unknown as TicketType);
-                      }
-                      if (selectedTicket?.auto_waitlist_count == null) {
-                        const sameIdTicket = tickets.find((t) => t.id === selectedTicket?.id);
-                        setSelectedTicket({
-                          ...selectedTicket,
-                          auto_waitlist_count:
-                            sameIdTicket?.auto_waitlist_count &&
-                            sameIdTicket?.auto_waitlist_count > 0
-                              ? sameIdTicket.auto_waitlist_count
-                              : 0,
-                        } as TicketType);
-                      }
-                      if (isNaN(selectedTicket?.auto_waitlist_count as number)) {
-                        setAutoWaitlist((prev) => !prev);
-                      }
-                    }
-                  }}
-                />
-              </div>
-
-              {selectedTicket?.auto_waitlist_count != null && autoWaitlist && (
-                <motion.div
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  className={styles.ticketSlider}
-                >
-                  <div className={styles.ticketCapacityContainer}>
-                    <label className={styles.ticketCapacityLabel}>Waitlist On </label>
-                    <input
-                      type='number'
-                      placeholder='0'
-                      disabled={!isUserEditorForEvent()}
-                      value={selectedTicket?.auto_waitlist_count}
-                      onChange={(e) => {
-                        if (Number(e.target.value) < 0) {
-                          return;
+              {selectedTicket?.approval_required && (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    className={styles.ticketSlider}
+                  >
+                    <p className={styles.ticketSliderLabel}>Enable Automatic Waitlisting</p>
+                    <Slider
+                      checked={selectedTicket?.auto_waitlist_count != null && autoWaitlist}
+                      onChange={() => {
+                        if (isUserEditorForEvent()) {
+                          if (
+                            selectedTicket?.auto_waitlist_count != null &&
+                            selectedTicket?.auto_waitlist_count >= 0
+                          ) {
+                            setSelectedTicket({
+                              ...selectedTicket,
+                              auto_waitlist_count: null,
+                            } as unknown as TicketType);
+                          }
+                          if (selectedTicket?.auto_waitlist_count == null) {
+                            const sameIdTicket = tickets.find((t) => t.id === selectedTicket?.id);
+                            setSelectedTicket({
+                              ...selectedTicket,
+                              auto_waitlist_count:
+                                sameIdTicket?.auto_waitlist_count &&
+                                sameIdTicket?.auto_waitlist_count > 0
+                                  ? sameIdTicket.auto_waitlist_count
+                                  : 0,
+                            } as TicketType);
+                          }
+                          if (isNaN(selectedTicket?.auto_waitlist_count as number)) {
+                            setAutoWaitlist((prev) => !prev);
+                          }
                         }
-                        setSelectedTicket({
-                          ...selectedTicket,
-                          auto_waitlist_count: parseInt(e.target.value),
-                        } as TicketType);
                       }}
-                      className={styles.ticketCapacityInput}
                     />
-                  </div>
-                </motion.div>
+                  </motion.div>
+
+                  {selectedTicket?.auto_waitlist_count != null && autoWaitlist && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className={styles.ticketSlider}
+                    >
+                      <div className={styles.ticketCapacityContainer}>
+                        <label className={styles.ticketCapacityLabel}>Waitlist On </label>
+                        <input
+                          type='number'
+                          placeholder='0'
+                          disabled={!isUserEditorForEvent()}
+                          value={selectedTicket?.auto_waitlist_count}
+                          onChange={(e) => {
+                            if (Number(e.target.value) < 0) {
+                              return;
+                            }
+                            setSelectedTicket({
+                              ...selectedTicket,
+                              auto_waitlist_count: parseInt(e.target.value),
+                            } as TicketType);
+                          }}
+                          className={styles.ticketCapacityInput}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </>
               )}
               <div className={styles.ticketSlider}>
                 <p className={styles.ticketSliderLabel}>
