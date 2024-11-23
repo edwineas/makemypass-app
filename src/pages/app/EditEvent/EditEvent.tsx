@@ -11,7 +11,6 @@ import {
   FaFacebook,
   FaInstagram,
   FaLinkedin,
-  FaSave,
   FaTwitter,
   FaWhatsapp,
 } from 'react-icons/fa';
@@ -33,13 +32,7 @@ import {
 import Select from 'react-select';
 import { BeatLoader, HashLoader, PulseLoader } from 'react-spinners';
 
-import {
-  deleteEvent,
-  getEventData,
-  updateEventData,
-  updateEventOrganization,
-} from '../../../apis/events';
-import { listOrgs } from '../../../apis/orgs';
+import { deleteEvent, getEventData, updateEventData } from '../../../apis/events';
 import { getFormKeys } from '../../../apis/publicpage';
 import { ErrorMessages, EventType } from '../../../apis/types';
 import {
@@ -55,7 +48,6 @@ import Theme from '../../../components/Theme/Theme';
 import { useOverrideCtrlS } from '../../../hooks/common';
 import InputField from '../../auth/Login/InputField';
 import { customStyles } from '../EventPage/constants';
-import type { OrgListType } from '../Events/types';
 import EventEditSocialsModal from './components/EventEditSocialsModal/EventEditSocialsModal';
 import styles from './EditEvent.module.css';
 
@@ -82,9 +74,7 @@ const EditEvent = () => {
   const [showContactSalesInfo, setShowContactSalesInfo] = useState(false);
 
   const [formKeys, setFormKeys] = useState<string[]>([]);
-  const [orgs, setOrgs] = useState<OrgListType[]>([]);
 
-  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
   const [location, setLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
@@ -236,13 +226,8 @@ const EditEvent = () => {
     if (eventId) {
       getEventData(eventId, setEventTitle, setEventData);
       getFormKeys(eventId, setFormKeys);
-      listOrgs(setOrgs);
     }
   }, [eventId]);
-
-  useEffect(() => {
-    if (eventData) setSelectedOrgId(eventData?.org_id);
-  }, [eventData]);
 
   useEffect(() => {
     if (eventData && !fetchedEvent) {
@@ -608,46 +593,6 @@ const EditEvent = () => {
                         placeholder={`Select an option`}
                         isSearchable={false}
                       />
-                      <Select
-                        styles={{
-                          ...customStyles,
-                        }}
-                        options={[
-                          { value: 'Personal', label: 'Personal' },
-                          ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                        ]}
-                        className='select'
-                        classNamePrefix='select'
-                        placeholder='Select Organization'
-                        value={
-                          orgs.find((org) => org.id === selectedOrgId)
-                            ? {
-                                value: orgs.find((org) => org.id === selectedOrgId)?.id,
-                                label: orgs.find((org) => org.id === selectedOrgId)?.name,
-                              }
-                            : {
-                                value: 'Personal',
-                                label: 'Personal',
-                              }
-                        }
-                        onChange={(selectedOption) => {
-                          if (selectedOption) {
-                            setSelectedOrgId(selectedOption.value ?? null);
-                          }
-                        }}
-                      />
-                      {selectedOrgId !== eventData?.org_id && (
-                        <FaSave
-                          size={25}
-                          style={{
-                            opacity: 0.5,
-                          }}
-                          color='#fff'
-                          onClick={() => {
-                            if (selectedOrgId) updateEventOrganization(eventId, selectedOrgId);
-                          }}
-                        />
-                      )}
                     </div>
                     <textarea
                       title='Event Name'
