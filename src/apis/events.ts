@@ -255,12 +255,22 @@ export const createDuplicateEvent = async (eventId: string) => {
     });
 };
 
-export const updateEventOrganization = async (eventId: string, orgId: string) => {
+export const updateEventOrganization = async (
+  eventId: string,
+  orgId: string | null,
+  setEventData: Dispatch<SetStateAction<EventType | undefined>>,
+) => {
   privateGateway
     .post(makeMyPass.eventChangeOranization(eventId), {
       org_id: orgId,
     })
     .then((response) => {
+      setEventData((prev) => {
+        return {
+          ...prev!,
+          org_id: orgId,
+        };
+      });
       toast.success(response.data.message.general[0] || 'Organization Updated Successfully');
     })
     .catch((error) => {
