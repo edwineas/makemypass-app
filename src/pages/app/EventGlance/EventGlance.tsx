@@ -465,7 +465,6 @@ const EventGlance = () => {
                   )}
                 </svg>
               )}
-
               <div className={styles.glanceTexts}>
                 <div className={styles.headingTexts}>
                   <p className={styles.eventTitle}>{eventData?.title}</p>
@@ -530,10 +529,10 @@ const EventGlance = () => {
                     )}
                   </div>
                   {isUserEditorForEvent() && (
-                    <div className={styles.buttons}>
+                    <>
                       <div className={styles.OrgChangeField}>
                         <div className={styles.OrgChangeField1}>
-                          <label className={styles.OrgChangeLabel}>Organization </label>
+                          <label className={styles.OrgChangeLabel}>Organization : </label>
                           <Select
                             styles={{
                               ...customStyles,
@@ -579,19 +578,21 @@ const EventGlance = () => {
                           />
                         )}
                       </div>
-                      <button
-                        onClick={() => setShowEmbedModal(true)}
-                        className={styles.editEventButton}
-                      >
-                        Embed Form
-                      </button>
-                      <button
-                        onClick={() => navigate('./edit-event')}
-                        className={styles.editEventButton}
-                      >
-                        Edit Event
-                      </button>
-                    </div>
+                      <div className={styles.buttons}>
+                        <button
+                          onClick={() => setShowEmbedModal(true)}
+                          className={styles.editEventButton}
+                        >
+                          Embed Form
+                        </button>
+                        <button
+                          onClick={() => navigate('./edit-event')}
+                          className={styles.editEventButton}
+                        >
+                          Edit Event
+                        </button>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
