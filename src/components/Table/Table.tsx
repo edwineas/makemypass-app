@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { Dispatch, useMemo, useState } from 'react';
 import { FaCheck, FaDollarSign } from 'react-icons/fa6';
 import { MdCheckBox, MdCheckBoxOutlineBlank, MdDelete, MdEdit } from 'react-icons/md';
-import { RiSearchLine } from 'react-icons/ri';
+import { RiCoupon2Fill, RiSearchLine } from 'react-icons/ri';
 import { HashLoader } from 'react-spinners';
 import { FixedSizeList } from 'react-window';
 
@@ -46,6 +46,7 @@ const RowComponent = React.memo(({ index, data }: { index: number; data: ItemDat
     }
   });
 
+  console.log('team', team);
   return (
     <div className={styles.tableRow}>
       <div className={styles.tableRowData}>
@@ -128,6 +129,10 @@ const RowComponent = React.memo(({ index, data }: { index: number; data: ItemDat
 
                   <div title={item.amount?.toString()} className={styles.icon}>
                     <FaDollarSign color={item.amount > 0 ? '#47c97e' : '#8E8E8'} />
+                  </div>
+
+                  <div className={styles.icon}>
+                    <RiCoupon2Fill color={item.is_coupon ? '#47c97e' : '#8E8E8'} />
                   </div>
                 </>
               )}
