@@ -1,8 +1,7 @@
-// import { LuClock, LuPencil } from 'react-icons/lu';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BsCalendarEventFill, BsQrCodeScan } from 'react-icons/bs';
-import { FaTags } from 'react-icons/fa';
+import { FaSave, FaTags } from 'react-icons/fa';
 import { FaHouse, FaWrench } from 'react-icons/fa6';
 import { HiUserGroup } from 'react-icons/hi2';
 import { ImTicket } from 'react-icons/im';
@@ -12,12 +11,14 @@ import { MdCampaign } from 'react-icons/md';
 import { PiSpinnerDuotone } from 'react-icons/pi';
 import { RiCoupon2Fill } from 'react-icons/ri';
 import { Link, useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { HashLoader } from 'react-spinners';
 
 import { TillRoles } from '../../../../services/enums';
-import { getCommonTags, getEventData } from '../../../apis/events';
+import { getCommonTags, getEventData, updateEventOrganization } from '../../../apis/events';
 import { getEventMailData, listEventMails } from '../../../apis/mails';
+import { listOrgs } from '../../../apis/orgs';
 import { sendTestMail } from '../../../apis/postevent';
 import { listEventSpeakers } from '../../../apis/speakers';
 import { createEventTags, listTags } from '../../../apis/tags';
@@ -35,6 +36,8 @@ import Modal from '../../../components/Modal/Modal';
 import SectionButton from '../../../components/SectionButton/SectionButton';
 import Theme from '../../../components/Theme/Theme';
 import { customStyles, getDay, getMonthAbbreviation } from '../EventPage/constants';
+// eslint-disable-next-line import/no-unresolved
+import { OrgListType } from '../Events/types';
 import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton';
 import CustomMail from './components/MailModals/CustomMail/CustomMail';
 import DummyData from './components/MailModals/DummyData/DummyData';
@@ -60,6 +63,10 @@ const EventGlance = () => {
     tags: [],
     showModal: false,
   });
+
+  const [orgs, setOrgs] = useState<OrgListType[]>([]);
+
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
 
   const [allTags, setAllTags] = useState<string[]>([]);
   const [UTMData, setUTMData] = useState<UTMDataType>({
@@ -151,7 +158,11 @@ const EventGlance = () => {
   };
 
   useEffect(() => {
-    if (eventId) getEventData(eventId, setEventTitle, setEventData);
+    if (eventId) {
+      getEventData(eventId, setEventTitle, setEventData);
+      listOrgs(setOrgs);
+    }
+
     getCommonTags(setAllTags);
   }, [eventId]);
 
@@ -160,6 +171,10 @@ const EventGlance = () => {
       listEventMails(eventId, setMails);
     }
   }, [eventId]);
+
+  useEffect(() => {
+    if (eventData) setSelectedOrgId(eventData?.org_id);
+  }, [eventData]);
 
   useEffect(() => {
     if (venues.showModal) listEventVenues(eventId, setVenues);
@@ -450,7 +465,6 @@ const EventGlance = () => {
                   )}
                 </svg>
               )}
-
               <div className={styles.glanceTexts}>
                 <div className={styles.headingTexts}>
                   <p className={styles.eventTitle}>{eventData?.title}</p>
@@ -515,20 +529,69 @@ const EventGlance = () => {
                     )}
                   </div>
                   {isUserEditorForEvent() && (
-                    <div className={styles.buttons}>
-                      <button
-                        onClick={() => setShowEmbedModal(true)}
-                        className={styles.editEventButton}
-                      >
-                        Embed Form
-                      </button>
-                      <button
-                        onClick={() => navigate('./edit-event')}
-                        className={styles.editEventButton}
-                      >
-                        Edit Event
-                      </button>
-                    </div>
+                    <>
+                      <div className={styles.OrgChangeField}>
+                        <div className={styles.OrgChangeField1}>
+                          <label className={styles.OrgChangeLabel}>Organization</label>
+                          <Select
+                            styles={{
+                              ...customStyles,
+                            }}
+                            options={[
+                              { value: null, label: 'Personal' },
+                              ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                            ]}
+                            className='select'
+                            classNamePrefix='select'
+                            placeholder='Select Organization'
+                            value={
+                              orgs.find((org) => org.id === selectedOrgId)
+                                ? {
+                                    value: orgs.find((org) => org.id === selectedOrgId)?.id,
+                                    label: orgs.find((org) => org.id === selectedOrgId)?.name,
+                                  }
+                                : {
+                                    value: null,
+                                    label: 'Personal',
+                                  }
+                            }
+                            onChange={(selectedOption) => {
+                              if (selectedOption) {
+                                setSelectedOrgId(selectedOption.value ?? null);
+                              }
+                            }}
+                          />
+                        </div>
+
+                        {selectedOrgId !== eventData?.org_id && (
+                          <FaSave
+                            size={20}
+                            style={{
+                              paddingBottom: '0.5rem',
+                            }}
+                            color='#fff'
+                            onClick={() => {
+                              if (eventId)
+                                updateEventOrganization(eventId, selectedOrgId, setEventData);
+                            }}
+                          />
+                        )}
+                      </div>
+                      <div className={styles.buttons}>
+                        <button
+                          onClick={() => setShowEmbedModal(true)}
+                          className={styles.editEventButton}
+                        >
+                          Embed Form
+                        </button>
+                        <button
+                          onClick={() => navigate('./edit-event')}
+                          className={styles.editEventButton}
+                        >
+                          Edit Event
+                        </button>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>

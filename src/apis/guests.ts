@@ -313,7 +313,6 @@ export const uploadBulkGuestData = (
   selectedTickets.forEach((ticket) => {
     formData.append('tickets[]', ticket);
   });
-  console.log('Dye Dey23 ', formData);
 
   privateGateway
     .post(makeMyPass.bulkGuestUpload(eventId), formData, {
