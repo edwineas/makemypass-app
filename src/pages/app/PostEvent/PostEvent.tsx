@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LuMailPlus, LuMailX } from 'react-icons/lu';
 import { TiTick } from 'react-icons/ti';
+import { BeatLoader } from 'react-spinners';
 
 import {
   getPostEventContentList,
@@ -28,6 +29,8 @@ const PostEvent = () => {
     photos: [],
     video_link: null,
   });
+
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     getPostEventStatus(setPostEventStatus);
@@ -68,6 +71,7 @@ const PostEvent = () => {
   });
 
   const handleSave = () => {
+    setIsUploading(true);
     const formData = new FormData();
     const photosList: (File | string)[] = [];
     postEventContent.photos.forEach((photo) => {
@@ -82,7 +86,7 @@ const PostEvent = () => {
     });
     formData.append('video_link', postEventContent.video_link || '');
     formData.append('more_photo_link', postEventContent.more_photo_link || '');
-    updatePostEventContent(formData);
+    updatePostEventContent(formData, setIsUploading);
   };
 
   return (
@@ -131,7 +135,10 @@ const PostEvent = () => {
       )}
       <Theme>
         <DashboardLayout prevPage='-1' tabName='postevent'>
-          <p className={styles.text}>Sent Mails</p>
+          <p className={styles.text}>Post-Event Mails</p>
+          <p className={styles.subText}>
+            Send mails to the participants and non-participants of the event
+          </p>
           <div className={styles.postEventContainer}>
             <div className={styles.sbutton}>
               <SectionButton
@@ -142,7 +149,7 @@ const PostEvent = () => {
                 iconBefore={
                   postEventStatus?.AfterEventThankYou ? <TiTick size={28} color='' /> : <></>
                 }
-                icon={<LuMailPlus size={28} color='' />}
+                icon={<LuMailPlus size={28} color='#7662FC' />}
               />
             </div>
             <div className={styles.sbutton}>
@@ -154,23 +161,29 @@ const PostEvent = () => {
                 iconBefore={
                   postEventStatus?.AfterEventSorry ? <TiTick size={28} color='' /> : <></>
                 }
-                icon={<LuMailX size={28} color='' />}
+                icon={<LuMailX size={28} color='#C33D7B' />}
               />
             </div>
           </div>
-          <p className={styles.text}>Media Uploads</p>
-          <p className={styles.uploadImage}>Upload images</p>
-          <UploadAttachement
-            previews={imgPreviews}
-            handleFileChange={handleImageChange}
-            handleDeleteAttachment={handleRemoveImage}
-            allowedFileTypes={['image/*']}
-          />
-          <div className='inputdiv '>
+
+          <div className={styles.inputContainer}>
+            <div>
+              <p className={styles.text}>Upload images(Form)</p>
+              <p className={styles.subText}>The below images will shown in the form as a gallery</p>
+            </div>
+
+            <UploadAttachement
+              previews={imgPreviews}
+              handleFileChange={handleImageChange}
+              handleDeleteAttachment={handleRemoveImage}
+              allowedFileTypes={['image/*']}
+            />
+
             <InputField
               type='text'
               name='video'
               id='video'
+              placeholder='https://www.youtube.com/watch?v=...'
               title='Enter Video Link'
               icon={<></>}
               value={postEventContent.video_link || ''}
@@ -181,24 +194,26 @@ const PostEvent = () => {
                 }))
               }
             />
+
+            <InputField
+              type='text'
+              name='driveLink'
+              placeholder='https://drive.google.com/...'
+              id='driveLink'
+              title='Enter Drive Link'
+              icon={<></>}
+              value={postEventContent.more_photo_link || ''}
+              onChange={(event) =>
+                setPostEventContent((prev) => ({
+                  ...prev,
+                  more_photo_link: event.target.value,
+                }))
+              }
+            />
+            <button className={styles.saveButton} onClick={handleSave}>
+              {isUploading ? <BeatLoader color='#1d1d1d' size={10} /> : 'Save'}
+            </button>
           </div>
-          <InputField
-            type='text'
-            name='driveLink'
-            id='driveLink'
-            title='Enter Drive Link'
-            icon={<></>}
-            value={postEventContent.more_photo_link || ''}
-            onChange={(event) =>
-              setPostEventContent((prev) => ({
-                ...prev,
-                more_photo_link: event.target.value,
-              }))
-            }
-          />
-          <button className={styles.saveButton} onClick={handleSave}>
-            Save
-          </button>
         </DashboardLayout>
       </Theme>
     </>

@@ -28,14 +28,14 @@
   padding: 10px 20px;
   border-radius: 10px;
   color: rgba(164, 164, 164, 0.53);
-  background: rgba(27, 39, 37, 0.79);
+  background: transparent;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .fileInput::file-selector-button:hover {
   color: var(--off-white);
-  background: var(--accent-color);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .uploadContainer input[type='file'] {
