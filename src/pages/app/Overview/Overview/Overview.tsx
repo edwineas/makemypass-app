@@ -268,7 +268,7 @@ const Overview = () => {
                       removeHostAccount();
                     }}
                   >
-                    Delete
+                    Remove Host
                   </button>
                   <button
                     className={styles.secondaryButton}
