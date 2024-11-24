@@ -606,7 +606,9 @@ const FormBuilder = () => {
                                       <div className={styles.optionValuesContainer}>
                                         <div
                                           className='row'
-                                          style={{ justifyContent: 'space-between' }}
+                                          style={{
+                                            justifyContent: 'space-between',
+                                          }}
                                         >
                                           <p className={styles.optionHeader}>
                                             Option Group {optionIndex + 1}
@@ -654,7 +656,13 @@ const FormBuilder = () => {
                                         </div>
                                         <div className={styles.optionValues}>
                                           {optionsObject.values.map((option, valueIndex) => (
-                                            <div className='row' key={valueIndex}>
+                                            <div
+                                              className='row'
+                                              key={valueIndex}
+                                              style={{
+                                                flexWrap: 'nowrap',
+                                              }}
+                                            >
                                               <input
                                                 className={styles.optionInput}
                                                 type='text'
