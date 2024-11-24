@@ -177,7 +177,11 @@ const Overview = () => {
   };
 
   const removeHostAccount = () => {
-    removeEventHost(eventId, hostId.id, setOpenDeleteModal);
+    removeEventHost(eventId, hostId.id, setOpenDeleteModal, setHostId);
+
+    setTimeout(() => {
+      getEventHosts(eventId, setHostList);
+    }, 1000);
   };
 
   const onSubmit = () => {
@@ -192,6 +196,11 @@ const Overview = () => {
         setHostData,
         setHostList,
       );
+
+    setTimeout(() => {
+      getEventHosts(eventId, setHostList);
+    }, 1000);
+
     setOpenAddModal(false);
   };
 
