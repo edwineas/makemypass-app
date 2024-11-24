@@ -64,6 +64,12 @@ const Insights = ({ type }: { type?: string }) => {
   const [perkData, setPerkData] = useState<ChartData>();
   const [utmData, setUtmData] = useState<utmDataType>();
   const [subEventAnalytics, setSubEventAnalytics] = useState<SubEventInsightsType>();
+  const [ticketAnalytics, setTicketAnalytics] = useState<ChartData>();
+
+  useEffect(() => {
+    console.log(ticketAnalytics);
+    console.log(entryDateCount);
+  }, [ticketAnalytics, entryDateCount]);
 
   const expandedColors = [
     '#47C97E',
@@ -175,6 +181,18 @@ const Insights = ({ type }: { type?: string }) => {
               {
                 label: 'Venue Analytics',
                 data: Object.values(lineBarData?.venue_analytics || {}),
+                borderColor: expandedColors,
+                backgroundColor: expandedColors,
+              },
+            ],
+          });
+
+          setTicketAnalytics({
+            labels: Object.keys(lineBarData?.ticket_analytics || {}),
+            datasets: [
+              {
+                label: 'Ticket Analytics',
+                data: Object.values(lineBarData?.ticket_analytics || {}),
                 borderColor: expandedColors,
                 backgroundColor: expandedColors,
               },
@@ -895,6 +913,14 @@ const Insights = ({ type }: { type?: string }) => {
                       </div>
                     </div>
                   )}
+                </div>
+              )}
+              <br />
+              {ticketAnalytics && ticketAnalytics.datasets[0].data.length > 0 && (
+                <div className={styles.registrationCount}>
+                  <div className={styles.graphContainer}>
+                    <Bar options={options} data={ticketAnalytics} />
+                  </div>
                 </div>
               )}
 

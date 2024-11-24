@@ -64,6 +64,13 @@ export type AnalyticsData = {
       amount: number;
     };
   };
+  ticket_analytics: {
+    [key: string]:
+      | string
+      | {
+          [key: string]: number;
+        };
+  };
 };
 
 export interface Dataset {

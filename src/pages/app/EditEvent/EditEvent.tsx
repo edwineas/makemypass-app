@@ -515,6 +515,8 @@ const EditEvent = () => {
                   if (eventData && isUserEditorForEvent())
                     setEventData({ ...eventData, followup_msg: followupMessage.toString() });
                   setShowAdvancedSettings(false);
+
+                  onSubmit();
                 }}
                 className={styles.continueButton}
               >
