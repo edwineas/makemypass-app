@@ -301,7 +301,6 @@ export const editSubEvent = async (
   subEventDescription: string,
 ) => {
   if (!subEvent) return;
-  console.log(subEvent);
   privateGateway
     .patch(makeMyPass.updateSubEvent(eventId, subEvent.id), {
       ...subEvent,

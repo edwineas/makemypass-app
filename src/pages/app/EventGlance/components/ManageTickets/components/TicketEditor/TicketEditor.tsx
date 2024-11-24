@@ -44,12 +44,6 @@ const TicketEditor = ({ selectedTicket }: Props) => {
     };
     setLoaded(true);
     setNatCliRatio(imgRef.current!.naturalWidth / imgRef.current!.clientWidth);
-    console.log(
-      imgRef.current!.naturalWidth,
-      imgRef.current!.clientWidth,
-      imgRef.current!.naturalHeight,
-      imgRef.current!.clientHeight,
-    );
   };
 
   const refs = useRef(
@@ -67,7 +61,6 @@ const TicketEditor = ({ selectedTicket }: Props) => {
         refs[option.name] = React.createRef();
       }
     });
-    console.log(natCliRatio, qrPosition, namePostion, descriptionPostion);
   }, [descriptionPostion, namePostion, natCliRatio, qrPosition, refs]);
 
   // const resizableDivs = options.map((option, index) => {
@@ -82,12 +75,6 @@ const TicketEditor = ({ selectedTicket }: Props) => {
   //     </ResizableDiv>
   //   );
   // });
-
-  useEffect(() => {
-    for (const option of options) {
-      console.log(refs[option.name]?.current?.position);
-    }
-  }, [refs]);
 
   return (
     <>

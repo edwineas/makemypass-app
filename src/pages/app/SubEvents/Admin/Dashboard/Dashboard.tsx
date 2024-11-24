@@ -134,7 +134,6 @@ const Dashboard = () => {
         }, 1000);
       });
     } else {
-      console.log(selectedSubEvent);
       editSubEvent(
         eventId,
         selectedSubEvent,
@@ -304,8 +303,6 @@ const Dashboard = () => {
                         if (Number(e.target.value) < 0) {
                           return;
                         }
-                        console.log(e.target.value);
-                        console.log(Number(e.target.value));
 
                         setSelectedSubEvent((prev) => {
                           return {

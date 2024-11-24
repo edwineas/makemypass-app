@@ -84,7 +84,6 @@ const EventPage = () => {
 
   useEffect(() => {
     setFormNumber(eventData?.show_ticket_first ? 1 : 0);
-    console.log('eventData', eventData);
   }, [eventData]);
 
   const showEventHeader = () => {

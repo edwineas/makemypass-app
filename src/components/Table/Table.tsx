@@ -46,7 +46,6 @@ const RowComponent = React.memo(({ index, data }: { index: number; data: ItemDat
     }
   });
 
-  console.log('team', team);
   return (
     <div className={styles.tableRow}>
       <div className={styles.tableRowData}>

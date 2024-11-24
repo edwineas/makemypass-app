@@ -247,11 +247,6 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
 
     const isOtherDataChanged = !isEqual(selectedTicket, originalTicket);
 
-    console.log('description', selectedTicket.description);
-    console.log('tempDesc', tempDesc);
-
-    console.log(isDescriptionChanged, isOtherDataChanged);
-
     return isDescriptionChanged || isOtherDataChanged;
   };
 

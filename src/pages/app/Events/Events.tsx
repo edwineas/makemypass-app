@@ -114,11 +114,6 @@ const Events = () => {
     }
   };
 
-  console.log(
-    (selectedOrgName === 'Personal' && import.meta.env.VITE_CURRENT_ENV === 'dev') ||
-      isUserAuthorizedForOrganization(TillRoles.ADMIN),
-  );
-
   return (
     <>
       {isDataLoaded ? (
