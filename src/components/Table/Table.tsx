@@ -127,11 +127,11 @@ const RowComponent = React.memo(({ index, data }: { index: number; data: ItemDat
                   )}
 
                   <div title={item.amount?.toString()} className={styles.icon}>
-                    <FaDollarSign color={item.amount > 0 ? '#47c97e' : '#8E8E8'} />
+                    <FaDollarSign color={item.amount > 0 ? '#47c97e' : '#8E8E8E'} />
                   </div>
 
                   <div className={styles.icon}>
-                    <RiCoupon2Fill color={item.is_coupon ? '#47c97e' : '#8E8E8'} />
+                    <RiCoupon2Fill color={item.is_coupon ? '#47c97e' : '#8E8E8E'} />
                   </div>
                 </>
               )}

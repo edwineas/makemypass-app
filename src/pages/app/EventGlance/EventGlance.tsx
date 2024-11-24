@@ -532,7 +532,7 @@ const EventGlance = () => {
                     <>
                       <div className={styles.OrgChangeField}>
                         <div className={styles.OrgChangeField1}>
-                          <label className={styles.OrgChangeLabel}>Organization : </label>
+                          <label className={styles.OrgChangeLabel}>Organization</label>
                           <Select
                             styles={{
                               ...customStyles,
@@ -565,9 +565,8 @@ const EventGlance = () => {
 
                         {selectedOrgId !== eventData?.org_id && (
                           <FaSave
-                            size={25}
+                            size={20}
                             style={{
-                              opacity: 0.5,
                               paddingBottom: '0.5rem',
                             }}
                             color='#fff'
