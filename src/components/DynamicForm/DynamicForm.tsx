@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import Select, { MultiValue } from 'react-select';
+import Select, { MultiValue, SingleValue } from 'react-select';
 
 import { ConditionType, ErrorMessages, FormDataType, FormFieldType } from '../../apis/types';
 import UploadAttachement from '../../pages/app/EventGlance/components/MailModals/UpdateMail/components/UploadAttachement/UploadAttachements.tsx';
@@ -13,6 +13,7 @@ import InputField from '../../pages/auth/Login/InputField.tsx';
 import ValidateInput from '../ValidateInput/ValidateInput.tsx';
 import { validateCondition } from './condition';
 import styles from './DynamicForm.module.css';
+import phoneCountryCodes from './phoneCountryCodes.json';
 
 const variants = {
   initial: { opacity: 0, y: -10 },
@@ -96,6 +97,13 @@ const DynamicForm = ({
   handleFileChange?: (event: React.ChangeEvent<HTMLInputElement>, field: FormFieldType) => void;
   handleDeleteAttachment?: (index: number) => void;
 }) => {
+  const getReactSelectOptions = () => {
+    return phoneCountryCodes.map((option) => ({
+      value: option.dial_code,
+      label: option.name,
+    }));
+  };
+
   const findValidatingOptions = (
     options:
       | {
@@ -191,18 +199,53 @@ const DynamicForm = ({
                   title={fieldTitle}
                   description={field.description}
                 >
-                  <input
-                    type='text'
-                    id={field.field_key}
-                    name={field?.title}
-                    placeholder={field.placeholder}
-                    value={formData[field.field_key]}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      if (!/^\d*$/.test(e.target.value)) return;
-                      onFieldChange(field.field_key, e.target.value);
+                  <div
+                    className='row'
+                    style={{
+                      flexWrap: 'nowrap',
                     }}
-                    className={styles.numberInput}
-                  />
+                  >
+                    <Select
+                      options={getReactSelectOptions()}
+                      onChange={(newValue: SingleValue<{ value: string }>) => {
+                        if (newValue) {
+                          onFieldChange(field.field_key, newValue.value);
+                        }
+                      }}
+                      styles={{
+                        ...customStyles,
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        control: (provided: any, state: any) => ({
+                          ...provided,
+                          border: 'none',
+                          backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                          fontFamily: 'Inter, sans-serif',
+                          fontStyle: 'normal',
+                          fontWeight: 400,
+                          fontSize: '0.9rem',
+                          minWidth: '8rem',
+                          width: '100%',
+                          boxShadow: state.isFocused ? 'none' : 'none', // Remove blue border on focus
+                          position: 'relative', // Add this to establish a positioning context
+                          zIndex: 10001, // Ensure the control stays above the menu
+                        }),
+                      }}
+                      placeholder={`Country`}
+                      isSearchable={true}
+                    />
+                    <input
+                      type='text'
+                      id={field.field_key}
+                      name={field?.title}
+                      placeholder={field.placeholder}
+                      value={formData[field.field_key]}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (!/^[+\d]*$/.test(e.target.value)) return;
+                        onFieldChange(field.field_key, e.target.value);
+                      }}
+                      className={styles.numberInput}
+                    />
+                  </div>
                 </CommonRenderStructure>
               </>
             );
