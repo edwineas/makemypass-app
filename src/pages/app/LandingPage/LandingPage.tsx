@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import Theme from '../../../components/Theme/Theme';
-import EventPartners from './components/EventPartners/EventPartners';
 import Hero from './components/Hero/Hero';
 import PricingSection from './components/PricingCards/PricingCards';
 import TestimonialSection from './components/TestimonialSection/TestimonialSection';
@@ -26,7 +25,38 @@ const LandingPage = () => {
         <div className={styles.landingPageContainer}>
           <Hero />
 
-          <EventPartners />
+          <div className={styles.thirdSection}>
+            <img src='/landing.png' alt='' className={styles.partnersImage} />
+            <div className={styles.frsTexts}>
+              <p className={styles.frHeading}>
+                <span
+                  style={{
+                    display: 'inline-block',
+                    transform: 'rotate(-2deg)',
+                    marginRight: '1rem',
+                  }}
+                >
+                  People
+                </span>
+                who’ve trusted us
+                <br /> with their{' '}
+                <span
+                  style={{
+                    display: 'inline-block',
+                    transform: 'rotate(-2deg)',
+                    marginRight: '1rem',
+                  }}
+                >
+                  {' '}
+                  Events
+                </span>
+              </p>
+              <p className={styles.frSubHeading}>
+                We’ve had the pleasure of working with some amazing event organizers and partners!
+                and we’re proud to have been a part of their journey!
+              </p>
+            </div>
+          </div>
 
           <div className={styles.secondSection}>
             <div className={styles.fsTexts}>

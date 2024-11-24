@@ -470,7 +470,7 @@
 .frHeading span {
   color: #272727;
   background-color: #01f77e;
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   padding: 0.2;
   transform: rotate(90deg);
 }
@@ -490,4 +490,28 @@
     font-size: 1rem;
     max-width: 25rem;
   }
+}
+
+.partnersContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.partnersImage {
+  width: calc(100% - 2rem);
+  max-width: 35rem;
+
+  padding: 1rem;
+}
+
+.partnersSubText {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: white;
+  opacity: 0.8;
+  margin-top: 1rem;
 }
