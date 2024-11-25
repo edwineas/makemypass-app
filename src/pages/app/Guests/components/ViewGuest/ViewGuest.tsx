@@ -71,7 +71,6 @@ const ViewGuest = ({
   const [initateRefundClicked, setInitateRefundClicked] = useState(false);
 
   const toggleMailContent = (id: string) => {
-    console.log(id);
     setMailLog((prevState) => ({
       ...prevState,
       logs: prevState.logs.map((mail) => {

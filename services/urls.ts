@@ -6,12 +6,16 @@ const makeMyPassURL = buildURL('/makemypass');
 export const makeMyPass = {
   //Common
   onboardUser: makeMyPassURL('/common/onboard-user/'),
-  listEvents: makeMyPassURL('/manage-user/user/events/'),
+  listEvents: makeMyPassURL('/manage-user/user/organized-events/'),
   listCommonTags: makeMyPassURL('/manage-user/user/list-tags/'),
   listOrgs: makeMyPassURL('/manage-user/user/org/list'),
   userSocials: makeMyPassURL('/manage-user/user/socials/'),
   publicProfile: (userName: string) =>
     makeMyPassURL(`/manage-user/user/${userName}/public-profile/`),
+  participatedEvents: (userName: string) =>
+    makeMyPassURL(`/manage-user/user/${userName}/participated-events/`),
+  subscribe: (userName: string) => makeMyPassURL(`/manage-user/user/${userName}/subscribe/`),
+  unsubscribe: (userName: string) => makeMyPassURL(`/manage-user/user/${userName}/unsubscribe/`),
 
   //Scan Guest
   scanGuestCheckin: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/checkin`), //Till Volunteer

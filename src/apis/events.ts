@@ -28,6 +28,24 @@ export const getEventsList = async (
     });
 };
 
+export const getParticipatedEvents = async (
+  username: string,
+  setEvents: React.Dispatch<React.SetStateAction<Event[]>>,
+  setIsDataLoaded: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+  privateGateway
+    .get(makeMyPass.participatedEvents(username))
+    .then((response) => {
+      setEvents(response.data.response.events);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    })
+    .finally(() => {
+      setIsDataLoaded(true);
+    });
+};
+
 export const getCommonTags = async (setTags: React.Dispatch<React.SetStateAction<string[]>>) => {
   privateGateway
     .get(makeMyPass.listCommonTags, {})

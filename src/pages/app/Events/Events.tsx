@@ -74,10 +74,16 @@ const Events = () => {
   }
 
   const [events, setEvents] = useState([] as Event[]);
+  // const [participatedEvents, setParticipatedEvents] = useState([] as Event[]);
 
   useEffect(() => {
     getCommonTags(setTags);
     listOrgs(setOrgs, setOrgsLoaded);
+    // getParticipatedEvents(
+    //   localStorage.getItem('username')!,
+    //   setParticipatedEvents,
+    //   setIsDataLoaded,
+    // );
   }, []);
 
   useEffect(() => {
@@ -113,11 +119,6 @@ const Events = () => {
       }));
     }
   };
-
-  console.log(
-    (selectedOrgName === 'Personal' && import.meta.env.VITE_CURRENT_ENV === 'dev') ||
-      isUserAuthorizedForOrganization(TillRoles.ADMIN),
-  );
 
   return (
     <>

@@ -171,8 +171,6 @@ const ProfilePage = ({ type }: { type: 'private' | 'public' }) => {
                     <button
                       className={styles.confirmButton}
                       onClick={() => {
-                        console.log(userData);
-                        console.log(originalUserData);
                         updateUserProfile(userData, originalUserData, setLoading);
                         setEditBasicInfo(false);
                       }}

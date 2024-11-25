@@ -240,7 +240,6 @@ const EditEvent = () => {
         );
         const data = await response.json();
         if (data.results && data.results.length > 0) {
-          console.log(data.results[0]);
           return data.results[0].formatted_address;
         }
         return '';
@@ -516,6 +515,8 @@ const EditEvent = () => {
                   if (eventData && isUserEditorForEvent())
                     setEventData({ ...eventData, followup_msg: followupMessage.toString() });
                   setShowAdvancedSettings(false);
+
+                  onSubmit();
                 }}
                 className={styles.continueButton}
               >

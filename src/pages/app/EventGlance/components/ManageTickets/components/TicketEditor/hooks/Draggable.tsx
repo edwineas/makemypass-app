@@ -117,7 +117,6 @@ const Draggable = (
   useEffect(() => {
     //resizability
     if (ref.current) {
-      console.log('useEffect');
       resizersRef.current = ref.current.querySelectorAll(`.${styles.resizer}`);
       resizersRef.current.forEach((resizer) => {
         resizer.addEventListener('mousedown', (e: MouseEvent) => {
@@ -129,7 +128,6 @@ const Draggable = (
     document.addEventListener('mousedown', handleMouseDown);
 
     return () => {
-      console.log('returned useEffect');
       document.removeEventListener('mousedown', handleMouseDown);
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);

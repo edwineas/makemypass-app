@@ -526,6 +526,9 @@
 }
 
 .OrgChangeField {
+  position: absolute;
+  top: 0.5rem;
+  right: 4rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -535,12 +538,14 @@
 
 .OrgChangeField1 {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .OrgChangeLabel {
+  margin-top: 0.5rem;
   font-size: 0.85rem;
   padding-left: 0.25rem;
   font-weight: 400;
@@ -552,6 +557,12 @@
 @media screen and (max-width: 1078px) {
   .glanceTexts {
     max-width: 25rem;
+  }
+
+  .OrgChangeField {
+    position: relative;
+    top: auto;
+    right: auto;
   }
 }
 
