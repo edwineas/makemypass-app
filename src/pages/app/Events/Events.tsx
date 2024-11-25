@@ -194,7 +194,7 @@ const Events = () => {
                       selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null
                     }
                     onChange={(selectedOption) => {
-                      if (selectedOption) {
+                      if (selectedOption && selectedOption.label) {
                         setNewEvent((prevState) => ({
                           ...prevState!,
                           orgId: selectedOption.value,
@@ -328,10 +328,13 @@ const Events = () => {
                           }));
 
                           localStorage.setItem('orgId', selectedOption.label);
-                          sessionStorage.setItem(
-                            'orgData',
-                            JSON.stringify(orgs.find((org) => org.name === selectedOption.label)),
-                          );
+
+                          if (selectedOption.value !== 'Personal') {
+                            sessionStorage.setItem(
+                              'orgData',
+                              JSON.stringify(orgs.find((org) => org.name === selectedOption.label)),
+                            );
+                          }
 
                           if (selectedOption.value !== 'Personal') {
                             getEventsList(setEvents, setIsDataLoaded, selectedOption.value);
