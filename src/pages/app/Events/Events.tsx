@@ -465,25 +465,24 @@ const Events = () => {
                                           />
                                         </div>
                                       )}
-                                      {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
-                                        <div className={styles.rightMenuButton}>
-                                          <BsThreeDots
-                                            onClick={(
-                                              eventClick: React.MouseEvent<SVGElement, MouseEvent>,
-                                            ) => {
-                                              eventClick.stopPropagation();
-                                              handleButtonClick(eventClick);
-                                              setDuplicateEventId(event?.id);
-                                            }}
-                                            size={15}
-                                            color='#ffffff'
-                                            className='pointer'
-                                            style={{
-                                              zIndex: 10,
-                                            }}
-                                          />
-                                        </div>
-                                      )}
+
+                                      <div className={styles.rightMenuButton}>
+                                        <BsThreeDots
+                                          onClick={(
+                                            eventClick: React.MouseEvent<SVGElement, MouseEvent>,
+                                          ) => {
+                                            eventClick.stopPropagation();
+                                            handleButtonClick(eventClick);
+                                            setDuplicateEventId(event?.id);
+                                          }}
+                                          size={15}
+                                          color='#ffffff'
+                                          className='pointer'
+                                          style={{
+                                            zIndex: 10,
+                                          }}
+                                        />
+                                      </div>
                                     </div>
                                   </div>
                                   {isMenuOpen && duplicateEventId == event.id && (
