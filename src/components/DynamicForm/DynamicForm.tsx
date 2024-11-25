@@ -103,9 +103,11 @@ const DynamicForm = ({
   useEffect(() => {
     //check if the formField have a key named phone if so prefill it with +91
     const phoneField = formFields.find((field) => field.field_key === 'phone');
+
     if (phoneField) {
-      onFieldChange('phone', phoneCode);
+      onFieldChange(phoneField.field_key, phoneCode);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formFields]);
 
   const getReactSelectOptions = () => {
