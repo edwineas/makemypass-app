@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import Select, { MultiValue, SingleValue } from 'react-select';
 
 import { ConditionType, ErrorMessages, FormDataType, FormFieldType } from '../../apis/types';
@@ -97,6 +98,16 @@ const DynamicForm = ({
   handleFileChange?: (event: React.ChangeEvent<HTMLInputElement>, field: FormFieldType) => void;
   handleDeleteAttachment?: (index: number) => void;
 }) => {
+  const [phoneCode, setPhoneCode] = useState<string>('+91');
+
+  useEffect(() => {
+    //check if the formField have a key named phone if so prefill it with +91
+    const phoneField = formFields.find((field) => field.field_key === 'phone');
+    if (phoneField) {
+      onFieldChange('phone', phoneCode);
+    }
+  }, [formFields]);
+
   const getReactSelectOptions = () => {
     return phoneCountryCodes.map((option) => ({
       value: option.dial_code,
@@ -210,6 +221,7 @@ const DynamicForm = ({
                       onChange={(newValue: SingleValue<{ value: string }>) => {
                         if (newValue) {
                           onFieldChange(field.field_key, newValue.value);
+                          setPhoneCode(newValue.value);
                         }
                       }}
                       styles={{
@@ -232,6 +244,9 @@ const DynamicForm = ({
                       }}
                       placeholder={`Country`}
                       isSearchable={true}
+                      value={phoneCountryCodes
+                        .map((option) => ({ value: option.dial_code, label: option.name }))
+                        .find((option) => option.value === phoneCode)}
                     />
                     <input
                       type='text'
