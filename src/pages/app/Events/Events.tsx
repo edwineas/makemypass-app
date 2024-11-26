@@ -133,7 +133,7 @@ const Events = () => {
               <div className={styles.buttons}>
                 <p
                   onClick={() => {
-                    createDuplicateEvent(duplicateEventId);
+                    createDuplicateEvent(duplicateEventId, setEvents, setIsDataLoaded);
                     setShowModal(false);
                   }}
                   className={styles.button}

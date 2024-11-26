@@ -261,12 +261,19 @@ export const deleteEvent = (eventId: string, setIsDeleting: Dispatch<SetStateAct
     });
 };
 
-export const createDuplicateEvent = async (eventId: string) => {
+export const createDuplicateEvent = async (
+  eventId: string,
+  setEvents: React.Dispatch<React.SetStateAction<Event[]>>,
+  setIsDataLoaded: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
   privateGateway
     .post(makeMyPass.eventCreateDuplicate(eventId))
     .then((response) => {
       toast.success('Event Duplicated Successfually');
       setEventInfoLocal(response.data.response.event_name);
+      setTimeout(() => {
+        getEventsList(setEvents, setIsDataLoaded);
+      }, 1000);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');
