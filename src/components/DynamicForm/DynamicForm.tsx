@@ -104,11 +104,11 @@ const DynamicForm = ({
     //check if the formField have a key named phone if so prefill it with +91
     const phoneField = formFields.find((field) => field.field_key === 'phone');
 
-    if (phoneField) {
+    if (phoneField && !formData[phoneField.field_key]) {
       onFieldChange(phoneField.field_key, phoneCode);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formFields]);
+  }, [formFields, formData]);
 
   const getReactSelectOptions = () => {
     return phoneCountryCodes.map((option) => ({

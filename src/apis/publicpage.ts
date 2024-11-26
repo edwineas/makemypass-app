@@ -144,7 +144,7 @@ export const submitForm = async ({
           amount: paymentAmount,
           currency: response.data.response.currency,
           name: 'MakeMyPass',
-          description: 'Event Registration',
+          description: `MMP - ${eventTitle}`,
           image: '/pwa/maskable.webp',
           order_id: paymentId,
           handler: function (response: RazorpayPaymentDetails) {
