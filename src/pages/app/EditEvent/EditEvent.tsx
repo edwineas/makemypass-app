@@ -187,6 +187,12 @@ const EditEvent = () => {
       changedData['place'] = 'null';
     }
 
+    if (eventData?.verification_settings) {
+      changedData['verification_settings[email]'] = eventData.verification_settings.email;
+      changedData['verification_settings[phone]'] = eventData.verification_settings.phone;
+      changedData['verification_settings[condition]'] = eventData.verification_settings.condition;
+    }
+
     if (changedData?.select_multi_ticket == false) {
       changedData.is_grouped_ticket = false;
     }
@@ -264,6 +270,25 @@ const EditEvent = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventData]);
+
+  const mapVerificationSettings = (input: string): EventType['verification_settings'] => {
+    switch (input.toLowerCase()) {
+      case 'phone and email':
+        return { email: true, phone: true, condition: 'and' };
+      case 'phone only':
+        return { email: false, phone: true, condition: 'or' };
+      case 'email only':
+        return { email: true, phone: false, condition: 'or' };
+      case 'phone or email':
+        return { email: true, phone: true, condition: 'or' };
+      default:
+        throw new Error('Invalid input');
+    }
+  };
+
+  // Example usage:
+  const verificationSettings = mapVerificationSettings('phone and email');
+  console.log(verificationSettings); // { email: true, phone: true, condition: 'and' }
 
   return (
     <>
@@ -438,6 +463,7 @@ const EditEvent = () => {
                       }
                     />
                   </div>
+
                   <div className={styles.option}>
                     <label>
                       <MdDatasetLinked size={25} color='#949597' />
@@ -493,6 +519,53 @@ const EditEvent = () => {
                         .map((key) => ({ value: key, label: key }))}
                       placeholder={`Select options`}
                       isMulti
+                      isSearchable={false}
+                    />
+                  </div>
+
+                  <div className={styles.optionSelect}>
+                    <p className={styles.label}>Form Verification Settings</p>
+                    <Select
+                      options={[
+                        { value: 'phone and email', label: 'Phone and Email' },
+                        { value: 'phone only', label: 'Phone Only' },
+                        { value: 'email only', label: 'Email Only' },
+                        { value: 'phone or email', label: 'Phone or Email' },
+                      ]}
+                      className={styles.selectDropdown}
+                      styles={{
+                        ...customStyles,
+                        container: (provided) => ({
+                          ...provided,
+                          minWidth: '20rem',
+                        }),
+                      }}
+                      onChange={(newValue) => {
+                        const settings = mapVerificationSettings(newValue?.value || '');
+                        setEventData({
+                          ...eventData,
+                          verification_settings: settings,
+                        });
+                      }}
+                      value={
+                        eventData?.verification_settings
+                          ? {
+                              value:
+                                eventData?.verification_settings?.condition === 'and'
+                                  ? 'phone and email'
+                                  : eventData?.verification_settings?.email
+                                    ? 'email only'
+                                    : 'phone only',
+                              label:
+                                eventData?.verification_settings?.condition === 'and'
+                                  ? 'Phone and Email'
+                                  : eventData?.verification_settings?.email
+                                    ? 'Email Only'
+                                    : 'Phone Only',
+                            }
+                          : { value: '', label: 'Select Fields' }
+                      }
+                      placeholder={`Select options`}
                       isSearchable={false}
                     />
                   </div>

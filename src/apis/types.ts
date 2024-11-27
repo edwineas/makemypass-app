@@ -232,6 +232,11 @@ export interface EventType {
     photos: string[];
     video_link: string;
   };
+  verification_settings: {
+    email: boolean | null;
+    phone: boolean | null;
+    condition: 'and' | 'or' | null;
+  };
 }
 
 export type EventDetails = {
