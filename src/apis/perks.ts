@@ -47,7 +47,7 @@ export const claimUserPerk = async (
             hasError: false,
           },
         ]);
-      toast.success(response.data.message.general[0]);
+      toast.success(response.data.response.message);
     })
     .catch((error) => {
       setChecking(false);
@@ -74,6 +74,6 @@ export const claimUserPerk = async (
       if (error.response.data.response.history) {
         setExhaustHistory(error.response.data.response.history);
       }
-      toast.error(error.response.data.response.message);
+      toast.error(error.response.data.message.general[0]);
     });
 };
