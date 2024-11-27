@@ -22,6 +22,7 @@
   color: var(--white-color);
   width: 100%;
   text-align: center;
+  outline: none;
 }
 
 .sideModal {
@@ -78,6 +79,7 @@
   .onClickModal {
     min-width: 25rem;
   }
+
   .sideModal {
     min-width: 25rem;
     max-width: 30rem;
@@ -88,6 +90,7 @@
   .onClickModal {
     width: 90%;
   }
+
   .sideModal {
     width: 95%;
   }
@@ -105,6 +108,7 @@
     margin: 1rem;
     width: auto;
   }
+
   .sideModal {
     padding: 1rem;
     width: 92%;
