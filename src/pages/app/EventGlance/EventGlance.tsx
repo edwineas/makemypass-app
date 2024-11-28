@@ -53,11 +53,11 @@ import styles from './EventGlance.module.css';
 import type { TagType } from './types';
 
 const qrCode = new QRCodeStyling({
-  width: 150,
-  height: 150,
+  width: 250,
+  height: 250,
   dotsOptions: {
     color: '#fff',
-    type: 'rounded',
+    type: 'classy-rounded',
   },
   backgroundOptions: {
     color: '#1B2725',
@@ -388,13 +388,7 @@ const EventGlance = () => {
           )}
 
           {showQR && (
-            <Modal
-              title='QR Code'
-              onClose={() => setShowQR(false)}
-              style={{
-                maxHeight: '19rem',
-              }}
-            >
+            <Modal title='QR Code' onClose={() => setShowQR(false)}>
               <div className={styles.qrContainer}>
                 <div ref={ref}></div>
 
