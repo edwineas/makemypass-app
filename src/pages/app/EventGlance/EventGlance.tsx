@@ -408,17 +408,10 @@ const EventGlance = () => {
                       buttonText='Download QR'
                       icon={<LuDownload size={15} />}
                       onClick={() => {
-                        const url = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${eventLink}`;
-
-                        fetch(url)
-                          .then((response) => response.blob())
-                          .then((blob) => {
-                            const link = document.createElement('a');
-                            link.href = window.URL.createObjectURL(blob);
-                            link.download = 'QR Code.png';
-                            link.click();
-                          })
-                          .catch((error) => console.error('Error downloading the QR code:', error));
+                        qrCode.download({
+                          name: eventName,
+                          extension: 'png',
+                        });
                       }}
                     />
                   </>
