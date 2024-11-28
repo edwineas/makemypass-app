@@ -1,3 +1,4 @@
+import QRCodeStyling from 'qr-code-styling';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BsCalendarEventFill, BsQrCodeScan } from 'react-icons/bs';
@@ -50,6 +51,24 @@ import UTMManager from './components/UTMManager/UTMManager';
 import VenueModal from './components/VenueModal/VenueModal';
 import styles from './EventGlance.module.css';
 import type { TagType } from './types';
+
+const qrCode = new QRCodeStyling({
+  width: 150,
+  height: 150,
+  dotsOptions: {
+    color: '#fff',
+    type: 'rounded',
+  },
+  backgroundOptions: {
+    color: '#1B2725',
+  },
+  imageOptions: {
+    crossOrigin: 'anonymous',
+
+    margin: 5, // Reduced margin to increase image size
+    imageSize: 0.4, // Added imageSize to increase the image size
+  },
+});
 
 const EventGlance = () => {
   const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);
@@ -174,6 +193,11 @@ const EventGlance = () => {
 
   useEffect(() => {
     if (eventData) setSelectedOrgId(eventData?.org_id);
+
+    qrCode.update({
+      data: new URL(`${import.meta.env.VITE_FRONTEND_URL}/${eventName}`).toString(),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventData]);
 
   useEffect(() => {
@@ -190,6 +214,15 @@ const EventGlance = () => {
     if (dummyData.showModal) getDummydata(confirmTestMail.mailId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dummyData.showModal]);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current && showQR) {
+      qrCode.append(ref.current);
+      setImageLoaded(true);
+    }
+  }, [showQR]);
 
   useEffect(() => {
     //add utmSelectedData to eventLink
@@ -363,11 +396,7 @@ const EventGlance = () => {
               }}
             >
               <div className={styles.qrContainer}>
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${eventLink}`}
-                  alt='QR Code'
-                  onLoad={() => setImageLoaded(true)} // set imageLoaded to true when the image is loaded
-                />
+                <div ref={ref}></div>
 
                 {imageLoaded ? ( // only show this content when image is loaded
                   <>

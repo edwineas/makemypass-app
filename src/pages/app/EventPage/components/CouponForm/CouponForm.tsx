@@ -430,12 +430,12 @@ const CouponForm = ({
                           <>
                             {filteredTicket.platform_perc_fee > 0 && (
                               <p className={styles.extraCharges}>
-                                {filteredTicket.platform_perc_fee}% Extra Platform Fee
+                                +{filteredTicket.platform_perc_fee}% Extra Platform Fee
                               </p>
                             )}
                             {filteredTicket.gateway_fee > 0 && (
                               <p className={styles.extraCharges}>
-                                {filteredTicket.gateway_fee}% Extra Gateway Fee
+                                +{filteredTicket.gateway_fee}% Extra Gateway Fee
                               </p>
                             )}
                           </>
