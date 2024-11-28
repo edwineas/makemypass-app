@@ -916,13 +916,13 @@ const Insights = ({ type }: { type?: string }) => {
                 </div>
               )}
               <br />
-              {ticketAnalytics && ticketAnalytics.datasets[0].data.length > 0 && (
+              {/* {ticketAnalytics && ticketAnalytics.datasets[0].data.length > 0 && (
                 <div className={styles.registrationCount}>
                   <div className={styles.graphContainer}>
                     <Bar options={options} data={ticketAnalytics} />
                   </div>
                 </div>
-              )}
+              )} */}
 
               {utmData && (
                 <div className={styles.utmContainer}>
