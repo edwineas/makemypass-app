@@ -11,7 +11,6 @@ import {
   getIcon,
 } from '../../pages/app/EventPage/constants';
 import InputField from '../../pages/auth/Login/InputField.tsx';
-import ValidateInput from '../ValidateInput/ValidateInput.tsx';
 import { validateCondition } from './condition';
 import styles from './DynamicForm.module.css';
 import phoneCountryCodes from './phoneCountryCodes.json';
@@ -166,43 +165,24 @@ const DynamicForm = ({
             return null;
 
           if (field.type === 'text' || field.type === 'email') {
-            return field.validate ? (
-              <CommonRenderStructure formErrors={formErrors} field={field}>
-                <ValidateInput
-                  name={field.field_key}
-                  placeholder={field.placeholder}
-                  id={field.id}
-                  key={field.id}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onFieldChange(field.field_key, e.target.value)
-                  }
-                  value={formData[field.field_key] || ''}
-                  type={field.type}
-                  icon={getIcon(field.type)}
-                  required={field.required}
-                  description={field.description}
-                />
-              </CommonRenderStructure>
-            ) : (
-              <CommonRenderStructure formErrors={formErrors} field={field}>
-                <InputField
-                  name={field.field_key}
-                  title={field?.title}
-                  placeholder={field.placeholder}
-                  id={field.id}
-                  key={field.id}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onFieldChange(field.field_key, e.target.value)
-                  }
-                  error={['']}
-                  value={formData[field.field_key] || ''}
-                  type={field.type}
-                  icon={getIcon(field.type)}
-                  required={field.required}
-                  description={field.description}
-                />
-              </CommonRenderStructure>
-            );
+            <CommonRenderStructure formErrors={formErrors} field={field}>
+              <InputField
+                name={field.field_key}
+                title={field?.title}
+                placeholder={field.placeholder}
+                id={field.id}
+                key={field.id}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onFieldChange(field.field_key, e.target.value)
+                }
+                error={['']}
+                value={formData[field.field_key] || ''}
+                type={field.type}
+                icon={getIcon(field.type)}
+                required={field.required}
+                description={field.description}
+              />
+            </CommonRenderStructure>;
           } else if (field.type === 'phone') {
             return (
               <>
