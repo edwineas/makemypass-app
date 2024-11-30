@@ -219,7 +219,7 @@ const DynamicForm = ({
                           fontStyle: 'normal',
                           fontWeight: 400,
                           fontSize: '0.9rem',
-                          minWidth: '8rem',
+                          minWidth: '6rem',
                           width: '100%',
                           boxShadow: state.isFocused ? 'none' : 'none', // Remove blue border on focus
                           position: 'relative', // Add this to establish a positioning context
