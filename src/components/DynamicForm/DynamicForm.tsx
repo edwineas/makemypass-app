@@ -99,17 +99,16 @@ const DynamicForm = ({
   handleDeleteAttachment?: (index: number) => void;
 }) => {
   const [phoneCode, setPhoneCode] = useState<string>('+91');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
 
   useEffect(() => {
     //check if the formField have a key named phone if so prefill it with +91
     const phoneField = formFields.find((field) => field.field_key === 'phone');
 
     if (phoneField && !formData[phoneField.field_key]) {
-      onFieldChange(phoneField.field_key, phoneCode + phoneNumber);
+      onFieldChange(phoneField.field_key, phoneCode);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formFields, formData, phoneCode, phoneNumber]);
+  }, [formFields, formData]);
 
   const getReactSelectOptions = () => {
     return phoneCountryCodes.map((option) => ({
@@ -223,7 +222,7 @@ const DynamicForm = ({
                       options={getReactSelectOptions()}
                       onChange={(newValue: SingleValue<{ value: string }>) => {
                         if (newValue) {
-                          onFieldChange(field.field_key, newValue.value + phoneNumber);
+                          onFieldChange(field.field_key, newValue.value);
                           setPhoneCode(newValue.value);
                         }
                       }}
@@ -248,7 +247,7 @@ const DynamicForm = ({
                       placeholder={`Country`}
                       isSearchable={true}
                       value={phoneCountryCodes
-                        .map((option) => ({ value: option.dial_code, label: option.dial_code }))
+                        .map((option) => ({ value: option.dial_code, label: option.name }))
                         .find((option) => option.value === phoneCode)}
                     />
                     <input
@@ -256,11 +255,10 @@ const DynamicForm = ({
                       id={field.field_key}
                       name={field?.title}
                       placeholder={field.placeholder}
-                      value={phoneNumber}
+                      value={formData[field.field_key]}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         if (!/^[+\d]*$/.test(e.target.value)) return;
-                        setPhoneNumber(e.target.value);
-                        onFieldChange(field.field_key, phoneCode + e.target.value);
+                        onFieldChange(field.field_key, e.target.value);
                       }}
                       className={styles.numberInput}
                     />
