@@ -67,6 +67,7 @@ export type SuccessModalProps = {
     type: 'on_submit' | 'on_button_click';
   };
   newPage?: boolean;
+  team_id?: string;
 };
 
 export type AudioControlsType = {

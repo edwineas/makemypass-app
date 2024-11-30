@@ -39,6 +39,20 @@ const SuccessButtonsContainer = ({
             </>
           )}
 
+          {success.team_id && (
+            <>
+              <button
+                onClick={() => {
+                  const eventTitle = JSON.parse(sessionStorage.getItem('eventData')!).event_name;
+                  window.open(`/${eventTitle}?team_id=${success.team_id}`, '_blank');
+                }}
+                className={styles.downloadTicketButton}
+              >
+                Add Team Members
+              </button>
+            </>
+          )}
+
           {success.show_sub_event && (
             <>
               <button
