@@ -165,24 +165,26 @@ const DynamicForm = ({
             return null;
 
           if (field.type === 'text' || field.type === 'email') {
-            <CommonRenderStructure formErrors={formErrors} field={field}>
-              <InputField
-                name={field.field_key}
-                title={field?.title}
-                placeholder={field.placeholder}
-                id={field.id}
-                key={field.id}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  onFieldChange(field.field_key, e.target.value)
-                }
-                error={['']}
-                value={formData[field.field_key] || ''}
-                type={field.type}
-                icon={getIcon(field.type)}
-                required={field.required}
-                description={field.description}
-              />
-            </CommonRenderStructure>;
+            return (
+              <CommonRenderStructure formErrors={formErrors} field={field}>
+                <InputField
+                  name={field.field_key}
+                  title={field?.title}
+                  placeholder={field.placeholder}
+                  id={field.id}
+                  key={field.id}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    onFieldChange(field.field_key, e.target.value)
+                  }
+                  error={['']}
+                  value={formData[field.field_key] || ''}
+                  type={field.type}
+                  icon={getIcon(field.type)}
+                  required={field.required}
+                  description={field.description}
+                />
+              </CommonRenderStructure>
+            );
           } else if (field.type === 'phone') {
             return (
               <>
