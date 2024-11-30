@@ -171,6 +171,7 @@ export const submitForm = async ({
                     eventRegisterId: response.data.response.event_register_id,
                     loading: false,
                     redirection: response.data.response.redirection,
+                    team_id: response.data.response.team_id,
                   }));
 
                 if (isCouponFirst && setFormNumber) setFormNumber(1);
@@ -222,6 +223,7 @@ export const submitForm = async ({
           loading: false,
           redirection: response.data.response.redirection,
           newPage: response.data.response.thank_you_new_page,
+          team_id: response.data.response.team_id,
         };
 
         if (response.data.response.thank_you_new_page) {
