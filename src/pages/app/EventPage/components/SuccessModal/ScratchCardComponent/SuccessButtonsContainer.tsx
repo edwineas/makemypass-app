@@ -46,7 +46,7 @@ const SuccessButtonsContainer = ({
                   const eventTitle = JSON.parse(sessionStorage.getItem('eventData')!).event_name;
                   window.open(`/${eventTitle}?team_id=${success.team_id}`, '_blank');
                 }}
-                className={styles.downloadTicketButton}
+                className={styles.addMembersButton}
               >
                 Add Team Members
               </button>
