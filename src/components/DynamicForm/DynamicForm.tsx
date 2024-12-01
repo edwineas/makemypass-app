@@ -119,11 +119,10 @@ const DynamicForm = ({
   ) => {
     if (!options) return options;
 
-    const filteredOptions = options.find((option) =>
-      validateCondition(option.conditions, formData, formFields),
-    )?.values;
-
-    return filteredOptions;
+    return options
+      .filter((option) => validateCondition(option.conditions, formData, formFields))
+      .map((option) => option.values)
+      .flat();
   };
 
   const resetValuesOfConditionallyRelatedFields = (field: FormFieldType) => {
