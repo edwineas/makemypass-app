@@ -2,6 +2,7 @@ import './google.css';
 
 import { Autocomplete, GoogleMap, Libraries, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { AnimatePresence, motion } from 'framer-motion';
+import _ from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AiOutlineTeam } from 'react-icons/ai';
 import { BiArrowToTop } from 'react-icons/bi';
@@ -137,36 +138,54 @@ const EditEvent = () => {
       )
       .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
 
+    // Title and Description are stored in different states so check if they are different
     if (eventTitle !== eventData?.title) changedData['title'] = eventTitle;
     if (newDescription !== eventData?.description) changedData['description'] = newDescription;
-    if (convertDate(eventDate?.start) != fetchedEvent?.event_start_date)
-      changedData['event_start_date'] = convertDate(eventDate?.start);
-    if (convertDate(eventDate?.end) != fetchedEvent?.event_end_date)
-      changedData['event_end_date'] = convertDate(eventDate?.end);
-    if (convertDate(regDate?.start) != fetchedEvent?.reg_start_date)
-      changedData['reg_start_date'] = convertDate(regDate?.start);
-    if (convertDate(regDate?.end) != fetchedEvent?.reg_end_date)
-      changedData['reg_end_date'] = convertDate(regDate?.end);
-    if (placeName && placeName !== fetchedEvent?.place) changedData['place'] = placeName;
-    if (placeName?.length === 0 && googlePlaceName?.length !== 0)
+
+    //Add dates to changed Data if changed ------------
+    const dateFields: { [key: string]: Date | undefined } = {
+      event_start_date: eventDate?.start,
+      event_end_date: eventDate?.end,
+      reg_start_date: regDate?.start,
+      reg_end_date: regDate?.end,
+    };
+
+    Object.entries(dateFields).forEach(([key, date]) => {
+      if (convertDate(date) != fetchedEvent?.[key as keyof EventType]) {
+        changedData[key as keyof EventType] = convertDate(date);
+      }
+    });
+    // ------------------------------------------------
+
+    if (placeName && placeName !== fetchedEvent?.place) {
+      changedData['place'] = placeName;
+    } else if (placeName?.length === 0 && googlePlaceName?.length !== 0) {
       changedData['place'] = googlePlaceName;
+    }
+
     if (
       !eventData?.is_online &&
-      (location?.lat != fetchedEvent?.location?.lat || location?.lng != fetchedEvent?.location?.lng)
+      location &&
+      (location.lat !== fetchedEvent?.location?.lat || location.lng !== fetchedEvent?.location?.lng)
     ) {
-      changedData['location[lat]'] = location?.lat;
-      changedData['location[lng]'] = location?.lng;
+      changedData['location[lat]'] = location.lat;
+      changedData['location[lng]'] = location.lng;
+    }
+
+    //Checking done to check for nested objects within the changed Data object
+    if (!_.isEqual(eventData?.socials, fetchedEvent?.socials)) {
+      changedData['socials'] = JSON.stringify(eventData?.socials).replace(/""/g, 'null');
+    }
+    if (!_.isEqual(eventData?.verification_settings, fetchedEvent?.verification_settings)) {
+      changedData['verification_settings[email]'] = eventData?.verification_settings.email;
+      changedData['verification_settings[phone]'] = eventData?.verification_settings.phone;
+      changedData['verification_settings[condition]'] =
+        eventData?.verification_settings.condition ?? 'null';
     }
 
     if (changedData['is_team'] == true) {
       if (eventData?.select_multi_ticket) changedData['select_multi_ticket'] = false;
       if (eventData?.is_grouped_ticket) changedData['is_grouped_ticket'] = false;
-    }
-
-    changedData['multi_day_checkin'] = eventData?.multi_day_checkin;
-
-    if (eventData?.socials != fetchedEvent?.socials) {
-      changedData['socials'] = JSON.stringify(eventData?.socials).replace(/""/g, 'null');
     }
 
     if (logo) changedData['logo'] = logo;
@@ -185,12 +204,6 @@ const EditEvent = () => {
       changedData['location[lng]'] = 'null';
 
       changedData['place'] = 'null';
-    }
-
-    if (eventData?.verification_settings) {
-      changedData['verification_settings[email]'] = eventData.verification_settings.email;
-      changedData['verification_settings[phone]'] = eventData.verification_settings.phone;
-      changedData['verification_settings[condition]'] = eventData.verification_settings.condition;
     }
 
     if (changedData?.select_multi_ticket == false) {
@@ -276,9 +289,9 @@ const EditEvent = () => {
       case 'phone and email':
         return { email: true, phone: true, condition: 'and' };
       case 'phone only':
-        return { email: false, phone: true, condition: 'or' };
+        return { email: false, phone: true, condition: null };
       case 'email only':
-        return { email: true, phone: false, condition: 'or' };
+        return { email: true, phone: false, condition: null };
       case 'phone or email':
         return { email: true, phone: true, condition: 'or' };
       default:
@@ -548,7 +561,7 @@ const EditEvent = () => {
                         });
                       }}
                       value={
-                        eventData?.verification_settings
+                        Object.keys(eventData?.verification_settings).length > 0
                           ? {
                               value:
                                 eventData?.verification_settings?.condition === 'and'

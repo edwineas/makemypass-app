@@ -217,6 +217,7 @@ const EventPage = () => {
                   claim_ticket_id: eventData.claim_ticked_id,
                   is_grouped_ticket: eventData.is_grouped_ticket,
                   show_ticket_first: showTicketFirst,
+                  verification_settings: eventData.verification_settings,
                 }}
                 setSuccess={setSuccess}
                 setEventData={setEventData}
