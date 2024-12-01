@@ -13,7 +13,13 @@ import type {
   Tickets,
 } from '../pages/app/EventPage/types';
 import { convertWebmToWav } from './helpers';
-import { ErrorMessages, EventType, FormDataType, RazorpayPaymentDetails } from './types';
+import {
+  ErrorMessages,
+  EventType,
+  FormDataType,
+  FormFieldType,
+  RazorpayPaymentDetails,
+} from './types';
 
 declare global {
   interface Window {
@@ -28,6 +34,8 @@ export const submitForm = async ({
   tickets,
   formData,
   coupon,
+  eventForm,
+  phoneCode,
   setSuccess,
   setFormNumber,
   setFormData,
@@ -50,6 +58,8 @@ export const submitForm = async ({
   tickets: Tickets[];
   formData: FormDataType;
   coupon: CouponData;
+  eventForm?: FormFieldType[];
+  phoneCode?: string;
   setSuccess?: React.Dispatch<React.SetStateAction<SuccessModalProps>>;
   setFormNumber?: React.Dispatch<React.SetStateAction<number>>;
   setFormData?: React.Dispatch<React.SetStateAction<FormDataType>>;
@@ -99,6 +109,12 @@ export const submitForm = async ({
         value.forEach((value) => backendFormData.append(key + '[]', value));
       } else {
         value = formData[key].toString();
+        if (eventForm && eventForm.length > 0) {
+          const isFieldPhone = eventForm.find((field) => field.field_key === key)?.type === 'phone';
+          if (isFieldPhone && phoneCode) {
+            value = phoneCode + value;
+          }
+        }
       }
     }
 

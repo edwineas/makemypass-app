@@ -470,11 +470,6 @@ const EventForm = ({
               }
             } else {
               if (type === 'addGuest' && setSelectedGuestId) {
-                eventFormData.form.forEach((field) => {
-                  if (field.type === 'phone') {
-                    formData[field.field_key] = phoneCode + formData[field.field_key];
-                  }
-                });
                 addGuest(
                   eventFormData.id,
                   tickets,
@@ -487,16 +482,13 @@ const EventForm = ({
                   setLoading,
                 );
               } else {
-                eventFormData.form.forEach((field) => {
-                  if (field.type === 'phone') {
-                    formData[field.field_key] = phoneCode + formData[field.field_key];
-                  }
-                });
                 submitForm({
                   eventId: eventFormData.id,
                   tickets,
                   formData,
                   coupon,
+                  eventForm: eventFormData.form,
+                  phoneCode,
                   setSuccess,
                   setFormNumber,
                   setFormData,
