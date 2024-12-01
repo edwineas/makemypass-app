@@ -111,7 +111,7 @@ export const submitForm = async ({
         value = formData[key].toString();
         if (eventForm && eventForm.length > 0) {
           const isFieldPhone = eventForm.find((field) => field.field_key === key)?.type === 'phone';
-          if (isFieldPhone && phoneCode) {
+          if (isFieldPhone && phoneCode && value.length > 0) {
             value = phoneCode + value;
           }
         }
