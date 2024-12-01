@@ -94,6 +94,7 @@ const EventForm = ({
 
   const location = useLocation();
   const newSearchParams = new URLSearchParams(location.search);
+  const [phoneCode, setPhoneCode] = useState<string>('+91');
 
   useEffect(() => {
     setFormData(
@@ -368,6 +369,8 @@ const EventForm = ({
                   formErrors={formErrors}
                   formData={formData}
                   onFieldChange={onFieldChange}
+                  phoneCode={phoneCode}
+                  setPhoneCode={setPhoneCode}
                   previews={previews}
                   handleFileChange={handleFileChange}
                   handleDeleteAttachment={handleDeleteAttachment}
@@ -467,6 +470,11 @@ const EventForm = ({
               }
             } else {
               if (type === 'addGuest' && setSelectedGuestId) {
+                eventFormData.form.forEach((field) => {
+                  if (field.type === 'phone') {
+                    formData[field.field_key] = phoneCode + formData[field.field_key];
+                  }
+                });
                 addGuest(
                   eventFormData.id,
                   tickets,
@@ -479,6 +487,11 @@ const EventForm = ({
                   setLoading,
                 );
               } else {
+                eventFormData.form.forEach((field) => {
+                  if (field.type === 'phone') {
+                    formData[field.field_key] = phoneCode + formData[field.field_key];
+                  }
+                });
                 submitForm({
                   eventId: eventFormData.id,
                   tickets,
