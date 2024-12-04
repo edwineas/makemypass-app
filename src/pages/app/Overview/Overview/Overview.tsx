@@ -178,7 +178,7 @@ const Overview = () => {
   };
 
   const removeHostAccount = () => {
-    removeEventHost(eventId, hostId.id, setOpenDeleteModal, setHostId);
+    removeEventHost(eventId, hostId.id, setOpenDeleteModal, setHostId, setHostData);
 
     setTimeout(() => {
       getEventHosts(eventId, setHostList);

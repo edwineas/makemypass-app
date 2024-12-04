@@ -72,6 +72,7 @@ export const removeEventHost = async (
   hostId: string,
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>,
   setHostId: React.Dispatch<React.SetStateAction<hostId>>,
+  setHostData: React.Dispatch<React.SetStateAction<hostData>>,
 ) => {
   privateGateway
     .delete(makeMyPass.host(eventId, hostId))
@@ -81,6 +82,12 @@ export const removeEventHost = async (
       setHostId({
         id: '',
         type: null,
+      });
+      setHostData({
+        email: '',
+        role: '',
+        id: '',
+        is_private: true,
       });
     })
     .catch((error) => {
