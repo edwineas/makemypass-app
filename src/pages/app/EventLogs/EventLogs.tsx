@@ -40,7 +40,7 @@ const EventLogs = () => {
   }, [triggerFetch]);
 
   useEffect(() => {
-    if (selectedMailLog && selectedMailLog.body === '') {
+    if (selectedMailLog && selectedMailLog.id != '' && selectedMailLog.body === '') {
       getEventIndividualMailLog(eventId, selectedMailLog, setSelectedMailLog);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,8 +76,9 @@ const EventLogs = () => {
                       {
                         <BiChevronDown
                           size={25}
-                          onClick={() => {
+                          onClick={(event) => {
                             if (mail.id == selectedMailLog.id && selectedMailLog.body.length > 0) {
+                              event.stopPropagation();
                               setSelectedMailLog({
                                 id: '',
                                 body: '',
