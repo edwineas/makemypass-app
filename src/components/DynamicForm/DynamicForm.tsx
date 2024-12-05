@@ -197,7 +197,7 @@ const DynamicForm = ({
                         options={getReactSelectOptions()}
                         onChange={(newValue: SingleValue<{ value: string }>) => {
                           if (newValue) {
-                            onFieldChange(field.field_key, newValue.value);
+                            // onFieldChange(field.field_key, newValue.value);
                             setPhoneCode(newValue.value);
                           }
                         }}
@@ -233,8 +233,17 @@ const DynamicForm = ({
                       placeholder={field.placeholder}
                       value={formData[field.field_key]}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        if (!/^[+\d]*$/.test(e.target.value)) return;
-                        onFieldChange(field.field_key, e.target.value);
+                        const inputValue = e.target.value;
+
+                        if (phoneCode && inputValue.startsWith(phoneCode)) {
+                          onFieldChange(
+                            field.field_key,
+                            inputValue.slice(phoneCode.length).replace(/^0+|[^0-9]+|$/g, ''),
+                          );
+                        } else {
+                          const newValue = inputValue.replace(/^0+|[^0-9]+|$/g, '');
+                          onFieldChange(field.field_key, newValue);
+                        }
                       }}
                       className={styles.numberInput}
                     />
