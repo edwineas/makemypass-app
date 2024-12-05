@@ -535,53 +535,59 @@ const EditEvent = () => {
                       isSearchable={false}
                     />
                   </div>
-
-                  <div className={styles.optionSelect}>
-                    <p className={styles.label}>Form Verification Settings</p>
-                    <Select
-                      options={[
-                        { value: 'phone and email', label: 'Phone and Email' },
-                        { value: 'phone only', label: 'Phone Only' },
-                        { value: 'email only', label: 'Email Only' },
-                        { value: 'phone or email', label: 'Phone or Email' },
-                      ]}
-                      className={styles.selectDropdown}
-                      styles={{
-                        ...customStyles,
-                        container: (provided) => ({
-                          ...provided,
-                          minWidth: '20rem',
-                        }),
-                      }}
-                      onChange={(newValue) => {
-                        const settings = mapVerificationSettings(newValue?.value || '');
-                        setEventData({
-                          ...eventData,
-                          verification_settings: settings,
-                        });
-                      }}
-                      value={
-                        Object.keys(eventData?.verification_settings).length > 0
-                          ? {
-                              value:
-                                eventData?.verification_settings?.condition === 'and'
-                                  ? 'phone and email'
-                                  : eventData?.verification_settings?.email
-                                    ? 'email only'
-                                    : 'phone only',
-                              label:
-                                eventData?.verification_settings?.condition === 'and'
-                                  ? 'Phone and Email'
-                                  : eventData?.verification_settings?.email
-                                    ? 'Email Only'
-                                    : 'Phone Only',
-                            }
-                          : { value: '', label: 'Select Fields' }
-                      }
-                      placeholder={`Select options`}
-                      isSearchable={false}
-                    />
-                  </div>
+                  {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
+                    <div className={styles.optionSelect}>
+                      <p className={styles.label}>Form Verification Settings</p>
+                      <Select
+                        options={[
+                          { value: 'phone and email', label: 'Phone and Email' },
+                          { value: 'phone only', label: 'Phone Only' },
+                          { value: 'email only', label: 'Email Only' },
+                          { value: 'phone or email', label: 'Phone or Email' },
+                          { value: 'no validation', label: 'No Validation' },
+                        ]}
+                        className={styles.selectDropdown}
+                        styles={{
+                          ...customStyles,
+                          container: (provided) => ({
+                            ...provided,
+                            minWidth: '20rem',
+                          }),
+                        }}
+                        onChange={(newValue) => {
+                          const settings =
+                            newValue?.value === 'no validation'
+                              ? {}
+                              : mapVerificationSettings(newValue?.value || '');
+                          setEventData({
+                            ...eventData,
+                            verification_settings: settings,
+                          });
+                        }}
+                        value={
+                          eventData?.verification_settings &&
+                          Object.keys(eventData.verification_settings).length > 0
+                            ? {
+                                value:
+                                  eventData?.verification_settings?.condition === 'and'
+                                    ? 'phone and email'
+                                    : eventData?.verification_settings?.email
+                                      ? 'email only'
+                                      : 'phone only',
+                                label:
+                                  eventData?.verification_settings?.condition === 'and'
+                                    ? 'Phone and Email'
+                                    : eventData?.verification_settings?.email
+                                      ? 'Email Only'
+                                      : 'Phone Only',
+                              }
+                            : { value: 'no validation', label: 'No Validation' }
+                        }
+                        placeholder={`Select options`}
+                        isSearchable={false}
+                      />
+                    </div>
+                  )}
                 </>
               )}
               <div className={styles.followupMessageContainer}>

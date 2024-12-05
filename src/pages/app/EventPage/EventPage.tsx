@@ -101,14 +101,21 @@ const EventPage = () => {
         <title>{eventData?.title}</title>
         <link rel='shortcut icon' href='/favicon.ico' type='image/x-icon' />
         <meta name='title' content={eventData?.title} />
+        <meta name='description' content={eventData?.description} />
+        <meta property='og:title' content={eventData?.title} />
+        <meta property='og:description' content={eventData?.description} />
         <meta
-          name='description'
-          content={
-            eventData?.description
-              ? eventData?.description
-              : 'Do not miss out! Register now for this event to learn, network and more. Click the link below to get started.'
-          }
+          property='og:image'
+          content={typeof eventData?.banner === 'string' ? eventData.banner : undefined}
         />
+        <meta property='og:url' content={`https://makemypass.com/events/${eventTitle}`} />
+        <meta name='twitter:title' content={eventData?.title} />
+        <meta name='twitter:description' content={eventData?.description} />
+        <meta
+          name='twitter:image'
+          content={typeof eventData?.banner === 'string' ? eventData.banner : undefined}
+        />
+        <meta name='twitter:url' content={`https://makemypass.com/events/${eventTitle}`} />
 
         {eventData?.script_injection &&
           eventData?.script_injection.length > 0 &&

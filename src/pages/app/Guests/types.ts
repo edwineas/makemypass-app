@@ -35,11 +35,13 @@ export interface FormEventData {
   coupon: CouponData;
   claim_ticket_id?: string;
   show_ticket_first?: boolean;
-  verification_settings: {
-    email: boolean | null;
-    phone: boolean | null;
-    condition: 'and' | 'or' | null;
-  };
+  verification_settings:
+    | {
+        email: boolean | null;
+        phone: boolean | null;
+        condition: 'and' | 'or' | null;
+      }
+    | Record<string, never>;
 }
 
 export type PaginationDataType = {
