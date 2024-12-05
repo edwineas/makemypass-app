@@ -118,6 +118,13 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSelectType]);
 
+  useEffect(() => {
+    if (selectedSubEventId && currentSelectType !== 'edit') {
+      getSubEventData(eventId, selectedSubEventId, setSelectedSubEvent, setLimitCapacity);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubEventId]);
+
   const groupedSubEvents = groupSubEventsByDateAndTime(subEvents);
 
   const handleSubmit = () => {
@@ -146,7 +153,11 @@ const Dashboard = () => {
 
   const handleDelete = () => {
     if (selectedSubEvent && selectedSubEvent.id)
-      deleteSubEvent(eventId, selectedSubEvent.id, setSubEvents);
+      deleteSubEvent(eventId, selectedSubEvent.id, setSubEvents).then(() => {
+        setShowDeleteConfirmation(false);
+        setCurrentSelectType('');
+        setSelectedSubEventId('');
+      });
   };
 
   const navigate = useNavigate();
