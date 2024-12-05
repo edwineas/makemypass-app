@@ -521,7 +521,9 @@ export const sendVerfication = async (contactType: string, contactInfo: string) 
       contact_info: contactInfo,
     })
     .then(() => {
-      toast.success('Verification Email Sent');
+      toast.success(
+        `Verification Code Sent to ${contactType.charAt(0).toUpperCase() + contactType.slice(1)}`,
+      );
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0]);

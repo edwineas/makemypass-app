@@ -80,3 +80,11 @@ export type ClaimCodeExceedType = {
   exceeded: boolean;
   message: string;
 };
+
+export type VerificationModalProps = {
+  showModal: boolean;
+  email: boolean;
+  phone: boolean;
+  condition: string | null;
+  submit: (() => void) | null;
+};
