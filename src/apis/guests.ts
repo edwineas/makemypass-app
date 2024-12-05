@@ -161,64 +161,12 @@ export const downloadRegisterCSVData = async (
     .get(makeMyPass.guestDownloadCSV(eventId) + '?' + params.toString())
     .then((response) => {
       const csvData = response.data;
-
-      // Escape special characters and handle '#' values
-      const escapeCSV = (value: string | number | null | undefined): string => {
-        if (value === null || value === undefined) return '';
-
-        // Convert to string and escape double quotes
-        let strValue = String(value).replace(/"/g, '""');
-
-        // If the value contains commas, line breaks, or quotes, wrap it in quotes
-        if (/[",\n\r]/.test(strValue)) {
-          strValue = `"${strValue}"`;
-        }
-
-        return strValue;
-      };
-
-      // Properly encode the CSV content
-      interface CSVData {
-        split: (separator: string) => string[];
-      }
-
-      interface CSVContent {
-        map: (callback: (row: string) => string) => string[];
-        join: (separator: string) => string;
-      }
-
-      const csvContent: string =
-        'data:text/csv;charset=utf-8,' +
-        encodeURIComponent(
-          (csvData as CSVData)
-            .split('\n')
-            .map((row: string) => (row.split(',') as CSVContent).map(escapeCSV).join(','))
-            .join('\n'),
-        );
-
-      const encodedUri = csvContent;
+      const csvContent = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData);
       const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-
-      const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      };
-
-      const timestamp = new Date()
-        .toLocaleString('en-GB', options)
-        .replace(/\//g, '-') // Replace slashes with hyphens
-        .replace(/, /g, '_') // Replace comma-space with underscore
-        .replace(/:/g, '-'); // Replace colons with hyphens
-
-      link.setAttribute('download', `${eventTitle}-guests-${timestamp}.csv`);
+      link.setAttribute('href', csvContent);
+      link.setAttribute('download', `${eventTitle}.csv`);
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Something went wrong');
