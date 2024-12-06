@@ -125,6 +125,10 @@ const InEventStats = () => {
   const eventId = getLocalEventId();
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
+  //check if the api has analytics query param false
+  const urlParams = new URLSearchParams(window.location.search);
+  const analytics = urlParams.get('analytics') !== 'false';
+
   useEffect(() => {
     if (!firstRender)
       if (guests.length > 0) {
@@ -297,7 +301,7 @@ const InEventStats = () => {
         </Modal>
       )}
       <DashboardLayout prevPage='-1' tabName='inevent' isLive={true}>
-        <Glance tab='inevent' />
+        {analytics && <Glance tab='inevent' />}
         <div className={styles.makemypassbranding}>
           <div className={`${styles.backgroundBrand}`}>
             <img src='/app/mmpcolor.webp' alt='makemypass logo' />
@@ -333,134 +337,141 @@ const InEventStats = () => {
                 <div className={styles.welcomeText}>
                   {newUser.category && <p className={styles.userType}>{newUser?.category}</p>}
                   <p className={styles.userName}>{newUser?.name}</p>
-                  <p className={styles.userEmail}>{newUser?.email}</p>
                 </div>
               </motion.dialog>
             </>
           )}
         </AnimatePresence>
 
-        <div className={styles.insightsContainer}>
-          <div className={styles.registrationCount}>
-            {lineData && lineData.datasets.length > 0 ? (
-              <Line options={options} data={lineData} />
-            ) : (
-              <p className={styles.noData}>No data yet, kindly check later.</p>
-            )}
+        {analytics && (
+          <>
+            <div className={styles.insightsContainer}>
+              <div className={styles.registrationCount}>
+                {lineData && lineData.datasets.length > 0 ? (
+                  <Line options={options} data={lineData} />
+                ) : (
+                  <p className={styles.noData}>No data yet, kindly check later.</p>
+                )}
 
-            {dailyCount.length > 0 && (
-              <div className={styles.countSection}>
-                <div className={styles.totalRegistered}>
-                  <p className={styles.total}>Total Check-Ins</p>
-                  <p className={styles.count}>
-                    {totalCheckIns}
-                    <span> guests</span>
-                  </p>
-                </div>
-              </div>
-            )}
-
-            <div className={styles.countSection}>
-              {dailyCount.length > 0 &&
-                dailyCount.map((day, index) => (
-                  <div key={index} className={styles.dailyCount}>
-                    <p
-                      style={{
-                        color: day.color,
-                      }}
-                      className={styles.day}
-                    >
-                      {formatDate(day.day, false, true)}
-                    </p>
-                    <p className={styles.dcount}>
-                      {day.count} <span>guests</span>
-                    </p>
-                  </div>
-                ))}
-            </div>
-          </div>
-          {barData && barData.datasets.length > 0 && barData.datasets[0].data.length > 0 && (
-            <div className={styles.todayRegistered}>
-              <div className={styles.graphContainer}>
-                <>
-                  <Bar options={doughnutOption} data={barData} />
-                  <div className={styles.totalRegistered}>
-                    <p className={styles.total}>
-                      Top Category: {findDistrictWithMostNumber()?.district}&nbsp;
-                      <span>
-                        ({findDistrictWithMostNumber()?.value} <span>guests</span>)
-                      </span>
-                    </p>
-                  </div>
-                </>
-              </div>
-
-              <div className={styles.districtsCount}>
-                <div className={styles.scrollContainerr}>
-                  {Object.keys(districtData).map((key, index) => (
-                    <div key={index} className={styles.district} style={{ color: colors[index] }}>
-                      {key}: {districtData[key]}
+                {dailyCount.length > 0 && (
+                  <div className={styles.countSection}>
+                    <div className={styles.totalRegistered}>
+                      <p className={styles.total}>Total Check-Ins</p>
+                      <p className={styles.count}>
+                        {totalCheckIns}
+                        <span> guests</span>
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+                  </div>
+                )}
 
-        {guests && guests.length > 0 && (
-          <div className={styles.insightsContainer}>
-            <div
-              style={{
-                borderRadius: '12px',
-              }}
-              className={styles.pageVisitsCount}
-            >
-              <div className={styles.checkInHeader}>
-                <p className={styles.header}>Recent Check-Ins</p>
-                <div className='row'>
-                  <SecondaryButton
-                    onClick={() => {
-                      setShowWelcome(() => !showWelcome);
-                    }}
-                    buttonText={showWelcome ? 'Hide Card' : 'Show Card'}
-                  />
-                  <SecondaryButton
-                    onClick={() => {
-                      setRoomNumber({ ...roomNumber, showModel: true });
-                    }}
-                    buttonText={
-                      roomNumber.roomNumber
-                        ? `Room Number: ${roomNumber.roomNumber}`
-                        : 'Add Room Number'
-                    }
-                  />
+                <div className={styles.countSection}>
+                  {dailyCount.length > 0 &&
+                    dailyCount.map((day, index) => (
+                      <div key={index} className={styles.dailyCount}>
+                        <p
+                          style={{
+                            color: day.color,
+                          }}
+                          className={styles.day}
+                        >
+                          {formatDate(day.day, false, true)}
+                        </p>
+                        <p className={styles.dcount}>
+                          {day.count} <span>guests</span>
+                        </p>
+                      </div>
+                    ))}
                 </div>
               </div>
-              <div className={styles.countSection}>
-                <div className={styles.usersContainer}>
-                  {guests.map((guest, index) => (
-                    <div
-                      key={index}
-                      className={styles.user}
-                      style={
-                        index === 0
-                          ? {
-                              background: 'rgba(31, 185, 31, 0.1)',
-                            }
-                          : {
-                              border: '1px solid rgba(255, 255, 255, 0.04)',
-                              background: 'rgba(255, 255, 255, 0.04)',
-                            }
-                      }
-                    >
-                      <p className={styles.cuserName}>{guest.name}</p>
+              {barData && barData.datasets.length > 0 && barData.datasets[0].data.length > 0 && (
+                <div className={styles.todayRegistered}>
+                  <div className={styles.graphContainer}>
+                    <>
+                      <Bar options={doughnutOption} data={barData} />
+                      <div className={styles.totalRegistered}>
+                        <p className={styles.total}>
+                          Top Category: {findDistrictWithMostNumber()?.district}&nbsp;
+                          <span>
+                            ({findDistrictWithMostNumber()?.value} <span>guests</span>)
+                          </span>
+                        </p>
+                      </div>
+                    </>
+                  </div>
+
+                  <div className={styles.districtsCount}>
+                    <div className={styles.scrollContainerr}>
+                      {Object.keys(districtData).map((key, index) => (
+                        <div
+                          key={index}
+                          className={styles.district}
+                          style={{ color: colors[index] }}
+                        >
+                          {key}: {districtData[key]}
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {guests && guests.length > 0 && (
+              <div className={styles.insightsContainer}>
+                <div
+                  style={{
+                    borderRadius: '12px',
+                  }}
+                  className={styles.pageVisitsCount}
+                >
+                  <div className={styles.checkInHeader}>
+                    <p className={styles.header}>Recent Check-Ins</p>
+                    <div className='row'>
+                      <SecondaryButton
+                        onClick={() => {
+                          setShowWelcome(() => !showWelcome);
+                        }}
+                        buttonText={showWelcome ? 'Hide Card' : 'Show Card'}
+                      />
+                      <SecondaryButton
+                        onClick={() => {
+                          setRoomNumber({ ...roomNumber, showModel: true });
+                        }}
+                        buttonText={
+                          roomNumber.roomNumber
+                            ? `Room Number: ${roomNumber.roomNumber}`
+                            : 'Add Room Number'
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.countSection}>
+                    <div className={styles.usersContainer}>
+                      {guests.map((guest, index) => (
+                        <div
+                          key={index}
+                          className={styles.user}
+                          style={
+                            index === 0
+                              ? {
+                                  background: 'rgba(31, 185, 31, 0.1)',
+                                }
+                              : {
+                                  border: '1px solid rgba(255, 255, 255, 0.04)',
+                                  background: 'rgba(255, 255, 255, 0.04)',
+                                }
+                          }
+                        >
+                          <p className={styles.cuserName}>{guest.name}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            )}
+          </>
         )}
       </DashboardLayout>
     </Theme>
