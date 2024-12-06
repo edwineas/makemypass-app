@@ -160,6 +160,8 @@ const Guests = () => {
     } else {
       if (selectedGuestId.type === 'edit' || selectedGuestId.type === 'view') {
         getGuestData();
+      } else if (selectedGuestId.type === 'downloadInvoice') {
+        navigate(`/${eventTitle}/view-invoice/${selectedGuestId.id}`);
       } else if (selectedGuestId.type === 'download' && !isArray(selectedGuestId.id)) {
         if (selectedGuestId.id) {
           navigate(`/${eventTitle}/view-ticket/${selectedGuestId.id}`);

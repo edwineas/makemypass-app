@@ -4,6 +4,7 @@ import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-d
 import { TillRoles } from '../services/enums';
 import RoleChecker from '../services/RoleChecker';
 import AuthCheck from './components/AuthCheck/AuthCheck';
+import ViewInvoice from './components/ViewInvoice/ViewInvoice';
 import ViewTicket from './components/ViewTicket/ViewTicket';
 import Chat from './pages/app/Chat/Chat';
 import CheckIns from './pages/app/CheckIns/CheckIns';
@@ -60,6 +61,10 @@ const routes: RouteObject[] = [
   {
     path: '/:eventTitle/view-ticket/:eventRegistrationId',
     element: <ViewTicket />,
+  },
+  {
+    path: '/:eventTitle/view-invoice/:eventRegistrationId',
+    element: <ViewInvoice />,
   },
   {
     path: '/termsandconditions',
