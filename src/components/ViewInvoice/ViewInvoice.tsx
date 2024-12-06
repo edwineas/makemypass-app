@@ -62,21 +62,13 @@ const ViewInvoice = () => {
             />
           )}
         </div>
-        <div className={styles.InvoiceDisplayContainer}>
+        <div className={styles.invoiceContainer}>
           {loading ? (
             <HashLoader color={'#46BF75'} size={50} />
           ) : invoiceUrl.length > 0 ? (
             <>
               {/* <PdfPreview fileUrl={invoiceUrl} /> */}
-              <div className={styles.InvoiceDisplayContainer}>
-                <embed
-                  src={invoiceUrl}
-                  type='application/pdf'
-                  width='90%'
-                  height='100%'
-                  style={{ border: 'none', borderRadius: '10px' }}
-                />
-              </div>
+              <iframe src={invoiceUrl} width='100%' height='100%' className={styles.invoiceImage} />
               <div className={styles.row}>
                 <button
                   onClick={async () => {
