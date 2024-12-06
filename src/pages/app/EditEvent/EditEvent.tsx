@@ -504,6 +504,7 @@ const EditEvent = () => {
                       onChange={() =>
                         setEventData({
                           ...eventData,
+                          confirmation_fields: [],
                           checkin_confirmation_required: !eventData.checkin_confirmation_required,
                         })
                       }
@@ -518,6 +519,7 @@ const EditEvent = () => {
                       height: eventData.checkin_confirmation_required ? 'auto' : 0,
                     }}
                     exit={{ opacity: 0, y: -10 }}
+                    style={{ paddingLeft: '1rem' }}
                     // transition={{ duration: 0.3 }}
                   >
                     <p className={styles.label}>Select Confirmation Fields</p>
