@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { Dispatch, useEffect, useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 import { BsTicketPerforatedFill } from 'react-icons/bs';
-import { FaEdit, FaMailBulk, FaTrash, FaWalking } from 'react-icons/fa';
+import { FaEdit, FaFileInvoiceDollar, FaMailBulk, FaTrash, FaWalking } from 'react-icons/fa';
 import { FaCheck } from 'react-icons/fa6';
 import { MdDownload, MdMail, MdRemove } from 'react-icons/md';
 import { HashLoader } from 'react-spinners';
@@ -513,6 +513,23 @@ const ViewGuest = ({
                     <MdDownload size={20} color='#8E8E8E' />
                     <span>View Ticket</span>
                   </div>
+                  {Number(selectedGuestData['amount']) > 0 && (
+                    <div
+                      className={styles.icon}
+                      onClick={() => {
+                        if (setSelectedGuestId) {
+                          setSelectedGuestId((prevState) => ({
+                            ...prevState,
+                            id: selectedGuestData['id'].toString(),
+                            type: 'downloadInvoice',
+                          }));
+                        }
+                      }}
+                    >
+                      <FaFileInvoiceDollar size={20} color='#8E8E8E' />
+                      <span>View Invoice</span>
+                    </div>
+                  )}
                   {selectedGuestData['is_checked_in'] && selectedGuestData['has_venues'] && (
                     <div
                       className={styles.icon}

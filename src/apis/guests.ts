@@ -147,6 +147,25 @@ export const viewGuestTicket = async (
     });
 };
 
+export const viewGuestInvoice = async (
+  eventId: string,
+  eventRegisterId: string,
+  setInvoiceUrl: Dispatch<React.SetStateAction<string>>,
+  setLoading?: Dispatch<React.SetStateAction<boolean>>,
+) => {
+  publicGateway
+    .get(makeMyPass.guestDownloadInvoice(eventId, eventRegisterId))
+    .then((response) => {
+      setInvoiceUrl(response.data.response.invoice_url);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Something went wrong');
+    })
+    .finally(() => {
+      setLoading && setLoading(false);
+    });
+};
+
 export const downloadRegisterCSVData = async (
   eventId: string,
   showCheckedInOnly: boolean,

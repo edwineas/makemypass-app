@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { privateGateway } from '../../services/apiGateway';
 import { makeMyPass } from '../../services/urls';
 import { formatDate } from '../common/commonFunctions';
-import { TicketPerkType } from '../pages/app/CheckIns/pages/Perks/types';
+import { ClaimPerkModalType, TicketPerkType } from '../pages/app/CheckIns/pages/Perks/types';
 import { LogType } from '../pages/app/CheckIns/pages/Venue/Venue';
 
 export const getScanPerkList = async (
@@ -29,17 +29,21 @@ export const claimUserPerk = async (
   setChecking: Dispatch<SetStateAction<boolean>>,
   setTrigger: Dispatch<SetStateAction<boolean>>,
   setExhaustHistory: Dispatch<SetStateAction<string[]>>,
-  setPerkClaimModal: Dispatch<SetStateAction<boolean>>,
+  setClaimPerkSuccessModal: Dispatch<SetStateAction<boolean>>,
+  setClaimPerkModal: Dispatch<SetStateAction<ClaimPerkModalType | undefined>>,
+  confirmation: boolean,
+  setConfirmation: Dispatch<SetStateAction<boolean>>,
 ) => {
   privateGateway
     .post(makeMyPass.scanGuestPerkClaim(eventId), {
       ticket_code: ticketId,
       perk_id: perkId,
+      ...(confirmation ? { confirmation: true } : {}),
     })
     .then((response) => {
       setChecking(false);
       setTrigger(false);
-      setPerkClaimModal(true);
+      setClaimPerkSuccessModal(true);
       if (setScanLogs)
         setScanLogs((prev) => [
           ...prev,
@@ -52,6 +56,15 @@ export const claimUserPerk = async (
       toast.success(response.data.response.message);
     })
     .catch((error) => {
+      if (error.response.data.statusCode === 1101 && error.response.status === 400) {
+        setClaimPerkModal({
+          open: true,
+          user_data: error.response.data.response.user_data,
+        });
+        setChecking(false);
+        setTrigger(false);
+        return;
+      }
       setChecking(false);
       setTrigger(false);
       if (setScanLogs)
@@ -77,5 +90,8 @@ export const claimUserPerk = async (
         setExhaustHistory(error.response.data.response.history);
       }
       toast.error(error.response.data.message.general[0]);
+    })
+    .finally(() => {
+      confirmation && setConfirmation(false);
     });
 };
