@@ -504,6 +504,7 @@ const EditEvent = () => {
                       onChange={() =>
                         setEventData({
                           ...eventData,
+                          confirmation_fields: [],
                           checkin_confirmation_required: !eventData.checkin_confirmation_required,
                         })
                       }
