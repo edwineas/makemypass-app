@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { MdDelete } from 'react-icons/md';
+import { TbAlertTriangleFilled } from 'react-icons/tb';
 import { useNavigate } from 'react-router';
+import { BeatLoader } from 'react-spinners';
 
 import {
   createNewSubEvent,
@@ -85,6 +87,7 @@ const Dashboard = () => {
   const [currentSelectType, setCurrentSelectType] = useState<string>('');
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
   const [limitCapacity, setLimitCapacity] = useState<boolean>(true);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const eventId = JSON.parse(sessionStorage.getItem('eventData')!).event_id;
   useEffect(() => {
     listDashboardSubEvents(eventId, setSubEvents);
@@ -118,6 +121,13 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSelectType]);
 
+  useEffect(() => {
+    if (selectedSubEventId && currentSelectType !== 'edit') {
+      getSubEventData(eventId, selectedSubEventId, setSelectedSubEvent, setLimitCapacity);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubEventId]);
+
   const groupedSubEvents = groupSubEventsByDateAndTime(subEvents);
 
   const handleSubmit = () => {
@@ -145,8 +155,15 @@ const Dashboard = () => {
   };
 
   const handleDelete = () => {
-    if (selectedSubEvent && selectedSubEvent.id)
-      deleteSubEvent(eventId, selectedSubEvent.id, setSubEvents);
+    if (selectedSubEvent && selectedSubEvent.id) {
+      setIsDeleting(true);
+      deleteSubEvent(eventId, selectedSubEvent.id, setSubEvents).then(() => {
+        setShowDeleteConfirmation(false);
+        setIsDeleting(false);
+        setCurrentSelectType('');
+        setSelectedSubEventId('');
+      });
+    }
   };
 
   const navigate = useNavigate();
@@ -358,12 +375,15 @@ const Dashboard = () => {
         {showDeleteConfirmation && (
           <Modal title='Delete Sub Event' onClose={() => setShowDeleteConfirmation(false)}>
             <div className={styles.modalContent}>
-              <p className={styles.deleteConfirmationText}>
-                Are you sure you want to delete the sub event?
+              <TbAlertTriangleFilled size={30} color='#f04b4b' className={styles.limitationIcon} />
+              <p className={styles.deleteConfirmationText}>Are you sure you want to Delete?</p>
+              <p className={styles.modalSubText}>
+                This action cannot be undone. This will permanently delete the event and all
+                associated data.
               </p>
               <div className={styles.deleteConfirmationButtons}>
                 <button className={styles.deleteButton} onClick={handleDelete}>
-                  Delete
+                  {isDeleting ? <BeatLoader color='#1d1d1d' size={8} /> : 'Delete'}
                 </button>
                 <button
                   className={styles.cancelButton}
