@@ -67,6 +67,7 @@ export const claimUserPerk = async (
         setTrigger(false);
         return;
       }
+      setTicketId('');
       setChecking(false);
       setTrigger(false);
       if (setScanLogs)
@@ -92,7 +93,6 @@ export const claimUserPerk = async (
         setExhaustHistory(error.response.data.response.history);
       }
       toast.error(error.response.data.message.general[0]);
-      setTicketId('');
     })
     .finally(() => {
       confirmation && setConfirmation(false);
