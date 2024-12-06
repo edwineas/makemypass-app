@@ -33,6 +33,7 @@ export const claimUserPerk = async (
   setClaimPerkModal: Dispatch<SetStateAction<ClaimPerkModalType | undefined>>,
   confirmation: boolean,
   setConfirmation: Dispatch<SetStateAction<boolean>>,
+  setTicketId: Dispatch<SetStateAction<string>>,
 ) => {
   privateGateway
     .post(makeMyPass.scanGuestPerkClaim(eventId), {
@@ -54,6 +55,7 @@ export const claimUserPerk = async (
           },
         ]);
       toast.success(response.data.response.message);
+      setTicketId('');
     })
     .catch((error) => {
       if (error.response.data.statusCode === 1101 && error.response.status === 400) {
@@ -90,6 +92,7 @@ export const claimUserPerk = async (
         setExhaustHistory(error.response.data.response.history);
       }
       toast.error(error.response.data.message.general[0]);
+      setTicketId('');
     })
     .finally(() => {
       confirmation && setConfirmation(false);
