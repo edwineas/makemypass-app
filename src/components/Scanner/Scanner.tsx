@@ -36,14 +36,16 @@ const Scanner = ({
       <div className={styles.scannerOuterContainer}>
         <div className={styles.scanner}>
           <div className={styles.closeButton}>
-            <SecondaryButton
-              buttonText={`${roomNumber?.roomNumber ? `Room: ${roomNumber.roomNumber}` : 'Set Room'}`}
-              onClick={() => {
-                if (setRoomNumber && roomNumber) {
-                  setRoomNumber({ ...roomNumber, showModel: true });
-                }
-              }}
-            />
+            {setRoomNumber && (
+              <SecondaryButton
+                buttonText={`${roomNumber?.roomNumber ? `Room: ${roomNumber.roomNumber}` : 'Set Room'}`}
+                onClick={() => {
+                  if (setRoomNumber && roomNumber) {
+                    setRoomNumber({ ...roomNumber, showModel: true });
+                  }
+                }}
+              />
+            )}
             <SecondaryButton
               buttonText='Close'
               onClick={() => {

@@ -50,6 +50,7 @@ const Perks = () => {
         setClaimPerkModal,
         confirmation,
         setConfirmation,
+        setTicketId,
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
