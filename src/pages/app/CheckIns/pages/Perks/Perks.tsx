@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { GiPartyPopper } from 'react-icons/gi';
 
 import { claimUserPerk, getScanPerkList } from '../../../../../apis/perks';
 import { formatDate } from '../../../../../common/commonFunctions';
@@ -25,7 +26,7 @@ const Perks = () => {
   });
   const [ticketId, setTicketId] = useState<string>('');
   const [trigger, setTrigger] = useState(false);
-
+  const [claimPerkSuccessModal, setClaimPerkSuccessModal] = useState<boolean>(false);
   const [checking, setChecking] = useState<boolean>(false);
   const [scanLogs, setScanLogs] = useState<LogType[]>([]);
   const [exhaustHistory, setExhaustHistory] = useState<string[]>([]);
@@ -44,6 +45,7 @@ const Perks = () => {
         setChecking,
         setTrigger,
         setExhaustHistory,
+        setClaimPerkSuccessModal,
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,6 +66,16 @@ const Perks = () => {
                   >{`${index + 1}. ${formatDate(history, true)}`}</p>
                 </div>
               ))}
+            </div>
+          </Modal>
+        )}
+        {claimPerkSuccessModal && (
+          <Modal title='Success' onClose={() => setClaimPerkSuccessModal(false)}>
+            <div className={styles.modalContainer}>
+              <p className={styles.modalHeading}>
+                Perk Claimed <GiPartyPopper />{' '}
+              </p>
+              <p className={styles.modalDescription}>You have successfully claimed the perk</p>
             </div>
           </Modal>
         )}

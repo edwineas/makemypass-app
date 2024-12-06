@@ -29,6 +29,7 @@ export const claimUserPerk = async (
   setChecking: Dispatch<SetStateAction<boolean>>,
   setTrigger: Dispatch<SetStateAction<boolean>>,
   setExhaustHistory: Dispatch<SetStateAction<string[]>>,
+  setPerkClaimModal: Dispatch<SetStateAction<boolean>>,
 ) => {
   privateGateway
     .post(makeMyPass.scanGuestPerkClaim(eventId), {
@@ -38,6 +39,7 @@ export const claimUserPerk = async (
     .then((response) => {
       setChecking(false);
       setTrigger(false);
+      setPerkClaimModal(true);
       if (setScanLogs)
         setScanLogs((prev) => [
           ...prev,
