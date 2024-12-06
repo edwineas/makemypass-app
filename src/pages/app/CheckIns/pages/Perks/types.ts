@@ -9,3 +9,13 @@ export interface TicketPerkType {
   ticket_name: string;
   perks: Perk[];
 }
+
+export interface ClaimPerkModalType {
+  open: boolean;
+  user_data: {
+    field_key: string;
+    value: string;
+    title: string;
+    type: string;
+  }[];
+}
