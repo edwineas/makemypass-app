@@ -11,9 +11,17 @@
   border-radius: 40px;
   max-width: -webkit-fill-available;
   max-height: -webkit-fill-available;
+  /* height: 100%; */
   object-fit: contain;
   padding: 2rem;
-  max-width: 18rem;
+  max-width: 75%;
+}
+
+@media screen and (max-width: 768px) {
+  .ticketImage {
+    max-width: 100%;
+  }
+
 }
 
 .noTicketFound {

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 import { HashLoader } from 'react-spinners';
@@ -128,9 +129,28 @@ const EventLogs = () => {
                     {mail.id == selectedMailLog.id && selectedMailLog.body.length > 0 && (
                       <>
                         <hr className={styles.line} />
-                        <div className={styles.mailContent}>
+                        <motion.div
+                          className={styles.mailContent}
+                          layout
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{
+                            opacity:
+                              mail.id == selectedMailLog.id && selectedMailLog.body.length > 0
+                                ? 1
+                                : 0,
+                            height:
+                              mail.id == selectedMailLog.id && selectedMailLog.body.length > 0
+                                ? 'auto'
+                                : 0,
+                          }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          style={{
+                            overflow: 'hidden',
+                          }}
+                        >
                           <pre> {selectedMailLog.body}</pre>
-                        </div>
+                        </motion.div>
                       </>
                     )}
                   </div>

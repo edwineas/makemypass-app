@@ -264,6 +264,8 @@
   opacity: 0.9;
   font-size: 0.7rem;
   margin-bottom: 0.5rem;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
 }
 
 .manage {

@@ -62,6 +62,9 @@ export const makeMyPass = {
     makeMyPassURL(`/manage-guest/${eventId}/guest/${submissionId}/edit/`), //Till Volunteer
   guestDownloadTicket: (eventId: string, eventRegisterId: string) =>
     makeMyPassURL(`/manage-guest/${eventId}/guest/${eventRegisterId}/download-ticket/`), //Till Volunteer
+  guestDownloadInvoice: (eventId: string, eventRegisterId: string) =>
+    makeMyPassURL(`/manage-guest/${eventId}/guest/${eventRegisterId}/download-invoice/`), //Till Volunteer
+
   guestSendInvite: (eventId: string) => makeMyPassURL(`/manage-guest/${eventId}/send-invite/`), //Till Volunteer
   guestShortList: (eventId: string, userId: string) =>
     makeMyPassURL(`/manage-guest/${eventId}/guest/${userId}/shortlist`), //Till Volunteer

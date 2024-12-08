@@ -460,22 +460,6 @@ const EditEvent = () => {
                       }
                     />
                   </div>
-                  <div className={styles.option}>
-                    <label>
-                      <IoCheckmarkDoneOutline size={25} color='#949597' />
-                      Check In Confirmation
-                    </label>
-                    <Slider
-                      checked={eventData.checkin_confirmation_required as boolean}
-                      text={''}
-                      onChange={() =>
-                        setEventData({
-                          ...eventData,
-                          checkin_confirmation_required: !eventData.checkin_confirmation_required,
-                        })
-                      }
-                    />
-                  </div>
 
                   <div className={styles.option}>
                     <label>
@@ -509,7 +493,35 @@ const EditEvent = () => {
                       }
                     />
                   </div>
-                  <div className={styles.optionSelect}>
+                  <div className={styles.option}>
+                    <label>
+                      <IoCheckmarkDoneOutline size={25} color='#949597' />
+                      Check In Confirmation
+                    </label>
+                    <Slider
+                      checked={eventData.checkin_confirmation_required as boolean}
+                      text={''}
+                      onChange={() =>
+                        setEventData({
+                          ...eventData,
+                          confirmation_fields: [],
+                          checkin_confirmation_required: !eventData.checkin_confirmation_required,
+                        })
+                      }
+                    />
+                  </div>
+                  <motion.div
+                    className={styles.optionSelect}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{
+                      opacity: eventData.checkin_confirmation_required ? 1 : 0,
+                      y: eventData.checkin_confirmation_required ? 0 : -10,
+                      height: eventData.checkin_confirmation_required ? 'auto' : 0,
+                    }}
+                    exit={{ opacity: 0, y: -10 }}
+                    style={{ paddingLeft: '1rem' }}
+                    // transition={{ duration: 0.3 }}
+                  >
                     <p className={styles.label}>Select Confirmation Fields</p>
                     <Select
                       options={formKeys.map((key) => ({ value: key, label: key }))}
@@ -534,7 +546,7 @@ const EditEvent = () => {
                       isMulti
                       isSearchable={false}
                     />
-                  </div>
+                  </motion.div>
                   {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
                     <div className={styles.optionSelect}>
                       <p className={styles.label}>Form Verification Settings</p>
