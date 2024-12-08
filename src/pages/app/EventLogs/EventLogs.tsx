@@ -66,10 +66,17 @@ const EventLogs = () => {
                     className={styles.mail}
                     key={index}
                     onClick={() => {
-                      setSelectedMailLog({
-                        id: mail.id,
-                        body: '',
-                      });
+                      if (mail.id == selectedMailLog.id && selectedMailLog.body.length > 0) {
+                        setSelectedMailLog({
+                          id: '',
+                          body: '',
+                        });
+                      } else {
+                        setSelectedMailLog({
+                          id: mail.id,
+                          body: '',
+                        });
+                      }
                     }}
                   >
                     <div className={styles.expandIcon}>
@@ -175,9 +182,9 @@ const EventLogs = () => {
                           style={
                             paginationData.previous === null
                               ? {
-                                  opacity: 0.4,
-                                  cursor: 'not-allowed',
-                                }
+                                opacity: 0.4,
+                                cursor: 'not-allowed',
+                              }
                               : {}
                           }
                         >
@@ -198,9 +205,9 @@ const EventLogs = () => {
                           style={
                             paginationData.next === null
                               ? {
-                                  opacity: 0.4,
-                                  cursor: 'not-allowed',
-                                }
+                                opacity: 0.4,
+                                cursor: 'not-allowed',
+                              }
                               : {}
                           }
                         >
