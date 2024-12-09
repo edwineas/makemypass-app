@@ -26,7 +26,7 @@ const EventBox = ({ eventData }: Props) => {
                   <text x='40%' y='50%' fill='white' className={styles.svgText}>
                     No Banner.
                   </text>
-                  <text x='10%' y='60%' fill='white' className={styles.svgText}>
+                  <text x='7%' y='60%' fill='white' className={styles.svgText}>
                     Please Edit Event Details to add a banner
                   </text>
                 </>
@@ -71,6 +71,7 @@ const EventBox = ({ eventData }: Props) => {
                             minute: '2-digit',
                           })}
                           {', '}
+                          <br />
                           {new Date(eventData?.event_end_date).toLocaleDateString([], {
                             month: 'long',
                             day: 'numeric',
@@ -89,6 +90,7 @@ const EventBox = ({ eventData }: Props) => {
                   <div className={styles.locationBox}>
                     <IoLocationOutline size={25} className={styles.locationIcon} />
                   </div>
+
                   <div className={styles.eventDateTimeText}>
                     <p className={styles.eventDateText}>{eventData?.place}</p>
                   </div>
