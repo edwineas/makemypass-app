@@ -374,7 +374,6 @@ const Coupon = () => {
                         }}
                         value={newCouponData.count ? newCouponData.count.toString() : '0'}
                         error={couponError.count}
-                        disabled={!isUserEditorForEvent()}
                       />
                     </div>
                   )}

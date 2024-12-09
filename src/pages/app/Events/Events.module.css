@@ -421,3 +421,21 @@
 .rightMenuButton:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+.orgContainer {
+  width: 100%;
+  text-align: left;
+}
+
+.orgLabel {
+  color: #a4a4a4;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+.orgNote {
+  color: #a4a4a4;
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
