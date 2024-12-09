@@ -174,35 +174,43 @@ const Events = () => {
                   }}
                   error={newEvent.error}
                 />
-                <Select
-                  styles={{
-                    ...customStyles,
-                    container: (provided) => ({
-                      ...provided,
-                      width: '100%',
-                    }),
-                  }}
-                  options={[
-                    { value: 'Personal', label: 'Personal' },
-                    ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                  ]}
-                  className='select'
-                  classNamePrefix='select'
-                  placeholder='Select Organization'
-                  value={
-                    selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null
-                  }
-                  onChange={(selectedOption) => {
-                    if (selectedOption && selectedOption.label) {
-                      setNewEvent((prevState) => ({
-                        ...prevState!,
-                        orgId: selectedOption.value,
-                      }));
-                      setSelectedOrgName(selectedOption.label);
-                      localStorage.setItem('orgId', selectedOption.label);
+                <div className={styles.orgContainer}>
+                  <label className={styles.orgLabel}>Organization*</label>
+                  <br />
+                  <label className={styles.orgNote}>
+                    Select Personal if you do not want any organization
+                  </label>
+                  <Select
+                    styles={{
+                      ...customStyles,
+                      container: (provided) => ({
+                        ...provided,
+                        width: '100%',
+                        marginTop: '0.25rem',
+                      }),
+                    }}
+                    options={[
+                      { value: 'Personal', label: 'Personal' },
+                      ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                    ]}
+                    className='select'
+                    classNamePrefix='select'
+                    placeholder='Select Organization'
+                    value={
+                      selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null
                     }
-                  }}
-                />
+                    onChange={(selectedOption) => {
+                      if (selectedOption && selectedOption.label) {
+                        setNewEvent((prevState) => ({
+                          ...prevState!,
+                          orgId: selectedOption.value,
+                        }));
+                        setSelectedOrgName(selectedOption.label);
+                        localStorage.setItem('orgId', selectedOption.label);
+                      }
+                    }}
+                  />
+                </div>
                 {((selectedOrgName === 'Personal' && import.meta.env.VITE_CURRENT_ENV === 'dev') ||
                   isUserAuthorizedForOrganization(TillRoles.ADMIN)) && (
                   <button
