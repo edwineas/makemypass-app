@@ -202,9 +202,9 @@ const EventLogs = () => {
                           style={
                             paginationData.previous === null
                               ? {
-                                opacity: 0.4,
-                                cursor: 'not-allowed',
-                              }
+                                  opacity: 0.4,
+                                  cursor: 'not-allowed',
+                                }
                               : {}
                           }
                         >
@@ -225,9 +225,9 @@ const EventLogs = () => {
                           style={
                             paginationData.next === null
                               ? {
-                                opacity: 0.4,
-                                cursor: 'not-allowed',
-                              }
+                                  opacity: 0.4,
+                                  cursor: 'not-allowed',
+                                }
                               : {}
                           }
                         >

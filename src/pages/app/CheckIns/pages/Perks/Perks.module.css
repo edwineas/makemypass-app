@@ -114,8 +114,6 @@
   margin-bottom: 0.25rem;
 }
 
-
-
 .modalButtons {
   display: flex;
   flex-direction: column;
@@ -128,7 +126,6 @@
   margin-top: 0.5rem;
   width: 100%;
 }
-
 
 .userDataField {
   display: flex;
