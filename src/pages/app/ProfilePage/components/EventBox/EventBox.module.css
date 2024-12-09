@@ -11,6 +11,14 @@
   padding: 1rem;
 }
 
+.svgText {
+  color: #fff;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+
+  font-size: 0.75rem;
+}
+
 .headingTexts {
   display: flex;
   flex-direction: column;

@@ -26,6 +26,17 @@
   column-gap: 1rem;
 }
 
+.publishedEventsContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  row-gap: 1rem;
+  column-gap: 1rem;
+  margin-top: 1rem;
+}
+
 .event {
   display: flex;
   flex-direction: row;
@@ -96,6 +107,7 @@
     max-width: 22rem;
     min-width: 23.85rem;
   }
+
 }
 
 .innerCard {
@@ -300,6 +312,8 @@
   .selectRow {
     justify-content: flex-start;
   }
+
+
 }
 
 .createButton {
@@ -420,4 +434,109 @@
 
 .rightMenuButton:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+.orgContainer {
+  width: 100%;
+  text-align: left;
+}
+
+.orgLabel {
+  color: #a4a4a4;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+.orgNote {
+  color: #a4a4a4;
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+.orgContainer {
+  width: 100%;
+  text-align: left;
+}
+
+.orgLabel {
+  color: #a4a4a4;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+.orgNote {
+  color: #a4a4a4;
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+
+.eventAffiliationButton {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  margin-right: 0.5rem;
+}
+
+.eventAffiliationButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.eventAffiliationButtonSelected {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: rgba(255, 255, 255, 0.3) solid 2px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  margin-right: 0.5rem;
+}
+
+.eventAffiliationButtonSelected:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media screen and (max-width: 872px) {
+  .EventAffiliationContainer {
+    margin-top: 1rem;
+  }
+}
+
+
+.participatedEventButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  position: absolute;
+  bottom: 1rem;
+}
+
+.participantButton {
+
+  width: 6rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #a4a4a4;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  text-align: center;
+  display: flex;
+  column-gap: 0.25rem;
+
+
+
 }

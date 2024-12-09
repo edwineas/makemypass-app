@@ -393,10 +393,6 @@
   z-index: 99999;
 }
 
-li {
-  list-style-type: none;
-}
-
 .customFieldOptionRow,
 .centerRow {
   display: flex;

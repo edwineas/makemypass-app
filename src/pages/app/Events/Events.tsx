@@ -15,6 +15,7 @@ import {
   createEvent,
   getCommonTags,
   getEventsList,
+  getParticipatedEvents,
   setEventInfoLocal,
 } from '../../../apis/events';
 import { listOrgs } from '../../../apis/orgs';
@@ -72,19 +73,27 @@ const Events = () => {
     Draft = 'Draft',
     Completed = 'Completed',
   }
+  enum EventAffiliation {
+    Participated = 'Participated',
+    Organized = 'Organized',
+  }
 
   const [events, setEvents] = useState([] as Event[]);
-  // const [participatedEvents, setParticipatedEvents] = useState([] as Event[]);
+  const [participatedEvents, setParticipatedEvents] = useState([] as Event[]);
+  const [eventAffiliation, setEventAffiliation] = useState(EventAffiliation.Organized);
 
   useEffect(() => {
     getCommonTags(setTags);
     listOrgs(setOrgs, setOrgsLoaded);
-    // getParticipatedEvents(
-    //   localStorage.getItem('username')!,
-    //   setParticipatedEvents,
-    //   setIsDataLoaded,
-    // );
   }, []);
+
+  useEffect(() => {
+    if (eventAffiliation === EventAffiliation.Participated) {
+      getParticipatedEvents(setParticipatedEvents, setIsDataLoaded);
+    } else {
+      getEventsList(setEvents, setIsDataLoaded);
+    }
+  }, [EventAffiliation.Participated, eventAffiliation]);
 
   useEffect(() => {
     if (orgsLoaded) {
@@ -103,6 +112,10 @@ const Events = () => {
     setEventInfoLocal(eventName).then(() => {
       navigate(`/${eventName}/overview/`);
     });
+  };
+
+  const handleViewTicket = (eventName: string, eventRegisterId: string) => {
+    navigate(`/${eventName}/view-ticket/${eventRegisterId}`);
   };
 
   const onModalClose = () => {
@@ -174,35 +187,43 @@ const Events = () => {
                   }}
                   error={newEvent.error}
                 />
-                <Select
-                  styles={{
-                    ...customStyles,
-                    container: (provided) => ({
-                      ...provided,
-                      width: '100%',
-                    }),
-                  }}
-                  options={[
-                    { value: 'Personal', label: 'Personal' },
-                    ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                  ]}
-                  className='select'
-                  classNamePrefix='select'
-                  placeholder='Select Organization'
-                  value={
-                    selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null
-                  }
-                  onChange={(selectedOption) => {
-                    if (selectedOption && selectedOption.label) {
-                      setNewEvent((prevState) => ({
-                        ...prevState!,
-                        orgId: selectedOption.value,
-                      }));
-                      setSelectedOrgName(selectedOption.label);
-                      localStorage.setItem('orgId', selectedOption.label);
+                <div className={styles.orgContainer}>
+                  <label className={styles.orgLabel}>Organization*</label>
+                  <br />
+                  <label className={styles.orgNote}>
+                    Select Personal if you do not want any organization
+                  </label>
+                  <Select
+                    styles={{
+                      ...customStyles,
+                      container: (provided) => ({
+                        ...provided,
+                        width: '100%',
+                        marginTop: '0.25rem',
+                      }),
+                    }}
+                    options={[
+                      { value: 'Personal', label: 'Personal' },
+                      ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                    ]}
+                    className='select'
+                    classNamePrefix='select'
+                    placeholder='Select Organization'
+                    value={
+                      selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null
                     }
-                  }}
-                />
+                    onChange={(selectedOption) => {
+                      if (selectedOption && selectedOption.label) {
+                        setNewEvent((prevState) => ({
+                          ...prevState!,
+                          orgId: selectedOption.value,
+                        }));
+                        setSelectedOrgName(selectedOption.label);
+                        localStorage.setItem('orgId', selectedOption.label);
+                      }
+                    }}
+                  />
+                </div>
                 {((selectedOrgName === 'Personal' && import.meta.env.VITE_CURRENT_ENV === 'dev') ||
                   isUserAuthorizedForOrganization(TillRoles.ADMIN)) && (
                   <button
@@ -360,176 +381,327 @@ const Events = () => {
                 )}
               </div>
             </div>
-
-            {Object.values(EventStatus).map((status) => {
-              return (
-                <div key={status}>
-                  <div
-                    className='row'
-                    style={{
-                      justifyContent: 'space-between',
+            <div className={styles.EventAffiliationContainer}>
+              {Object.values(EventAffiliation).map((event) => {
+                return (
+                  <button
+                    key={event}
+                    className={
+                      eventAffiliation === event
+                        ? styles.eventAffiliationButtonSelected
+                        : styles.eventAffiliationButton
+                    }
+                    onClick={() => {
+                      if (event == eventAffiliation) return;
+                      setEventAffiliation(event);
+                      setIsDataLoaded(false);
                     }}
                   >
-                    <motion.p
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className={styles.homeHeader}
-                    >
-                      {events.filter(
-                        (event) =>
-                          event.status === status &&
-                          (selectedTags.length === 0 ||
-                            event.tags.some((tag) => selectedTags.includes(tag))) &&
-                          event.title.toLowerCase().includes(searchTerm.toLowerCase()),
-                      ).length > 0
-                        ? `${status} Events (${
-                            events.filter(
-                              (event) =>
-                                event.status === status &&
-                                (selectedTags.length === 0 ||
-                                  event.tags.some((tag) => selectedTags.includes(tag))) &&
-                                event.title.toLowerCase().includes(searchTerm.toLowerCase()),
-                            ).length
-                          })`
-                        : ''}
-                    </motion.p>
-                  </div>
+                    {event}
+                  </button>
+                );
+              })}
+            </div>
+            {eventAffiliation == EventAffiliation.Organized ? (
+              <>
+                {Object.values(EventStatus).map((status) => {
+                  return (
+                    <div key={status}>
+                      <div
+                        className='row'
+                        style={{
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <motion.p
+                          initial={{ opacity: 0, y: 50 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className={styles.homeHeader}
+                        >
+                          {events.filter(
+                            (event) =>
+                              event.status === status &&
+                              (selectedTags.length === 0 ||
+                                event.tags.some((tag) => selectedTags.includes(tag))) &&
+                              event.title.toLowerCase().includes(searchTerm.toLowerCase()),
+                          ).length > 0
+                            ? `${status} Events (${
+                                events.filter(
+                                  (event) =>
+                                    event.status === status &&
+                                    (selectedTags.length === 0 ||
+                                      event.tags.some((tag) => selectedTags.includes(tag))) &&
+                                    event.title.toLowerCase().includes(searchTerm.toLowerCase()),
+                                ).length
+                              })`
+                            : ''}
+                        </motion.p>
+                      </div>
 
-                  <div className={styles.eventsContainer}>
-                    {events
-                      .filter(
-                        (event) =>
-                          event.status === status &&
-                          (selectedTags.length === 0 ||
-                            event.tags.some((tag) => selectedTags.includes(tag))) &&
-                          event.title.toLowerCase().includes(searchTerm.toLowerCase()),
-                      )
-                      .map((event) => (
-                        <div key={event.id} className={styles.event}>
-                          <div>
-                            <motion.div
-                              initial={{ opacity: 0, y: 50 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.5 }}
-                              className={styles.eventCard}
-                              onClick={() => {
-                                handleClick(event.name);
-                              }}
-                            >
-                              <div className={styles.innerCard}>
-                                {event.logo ? (
-                                  <motion.img
-                                    initial={{ opacity: 0, y: 50 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5 }}
-                                    src={event.logo}
-                                    alt='event logo depicting event information'
-                                    className={styles.eventImage}
-                                  />
-                                ) : (
-                                  <div className={styles.eventImage}>
-                                    {event.title.charAt(0).toUpperCase()}
-                                  </div>
-                                )}
-                                <div className={styles.eventDetails}>
-                                  <div className={styles.eventDetailsHeader}>
-                                    <div>
-                                      {event.event_start_date && (
-                                        <motion.div className={styles.eventDate}>
-                                          <p className={styles.date}>
-                                            {formatDate(event?.event_start_date)}
-                                          </p>
-                                        </motion.div>
-                                      )}
-                                      <p className={styles.eventName}>
-                                        {event.title.substring(0, 35)}
-                                        {event.title.length > 35 ? '...' : ''}
-                                      </p>
-                                    </div>
-                                    <div className={styles.absoluteButtons}>
-                                      {event.tags.length > 0 && (
-                                        <div className={styles.tagsButton}>
-                                          <FaTags
-                                            color='#ffffff'
-                                            className='pointer'
-                                            title={
-                                              event.tags.length > 0 ? event.tags.join(', ') : ''
-                                            }
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                            }}
-                                          />
-                                        </div>
-                                      )}
-
-                                      <div className={styles.rightMenuButton}>
-                                        <BsThreeDots
-                                          onClick={(
-                                            eventClick: React.MouseEvent<SVGElement, MouseEvent>,
-                                          ) => {
-                                            eventClick.stopPropagation();
-                                            handleButtonClick(eventClick);
-                                            setDuplicateEventId(event?.id);
-                                          }}
-                                          size={15}
-                                          color='#ffffff'
-                                          className='pointer'
-                                          style={{
-                                            zIndex: 10,
-                                          }}
-                                        />
+                      <div className={styles.eventsContainer}>
+                        {events
+                          .filter(
+                            (event) =>
+                              event.status === status &&
+                              (selectedTags.length === 0 ||
+                                event.tags.some((tag) => selectedTags.includes(tag))) &&
+                              event.title.toLowerCase().includes(searchTerm.toLowerCase()),
+                          )
+                          .map((event) => (
+                            <div key={event.id} className={styles.event}>
+                              <div>
+                                <motion.div
+                                  initial={{ opacity: 0, y: 50 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.5 }}
+                                  className={styles.eventCard}
+                                  onClick={() => {
+                                    handleClick(event.name);
+                                  }}
+                                >
+                                  <div className={styles.innerCard}>
+                                    {event.logo ? (
+                                      <motion.img
+                                        initial={{ opacity: 0, y: 50 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5 }}
+                                        src={event.logo}
+                                        alt='event logo depicting event information'
+                                        className={styles.eventImage}
+                                      />
+                                    ) : (
+                                      <div className={styles.eventImage}>
+                                        {event.title.charAt(0).toUpperCase()}
                                       </div>
+                                    )}
+                                    <div className={styles.eventDetails}>
+                                      <div className={styles.eventDetailsHeader}>
+                                        <div>
+                                          {event.event_start_date && (
+                                            <motion.div className={styles.eventDate}>
+                                              <p className={styles.date}>
+                                                {formatDate(event?.event_start_date)}
+                                              </p>
+                                            </motion.div>
+                                          )}
+                                          <p className={styles.eventName}>
+                                            {event.title.substring(0, 35)}
+                                            {event.title.length > 35 ? '...' : ''}
+                                          </p>
+                                        </div>
+                                        <div className={styles.absoluteButtons}>
+                                          {event.tags.length > 0 && (
+                                            <div className={styles.tagsButton}>
+                                              <FaTags
+                                                color='#ffffff'
+                                                className='pointer'
+                                                title={
+                                                  event.tags.length > 0 ? event.tags.join(', ') : ''
+                                                }
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                }}
+                                              />
+                                            </div>
+                                          )}
+
+                                          <div className={styles.rightMenuButton}>
+                                            <BsThreeDots
+                                              onClick={(
+                                                eventClick: React.MouseEvent<
+                                                  SVGElement,
+                                                  MouseEvent
+                                                >,
+                                              ) => {
+                                                eventClick.stopPropagation();
+                                                handleButtonClick(eventClick);
+                                                setDuplicateEventId(event?.id);
+                                              }}
+                                              size={15}
+                                              color='#ffffff'
+                                              className='pointer'
+                                              style={{
+                                                zIndex: 10,
+                                              }}
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {isMenuOpen && duplicateEventId == event.id && (
+                                        <RightClickMenu
+                                          isOpen={isMenuOpen}
+                                          position={menuPosition}
+                                          onClose={handleMenuClose}
+                                          setShowModal={setShowModal}
+                                        />
+                                      )}
+                                      <p className={styles.eventGuests}>
+                                        <span>
+                                          <GoPeople color='a4a4a4' />
+                                        </span>
+                                        {event.members} guests
+                                      </p>
+
+                                      <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        className={styles.manage}
+                                        onClick={() => {
+                                          handleClick(event.name);
+                                        }}
+                                      >
+                                        Manage
+                                        <BsArrowRight size={15} />
+                                      </motion.button>
                                     </div>
                                   </div>
-                                  {isMenuOpen && duplicateEventId == event.id && (
-                                    <RightClickMenu
-                                      isOpen={isMenuOpen}
-                                      position={menuPosition}
-                                      onClose={handleMenuClose}
-                                      setShowModal={setShowModal}
-                                    />
-                                  )}
-                                  <p className={styles.eventGuests}>
-                                    <span>
-                                      <GoPeople color='a4a4a4' />
-                                    </span>
-                                    {event.members} guests
-                                  </p>
-
-                                  <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    className={styles.manage}
-                                    onClick={() => {
-                                      handleClick(event.name);
-                                    }}
-                                  >
-                                    Manage
-                                    <BsArrowRight size={15} />
-                                  </motion.button>
-                                </div>
+                                </motion.div>
                               </div>
-                            </motion.div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <div className={styles.publishedEventsContainer}>
+                {' '}
+                {participatedEvents
+                  .filter((event) => event.title.toLowerCase().includes(searchTerm.toLowerCase()))
+                  .map((event) => (
+                    <div key={event.id} className={styles.event}>
+                      <div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 50 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className={styles.eventCard}
+                          onClick={() => {
+                            handleClick(event.name);
+                          }}
+                        >
+                          <div className={styles.innerCard}>
+                            {event.logo ? (
+                              <motion.img
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5 }}
+                                src={event.logo}
+                                alt='event logo depicting event information'
+                                className={styles.eventImage}
+                              />
+                            ) : (
+                              <div className={styles.eventImage}>
+                                {event.title.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                            <div className={styles.eventDetails}>
+                              <div className={styles.eventDetailsHeader}>
+                                <div>
+                                  {event.event_start_date && (
+                                    <motion.div className={styles.eventDate}>
+                                      <p className={styles.date}>
+                                        {formatDate(event?.event_start_date)}
+                                      </p>
+                                    </motion.div>
+                                  )}
+                                  <p className={styles.eventName}>
+                                    {event.title.substring(0, 35)}
+                                    {event.title.length > 35 ? '...' : ''}
+                                  </p>
+                                </div>
+                                {/* <div className={styles.absoluteButtons}>
+                                  {event.tags.length > 0 && (
+                                    <div className={styles.tagsButton}>
+                                      <FaTags
+                                        color='#ffffff'
+                                        className='pointer'
+                                        title={event.tags.length > 0 ? event.tags.join(', ') : ''}
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                        }}
+                                      />
+                                    </div>
+                                  )}
+
+                                  <div className={styles.rightMenuButton}>
+                                    <BsThreeDots
+                                      onClick={(
+                                        eventClick: React.MouseEvent<SVGElement, MouseEvent>,
+                                      ) => {
+                                        eventClick.stopPropagation();
+                                        handleButtonClick(eventClick);
+                                        setDuplicateEventId(event?.id);
+                                      }}
+                                      size={15}
+                                      color='#ffffff'
+                                      className='pointer'
+                                      style={{
+                                        zIndex: 10,
+                                      }}
+                                    />
+                                  </div>
+                                </div> */}
+                              </div>
+                              {isMenuOpen && duplicateEventId == event.id && (
+                                <RightClickMenu
+                                  isOpen={isMenuOpen}
+                                  position={menuPosition}
+                                  onClose={handleMenuClose}
+                                  setShowModal={setShowModal}
+                                />
+                              )}
+                              <div className={styles.participatedEventButtons}>
+                                <motion.button
+                                  whileHover={{ scale: 1.05 }}
+                                  className={styles.participantButton}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleViewTicket(event.name, event.event_register_id as string);
+                                  }}
+                                >
+                                  View Ticket
+                                  {/* <BsArrowRight size={15} /> */}
+                                </motion.button>
+
+                                <motion.button
+                                  whileHover={{ scale: 1.05 }}
+                                  className={styles.participantButton}
+                                  onClick={() => {
+                                    handleClick(event.name);
+                                  }}
+                                >
+                                  More Info
+                                  <BsArrowRight size={15} />
+                                </motion.button>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              );
-            })}
-            {Object.values(events).length === 0 && isDataLoaded && (
-              <div className={styles.noEventsContainer}>
-                <p className={styles.noEvents}>
-                  You don't have any events yet. Please connect with our sales team to get started.
-                </p>
-                <SecondaryButton
-                  buttonText='Contact Sales'
-                  onClick={() => {
-                    window.open('https://wa.me/916238450178', '_blank');
-                  }}
-                />
+                        </motion.div>
+                      </div>
+                    </div>
+                  ))}
               </div>
             )}
+
+            {((Array(events).length === 0 && eventAffiliation == EventAffiliation.Organized) ||
+              (Array(participatedEvents).length === 0 &&
+                eventAffiliation == EventAffiliation.Participated)) &&
+              isDataLoaded && (
+                <div className={styles.noEventsContainer}>
+                  <p className={styles.noEvents}>
+                    You don't have any events yet. Please connect with our sales team to get
+                    started.
+                  </p>
+                  <SecondaryButton
+                    buttonText='Contact Sales'
+                    onClick={() => {
+                      window.open('https://wa.me/916238450178', '_blank');
+                    }}
+                  />
+                </div>
+              )}
           </div>
         </Theme>
       ) : (

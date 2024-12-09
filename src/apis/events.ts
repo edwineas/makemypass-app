@@ -29,14 +29,13 @@ export const getEventsList = async (
 };
 
 export const getParticipatedEvents = async (
-  username: string,
   setEvents: React.Dispatch<React.SetStateAction<Event[]>>,
   setIsDataLoaded: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   privateGateway
-    .get(makeMyPass.participatedEvents(username))
+    .get(makeMyPass.participatedEvents)
     .then((response) => {
-      setEvents(response.data.response.events);
+      setEvents(response.data.response.participated_events);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');

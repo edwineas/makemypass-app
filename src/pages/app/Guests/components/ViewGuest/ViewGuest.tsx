@@ -271,15 +271,22 @@ const ViewGuest = ({
                       To: <span>{mail.send_to}</span> <br />
                       From: <span>{mail.send_from}</span>
                     </p>
-
-                    {mail.show_content && (
-                      <>
-                        <hr className={styles.line} />
-                        <div className={styles.mailContent}>
-                          <pre> {mail.body}</pre>
-                        </div>
-                      </>
-                    )}
+                    <AnimatePresence>
+                      {mail.show_content && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: mail.show_content ? 'auto' : 0 }}
+                          exit={{ opacity: 0, height: 0 }}
+                          style={{ overflow: 'hidden' }}
+                          className={styles.mailContentContainer}
+                        >
+                          <hr className={styles.line} />
+                          <div className={styles.mailContent}>
+                            <pre>{mail.body}</pre>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>

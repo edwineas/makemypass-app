@@ -362,6 +362,8 @@ const Coupon = () => {
                         title='Enter the limit'
                         icon={<></>}
                         required={true}
+                        disabled={newCouponData.consumed > 0 || !isUserEditorForEvent()}
+                        inputStyles={{ borderRadius: '0.5rem 0 0 0.5rem' }}
                         onChange={(event) => {
                           if (Number(event.target.value) < 0)
                             toast.error('Count cannot be negative');
@@ -372,7 +374,6 @@ const Coupon = () => {
                         }}
                         value={newCouponData.count ? newCouponData.count.toString() : '0'}
                         error={couponError.count}
-                        disabled={!isUserEditorForEvent()}
                       />
                     </div>
                   )}
