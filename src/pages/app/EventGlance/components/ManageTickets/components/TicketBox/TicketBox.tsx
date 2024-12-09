@@ -26,17 +26,15 @@ const TicketBox = ({
     <>
       <div className={`${styles.ticketBox} ${selected ? styles.selected : ''}`} onClick={onClick}>
         <div className={styles.ticket} onClick={() => handleTicketClick(ticketInfo?.id)}>
-          <img
-            className={styles.ticketImage}
-            src={
-              ticketInfo?.image?.file_path
-                ? ticketInfo.image.file_path
-                : 'https://cdn.evbuc.com/images/125743787/209728027112/1/original.20210818-181041'
-            }
-            alt='ticket'
-            height={'100%'}
-            // width={'100%'}
-          />
+          {ticketInfo.image?.file_path && (
+            <img
+              className={styles.ticketImage}
+              src={ticketInfo?.image?.file_path}
+              alt='ticket'
+              height={'100%'}
+              // width={'100%'}
+            />
+          )}
         </div>
         <div className={styles.ticketInfo}>
           <p className={styles.ticketName}>{ticketInfo.title}</p>
