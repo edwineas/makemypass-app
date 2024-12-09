@@ -34,6 +34,7 @@ import type { EmailType, VisitedVenues } from './types';
 import styles from './ViewGuest.module.css';
 
 const ViewGuest = ({
+  isOpen,
   selectedGuestData,
   setSelectedGuestId,
   eventId,
@@ -42,6 +43,7 @@ const ViewGuest = ({
   type,
   setTriggerFetch,
 }: {
+  isOpen: boolean;
   selectedGuestData: RegistrationDataType | undefined;
   setSelectedGuestId: Dispatch<React.SetStateAction<SelectedGuest | null>>;
   eventId: string;
@@ -287,7 +289,7 @@ const ViewGuest = ({
       </Modal>
 
       <Modal
-        isOpen={selectedGuestData?.id != null}
+        isOpen={isOpen}
         type='side'
         title='View Guest'
         onClose={() => {

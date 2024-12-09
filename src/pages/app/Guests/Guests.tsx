@@ -196,23 +196,25 @@ const Guests = () => {
     <Theme>
       <DashboardLayout prevPage='/events' tabName='guests'>
         <Glance tab='guests' />
-        {eventFormData &&
-          selectedGuestId &&
-          formData &&
-          selectedGuestId.id &&
-          selectedGuestId.type == 'view' && (
-            <>
-              <div onClick={onClose} className={styles.backgroundBlur}></div>
-              <ViewGuest
-                selectedGuestData={selectedGuest}
-                setSelectedGuestId={setSelectedGuestId}
-                eventId={eventId}
-                setResentTicket={setResentTicket}
-                setSelectedGuest={setSelectedGuest}
-                setTriggerFetch={setTriggerFetch}
-              />
-            </>
-          )}
+
+        <>
+          <div onClick={onClose} className={styles.backgroundBlur}></div>
+          <ViewGuest
+            isOpen={
+              (eventFormData &&
+                selectedGuestId &&
+                formData &&
+                selectedGuestId.id &&
+                selectedGuestId.type == 'view') as boolean
+            }
+            selectedGuestData={selectedGuest}
+            setSelectedGuestId={setSelectedGuestId}
+            eventId={eventId}
+            setResentTicket={setResentTicket}
+            setSelectedGuest={setSelectedGuest}
+            setTriggerFetch={setTriggerFetch}
+          />
+        </>
 
         <BulkUpload
           isOpen={selectedGuestId != null && selectedGuestId.type === 'bulk'}
