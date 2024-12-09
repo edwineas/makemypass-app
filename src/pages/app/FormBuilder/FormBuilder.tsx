@@ -407,7 +407,6 @@ const FormBuilder = () => {
                                     }}
                                     onClick={() => {
                                       setSelectedField(field);
-                                      setShowChangeTypeModal(true);
                                     }}
                                   >
                                     {(Object.keys(FieldType) as Array<keyof typeof FieldType>).find(
