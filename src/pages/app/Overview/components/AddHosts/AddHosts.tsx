@@ -13,12 +13,14 @@ import styles from './AddHosts.module.css';
 import roleOptions from './data';
 
 const AddHosts = ({
+  isOpen,
   hostData,
   setHostData,
   onSubmit,
   onClose,
   add,
 }: {
+  isOpen: boolean;
   hostData: hostData;
   setHostData: React.Dispatch<SetStateAction<hostData>>;
   onSubmit: () => void;
@@ -53,7 +55,7 @@ const AddHosts = ({
   }
 
   return (
-    <Modal onClose={onClose} title={add ? 'Add Host' : 'Edit Host'}>
+    <Modal isOpen={isOpen} onClose={onClose} title={add ? 'Add Host' : 'Edit Host'}>
       <div className={styles.userInfoModalContainer}>
         <InputField
           type='text'

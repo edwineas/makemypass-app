@@ -8,10 +8,12 @@ import type { socialsType } from '../../types';
 import styles from './ProfileUpdateSocials.module.css';
 
 const ProfileUpdateSocials = ({
+  isOpen,
   setShowChangeSocialModal,
   socials,
   setSocials,
 }: {
+  isOpen: boolean;
   setShowChangeSocialModal: React.Dispatch<React.SetStateAction<boolean>>;
   socials: socialsType;
   setSocials: Dispatch<React.SetStateAction<socialsType>>;
@@ -19,6 +21,7 @@ const ProfileUpdateSocials = ({
   return (
     <>
       <Modal
+        isOpen={isOpen}
         onClose={() => {
           setShowChangeSocialModal(false);
         }}

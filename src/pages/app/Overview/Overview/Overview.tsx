@@ -223,65 +223,61 @@ const Overview = () => {
         <Glance tab='overview' />
 
         <>
-          {openAddModal && (
-            <AddHosts
-              hostData={hostData}
-              setHostData={setHostData}
-              onSubmit={() => {
-                if (hostValidate()) {
-                  onSubmit();
-                }
-                setHostData({ email: '', role: '', is_private: true });
-                setHostId({ id: '', type: null });
-                addRef.current = false;
-              }}
-              onClose={() => {
-                setOpenAddModal(false);
-                setHostData({ email: '', role: '', is_private: true });
-                addRef.current = false;
-              }}
-              add={addRef.current}
-            />
-          )}
-          {openDeleteModal && (
-            <Modal
-              onClose={() => {
-                setOpenDeleteModal(false);
-              }}
-              title='Remove Host'
-            >
-              <div className={styles.modalContainer}>
-                <TbAlertTriangleFilled
-                  size={30}
-                  color='#f04b4b'
-                  className={styles.limitationIcon}
-                />
-                <p className={styles.modalHeader}>Are you sure you want to Delete?</p>
-                <p className={styles.modalSubText}>
-                  This user {hostData.email} will be revoked of the current access allowed for this
-                  role
-                </p>
-                <div className={styles.modalButtonContainer}>
-                  <button
-                    className={styles.primaryButton}
-                    onClick={() => {
-                      removeHostAccount();
-                    }}
-                  >
-                    Remove Host
-                  </button>
-                  <button
-                    className={styles.secondaryButton}
-                    onClick={() => {
-                      setOpenDeleteModal(false);
-                    }}
-                  >
-                    Cancel
-                  </button>
-                </div>
+          <AddHosts
+            isOpen={openAddModal}
+            hostData={hostData}
+            setHostData={setHostData}
+            onSubmit={() => {
+              if (hostValidate()) {
+                onSubmit();
+              }
+              setHostData({ email: '', role: '', is_private: true });
+              setHostId({ id: '', type: null });
+              addRef.current = false;
+            }}
+            onClose={() => {
+              setOpenAddModal(false);
+              setHostData({ email: '', role: '', is_private: true });
+              addRef.current = false;
+            }}
+            add={addRef.current}
+          />
+
+          <Modal
+            isOpen={openDeleteModal}
+            onClose={() => {
+              setOpenDeleteModal(false);
+            }}
+            title='Remove Host'
+          >
+            <div className={styles.modalContainer}>
+              <TbAlertTriangleFilled size={30} color='#f04b4b' className={styles.limitationIcon} />
+              <p className={styles.modalHeader}>Are you sure you want to Delete?</p>
+              <p className={styles.modalSubText}>
+                This user {hostData.email} will be revoked of the current access allowed for this
+                role
+              </p>
+              <div className={styles.modalButtonContainer}>
+                <button
+                  className={styles.primaryButton}
+                  onClick={() => {
+                    removeHostAccount();
+                  }}
+                >
+                  Remove Host
+                </button>
+                <button
+                  className={styles.secondaryButton}
+                  onClick={() => {
+                    setOpenDeleteModal(false);
+                  }}
+                >
+                  Cancel
+                </button>
               </div>
-            </Modal>
-          )}
+            </div>
+          </Modal>
+
           {recentRegistrations && hostList && recentRegistrations.length >= 0 ? (
             <>
               <div className={styles.buttons}>

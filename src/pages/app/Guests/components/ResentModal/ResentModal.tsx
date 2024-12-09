@@ -6,10 +6,12 @@ import styles from '../../Guests.module.css';
 import { ResentTicket, SelectedGuest } from '../../types';
 
 const ResentModal = ({
+  isOpen,
   resentTicket,
   setResentTicket,
   setSelectedGuestId,
 }: {
+  isOpen: boolean;
   resentTicket: ResentTicket;
   setResentTicket: Dispatch<React.SetStateAction<ResentTicket>>;
   setSelectedGuestId: Dispatch<React.SetStateAction<SelectedGuest | null>>;
@@ -20,6 +22,7 @@ const ResentModal = ({
 
   return (
     <Modal
+      isOpen={isOpen}
       onClose={() => {
         setResentTicket((prevState) => ({
           ...prevState,

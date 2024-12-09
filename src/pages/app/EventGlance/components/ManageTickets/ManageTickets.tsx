@@ -352,48 +352,51 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
 
   return (
     <>
-      {isTicketEditor && (
-        <>
-          <Modal onClose={() => setIsTicketEditor(false)} style={{ zIndex: 999 }} zIndexCount={100}>
-            <TicketEditor selectedTicket={selectedTicket} />
-          </Modal>
-        </>
-      )}
-      {isOpen && (
+      <>
         <Modal
-          type='side'
-          title='Advanced Setting'
-          onClose={() => setIsOpen(false)}
-          style={{ zIndex: 999, alignItems: 'flex-start' }}
+          onClose={() => setIsTicketEditor(false)}
+          isOpen={isTicketEditor}
+          style={{ zIndex: 999 }}
           zIndexCount={100}
         >
-          <AdvancedSetting
-            selectedTicket={selectedTicket as TicketType}
-            setSelectedTicket={setSelectedTicket}
-            setIsOpen={setIsOpen}
-          />
+          <TicketEditor selectedTicket={selectedTicket} />
         </Modal>
-      )}
-      {isChangedModal && (
-        <UnsavedChanges
-          setIsChangedModal={setIsChangedModal}
+      </>
+
+      <Modal
+        type='side'
+        title='Advanced Setting'
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        style={{ zIndex: 999, alignItems: 'flex-start' }}
+        zIndexCount={100}
+      >
+        <AdvancedSetting
+          selectedTicket={selectedTicket as TicketType}
           setSelectedTicket={setSelectedTicket}
-          setIsTicketsOpen={setIsTicketsOpen}
-          ticketData={ticketData}
-          ticketPair={ticketPair}
-          wantToClose={wantToClose}
-          setWantToClose={setWantToClose}
-          updateTicket={updateTicket}
+          setIsOpen={setIsOpen}
         />
-      )}
-      {deleteModal && (
-        <DeleteModal
-          deleteText={`Are you sure you want to Delete ${selectedTicket?.title ? selectedTicket?.title : 'this ticket'}?`}
-          setDeleteModal={setDeleteModal}
-          onDelete={onDeleteTicket}
-          style={{ zIndex: 999 }}
-        />
-      )}
+      </Modal>
+
+      <UnsavedChanges
+        isOpen={isChangedModal}
+        setIsChangedModal={setIsChangedModal}
+        setSelectedTicket={setSelectedTicket}
+        setIsTicketsOpen={setIsTicketsOpen}
+        ticketData={ticketData}
+        ticketPair={ticketPair}
+        wantToClose={wantToClose}
+        setWantToClose={setWantToClose}
+        updateTicket={updateTicket}
+      />
+
+      <DeleteModal
+        isOpen={deleteModal}
+        deleteText={`Are you sure you want to Delete ${selectedTicket?.title ? selectedTicket?.title : 'this ticket'}?`}
+        setDeleteModal={setDeleteModal}
+        onDelete={onDeleteTicket}
+        style={{ zIndex: 999 }}
+      />
 
       {ticketData.length || hasFetched ? (
         // <Theme>

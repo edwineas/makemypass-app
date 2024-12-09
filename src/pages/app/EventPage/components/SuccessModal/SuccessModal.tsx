@@ -69,6 +69,7 @@ const SuccessModal = ({
             ) : (
               <Modal
                 title='Registration Successful'
+                isOpen={!(success && success.showModal)}
                 onClose={() => {
                   setSuccess((prev) => {
                     return { ...prev, showModal: false };
@@ -130,6 +131,7 @@ const SuccessModal = ({
             </div>
           ) : (
             <Modal
+              isOpen={!success.newPage}
               title='Scratch to Reveal'
               onClose={() => {
                 setScratchCard({ name: '', image: '', isFetching: false });

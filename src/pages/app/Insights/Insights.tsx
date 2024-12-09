@@ -358,99 +358,98 @@ const Insights = ({ type }: { type?: string }) => {
         }
         isLive={true}
       >
-        {showPublishModal && (
-          <Modal
-            title='Publish'
-            onClose={() => {
-              setShowPublishModal(false);
-            }}
-          >
-            <div className={styles.publicEventModal}>
-              {!isPublished ? (
-                <div>
-                  <div className={styles.sectionContent1}>
-                    <MdOutlinePublishedWithChanges size={25} color='white' />
-                    <p className={styles.sectionText}>Publish a static website for this event</p>
+        <Modal
+          isOpen={showPublishModal}
+          title='Publish'
+          onClose={() => {
+            setShowPublishModal(false);
+          }}
+        >
+          <div className={styles.publicEventModal}>
+            {!isPublished ? (
+              <div>
+                <div className={styles.sectionContent1}>
+                  <MdOutlinePublishedWithChanges size={25} color='white' />
+                  <p className={styles.sectionText}>Publish a static website for this event</p>
+                </div>
+                <button
+                  onClick={() => {
+                    publishPage();
+                  }}
+                  className={styles.publishButton}
+                >
+                  Publish
+                </button>
+              </div>
+            ) : (
+              <div>
+                <div className={styles.sectionContent}>
+                  <div className={styles.publicLinkField}>
+                    <input
+                      className={styles.publicLink}
+                      value={`${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`}
+                      readOnly
+                    />
+                    <IoCopyOutline
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          `${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`,
+                        );
+                        toast.success('Link copied to clipboard');
+                      }}
+                      className='pointer'
+                    />
                   </div>
-                  <button
+                  <div className={styles.alert}>Live on the web</div>
+
+                  <div className={styles.publicLinkField}>
+                    <textarea
+                      rows={5}
+                      className={styles.publicLink}
+                      value={`<iframe src=${`${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`} width="600" height="400" frameborder="0" scrolling="no"></iframe>
+                                    `}
+                      readOnly
+                    />
+                    <IoCopyOutline
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          `<iframe src=${`${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`} width="600" height="400" frameborder="0" scrolling="no"></iframe>`,
+                        );
+                        toast.success('Link copied to clipboard');
+                      }}
+                      className='pointer'
+                    />
+                  </div>
+                </div>
+                <div className={styles.buttons}>
+                  <p
                     onClick={() => {
                       publishPage();
+                      setShowPublishModal(false);
+                    }}
+                    className='pointer'
+                  >
+                    Unpublish
+                  </p>
+                  <button
+                    onClick={() => {
+                      window.open(
+                        `${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`,
+                        '_blank',
+                      );
+                    }}
+                    style={{
+                      maxWidth: '100px',
                     }}
                     className={styles.publishButton}
                   >
-                    Publish
+                    View Site
                   </button>
                 </div>
-              ) : (
-                <div>
-                  <div className={styles.sectionContent}>
-                    <div className={styles.publicLinkField}>
-                      <input
-                        className={styles.publicLink}
-                        value={`${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`}
-                        readOnly
-                      />
-                      <IoCopyOutline
-                        onClick={() => {
-                          navigator.clipboard.writeText(
-                            `${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`,
-                          );
-                          toast.success('Link copied to clipboard');
-                        }}
-                        className='pointer'
-                      />
-                    </div>
-                    <div className={styles.alert}>Live on the web</div>
-
-                    <div className={styles.publicLinkField}>
-                      <textarea
-                        rows={5}
-                        className={styles.publicLink}
-                        value={`<iframe src=${`${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`} width="600" height="400" frameborder="0" scrolling="no"></iframe>
-                                    `}
-                        readOnly
-                      />
-                      <IoCopyOutline
-                        onClick={() => {
-                          navigator.clipboard.writeText(
-                            `<iframe src=${`${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`} width="600" height="400" frameborder="0" scrolling="no"></iframe>`,
-                          );
-                          toast.success('Link copied to clipboard');
-                        }}
-                        className='pointer'
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.buttons}>
-                    <p
-                      onClick={() => {
-                        publishPage();
-                        setShowPublishModal(false);
-                      }}
-                      className='pointer'
-                    >
-                      Unpublish
-                    </p>
-                    <button
-                      onClick={() => {
-                        window.open(
-                          `${import.meta.env.VITE_FRONTEND_URL}/${eventName.current}/public/insights`,
-                          '_blank',
-                        );
-                      }}
-                      style={{
-                        maxWidth: '100px',
-                      }}
-                      className={styles.publishButton}
-                    >
-                      View Site
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </Modal>
-        )}
+              </div>
+            )}
+          </div>
+        </Modal>
 
         {lineData && lineData2 && pieData ? (
           <>

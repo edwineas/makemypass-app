@@ -21,9 +21,12 @@ const RemoveConfirmation = ({
   setTriggerFetch: React.Dispatch<React.SetStateAction<boolean>>;
   subEventToRemove: string | null;
 }) => {
-  if (subEventToRemove === null) return null;
   return (
-    <Modal title='Cancel Sub Event' onClose={() => setSubEventToRemove(null)}>
+    <Modal
+      title='Cancel Sub Event'
+      isOpen={subEventToRemove !== null}
+      onClose={() => setSubEventToRemove(null)}
+    >
       <p className={styles.modalDescription}>Are you sure you want to cancel this sub event?</p>
       <div className='row'>
         <motion.button

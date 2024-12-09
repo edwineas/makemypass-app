@@ -272,34 +272,34 @@ const InEventStats = () => {
 
   return (
     <Theme>
-      {roomNumber.showModel && (
-        <Modal
-          title='Add Room Number'
-          onClose={() => {
+      <Modal
+        isOpen={roomNumber.showModel}
+        title='Add Room Number'
+        onClose={() => {
+          setRoomNumber({ ...roomNumber, showModel: false });
+        }}
+      >
+        <InputField
+          id='roomNumber'
+          type='text'
+          name='roomNumber'
+          icon={<></>}
+          title='Enter Room Number'
+          value={roomNumber.roomNumber}
+          onChange={(e) => {
+            setRoomNumber({ ...roomNumber, roomNumber: e.target.value });
+          }}
+        />
+        <button
+          className={styles.submitButton}
+          onClick={() => {
             setRoomNumber({ ...roomNumber, showModel: false });
           }}
         >
-          <InputField
-            id='roomNumber'
-            type='text'
-            name='roomNumber'
-            icon={<></>}
-            title='Enter Room Number'
-            value={roomNumber.roomNumber}
-            onChange={(e) => {
-              setRoomNumber({ ...roomNumber, roomNumber: e.target.value });
-            }}
-          />
-          <button
-            className={styles.submitButton}
-            onClick={() => {
-              setRoomNumber({ ...roomNumber, showModel: false });
-            }}
-          >
-            Confirm Room
-          </button>
-        </Modal>
-      )}
+          Confirm Room
+        </button>
+      </Modal>
+
       <DashboardLayout prevPage='-1' tabName='inevent' isLive={true}>
         {analytics && <Glance tab='inevent' />}
         <div className={styles.makemypassbranding}>

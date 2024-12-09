@@ -124,136 +124,133 @@ const Events = () => {
     <>
       {isDataLoaded ? (
         <Theme>
-          {showModal && (
-            <Modal onClose={onModalClose}>
-              <p className={styles.modalHeader}>Create Duplicate</p>
-              <p className={styles.modalSubText}>
-                Are you sure you want to create a duplicate event ?
+          <Modal isOpen={showModal} onClose={onModalClose}>
+            <p className={styles.modalHeader}>Create Duplicate</p>
+            <p className={styles.modalSubText}>
+              Are you sure you want to create a duplicate event ?
+            </p>
+            <div className={styles.buttons}>
+              <p
+                onClick={() => {
+                  createDuplicateEvent(duplicateEventId, setEvents, setIsDataLoaded);
+                  setShowModal(false);
+                }}
+                className={styles.button}
+              >
+                Create Duplicate
               </p>
-              <div className={styles.buttons}>
-                <p
-                  onClick={() => {
-                    createDuplicateEvent(duplicateEventId, setEvents, setIsDataLoaded);
-                    setShowModal(false);
+              <p
+                onClick={() => {
+                  setShowModal(false);
+                }}
+                className={styles.button}
+              >
+                Cancel
+              </p>
+            </div>
+          </Modal>
+
+          <Modal
+            isOpen={showCreateModal}
+            onClose={() => setShowCreateModal(false)}
+            title={newEvent.showLimitationMessage ? 'Alert Message' : 'Create New Event'}
+          >
+            {!newEvent.showLimitationMessage ? (
+              <>
+                <InputField
+                  id='eventName'
+                  type='text'
+                  name='eventName'
+                  icon={<></>}
+                  title='Event Name'
+                  placeholder='Enter the new event name'
+                  required
+                  value={newEvent.eventName}
+                  onChange={(e) => {
+                    setNewEvent((prevState) => ({
+                      ...prevState!,
+                      eventName: e.target.value,
+                    }));
                   }}
-                  className={styles.button}
-                >
-                  Create Duplicate
-                </p>
-                <p
-                  onClick={() => {
-                    setShowModal(false);
+                  error={newEvent.error}
+                />
+                <Select
+                  styles={{
+                    ...customStyles,
+                    container: (provided) => ({
+                      ...provided,
+                      width: '100%',
+                    }),
                   }}
-                  className={styles.button}
-                >
-                  Cancel
-                </p>
-              </div>
-            </Modal>
-          )}
-          {showCreateModal && (
-            <Modal
-              onClose={() => setShowCreateModal(false)}
-              title={newEvent.showLimitationMessage ? 'Alert Message' : 'Create New Event'}
-            >
-              {!newEvent.showLimitationMessage ? (
-                <>
-                  <InputField
-                    id='eventName'
-                    type='text'
-                    name='eventName'
-                    icon={<></>}
-                    title='Event Name'
-                    placeholder='Enter the new event name'
-                    required
-                    value={newEvent.eventName}
-                    onChange={(e) => {
+                  options={[
+                    { value: 'Personal', label: 'Personal' },
+                    ...orgs.map((org) => ({ value: org.id, label: org.name })),
+                  ]}
+                  className='select'
+                  classNamePrefix='select'
+                  placeholder='Select Organization'
+                  value={
+                    selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null
+                  }
+                  onChange={(selectedOption) => {
+                    if (selectedOption && selectedOption.label) {
                       setNewEvent((prevState) => ({
                         ...prevState!,
-                        eventName: e.target.value,
+                        orgId: selectedOption.value,
                       }));
-                    }}
-                    error={newEvent.error}
-                  />
-                  <Select
-                    styles={{
-                      ...customStyles,
-                      container: (provided) => ({
-                        ...provided,
-                        width: '100%',
-                      }),
-                    }}
-                    options={[
-                      { value: 'Personal', label: 'Personal' },
-                      ...orgs.map((org) => ({ value: org.id, label: org.name })),
-                    ]}
-                    className='select'
-                    classNamePrefix='select'
-                    placeholder='Select Organization'
-                    value={
-                      selectedOrgName ? { value: selectedOrgName, label: selectedOrgName } : null
+                      setSelectedOrgName(selectedOption.label);
+                      localStorage.setItem('orgId', selectedOption.label);
                     }
-                    onChange={(selectedOption) => {
-                      if (selectedOption && selectedOption.label) {
-                        setNewEvent((prevState) => ({
-                          ...prevState!,
-                          orgId: selectedOption.value,
-                        }));
-                        setSelectedOrgName(selectedOption.label);
-                        localStorage.setItem('orgId', selectedOption.label);
-                      }
+                  }}
+                />
+                {((selectedOrgName === 'Personal' && import.meta.env.VITE_CURRENT_ENV === 'dev') ||
+                  isUserAuthorizedForOrganization(TillRoles.ADMIN)) && (
+                  <button
+                    className={styles.createEventButton}
+                    onClick={() => {
+                      CreateEvent();
                     }}
+                  >
+                    {isCreating ? (
+                      <BeatLoader color='#1d1d1d' size={8} margin={2} />
+                    ) : (
+                      <span>Create Event</span>
+                    )}
+                  </button>
+                )}
+              </>
+            ) : (
+              <>
+                <div className={styles.limitationMessageContainer}>
+                  <TbAlertTriangleFilled
+                    size={30}
+                    color='#f04b4b'
+                    className={styles.limitationIcon}
                   />
-                  {((selectedOrgName === 'Personal' &&
-                    import.meta.env.VITE_CURRENT_ENV === 'dev') ||
-                    isUserAuthorizedForOrganization(TillRoles.ADMIN)) && (
-                    <button
-                      className={styles.createEventButton}
-                      onClick={() => {
-                        CreateEvent();
-                      }}
-                    >
-                      {isCreating ? (
-                        <BeatLoader color='#1d1d1d' size={8} margin={2} />
-                      ) : (
-                        <span>Create Event</span>
-                      )}
-                    </button>
-                  )}
-                </>
-              ) : (
-                <>
-                  <div className={styles.limitationMessageContainer}>
-                    <TbAlertTriangleFilled
-                      size={30}
-                      color='#f04b4b'
-                      className={styles.limitationIcon}
-                    />
-                    <p className={styles.limitationHeader}>Paricipant Count is Limited</p>
-                    <p className={styles.limitationText}>
-                      There is a 250 participant limit for regular events. Please contact our sales
-                      team to increase the limit.
-                    </p>
-                    <button
-                      onClick={() => {
-                        window.location.href = `/${newEvent.eventName}/manage`;
-                      }}
-                      className={styles.createEventButton}
-                    >
-                      Continue
-                    </button>
-                    <a href='https://wa.me/916238450178' target='_blank' rel='noopener noreferrer'>
-                      <button className={styles.createEventButtonSecondary}>Contact Sales</button>
-                    </a>
+                  <p className={styles.limitationHeader}>Paricipant Count is Limited</p>
+                  <p className={styles.limitationText}>
+                    There is a 250 participant limit for regular events. Please contact our sales
+                    team to increase the limit.
+                  </p>
+                  <button
+                    onClick={() => {
+                      window.location.href = `/${newEvent.eventName}/manage`;
+                    }}
+                    className={styles.createEventButton}
+                  >
+                    Continue
+                  </button>
+                  <a href='https://wa.me/916238450178' target='_blank' rel='noopener noreferrer'>
+                    <button className={styles.createEventButtonSecondary}>Contact Sales</button>
+                  </a>
 
-                    <p className={styles.helperText}>
-                      You will be redirected to the dashboard in 7 seconds.
-                    </p>
-                  </div>
-                </>
-              )}
-            </Modal>
-          )}
+                  <p className={styles.helperText}>
+                    You will be redirected to the dashboard in 7 seconds.
+                  </p>
+                </div>
+              </>
+            )}
+          </Modal>
 
           <div className={styles.homeContainer}>
             <div

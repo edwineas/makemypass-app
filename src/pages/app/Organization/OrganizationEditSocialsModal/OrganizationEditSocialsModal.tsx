@@ -7,10 +7,12 @@ import type { OrganizationType } from '../EditOrganization/types';
 import styles from './OrganizationEditSocialsModal.module.css';
 
 const OrganizationEditSocialsModal = ({
+  isOpen,
   setShowCommunicationMediumModal,
   organizationState,
   setorganizationState,
 }: {
+  isOpen: boolean;
   setShowCommunicationMediumModal: (value: boolean) => void;
   organizationState: OrganizationType;
   setorganizationState: Dispatch<React.SetStateAction<OrganizationType>>;
@@ -18,6 +20,7 @@ const OrganizationEditSocialsModal = ({
   return (
     <Modal
       type='side'
+      isOpen={isOpen}
       onClose={() => setShowCommunicationMediumModal(false)}
       title='Add Communication Mediums'
       zIndexCount={100}

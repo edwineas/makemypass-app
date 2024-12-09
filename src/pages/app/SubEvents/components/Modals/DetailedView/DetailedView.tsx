@@ -13,9 +13,13 @@ const DetailedView = ({
   showDetailedView: SubEventType | null;
   setShowDetailedView: Dispatch<SetStateAction<SubEventType | null>>;
 }) => {
-  if (!showDetailedView) return null;
   return (
-    <Modal title={showDetailedView.title} onClose={() => setShowDetailedView(null)} type='side'>
+    <Modal
+      title={showDetailedView?.title}
+      isOpen={showDetailedView != null}
+      onClose={() => setShowDetailedView(null)}
+      type='side'
+    >
       <div className={styles.detailedView}>
         <div className={styles.eventDetails}>
           <div className={styles.headingTexts}>
@@ -77,12 +81,12 @@ const DetailedView = ({
               </div>
             </div>
             <div className={styles.eventDescription}>
-              {showDetailedView?.description?.length > 0 && (
+              {(showDetailedView?.description?.length ?? 0) > 0 && (
                 <p className={styles.eventDescriptionHeader}>About the Event</p>
               )}
               <p
                 dangerouslySetInnerHTML={
-                  showDetailedView.description
+                  showDetailedView?.description
                     ? { __html: showDetailedView.description }
                     : { __html: '' }
                 }

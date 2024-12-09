@@ -18,7 +18,7 @@ import { customStyles } from '../../../EventPage/constants';
 import styles from './BulkUpload.module.css';
 import type { BulkUploadType } from './types';
 
-const BulkUpload = ({ onClose }: { onClose: () => void }) => {
+const BulkUpload = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);
   const [tickets, setTickets] = useState<TicketType[]>([]);
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
@@ -45,7 +45,7 @@ const BulkUpload = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <Modal title='Bulk Upload' onClose={onClose} type='center'>
+    <Modal isOpen={isOpen} title='Bulk Upload' onClose={onClose} type='center'>
       <div className={styles.bulkUploadContainer}>
         <input
           type='file'

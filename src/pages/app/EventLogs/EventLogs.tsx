@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 import { HashLoader } from 'react-spinners';
@@ -66,9 +66,8 @@ const EventLogs = () => {
                   <div
                     className={styles.mail}
                     key={index}
-                    onClick={(event) => {
+                    onClick={() => {
                       if (mail.id == selectedMailLog.id && selectedMailLog.body.length > 0) {
-                        event.stopPropagation();
                         setSelectedMailLog({
                           id: '',
                           body: '',
@@ -127,33 +126,41 @@ const EventLogs = () => {
                         </p>
                       </div>
                     </div>
-                    {mail.id == selectedMailLog.id && selectedMailLog.body.length > 0 && (
-                      <>
-                        <hr className={styles.line} />
-                        <motion.div
-                          className={styles.mailContent}
-                          layout
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{
-                            opacity:
-                              mail.id == selectedMailLog.id && selectedMailLog.body.length > 0
-                                ? 1
-                                : 0,
-                            height:
-                              mail.id == selectedMailLog.id && selectedMailLog.body.length > 0
-                                ? 'auto'
-                                : 0,
-                          }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                          style={{
-                            overflow: 'hidden',
-                          }}
-                        >
-                          <pre> {selectedMailLog.body}</pre>
-                        </motion.div>
-                      </>
-                    )}
+
+                    <AnimatePresence>
+                      {mail.id == selectedMailLog.id && selectedMailLog.body.length > 0 && (
+                        <>
+                          <motion.hr
+                            initial={{ opacity: 0, marginBottom: 0 }}
+                            animate={{ opacity: 0.2, marginBottom: '1rem' }}
+                            exit={{ opacity: 0, marginBottom: 0 }}
+                          />
+                          <motion.div
+                            className={styles.mailContent}
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{
+                              opacity:
+                                mail.id == selectedMailLog.id && selectedMailLog.body.length > 0
+                                  ? 1
+                                  : 0,
+                              height:
+                                mail.id == selectedMailLog.id && selectedMailLog.body.length > 0
+                                  ? 'auto'
+                                  : 0,
+                            }}
+                            exit={{ opacity: 0, height: 0 }}
+                            // transition={{ duration: 0.3 }}
+                            style={{
+                              overflow: 'hidden',
+                              padding: 0,
+                              margin: 0,
+                            }}
+                          >
+                            <pre> {selectedMailLog.body}</pre>
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
                   </div>
                 ))}
               </div>
