@@ -243,6 +243,7 @@ const Coupon = () => {
                         icon={<></>}
                         required={true}
                         disabled={newCouponData.consumed > 0 || !isUserEditorForEvent()}
+                        inputStyles={{ borderRadius: '0.5rem 0 0 0.5rem' }}
                         onChange={(event) => {
                           setCouponError((prev: CreateCouponTypeError) => ({
                             ...prev,
