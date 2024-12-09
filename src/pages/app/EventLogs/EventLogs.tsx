@@ -66,9 +66,8 @@ const EventLogs = () => {
                   <div
                     className={styles.mail}
                     key={index}
-                    onClick={(event) => {
+                    onClick={() => {
                       if (mail.id == selectedMailLog.id && selectedMailLog.body.length > 0) {
-                        event.stopPropagation();
                         setSelectedMailLog({
                           id: '',
                           body: '',
@@ -203,9 +202,9 @@ const EventLogs = () => {
                           style={
                             paginationData.previous === null
                               ? {
-                                  opacity: 0.4,
-                                  cursor: 'not-allowed',
-                                }
+                                opacity: 0.4,
+                                cursor: 'not-allowed',
+                              }
                               : {}
                           }
                         >
@@ -226,9 +225,9 @@ const EventLogs = () => {
                           style={
                             paginationData.next === null
                               ? {
-                                  opacity: 0.4,
-                                  cursor: 'not-allowed',
-                                }
+                                opacity: 0.4,
+                                cursor: 'not-allowed',
+                              }
                               : {}
                           }
                         >
