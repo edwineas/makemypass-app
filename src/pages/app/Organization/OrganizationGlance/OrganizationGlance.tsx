@@ -178,102 +178,105 @@ const OrganizationGlance = ({ type }: { type?: 'public' | 'private' }) => {
 
   return (
     <Theme hideLogin={typeParam === 'embed'}>
-      {type === 'private' && (selectedMemberId.type === 'edit' || addMember) && (
-        <AddEditMember
-          memberData={memberData}
-          setMemberData={setMemberData}
-          onSubmit={() => onSubmit()}
-          onClose={() => {
-            setSelectedMemberId({ id: '', type: null });
-            setAddMember(false);
-          }}
-          add={false}
-        />
-      )}
-      {type === 'private' && selectedMemberId.type === 'delete' && (
-        <Modal
-          onClose={() => setSelectedMemberId({ id: '', type: null })}
-          title='Delete Confirmation'
-        >
-          <div className={styles.modalContainer}>
-            <TbAlertTriangleFilled size={30} color='#f04b4b' className={styles.limitationIcon} />
-            <p className={styles.modalHeader}>Are you sure you want to remove?</p>
-            <p className={styles.modalSubText}>
-              This action is irreversible. Please confirm if you want to delete this member.
-            </p>
-            <div className={styles.modalButtonContainer}>
-              <button
-                className={styles.primaryButton}
-                onClick={() => agreeToDelete()}
-                disabled={isDeleting}
-              >
-                {isDeleting ? <BeatLoader color='#1d1d1d' size={8} /> : 'Delete'}
-              </button>
-              <button
-                className={styles.secondaryButton}
-                onClick={() => setSelectedMemberId({ id: '', type: null })}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </Modal>
-      )}
-      {type === 'private' && showEditModal && (
-        <Modal type='side' onClose={() => setShowEditModal(false)} title='Edit Organization'>
-          <EditOrganization
-            organization={organization}
-            organizationState={organizationState}
-            setOrganizationState={setOrganizationState}
-            setShowEditModal={setShowEditModal}
-            setTriggerFetch={setTriggerFetch}
-            setShowCommunicationMediumModal={setShowCommunicationMediumModal}
-          />
-        </Modal>
-      )}
-      {showEmbedModal && (
-        <Modal
-          title='Embed Form'
-          onClose={() => {
-            setShowEmbedModal(false);
-          }}
-        >
-          <div className={styles.publicEventModal}>
-            <div>
-              <div className={styles.sectionContent}>
-                <p className={styles.publicModalText}>Embedable Organization Link</p>
-                <div className={styles.publicLinkField}>
-                  <textarea
-                    rows={5}
-                    className={styles.publicLink}
-                    value={`<iframe src="${`${import.meta.env.VITE_FRONTEND_URL}/org/${orgName}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`}
-                    readOnly
-                  />
-                </div>
-              </div>
-            </div>
+      <AddEditMember
+        isOpen={type === 'private' && (selectedMemberId.type === 'edit' || addMember)}
+        memberData={memberData}
+        setMemberData={setMemberData}
+        onSubmit={() => onSubmit()}
+        onClose={() => {
+          setSelectedMemberId({ id: '', type: null });
+          setAddMember(false);
+        }}
+        add={false}
+      />
 
+      <Modal
+        isOpen={type === 'private' && selectedMemberId.type === 'delete'}
+        onClose={() => setSelectedMemberId({ id: '', type: null })}
+        title='Delete Confirmation'
+      >
+        <div className={styles.modalContainer}>
+          <TbAlertTriangleFilled size={30} color='#f04b4b' className={styles.limitationIcon} />
+          <p className={styles.modalHeader}>Are you sure you want to remove?</p>
+          <p className={styles.modalSubText}>
+            This action is irreversible. Please confirm if you want to delete this member.
+          </p>
+          <div className={styles.modalButtonContainer}>
             <button
-              onClick={() => {
-                navigator.clipboard.writeText(
-                  `<iframe src="${`${import.meta.env.VITE_FRONTEND_URL}org/${orgName}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`,
-                );
-                toast.success('Link copied to clipboard');
-              }}
-              className={styles.publishButton}
+              className={styles.primaryButton}
+              onClick={() => agreeToDelete()}
+              disabled={isDeleting}
             >
-              Copy Link
+              {isDeleting ? <BeatLoader color='#1d1d1d' size={8} /> : 'Delete'}
+            </button>
+            <button
+              className={styles.secondaryButton}
+              onClick={() => setSelectedMemberId({ id: '', type: null })}
+            >
+              Cancel
             </button>
           </div>
-        </Modal>
-      )}
-      {showCommunicationMediumModal && (
-        <OrganizationEditSocialsModal
-          setShowCommunicationMediumModal={setShowCommunicationMediumModal}
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={type === 'private' && showEditModal}
+        type='side'
+        onClose={() => setShowEditModal(false)}
+        title='Edit Organization'
+      >
+        <EditOrganization
+          organization={organization}
           organizationState={organizationState}
-          setorganizationState={setOrganizationState}
+          setOrganizationState={setOrganizationState}
+          setShowEditModal={setShowEditModal}
+          setTriggerFetch={setTriggerFetch}
+          setShowCommunicationMediumModal={setShowCommunicationMediumModal}
         />
-      )}
+      </Modal>
+
+      <Modal
+        isOpen={showEmbedModal}
+        title='Embed Form'
+        onClose={() => {
+          setShowEmbedModal(false);
+        }}
+      >
+        <div className={styles.publicEventModal}>
+          <div>
+            <div className={styles.sectionContent}>
+              <p className={styles.publicModalText}>Embedable Organization Link</p>
+              <div className={styles.publicLinkField}>
+                <textarea
+                  rows={5}
+                  className={styles.publicLink}
+                  value={`<iframe src="${`${import.meta.env.VITE_FRONTEND_URL}/org/${orgName}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`}
+                  readOnly
+                />
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(
+                `<iframe src="${`${import.meta.env.VITE_FRONTEND_URL}org/${orgName}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`,
+              );
+              toast.success('Link copied to clipboard');
+            }}
+            className={styles.publishButton}
+          >
+            Copy Link
+          </button>
+        </div>
+      </Modal>
+
+      <OrganizationEditSocialsModal
+        isOpen={showCommunicationMediumModal}
+        setShowCommunicationMediumModal={setShowCommunicationMediumModal}
+        organizationState={organizationState}
+        setorganizationState={setOrganizationState}
+      />
 
       <div className={styles.organizationContainer}>
         {typeParam !== 'embed' && type === 'private' && (

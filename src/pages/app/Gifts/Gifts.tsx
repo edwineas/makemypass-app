@@ -26,42 +26,42 @@ const Gifts = () => {
     <>
       <Theme>
         <DashboardLayout prevPage='-1'>
-          {selectedGift && selectedGift.id?.length > 0 && (
-            <Modal
-              title='Claim Gift'
-              onClose={() => {
-                setSelectedGift({} as Gift);
-              }}
-            >
-              <p className={styles.modalHeader}>Are you sure you want to claim this gift?</p>
-              <p className={styles.modalDescription}>
-                By clicking the claim button, you will claim the gift and it will be removed from
-                your unclaimed gifts list.
-              </p>
+          <Modal
+            title='Claim Gift'
+            isOpen={selectedGift && selectedGift.id?.length > 0}
+            onClose={() => {
+              setSelectedGift({} as Gift);
+            }}
+          >
+            <p className={styles.modalHeader}>Are you sure you want to claim this gift?</p>
+            <p className={styles.modalDescription}>
+              By clicking the claim button, you will claim the gift and it will be removed from your
+              unclaimed gifts list.
+            </p>
 
-              <div className={styles.modalButtons}>
-                <button
-                  className={styles.confirmButton}
-                  onClick={() => {
-                    claimUserGift(eventId, selectedGift, ticketId).then(() => {
-                      getGuestGiftList(eventId, ticketId, setGifts);
-                      setSelectedGift({} as Gift);
-                    });
-                  }}
-                >
-                  Confirm
-                </button>
-                <button
-                  onClick={() => {
+            <div className={styles.modalButtons}>
+              <button
+                className={styles.confirmButton}
+                onClick={() => {
+                  claimUserGift(eventId, selectedGift, ticketId).then(() => {
+                    getGuestGiftList(eventId, ticketId, setGifts);
                     setSelectedGift({} as Gift);
-                  }}
-                  className={styles.confirmButton}
-                >
-                  Cancel
-                </button>
-              </div>
-            </Modal>
-          )}
+                  });
+                }}
+              >
+                Confirm
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedGift({} as Gift);
+                }}
+                className={styles.confirmButton}
+              >
+                Cancel
+              </button>
+            </div>
+          </Modal>
+
           <div className={styles.giftsContainer}>
             <Scanner
               ticketId={ticketId}

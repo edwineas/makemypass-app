@@ -11,10 +11,12 @@ import SecondaryButton from '../../../Overview/components/SecondaryButton/Second
 import styles from './VenueModal.module.css';
 
 const VenueModal = ({
+  isOpen,
   eventId,
   venues,
   setVenues,
 }: {
+  isOpen: boolean;
   eventId: string;
   venues: VenueCRUDType;
   setVenues: Dispatch<SetStateAction<VenueCRUDType>>;
@@ -25,6 +27,7 @@ const VenueModal = ({
     <>
       {venueData && venueData.type === 'DELETE' ? (
         <Modal
+          isOpen={isOpen}
           title='Delete Confirmation'
           onClose={() => setVenues({ ...venues, showModal: false })}
         >
@@ -59,6 +62,7 @@ const VenueModal = ({
         </Modal>
       ) : (
         <Modal
+          isOpen={isOpen}
           title='Event Venue Management'
           onClose={() => setVenues({ ...venues, showModal: false })}
         >

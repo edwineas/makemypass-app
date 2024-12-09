@@ -31,11 +31,10 @@ const ScannerResponseModal = ({
 }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   return (
-    message &&
-    message.length > 0 && (
+    message && (
       <>
-        <div className={styles.backgroundBlur}></div>
         <Modal
+          isOpen={message != undefined && message.length > 0}
           title={multipleTickets && multipleTickets.hasMultipleTickets ? message : 'User Check-In'}
           onClose={() => {
             setMessage('');

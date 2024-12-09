@@ -91,48 +91,47 @@ const PostEvent = () => {
 
   return (
     <>
-      {openConfirmModal && openConfirmModal.confirm && (
-        <Modal>
-          <p className={styles.modalHeader}>Send Mail</p>
-          <p className={styles.modalSubText}>
-            {(openConfirmModal.value && postEventStatus?.AfterEventThankYou) ||
-            (!openConfirmModal.value && postEventStatus?.AfterEventSorry)
-              ? `Are You Sure you want to send the mails to the ${postEventStatus?.AfterEventThankYou ? 'Participants' : 'Non-Participants'} again?`
-              : 'Are you sure you want to send mails?'}
-          </p>
-          <div className={styles.buttons}>
-            <p
-              onClick={() => {
-                sentPostEventMail(openConfirmModal.value).then(() => {
-                  setPostEventStatus(
-                    (prevStatus) =>
-                      ({
-                        ...prevStatus,
-                        ...(openConfirmModal.value
-                          ? { AfterEventThankYou: true }
-                          : { AfterEventSorry: true }),
-                      }) as PostEventStatus,
-                  );
-                });
-                setTimeout(() => {
-                  setConfirmModal({ confirm: false, value: false });
-                }, 1000);
-              }}
-              className={`pointer ${styles.button}`}
-            >
-              Send Mails
-            </p>
-            <p
-              onClick={() => {
+      <Modal isOpen={openConfirmModal && openConfirmModal.confirm}>
+        <p className={styles.modalHeader}>Send Mail</p>
+        <p className={styles.modalSubText}>
+          {(openConfirmModal.value && postEventStatus?.AfterEventThankYou) ||
+          (!openConfirmModal.value && postEventStatus?.AfterEventSorry)
+            ? `Are You Sure you want to send the mails to the ${postEventStatus?.AfterEventThankYou ? 'Participants' : 'Non-Participants'} again?`
+            : 'Are you sure you want to send mails?'}
+        </p>
+        <div className={styles.buttons}>
+          <p
+            onClick={() => {
+              sentPostEventMail(openConfirmModal.value).then(() => {
+                setPostEventStatus(
+                  (prevStatus) =>
+                    ({
+                      ...prevStatus,
+                      ...(openConfirmModal.value
+                        ? { AfterEventThankYou: true }
+                        : { AfterEventSorry: true }),
+                    }) as PostEventStatus,
+                );
+              });
+              setTimeout(() => {
                 setConfirmModal({ confirm: false, value: false });
-              }}
-              className={`pointer ${styles.button}`}
-            >
-              Cancel
-            </p>
-          </div>
-        </Modal>
-      )}
+              }, 1000);
+            }}
+            className={`pointer ${styles.button}`}
+          >
+            Send Mails
+          </p>
+          <p
+            onClick={() => {
+              setConfirmModal({ confirm: false, value: false });
+            }}
+            className={`pointer ${styles.button}`}
+          >
+            Cancel
+          </p>
+        </div>
+      </Modal>
+
       <Theme>
         <DashboardLayout prevPage='-1' tabName='postevent'>
           <p className={styles.text}>Post-Event Mails</p>

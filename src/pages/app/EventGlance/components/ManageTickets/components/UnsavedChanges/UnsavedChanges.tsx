@@ -6,6 +6,7 @@ import Modal from '../../../../../../../components/Modal/Modal';
 import styles from './UnsavedChanges.module.css';
 
 type Props = {
+  isOpen: boolean;
   setIsChangedModal: React.Dispatch<React.SetStateAction<boolean>>;
   ticketData: TicketType[];
   ticketPair: TicketType[] | undefined;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 const UnsavedChanges = ({
+  isOpen,
   setIsChangedModal,
   ticketData,
   ticketPair,
@@ -28,7 +30,12 @@ const UnsavedChanges = ({
 }: Props) => {
   return (
     <>
-      <Modal onClose={() => setIsChangedModal(false)} title='Unsaved Changes' zIndexCount={101}>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsChangedModal(false)}
+        title='Unsaved Changes'
+        zIndexCount={101}
+      >
         <div className={styles.sectionContent1}>
           <TbAlertTriangleFilled size={30} color='#f04b4b' className={styles.limitationIcon} />
           <p className={styles.sectionTitle}>You've made some changes</p>

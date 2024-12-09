@@ -306,225 +306,257 @@ const EditEvent = () => {
   return (
     <>
       <Theme>
-        {showAdvancedSettings && (
-          <Modal
-            title='Advanced Settings'
-            type='side'
-            onClose={() => setShowAdvancedSettings(false)}
-          >
-            <div className={styles.advancedModalContainer}>
-              {eventData && (
-                <>
-                  <div className={styles.option}>
-                    <label>
-                      <HiOutlineTicket size={25} color='#949597' />
-                      Show Tickets First
-                    </label>
-                    <Slider
-                      checked={eventData.show_ticket_first as boolean}
-                      text={''}
-                      onChange={() =>
-                        isUserEditorForEvent() &&
-                        setEventData({
-                          ...eventData,
-                          show_ticket_first: !eventData.show_ticket_first,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className={styles.option}>
-                    <label>
-                      <AiOutlineTeam size={25} color='#949597' /> Allow Team Registration
-                    </label>
-                    <Slider
-                      checked={eventData.is_team as boolean}
-                      text={''}
-                      onChange={() =>
-                        isUserEditorForEvent() &&
-                        setEventData({
-                          ...eventData,
-                          is_team: !eventData.is_team,
-                        })
-                      }
-                    />
-                  </div>
-                  {!eventData.is_team && (
-                    <>
-                      <div className={styles.option}>
+        <Modal
+          isOpen={showAdvancedSettings}
+          title='Advanced Settings'
+          type='side'
+          onClose={() => setShowAdvancedSettings(false)}
+        >
+          <div className={styles.advancedModalContainer}>
+            {eventData && (
+              <>
+                <div className={styles.option}>
+                  <label>
+                    <HiOutlineTicket size={25} color='#949597' />
+                    Show Tickets First
+                  </label>
+                  <Slider
+                    checked={eventData.show_ticket_first as boolean}
+                    text={''}
+                    onChange={() =>
+                      isUserEditorForEvent() &&
+                      setEventData({
+                        ...eventData,
+                        show_ticket_first: !eventData.show_ticket_first,
+                      })
+                    }
+                  />
+                </div>
+                <div className={styles.option}>
+                  <label>
+                    <AiOutlineTeam size={25} color='#949597' /> Allow Team Registration
+                  </label>
+                  <Slider
+                    checked={eventData.is_team as boolean}
+                    text={''}
+                    onChange={() =>
+                      isUserEditorForEvent() &&
+                      setEventData({
+                        ...eventData,
+                        is_team: !eventData.is_team,
+                      })
+                    }
+                  />
+                </div>
+                {!eventData.is_team && (
+                  <>
+                    <div className={styles.option}>
+                      <label>
+                        <BsTicketDetailed size={25} color='#949597' /> Allow Multi Ticket
+                      </label>
+                      <Slider
+                        checked={eventData.select_multi_ticket as boolean}
+                        text={''}
+                        onChange={() =>
+                          isUserEditorForEvent() &&
+                          setEventData({
+                            ...eventData,
+                            select_multi_ticket: !eventData.select_multi_ticket,
+                          })
+                        }
+                      />
+                    </div>
+                    {eventData.select_multi_ticket && (
+                      <motion.div
+                        className={styles.subOption}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                      >
                         <label>
-                          <BsTicketDetailed size={25} color='#949597' /> Allow Multi Ticket
+                          <BsTicketDetailed size={25} color='#949597' /> Grouped Ticket
                         </label>
                         <Slider
-                          checked={eventData.select_multi_ticket as boolean}
+                          checked={eventData.is_grouped_ticket}
                           text={''}
                           onChange={() =>
                             isUserEditorForEvent() &&
                             setEventData({
                               ...eventData,
-                              select_multi_ticket: !eventData.select_multi_ticket,
+                              is_grouped_ticket: !eventData.is_grouped_ticket,
                             })
                           }
                         />
-                      </div>
-                      {eventData.select_multi_ticket && (
-                        <motion.div
-                          className={styles.subOption}
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <label>
-                            <BsTicketDetailed size={25} color='#949597' /> Grouped Ticket
-                          </label>
-                          <Slider
-                            checked={eventData.is_grouped_ticket}
-                            text={''}
-                            onChange={() =>
-                              isUserEditorForEvent() &&
-                              setEventData({
-                                ...eventData,
-                                is_grouped_ticket: !eventData.is_grouped_ticket,
-                              })
-                            }
-                          />
-                        </motion.div>
-                      )}
-                    </>
-                  )}
+                      </motion.div>
+                    )}
+                  </>
+                )}
 
-                  <div className={styles.option}>
-                    <label>
-                      <MdOutlineShoppingCartCheckout size={25} color='#949597' /> Enable Checkout
-                      Scan
-                    </label>
-                    <Slider
-                      checked={eventData.is_checkout as boolean}
-                      text={''}
-                      onChange={() =>
-                        isUserEditorForEvent() &&
-                        setEventData({
-                          ...eventData,
-                          is_checkout: !eventData.is_checkout,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className={styles.option}>
-                    <label>
-                      <TbHeartHandshake size={25} color='#949597' /> Thank You Page
-                    </label>
-                    <Slider
-                      checked={eventData.thank_you_new_page as boolean}
-                      text={''}
-                      onChange={() =>
-                        isUserEditorForEvent() &&
-                        setEventData({
-                          ...eventData,
-                          thank_you_new_page: !eventData.thank_you_new_page,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className={styles.option}>
-                    <label>
-                      <MdOutlineShoppingCartCheckout size={25} color='#949597' /> Enable Randomizer
-                    </label>
-                    <Slider
-                      checked={eventData.is_random_user as boolean}
-                      text={''}
-                      onChange={() =>
-                        isUserEditorForEvent() &&
-                        setEventData({
-                          ...eventData,
-                          is_random_user: !eventData.is_random_user,
-                        })
-                      }
-                    />
-                  </div>
+                <div className={styles.option}>
+                  <label>
+                    <MdOutlineShoppingCartCheckout size={25} color='#949597' /> Enable Checkout Scan
+                  </label>
+                  <Slider
+                    checked={eventData.is_checkout as boolean}
+                    text={''}
+                    onChange={() =>
+                      isUserEditorForEvent() &&
+                      setEventData({
+                        ...eventData,
+                        is_checkout: !eventData.is_checkout,
+                      })
+                    }
+                  />
+                </div>
+                <div className={styles.option}>
+                  <label>
+                    <TbHeartHandshake size={25} color='#949597' /> Thank You Page
+                  </label>
+                  <Slider
+                    checked={eventData.thank_you_new_page as boolean}
+                    text={''}
+                    onChange={() =>
+                      isUserEditorForEvent() &&
+                      setEventData({
+                        ...eventData,
+                        thank_you_new_page: !eventData.thank_you_new_page,
+                      })
+                    }
+                  />
+                </div>
+                <div className={styles.option}>
+                  <label>
+                    <MdOutlineShoppingCartCheckout size={25} color='#949597' /> Enable Randomizer
+                  </label>
+                  <Slider
+                    checked={eventData.is_random_user as boolean}
+                    text={''}
+                    onChange={() =>
+                      isUserEditorForEvent() &&
+                      setEventData({
+                        ...eventData,
+                        is_random_user: !eventData.is_random_user,
+                      })
+                    }
+                  />
+                </div>
 
-                  <div className={styles.option}>
-                    <label>
-                      <FaDatabase size={25} color='#949597' />
-                      Show Data Modal
-                    </label>
-                    <Slider
-                      checked={eventData.need_confirmation as boolean}
-                      text={''}
-                      onChange={() =>
-                        isUserEditorForEvent() &&
-                        setEventData({
-                          ...eventData,
-                          need_confirmation: !eventData.need_confirmation,
-                        })
-                      }
-                    />
-                  </div>
+                <div className={styles.option}>
+                  <label>
+                    <FaDatabase size={25} color='#949597' />
+                    Show Data Modal
+                  </label>
+                  <Slider
+                    checked={eventData.need_confirmation as boolean}
+                    text={''}
+                    onChange={() =>
+                      isUserEditorForEvent() &&
+                      setEventData({
+                        ...eventData,
+                        need_confirmation: !eventData.need_confirmation,
+                      })
+                    }
+                  />
+                </div>
 
-                  <div className={styles.option}>
-                    <label>
-                      <MdDatasetLinked size={25} color='#949597' />
-                      Link another ID
-                    </label>
-                    <Slider
-                      checked={eventData.map_new_code as boolean}
-                      text={''}
-                      onChange={() =>
-                        setEventData({
-                          ...eventData,
-                          map_new_code: !eventData.map_new_code,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className={styles.option}>
-                    <label>
-                      <MdDatasetLinked size={25} color='#949597' />
-                      Multi-Day CheckIn
-                    </label>
-                    <Slider
-                      checked={eventData.multi_day_checkin as boolean}
-                      text={''}
-                      onChange={() =>
-                        setEventData({
-                          ...eventData,
-                          multi_day_checkin: !eventData.multi_day_checkin,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className={styles.option}>
-                    <label>
-                      <IoCheckmarkDoneOutline size={25} color='#949597' />
-                      Check In Confirmation
-                    </label>
-                    <Slider
-                      checked={eventData.checkin_confirmation_required as boolean}
-                      text={''}
-                      onChange={() =>
-                        setEventData({
-                          ...eventData,
-                          confirmation_fields: [],
-                          checkin_confirmation_required: !eventData.checkin_confirmation_required,
-                        })
-                      }
-                    />
-                  </div>
-                  <motion.div
-                    className={styles.optionSelect}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{
-                      opacity: eventData.checkin_confirmation_required ? 1 : 0,
-                      y: eventData.checkin_confirmation_required ? 0 : -10,
-                      height: eventData.checkin_confirmation_required ? 'auto' : 0,
+                <div className={styles.option}>
+                  <label>
+                    <MdDatasetLinked size={25} color='#949597' />
+                    Link another ID
+                  </label>
+                  <Slider
+                    checked={eventData.map_new_code as boolean}
+                    text={''}
+                    onChange={() =>
+                      setEventData({
+                        ...eventData,
+                        map_new_code: !eventData.map_new_code,
+                      })
+                    }
+                  />
+                </div>
+                <div className={styles.option}>
+                  <label>
+                    <MdDatasetLinked size={25} color='#949597' />
+                    Multi-Day CheckIn
+                  </label>
+                  <Slider
+                    checked={eventData.multi_day_checkin as boolean}
+                    text={''}
+                    onChange={() =>
+                      setEventData({
+                        ...eventData,
+                        multi_day_checkin: !eventData.multi_day_checkin,
+                      })
+                    }
+                  />
+                </div>
+                <div className={styles.option}>
+                  <label>
+                    <IoCheckmarkDoneOutline size={25} color='#949597' />
+                    Check In Confirmation
+                  </label>
+                  <Slider
+                    checked={eventData.checkin_confirmation_required as boolean}
+                    text={''}
+                    onChange={() =>
+                      setEventData({
+                        ...eventData,
+                        confirmation_fields: [],
+                        checkin_confirmation_required: !eventData.checkin_confirmation_required,
+                      })
+                    }
+                  />
+                </div>
+                <motion.div
+                  className={styles.optionSelect}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{
+                    opacity: eventData.checkin_confirmation_required ? 1 : 0,
+                    y: eventData.checkin_confirmation_required ? 0 : -10,
+                    height: eventData.checkin_confirmation_required ? 'auto' : 0,
+                  }}
+                  exit={{ opacity: 0, y: -10 }}
+                  style={{ paddingLeft: '1rem' }}
+                  // transition={{ duration: 0.3 }}
+                >
+                  <p className={styles.label}>Select Confirmation Fields</p>
+                  <Select
+                    options={formKeys.map((key) => ({ value: key, label: key }))}
+                    className={styles.selectDropdown}
+                    styles={{
+                      ...customStyles,
+                      container: (provided) => ({
+                        ...provided,
+                        minWidth: '20rem',
+                      }),
                     }}
-                    exit={{ opacity: 0, y: -10 }}
-                    style={{ paddingLeft: '1rem' }}
-                    // transition={{ duration: 0.3 }}
-                  >
-                    <p className={styles.label}>Select Confirmation Fields</p>
+                    onChange={(newValue) =>
+                      setEventData({
+                        ...eventData,
+                        confirmation_fields: newValue.map((option) => option.value),
+                      })
+                    }
+                    value={formKeys
+                      .filter((key) => eventData.confirmation_fields.includes(key))
+                      .map((key) => ({ value: key, label: key }))}
+                    placeholder={`Select options`}
+                    isMulti
+                    isSearchable={false}
+                  />
+                </motion.div>
+                {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
+                  <div className={styles.optionSelect}>
+                    <p className={styles.label}>Form Verification Settings</p>
                     <Select
-                      options={formKeys.map((key) => ({ value: key, label: key }))}
+                      options={[
+                        { value: 'phone and email', label: 'Phone and Email' },
+                        { value: 'phone only', label: 'Phone Only' },
+                        { value: 'email only', label: 'Email Only' },
+                        { value: 'phone or email', label: 'Phone or Email' },
+                        { value: 'no validation', label: 'No Validation' },
+                      ]}
                       className={styles.selectDropdown}
                       styles={{
                         ...customStyles,
@@ -533,143 +565,110 @@ const EditEvent = () => {
                           minWidth: '20rem',
                         }),
                       }}
-                      onChange={(newValue) =>
+                      onChange={(newValue) => {
+                        const settings =
+                          newValue?.value === 'no validation'
+                            ? {}
+                            : mapVerificationSettings(newValue?.value || '');
                         setEventData({
                           ...eventData,
-                          confirmation_fields: newValue.map((option) => option.value),
-                        })
+                          verification_settings: settings,
+                        });
+                      }}
+                      value={
+                        eventData?.verification_settings &&
+                        Object.keys(eventData.verification_settings).length > 0
+                          ? {
+                              value:
+                                eventData?.verification_settings?.condition === 'and'
+                                  ? 'phone and email'
+                                  : eventData?.verification_settings?.email
+                                    ? 'email only'
+                                    : 'phone only',
+                              label:
+                                eventData?.verification_settings?.condition === 'and'
+                                  ? 'Phone and Email'
+                                  : eventData?.verification_settings?.email
+                                    ? 'Email Only'
+                                    : 'Phone Only',
+                            }
+                          : { value: 'no validation', label: 'No Validation' }
                       }
-                      value={formKeys
-                        .filter((key) => eventData.confirmation_fields.includes(key))
-                        .map((key) => ({ value: key, label: key }))}
                       placeholder={`Select options`}
-                      isMulti
                       isSearchable={false}
                     />
-                  </motion.div>
-                  {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
-                    <div className={styles.optionSelect}>
-                      <p className={styles.label}>Form Verification Settings</p>
-                      <Select
-                        options={[
-                          { value: 'phone and email', label: 'Phone and Email' },
-                          { value: 'phone only', label: 'Phone Only' },
-                          { value: 'email only', label: 'Email Only' },
-                          { value: 'phone or email', label: 'Phone or Email' },
-                          { value: 'no validation', label: 'No Validation' },
-                        ]}
-                        className={styles.selectDropdown}
-                        styles={{
-                          ...customStyles,
-                          container: (provided) => ({
-                            ...provided,
-                            minWidth: '20rem',
-                          }),
-                        }}
-                        onChange={(newValue) => {
-                          const settings =
-                            newValue?.value === 'no validation'
-                              ? {}
-                              : mapVerificationSettings(newValue?.value || '');
-                          setEventData({
-                            ...eventData,
-                            verification_settings: settings,
-                          });
-                        }}
-                        value={
-                          eventData?.verification_settings &&
-                          Object.keys(eventData.verification_settings).length > 0
-                            ? {
-                                value:
-                                  eventData?.verification_settings?.condition === 'and'
-                                    ? 'phone and email'
-                                    : eventData?.verification_settings?.email
-                                      ? 'email only'
-                                      : 'phone only',
-                                label:
-                                  eventData?.verification_settings?.condition === 'and'
-                                    ? 'Phone and Email'
-                                    : eventData?.verification_settings?.email
-                                      ? 'Email Only'
-                                      : 'Phone Only',
-                              }
-                            : { value: 'no validation', label: 'No Validation' }
-                        }
-                        placeholder={`Select options`}
-                        isSearchable={false}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-              <div className={styles.followupMessageContainer}>
-                <label>Followup Message</label>
-                <p className={styles.subText}>
-                  This message will be shown once the user has registered for the event.
-                </p>
-                <div className={styles.followupMessage}>
-                  <Editor
-                    description={eventData?.followup_msg ?? ''}
-                    setNewDescription={setFollowupMessage}
-                  />
-                </div>
+                  </div>
+                )}
+              </>
+            )}
+            <div className={styles.followupMessageContainer}>
+              <label>Followup Message</label>
+              <p className={styles.subText}>
+                This message will be shown once the user has registered for the event.
+              </p>
+              <div className={styles.followupMessage}>
+                <Editor
+                  description={eventData?.followup_msg ?? ''}
+                  setNewDescription={setFollowupMessage}
+                />
               </div>
-              <button
-                onClick={() => {
-                  if (eventData && isUserEditorForEvent())
-                    setEventData({ ...eventData, followup_msg: followupMessage.toString() });
-                  setShowAdvancedSettings(false);
-
-                  onSubmit();
-                }}
-                className={styles.continueButton}
-              >
-                Continue
-              </button>
             </div>
-          </Modal>
-        )}
-        {showCommunicationMediumModal && (
-          <EventEditSocialsModal
-            setShowCommunicationMediumModal={setShowCommunicationMediumModal}
-            eventData={eventData}
-            setEventData={setEventData}
-          />
-        )}
+            <button
+              onClick={() => {
+                if (eventData && isUserEditorForEvent())
+                  setEventData({ ...eventData, followup_msg: followupMessage.toString() });
+                setShowAdvancedSettings(false);
+
+                onSubmit();
+              }}
+              className={styles.continueButton}
+            >
+              Continue
+            </button>
+          </div>
+        </Modal>
+
+        <EventEditSocialsModal
+          isOpen={showCommunicationMediumModal}
+          setShowCommunicationMediumModal={setShowCommunicationMediumModal}
+          eventData={eventData}
+          setEventData={setEventData}
+        />
+
         <DashboardLayout prevPage='-1'>
           {eventData && isLoaded ? (
             <>
-              {showModal && (
-                <Modal onClose={() => setShowModal(false)} title='Delete Confirmation'>
-                  <div className={styles.modalContainer}>
-                    <TbAlertTriangleFilled
-                      size={30}
-                      color='#f04b4b'
-                      className={styles.limitationIcon}
-                    />
-                    <p className={styles.modalHeader}>Are you sure you want to Delete?</p>
-                    <p className={styles.modalSubText}>
-                      This action cannot be undone. This will permanently delete the event and all
-                      associated data.
-                    </p>
-                    <div className={styles.modalButtonContainer}>
-                      <button
-                        className={styles.primaryButton}
-                        onClick={() => agreeToDelete()}
-                        disabled={isDeleting}
-                      >
-                        {isDeleting ? <BeatLoader color='#1d1d1d' size={8} /> : 'Delete'}
-                      </button>
-                      <button
-                        className={styles.secondaryButton}
-                        onClick={() => setShowModal(false)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
+              <Modal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                title='Delete Confirmation'
+              >
+                <div className={styles.modalContainer}>
+                  <TbAlertTriangleFilled
+                    size={30}
+                    color='#f04b4b'
+                    className={styles.limitationIcon}
+                  />
+                  <p className={styles.modalHeader}>Are you sure you want to Delete?</p>
+                  <p className={styles.modalSubText}>
+                    This action cannot be undone. This will permanently delete the event and all
+                    associated data.
+                  </p>
+                  <div className={styles.modalButtonContainer}>
+                    <button
+                      className={styles.primaryButton}
+                      onClick={() => agreeToDelete()}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? <BeatLoader color='#1d1d1d' size={8} /> : 'Delete'}
+                    </button>
+                    <button className={styles.secondaryButton} onClick={() => setShowModal(false)}>
+                      Cancel
+                    </button>
                   </div>
-                </Modal>
-              )}
+                </div>
+              </Modal>
+
               <div className={styles.createEventContainer}>
                 <div className={styles.rightSideContainer}>
                   <div className={styles.eventNameContainer}>

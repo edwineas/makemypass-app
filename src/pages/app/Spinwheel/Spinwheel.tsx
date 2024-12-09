@@ -144,54 +144,54 @@ const Spinwheel = () => {
           </div>
         </>
       )}
-      {popPrize && (
-        <>
-          <Modal
-            title={
-              spinWheelData?.[prizeNumber!]?.name.toLowerCase().includes('better luck')
-                ? 'Wrong Luck!'
-                : "You're Lucky Winner!"
+
+      <>
+        <Modal
+          isOpen={popPrize}
+          title={
+            spinWheelData?.[prizeNumber!]?.name.toLowerCase().includes('better luck')
+              ? 'Wrong Luck!'
+              : "You're Lucky Winner!"
+          }
+          onClose={() => {
+            onCloseModal();
+          }}
+        >
+          <div className={styles.prizePopup}>
+            <p className={styles.prizeModalHeader}>
+              {spinWheelData?.[prizeNumber!]?.name.toLowerCase().includes('better luck')
+                ? `Oh No! `
+                : `Congratulations!`}
+            </p>
+            <p>
+              {spinWheelData?.[prizeNumber!]?.name.toLowerCase().includes('better luck')
+                ? `${spinWheelData?.[prizeNumber!]?.name}, You are allowed spin only once.`
+                : `You've won ${spinWheelData?.[prizeNumber!]?.name}!, Kindly collect your prizes from the prize distribution counter.`}
+            </p>
+            <button
+              onClick={() => {
+                onCloseModal();
+              }}
+              className={styles.closeButton}
+            >
+              Close
+            </button>
+          </div>
+        </Modal>
+        <Confetti
+          drawShape={(ctx) => {
+            ctx.beginPath();
+            for (let i = 0; i < 22; i++) {
+              const angle = 0.35 * i;
+              const x = (0.2 + 1.5 * angle) * Math.cos(angle);
+              const y = (0.2 + 1.5 * angle) * Math.sin(angle);
+              ctx.lineTo(x, y);
             }
-            onClose={() => {
-              onCloseModal();
-            }}
-          >
-            <div className={styles.prizePopup}>
-              <p className={styles.prizeModalHeader}>
-                {spinWheelData?.[prizeNumber!]?.name.toLowerCase().includes('better luck')
-                  ? `Oh No! `
-                  : `Congratulations!`}
-              </p>
-              <p>
-                {spinWheelData?.[prizeNumber!]?.name.toLowerCase().includes('better luck')
-                  ? `${spinWheelData?.[prizeNumber!]?.name}, You are allowed spin only once.`
-                  : `You've won ${spinWheelData?.[prizeNumber!]?.name}!, Kindly collect your prizes from the prize distribution counter.`}
-              </p>
-              <button
-                onClick={() => {
-                  onCloseModal();
-                }}
-                className={styles.closeButton}
-              >
-                Close
-              </button>
-            </div>
-          </Modal>
-          <Confetti
-            drawShape={(ctx) => {
-              ctx.beginPath();
-              for (let i = 0; i < 22; i++) {
-                const angle = 0.35 * i;
-                const x = (0.2 + 1.5 * angle) * Math.cos(angle);
-                const y = (0.2 + 1.5 * angle) * Math.sin(angle);
-                ctx.lineTo(x, y);
-              }
-              ctx.stroke();
-              ctx.closePath();
-            }}
-          />
-        </>
-      )}
+            ctx.stroke();
+            ctx.closePath();
+          }}
+        />
+      </>
     </Theme>
   );
 };

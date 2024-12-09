@@ -9,6 +9,7 @@ import styles from '../../Guests.module.css';
 import { FormEventData, GuestsType, SelectedGuest } from '../../types';
 
 const EditGuest = ({
+  isOpen,
   formData,
   eventRegisterId,
   setFormData,
@@ -18,6 +19,7 @@ const EditGuest = ({
   onClose,
   setGuests,
 }: {
+  isOpen: boolean;
   formData: FormDataType;
   eventRegisterId: string;
   setFormData: Dispatch<SetStateAction<FormDataType>>;
@@ -171,7 +173,7 @@ const EditGuest = ({
   }, [formData]);
 
   return (
-    <Modal title='Edit Guest' onClose={onClose} type='side'>
+    <Modal isOpen={isOpen} title='Edit Guest' onClose={onClose} type='side'>
       <div className={styles.userInfoModalContainer}>
         {formData && eventFormData && (
           <>
