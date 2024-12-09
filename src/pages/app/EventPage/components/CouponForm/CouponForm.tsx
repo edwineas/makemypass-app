@@ -266,9 +266,11 @@ const CouponForm = ({
 
   return (
     <>
-      {showReceiptModal && (
-        <ExpectedInvoice billReceipt={billReceipt} setShowReceiptModal={setShowReceiptModal} />
-      )}
+      <ExpectedInvoice
+        isOpen={showReceiptModal}
+        billReceipt={billReceipt}
+        setShowReceiptModal={setShowReceiptModal}
+      />
 
       {findMinDate(eventFormData) && (
         <SelectDate

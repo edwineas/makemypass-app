@@ -12,12 +12,14 @@ import type { MemberType } from '../OrganizationGlance/types';
 import styles from './AddEditMember.module.css';
 
 const AddEditMember = ({
+  isOpen,
   memberData,
   setMemberData,
   onSubmit,
   onClose,
   add,
 }: {
+  isOpen: boolean;
   memberData: MemberType | undefined;
   setMemberData: React.Dispatch<SetStateAction<MemberType | undefined>>;
   onSubmit: () => void;
@@ -52,7 +54,7 @@ const AddEditMember = ({
   }
 
   return (
-    <Modal onClose={onClose} title={add ? 'Add Member' : 'Edit Member'}>
+    <Modal isOpen={isOpen} onClose={onClose} title={add ? 'Add Member' : 'Edit Member'}>
       <div className={styles.userInfoModalContainer}>
         <InputField
           type='text'

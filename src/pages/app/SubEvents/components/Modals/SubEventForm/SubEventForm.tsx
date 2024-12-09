@@ -35,9 +35,13 @@ const SubEventForm = ({
   setShowFormModal: React.Dispatch<React.SetStateAction<boolean>>;
   showFormModal: boolean;
 }) => {
-  if (!(showFormModal && subEventForm && subEventForm.length > 0)) return null;
   return (
-    <Modal title='Enter Additional Information' onClose={() => setSubEventForm([])} type='side'>
+    <Modal
+      title='Enter Additional Information'
+      isOpen={showFormModal && subEventForm && subEventForm.length > 0}
+      onClose={() => setSubEventForm([])}
+      type='side'
+    >
       <p className={styles.modalDescription}>
         Required below are the fields which are newly required for the selected events.
       </p>

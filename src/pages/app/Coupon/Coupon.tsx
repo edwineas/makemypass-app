@@ -107,485 +107,484 @@ const Coupon = () => {
 
   return (
     <>
-      {activateCoupon && activateCoupon.showModal && (
-        <Modal
-          title='Active Coupuon'
-          onClose={() => {
-            setActivateCoupon({ ...activateCoupon, showModal: false });
-          }}
-        >
-          <div className={styles.activateCouponModal}>
-            <Slider
-              text='Show Coupon Field in Form'
-              checked={activateCoupon.active}
-              onChange={() => {
-                setActivateCoupon({ ...activateCoupon, active: !activateCoupon.active });
+      <Modal
+        title='Active Coupon'
+        isOpen={activateCoupon != undefined && activateCoupon.showModal}
+        onClose={() => {
+          setActivateCoupon({ ...activateCoupon, showModal: false });
+        }}
+      >
+        <div className={styles.activateCouponModal}>
+          <Slider
+            text='Show Coupon Field in Form'
+            checked={activateCoupon.active}
+            onChange={() => {
+              setActivateCoupon({ ...activateCoupon, active: !activateCoupon.active });
+            }}
+            size='medium'
+            labelStyle={{
+              marginLeft: '-0.25rem',
+            }}
+          />
+          {activateCoupon.active && (
+            <InputField
+              type='text'
+              name='Field Description'
+              id='fieldDescription'
+              title='Enter Field Description'
+              icon={<></>}
+              required={false}
+              onChange={(event) => {
+                setActivateCoupon({ ...activateCoupon, description: event.target.value });
               }}
-              size='medium'
-              labelStyle={{
-                marginLeft: '-0.25rem',
-              }}
+              value={activateCoupon.description}
+              description='This description will serve as helper text for the coupon field'
             />
-            {activateCoupon.active && (
-              <InputField
-                type='text'
-                name='Field Description'
-                id='fieldDescription'
-                title='Enter Field Description'
-                icon={<></>}
-                required={false}
-                onChange={(event) => {
-                  setActivateCoupon({ ...activateCoupon, description: event.target.value });
-                }}
-                value={activateCoupon.description}
-                description='This description will serve as helper text for the coupon field'
-              />
-            )}
+          )}
 
-            <SecondaryButton
-              buttonText='Submit'
-              onClick={() => {
-                updateFormCouponStatus(eventId, activateCoupon, setActivateCoupon);
-              }}
-            />
-          </div>
-        </Modal>
-      )}
+          <SecondaryButton
+            buttonText='Submit'
+            onClick={() => {
+              updateFormCouponStatus(eventId, activateCoupon, setActivateCoupon);
+            }}
+          />
+        </div>
+      </Modal>
+
       <Theme>
         <DashboardLayout prevPage='-1' tabName='coupon'>
-          {couponModal.showModal && (
-            <Modal
-              type='side'
-              title='Add New Coupon Code'
-              onClose={() => setCouponModal({ showModal: false })}
+          <Modal
+            type='side'
+            title='Add New Coupon Code'
+            isOpen={couponModal.showModal}
+            onClose={() => setCouponModal({ showModal: false })}
+          >
+            <div
+              className={styles.couponModal}
+              style={{
+                maxWidth: '30rem',
+              }}
             >
-              <div
-                className={styles.couponModal}
-                style={{
-                  maxWidth: '30rem',
-                }}
-              >
-                <div className={styles.couponCodeInput}>
-                  <InputField
-                    type='text'
-                    name='Coupon Code'
-                    id='couponCode'
-                    title='Coupon Code'
-                    icon={<></>}
-                    required={true}
-                    onChange={(event) => {
-                      setNewCouponData({ ...newCouponData, code: event.target.value });
-                      setCouponError((prev: CreateCouponTypeError) => ({ ...prev, code: [''] }));
+              <div className={styles.couponCodeInput}>
+                <InputField
+                  type='text'
+                  name='Coupon Code'
+                  id='couponCode'
+                  title='Coupon Code'
+                  icon={<></>}
+                  required={true}
+                  onChange={(event) => {
+                    setNewCouponData({ ...newCouponData, code: event.target.value });
+                    setCouponError((prev: CreateCouponTypeError) => ({ ...prev, code: [''] }));
+                  }}
+                  value={newCouponData.code}
+                  description='Customer must enter this coupon code at checkout'
+                  error={couponError.code}
+                  disabled={newCouponData.consumed > 0 || !isUserEditorForEvent()}
+                />
+
+                <hr className={styles.line} />
+
+                <>
+                  <div
+                    style={{
+                      marginBottom: '1rem',
                     }}
-                    value={newCouponData.code}
-                    description='Customer must enter this coupon code at checkout'
-                    error={couponError.code}
-                    disabled={newCouponData.consumed > 0 || !isUserEditorForEvent()}
-                  />
-
-                  <hr className={styles.line} />
-
-                  <>
-                    <div
-                      style={{
-                        marginBottom: '1rem',
+                  >
+                    <p className={styles.fieldHeader}>Applies To</p>
+                    <p className={styles.filedDescription}>
+                      if no tickets are selected, coupon will apply to all tickets
+                    </p>
+                    <Select
+                      isMulti
+                      styles={customStyles}
+                      name='colors'
+                      isDisabled={!isUserEditorForEvent()}
+                      className='basic-multi-select'
+                      classNamePrefix='select'
+                      options={tickets.map((ticket) => {
+                        return {
+                          value: ticket.id,
+                          label: ticket.title,
+                        };
+                      })}
+                      value={newCouponData?.ticket_restricted.map((ticket) => {
+                        return {
+                          value: ticket,
+                          label: tickets.find((t) => t.id === ticket)?.title,
+                        };
+                      })}
+                      onChange={(options) => {
+                        setNewCouponData({
+                          ...newCouponData,
+                          ticket_restricted: options.map((option) => option.value),
+                        });
+                        setCouponError((prev: CreateCouponTypeError) => ({
+                          ...prev,
+                          tickets: [''],
+                        }));
                       }}
-                    >
-                      <p className={styles.fieldHeader}>Applies To</p>
-                      <p className={styles.filedDescription}>
-                        if no tickets are selected, coupon will apply to all tickets
+                    />
+                    {
+                      <p className={styles.error}>
+                        {couponError.tickets && couponError.tickets[0]}
                       </p>
+                    }
+                  </div>
+                </>
+
+                <div className={styles.discountContainer}>
+                  <div className={styles.discountValue}>
+                    <InputField
+                      type='number'
+                      name='Discount Value'
+                      id='discount'
+                      title='Enter Discount Value'
+                      icon={<></>}
+                      required={true}
+                      disabled={newCouponData.consumed > 0 || !isUserEditorForEvent()}
+                      onChange={(event) => {
+                        setCouponError((prev: CreateCouponTypeError) => ({
+                          ...prev,
+                          value: [''],
+                        }));
+
+                        if (Number(event.target.value) < 0) {
+                          toast.error('Enter a positive value');
+                          return;
+                        } else if (
+                          newCouponData.type === 'percentage' &&
+                          Number(event.target.value) > 100
+                        ) {
+                          toast.error('Enter a value less than 100');
+                          return;
+                        } else {
+                          const ticketPrices = newCouponData.ticket_restricted.map((ticketId) => {
+                            const ticket = tickets.find((ticket) => ticket.id === ticketId);
+                            return ticket && ticket.price;
+                          });
+
+                          let discountGreaterThanTicket = false;
+
+                          ticketPrices.map((ticketPrice) => {
+                            if (ticketPrice && ticketPrice < Number(event.target.value)) {
+                              toast.error('Discount Amount is Greater than Ticket Price');
+                              discountGreaterThanTicket = true;
+                            }
+                          });
+
+                          if (discountGreaterThanTicket) return;
+                        }
+                        setNewCouponData({
+                          ...newCouponData,
+                          value: parseInt(event.target.value),
+                        });
+                      }}
+                      value={newCouponData.value.toString()}
+                      error={couponError.value}
+                    />
+                    <div className={styles.discountSelectContainer}>
                       <Select
-                        isMulti
                         styles={customStyles}
                         name='colors'
-                        isDisabled={!isUserEditorForEvent()}
-                        className='basic-multi-select'
+                        className={styles.basicSelect}
                         classNamePrefix='select'
-                        options={tickets.map((ticket) => {
-                          return {
-                            value: ticket.id,
-                            label: ticket.title,
-                          };
-                        })}
-                        value={newCouponData?.ticket_restricted.map((ticket) => {
-                          return {
-                            value: ticket,
-                            label: tickets.find((t) => t.id === ticket)?.title,
-                          };
-                        })}
-                        onChange={(options) => {
-                          setNewCouponData({
-                            ...newCouponData,
-                            ticket_restricted: options.map((option) => option.value),
-                          });
+                        isDisabled={newCouponData.consumed > 0 || !isUserEditorForEvent()}
+                        options={couponTypes}
+                        value={couponTypes.find((type) => type.value === newCouponData.type)}
+                        onChange={(selectedOption) => {
+                          if (selectedOption)
+                            setNewCouponData({
+                              ...newCouponData,
+                              type: selectedOption.value as 'percentage' | 'amount',
+                            });
+
                           setCouponError((prev: CreateCouponTypeError) => ({
                             ...prev,
-                            tickets: [''],
+                            value: [''],
                           }));
                         }}
+                        isSearchable={false}
                       />
-                      {
-                        <p className={styles.error}>
-                          {couponError.tickets && couponError.tickets[0]}
-                        </p>
-                      }
+                      {couponError.value && <p className={styles.error}>{couponError.value}</p>}
                     </div>
-                  </>
+                  </div>
+                </div>
 
-                  <div className={styles.discountContainer}>
-                    <div className={styles.discountValue}>
+                <hr className={styles.line} />
+
+                <InputField
+                  type='textarea'
+                  name='Description'
+                  id='description'
+                  disabled={!isUserEditorForEvent()}
+                  title='Write a short description'
+                  icon={<></>}
+                  required={false}
+                  onChange={(event) => {
+                    setNewCouponData({ ...newCouponData, description: event.target.value });
+                    setCouponError((prev: CreateCouponTypeError) => ({
+                      ...prev,
+                      description: [''],
+                    }));
+                  }}
+                  value={newCouponData.description}
+                  error={couponError.description}
+                />
+
+                <hr className={styles.line} />
+
+                <div className={styles.discountUses}>
+                  {/* <p className={styles.fieldHeader}>Maximum Discount Uses</p> */}
+                  <Slider
+                    checked={limitDiscountUsage}
+                    onChange={() => {
+                      if (isUserEditorForEvent()) {
+                        setLimitDiscountUsage(!limitDiscountUsage);
+                        if (!limitDiscountUsage) {
+                          setNewCouponData({ ...newCouponData, count: 5 });
+                        }
+                      }
+                    }}
+                    text='Limit Discount Usage'
+                  />
+                  {
+                    <p className={styles.error}>
+                      {couponError.count && limitDiscountUsage && couponError.count[0]}
+                    </p>
+                  }
+                  {limitDiscountUsage && (
+                    <div className={styles.limitInput}>
                       <InputField
-                        type='number'
-                        name='Discount Value'
-                        id='discount'
-                        title='Enter Discount Value'
+                        type='text'
+                        name='Conditions'
+                        id='conditions'
+                        title='Enter the limit'
                         icon={<></>}
                         required={true}
                         disabled={newCouponData.consumed > 0 || !isUserEditorForEvent()}
                         inputStyles={{ borderRadius: '0.5rem 0 0 0.5rem' }}
                         onChange={(event) => {
-                          setCouponError((prev: CreateCouponTypeError) => ({
-                            ...prev,
-                            value: [''],
-                          }));
-
-                          if (Number(event.target.value) < 0) {
-                            toast.error('Enter a positive value');
-                            return;
-                          } else if (
-                            newCouponData.type === 'percentage' &&
-                            Number(event.target.value) > 100
-                          ) {
-                            toast.error('Enter a value less than 100');
-                            return;
-                          } else {
-                            const ticketPrices = newCouponData.ticket_restricted.map((ticketId) => {
-                              const ticket = tickets.find((ticket) => ticket.id === ticketId);
-                              return ticket && ticket.price;
-                            });
-
-                            let discountGreaterThanTicket = false;
-
-                            ticketPrices.map((ticketPrice) => {
-                              if (ticketPrice && ticketPrice < Number(event.target.value)) {
-                                toast.error('Discount Amount is Greater than Ticket Price');
-                                discountGreaterThanTicket = true;
-                              }
-                            });
-
-                            if (discountGreaterThanTicket) return;
-                          }
+                          if (Number(event.target.value) < 0)
+                            toast.error('Count cannot be negative');
                           setNewCouponData({
                             ...newCouponData,
-                            value: parseInt(event.target.value),
+                            count: Number(event.target.value),
                           });
                         }}
-                        value={newCouponData.value.toString()}
-                        error={couponError.value}
+                        value={newCouponData.count ? newCouponData.count.toString() : '0'}
+                        error={couponError.count}
+                        disabled={!isUserEditorForEvent()}
                       />
-                      <div className={styles.discountSelectContainer}>
-                        <Select
-                          styles={customStyles}
-                          name='colors'
-                          className={styles.basicSelect}
-                          classNamePrefix='select'
-                          isDisabled={newCouponData.consumed > 0 || !isUserEditorForEvent()}
-                          options={couponTypes}
-                          value={couponTypes.find((type) => type.value === newCouponData.type)}
-                          onChange={(selectedOption) => {
-                            if (selectedOption)
-                              setNewCouponData({
-                                ...newCouponData,
-                                type: selectedOption.value as 'percentage' | 'amount',
-                              });
-
-                            setCouponError((prev: CreateCouponTypeError) => ({
-                              ...prev,
-                              value: [''],
-                            }));
-                          }}
-                          isSearchable={false}
-                        />
-                        {couponError.value && <p className={styles.error}>{couponError.value}</p>}
-                      </div>
                     </div>
-                  </div>
-
-                  <hr className={styles.line} />
-
-                  <InputField
-                    type='textarea'
-                    name='Description'
-                    id='description'
-                    disabled={!isUserEditorForEvent()}
-                    title='Write a short description'
-                    icon={<></>}
-                    required={false}
-                    onChange={(event) => {
-                      setNewCouponData({ ...newCouponData, description: event.target.value });
-                      setCouponError((prev: CreateCouponTypeError) => ({
-                        ...prev,
-                        description: [''],
-                      }));
+                  )}
+                </div>
+                <div className={styles.limitOne}>
+                  <Slider
+                    checked={!newCouponData.is_private}
+                    onChange={() => {
+                      if (isUserEditorForEvent())
+                        setNewCouponData({
+                          ...newCouponData,
+                          is_private: !newCouponData.is_private,
+                        });
                     }}
-                    value={newCouponData.description}
-                    error={couponError.description}
+                    text='Show Coupon in Form'
                   />
+                  {
+                    <p className={styles.error}>
+                      {couponError.is_private &&
+                        newCouponData.is_private &&
+                        couponError.is_private[0]}
+                    </p>
+                  }
+                  <Slider
+                    checked={newCouponData.is_active}
+                    onChange={() => {
+                      if (isUserEditorForEvent())
+                        setNewCouponData({
+                          ...newCouponData,
+                          is_active: !newCouponData.is_active,
+                        });
+                    }}
+                    text='Activate Coupon'
+                  />
+                  {
+                    <p className={styles.error}>
+                      {couponError.is_active && newCouponData.is_active && couponError.is_active[0]}
+                    </p>
+                  }
+                </div>
+              </div>
 
+              {import.meta.env.VITE_CURRENT_ENV == 'dev' && (
+                <>
                   <hr className={styles.line} />
-
-                  <div className={styles.discountUses}>
-                    {/* <p className={styles.fieldHeader}>Maximum Discount Uses</p> */}
+                  <div className={styles.conditions}>
+                    <p className={styles.fieldHeader}>Customer Eligiblity</p>
                     <Slider
-                      checked={limitDiscountUsage}
+                      checked={newCouponData.conditions?.length > 0}
                       onChange={() => {
-                        if (isUserEditorForEvent()) {
-                          setLimitDiscountUsage(!limitDiscountUsage);
-                          if (!limitDiscountUsage) {
-                            setNewCouponData({ ...newCouponData, count: 5 });
-                          }
-                        }
-                      }}
-                      text='Limit Discount Usage'
-                    />
-                    {
-                      <p className={styles.error}>
-                        {couponError.count && limitDiscountUsage && couponError.count[0]}
-                      </p>
-                    }
-                    {limitDiscountUsage && (
-                      <div className={styles.limitInput}>
-                        <InputField
-                          type='text'
-                          name='Conditions'
-                          id='conditions'
-                          title='Enter the limit'
-                          icon={<></>}
-                          required={true}
-                          onChange={(event) => {
-                            if (Number(event.target.value) < 0)
-                              toast.error('Count cannot be negative');
-                            setNewCouponData({
-                              ...newCouponData,
-                              count: Number(event.target.value),
+                        if (isUserEditorForEvent())
+                          if (newCouponData.conditions?.length > 0) newCouponData.conditions = [];
+                          else
+                            newCouponData.conditions.push({
+                              field: '',
+                              value: '',
+                              operator: '',
                             });
-                          }}
-                          value={newCouponData.count ? newCouponData.count.toString() : '0'}
-                          error={couponError.count}
-                          disabled={!isUserEditorForEvent()}
-                        />
+
+                        setNewCouponData({ ...newCouponData });
+                      }}
+                      text='Show coupon only when conditions are met'
+                    />
+                    {newCouponData.conditions?.length >= 0 && (
+                      <div className={styles.conditions}>
+                        {newCouponData.conditions.map((condition, idx) => (
+                          <div className={styles.conditionRow} key={idx}>
+                            <p className={styles.when}>{idx === 0 ? 'When' : 'And'}</p>
+                            <div className={styles.conditionsSelect}>
+                              <SelectComponent
+                                options={
+                                  formFields?.length > 0
+                                    ? formFields.map((field) => ({
+                                        value: field.id,
+                                        label: field.title,
+                                      }))
+                                    : []
+                                }
+                                value={condition.field}
+                                onChange={(option: { value: string; label: string } | null) => {
+                                  if (!option) condition.field = '';
+                                  else condition.field = option.value;
+
+                                  setNewCouponData({ ...newCouponData });
+                                }}
+                                isSmall={true}
+                              />
+                              <SelectComponent
+                                options={[
+                                  ...getConditions(getFieldType(condition.field)).map(
+                                    (condition) => ({
+                                      value: condition.value,
+                                      label: condition.label,
+                                    }),
+                                  ),
+                                ]}
+                                value={condition.operator}
+                                onChange={(option: { value: string; label: string } | null) => {
+                                  if (!option) condition.operator = '';
+                                  else condition.operator = option.value;
+
+                                  setNewCouponData({ ...newCouponData });
+                                }}
+                                isSmall={true}
+                              />
+                              <input
+                                type='text'
+                                placeholder='Enter a Value'
+                                value={condition.value}
+                                onChange={(event) => {
+                                  condition.value = event.target.value;
+
+                                  setNewCouponData({ ...newCouponData });
+                                }}
+                              />
+
+                              <RiDeleteBinLine
+                                className='pointer'
+                                size={20}
+                                color='#606264'
+                                onClick={() => {
+                                  newCouponData.conditions.splice(idx, 1);
+                                  setNewCouponData({ ...newCouponData });
+                                }}
+                              />
+
+                              <RxDragHandleDots2
+                                style={{
+                                  marginLeft: '0.5rem',
+                                }}
+                                size={20}
+                                color='#606264'
+                              />
+
+                              <LuPlus
+                                style={{
+                                  marginLeft: '0.5rem',
+                                }}
+                                className='pointer'
+                                size={20}
+                                color='#606264'
+                                onClick={() => {
+                                  newCouponData.conditions.push({
+                                    field: '',
+                                    value: '',
+                                    operator: '',
+                                  });
+                                  setNewCouponData({ ...newCouponData });
+                                }}
+                              />
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>
-                  <div className={styles.limitOne}>
-                    <Slider
-                      checked={!newCouponData.is_private}
-                      onChange={() => {
-                        if (isUserEditorForEvent())
-                          setNewCouponData({
-                            ...newCouponData,
-                            is_private: !newCouponData.is_private,
-                          });
-                      }}
-                      text='Show Coupon in Form'
-                    />
-                    {
-                      <p className={styles.error}>
-                        {couponError.is_private &&
-                          newCouponData.is_private &&
-                          couponError.is_private[0]}
-                      </p>
-                    }
-                    <Slider
-                      checked={newCouponData.is_active}
-                      onChange={() => {
-                        if (isUserEditorForEvent())
-                          setNewCouponData({
-                            ...newCouponData,
-                            is_active: !newCouponData.is_active,
-                          });
-                      }}
-                      text='Activate Coupon'
-                    />
-                    {
-                      <p className={styles.error}>
-                        {couponError.is_active &&
-                          newCouponData.is_active &&
-                          couponError.is_active[0]}
-                      </p>
-                    }
-                  </div>
-                </div>
+                </>
+              )}
 
-                {import.meta.env.VITE_CURRENT_ENV == 'dev' && (
-                  <>
-                    <hr className={styles.line} />
-                    <div className={styles.conditions}>
-                      <p className={styles.fieldHeader}>Customer Eligiblity</p>
-                      <Slider
-                        checked={newCouponData.conditions?.length > 0}
-                        onChange={() => {
-                          if (isUserEditorForEvent())
-                            if (newCouponData.conditions?.length > 0) newCouponData.conditions = [];
-                            else
-                              newCouponData.conditions.push({
-                                field: '',
-                                value: '',
-                                operator: '',
-                              });
-
-                          setNewCouponData({ ...newCouponData });
-                        }}
-                        text='Show coupon only when conditions are met'
-                      />
-                      {newCouponData.conditions?.length >= 0 && (
-                        <div className={styles.conditions}>
-                          {newCouponData.conditions.map((condition, idx) => (
-                            <div className={styles.conditionRow} key={idx}>
-                              <p className={styles.when}>{idx === 0 ? 'When' : 'And'}</p>
-                              <div className={styles.conditionsSelect}>
-                                <SelectComponent
-                                  options={
-                                    formFields?.length > 0
-                                      ? formFields.map((field) => ({
-                                          value: field.id,
-                                          label: field.title,
-                                        }))
-                                      : []
-                                  }
-                                  value={condition.field}
-                                  onChange={(option: { value: string; label: string } | null) => {
-                                    if (!option) condition.field = '';
-                                    else condition.field = option.value;
-
-                                    setNewCouponData({ ...newCouponData });
-                                  }}
-                                  isSmall={true}
-                                />
-                                <SelectComponent
-                                  options={[
-                                    ...getConditions(getFieldType(condition.field)).map(
-                                      (condition) => ({
-                                        value: condition.value,
-                                        label: condition.label,
-                                      }),
-                                    ),
-                                  ]}
-                                  value={condition.operator}
-                                  onChange={(option: { value: string; label: string } | null) => {
-                                    if (!option) condition.operator = '';
-                                    else condition.operator = option.value;
-
-                                    setNewCouponData({ ...newCouponData });
-                                  }}
-                                  isSmall={true}
-                                />
-                                <input
-                                  type='text'
-                                  placeholder='Enter a Value'
-                                  value={condition.value}
-                                  onChange={(event) => {
-                                    condition.value = event.target.value;
-
-                                    setNewCouponData({ ...newCouponData });
-                                  }}
-                                />
-
-                                <RiDeleteBinLine
-                                  className='pointer'
-                                  size={20}
-                                  color='#606264'
-                                  onClick={() => {
-                                    newCouponData.conditions.splice(idx, 1);
-                                    setNewCouponData({ ...newCouponData });
-                                  }}
-                                />
-
-                                <RxDragHandleDots2
-                                  style={{
-                                    marginLeft: '0.5rem',
-                                  }}
-                                  size={20}
-                                  color='#606264'
-                                />
-
-                                <LuPlus
-                                  style={{
-                                    marginLeft: '0.5rem',
-                                  }}
-                                  className='pointer'
-                                  size={20}
-                                  color='#606264'
-                                  onClick={() => {
-                                    newCouponData.conditions.push({
-                                      field: '',
-                                      value: '',
-                                      operator: '',
-                                    });
-                                    setNewCouponData({ ...newCouponData });
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
-
-                <div className={styles.buttons}>
-                  {isUserEditorForEvent() && (
-                    <SecondaryButton
-                      buttonText='Save Coupon'
-                      onClick={() => {
-                        if (newCouponData.id) {
-                          setCouponModal({ showModal: false });
-                          updateCouponData(eventId, newCouponData, setCoupons);
-                        } else
-                          createCoupon(eventId, newCouponData, setCoupons, setCouponError).then(
-                            () => {
-                              setCouponModal({ showModal: false });
-                              setNewCouponData({
-                                code: '',
-                                value: 0,
-                                type: 'amount',
-                                ticket_restricted: [],
-                                description: '',
-                                is_active: true,
-                                count: 0,
-                                conditions: [],
-                                is_private: false,
-                                consumed: 0,
-                              });
-                            },
-                          );
-                      }}
-                    />
-                  )}
+              <div className={styles.buttons}>
+                {isUserEditorForEvent() && (
                   <SecondaryButton
-                    buttonText='Discard Coupon'
+                    buttonText='Save Coupon'
                     onClick={() => {
-                      setCouponModal({ showModal: false });
-                      setNewCouponData({
-                        code: '',
-                        value: 0,
-                        type: 'amount',
-                        ticket_restricted: [],
-                        description: '',
-                        is_active: true,
-                        count: 0,
-                        conditions: [],
-                        is_private: false,
-                        consumed: 0,
-                      });
+                      if (newCouponData.id) {
+                        setCouponModal({ showModal: false });
+                        updateCouponData(eventId, newCouponData, setCoupons);
+                      } else
+                        createCoupon(eventId, newCouponData, setCoupons, setCouponError).then(
+                          () => {
+                            setCouponModal({ showModal: false });
+                            setNewCouponData({
+                              code: '',
+                              value: 0,
+                              type: 'amount',
+                              ticket_restricted: [],
+                              description: '',
+                              is_active: true,
+                              count: 0,
+                              conditions: [],
+                              is_private: false,
+                              consumed: 0,
+                            });
+                          },
+                        );
                     }}
                   />
-                </div>
+                )}
+                <SecondaryButton
+                  buttonText='Discard Coupon'
+                  onClick={() => {
+                    setCouponModal({ showModal: false });
+                    setNewCouponData({
+                      code: '',
+                      value: 0,
+                      type: 'amount',
+                      ticket_restricted: [],
+                      description: '',
+                      is_active: true,
+                      count: 0,
+                      conditions: [],
+                      is_private: false,
+                      consumed: 0,
+                    });
+                  }}
+                />
               </div>
-            </Modal>
-          )}
+            </div>
+          </Modal>
+
           {coupons?.length > 0 ? (
             <div className={styles.couponListingContainer}>
               <GenericTable

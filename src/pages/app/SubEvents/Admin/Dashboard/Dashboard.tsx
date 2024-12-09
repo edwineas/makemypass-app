@@ -185,216 +185,219 @@ const Dashboard = () => {
   return (
     <>
       <Theme>
-        {(currentSelectType == 'add' || currentSelectType == 'edit') && (
-          <Modal
-            title={currentSelectType === 'edit' ? 'Edit Sub Event' : 'Add Sub Event'}
-            type='side'
-            onClose={() => setCurrentSelectType('')}
-          >
-            <div className={styles.modalContent}>
-              <InputField
-                title='Sub Event Title'
-                placeholder='Enter the title of the sub event'
-                type='text'
-                name='subEventTitle'
-                id='subEventTitle'
-                icon={<></>}
-                value={selectedSubEvent?.title}
-                onChange={(e) => {
-                  if (isUserEditorForEvent())
-                    setSelectedSubEvent((prev) => {
-                      return {
-                        ...prev,
-                        title: e.target.value,
-                      };
-                    });
-                }}
-              />
-              <InputField
-                title='Sub Event Start Time'
-                placeholder='Enter the start time of the sub event'
-                type='datetime-local'
-                name='subEventStartTime'
-                id='subEventStartTime'
-                icon={<></>}
-                value={selectedSubEvent.start_time}
-                onChange={(e) => {
-                  if (isUserEditorForEvent())
-                    setSelectedSubEvent((prev) => {
-                      return {
-                        ...prev,
-                        start_time: e.target.value
-                          ? formatDateTime(new Date(e.target.value))
-                          : undefined,
-                      };
-                    });
-                }}
-              />
-              <InputField
-                title='Sub Event End Time'
-                placeholder='Enter the end time of the sub event'
-                type='datetime-local'
-                name='subEventEndTime'
-                id='subEventEndTime'
-                icon={<></>}
-                value={selectedSubEvent.end_time}
-                onChange={(e) => {
-                  if (isUserEditorForEvent())
-                    setSelectedSubEvent((prev) => {
-                      return {
-                        ...prev,
-                        end_time: e.target.value
-                          ? formatDateTime(new Date(e.target.value))
-                          : undefined,
-                      };
-                    });
-                }}
-              />
-              <InputField
-                title='Sub Event Location'
-                placeholder='Enter the location of the sub event'
-                type='text'
-                name='subEventLocation'
-                id='subEventLocation'
-                icon={<></>}
-                value={selectedSubEvent?.place}
-                onChange={(e) => {
-                  if (isUserEditorForEvent())
-                    setSelectedSubEvent((prev) => {
-                      return {
-                        ...prev,
-                        place: e.target.value,
-                      };
-                    });
-                }}
-              />
+        <Modal
+          isOpen={currentSelectType == 'add' || currentSelectType == 'edit'}
+          title={currentSelectType === 'edit' ? 'Edit Sub Event' : 'Add Sub Event'}
+          type='side'
+          onClose={() => setCurrentSelectType('')}
+        >
+          <div className={styles.modalContent}>
+            <InputField
+              title='Sub Event Title'
+              placeholder='Enter the title of the sub event'
+              type='text'
+              name='subEventTitle'
+              id='subEventTitle'
+              icon={<></>}
+              value={selectedSubEvent?.title}
+              onChange={(e) => {
+                if (isUserEditorForEvent())
+                  setSelectedSubEvent((prev) => {
+                    return {
+                      ...prev,
+                      title: e.target.value,
+                    };
+                  });
+              }}
+            />
+            <InputField
+              title='Sub Event Start Time'
+              placeholder='Enter the start time of the sub event'
+              type='datetime-local'
+              name='subEventStartTime'
+              id='subEventStartTime'
+              icon={<></>}
+              value={selectedSubEvent.start_time}
+              onChange={(e) => {
+                if (isUserEditorForEvent())
+                  setSelectedSubEvent((prev) => {
+                    return {
+                      ...prev,
+                      start_time: e.target.value
+                        ? formatDateTime(new Date(e.target.value))
+                        : undefined,
+                    };
+                  });
+              }}
+            />
+            <InputField
+              title='Sub Event End Time'
+              placeholder='Enter the end time of the sub event'
+              type='datetime-local'
+              name='subEventEndTime'
+              id='subEventEndTime'
+              icon={<></>}
+              value={selectedSubEvent.end_time}
+              onChange={(e) => {
+                if (isUserEditorForEvent())
+                  setSelectedSubEvent((prev) => {
+                    return {
+                      ...prev,
+                      end_time: e.target.value
+                        ? formatDateTime(new Date(e.target.value))
+                        : undefined,
+                    };
+                  });
+              }}
+            />
+            <InputField
+              title='Sub Event Location'
+              placeholder='Enter the location of the sub event'
+              type='text'
+              name='subEventLocation'
+              id='subEventLocation'
+              icon={<></>}
+              value={selectedSubEvent?.place}
+              onChange={(e) => {
+                if (isUserEditorForEvent())
+                  setSelectedSubEvent((prev) => {
+                    return {
+                      ...prev,
+                      place: e.target.value,
+                    };
+                  });
+              }}
+            />
 
-              <p className={styles.label}>Sub Event Description</p>
-              <div className={styles.subEventDescription}>
-                <Editor
-                  description={selectedSubEvent?.description ?? ''}
-                  setNewDescription={setSubEventDescription}
-                />
-              </div>
+            <p className={styles.label}>Sub Event Description</p>
+            <div className={styles.subEventDescription}>
+              <Editor
+                description={selectedSubEvent?.description ?? ''}
+                setNewDescription={setSubEventDescription}
+              />
+            </div>
 
-              <div className={styles.ticketSlider}>
-                <p className={styles.ticketSliderLabel}>Limit Capacity</p>
-                <Slider
-                  checked={selectedSubEvent?.capacity !== null && limitCapacity}
-                  onChange={() => {
-                    if (isUserEditorForEvent()) {
-                      setLimitCapacity(!limitCapacity);
+            <div className={styles.ticketSlider}>
+              <p className={styles.ticketSliderLabel}>Limit Capacity</p>
+              <Slider
+                checked={selectedSubEvent?.capacity !== null && limitCapacity}
+                onChange={() => {
+                  if (isUserEditorForEvent()) {
+                    setLimitCapacity(!limitCapacity);
+                    setSelectedSubEvent((prev) => {
+                      return {
+                        ...prev,
+                        capacity: limitCapacity ? null : 0,
+                      };
+                    });
+                  }
+                }}
+                size='medium'
+              />
+            </div>
+
+            {selectedSubEvent?.capacity != null && limitCapacity && (
+              <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className={styles.ticketSlider}
+              >
+                <div className={styles.ticketCapacityContainer}>
+                  <label className={styles.ticketCapacityLabel}>Capacity</label>
+                  <input
+                    type='text'
+                    placeholder='Unlimited'
+                    disabled={!isUserEditorForEvent()}
+                    value={selectedSubEvent?.capacity}
+                    onChange={(e) => {
+                      if (!isUserEditorForEvent()) return;
+
+                      if (isNaN(Number(e.target.value))) {
+                        return;
+                      }
+
+                      if (Number(e.target.value) < 0) {
+                        return;
+                      }
+
                       setSelectedSubEvent((prev) => {
                         return {
                           ...prev,
-                          capacity: limitCapacity ? null : 0,
+                          capacity: Number(e.target.value),
                         };
                       });
-                    }
-                  }}
-                  size='medium'
-                />
-              </div>
+                    }}
+                    className={styles.ticketCapacityInput}
+                  />
+                </div>
+              </motion.div>
+            )}
 
-              {selectedSubEvent?.capacity != null && limitCapacity && (
-                <motion.div
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  className={styles.ticketSlider}
-                >
-                  <div className={styles.ticketCapacityContainer}>
-                    <label className={styles.ticketCapacityLabel}>Capacity</label>
-                    <input
-                      type='text'
-                      placeholder='Unlimited'
-                      disabled={!isUserEditorForEvent()}
-                      value={selectedSubEvent?.capacity}
-                      onChange={(e) => {
-                        if (!isUserEditorForEvent()) return;
-
-                        if (isNaN(Number(e.target.value))) {
-                          return;
-                        }
-
-                        if (Number(e.target.value) < 0) {
-                          return;
-                        }
-
-                        setSelectedSubEvent((prev) => {
-                          return {
-                            ...prev,
-                            capacity: Number(e.target.value),
-                          };
-                        });
-                      }}
-                      className={styles.ticketCapacityInput}
-                    />
-                  </div>
-                </motion.div>
-              )}
-
-              <div className={styles.ticketSlider}>
-                <p className={styles.ticketSliderLabel}>Approval Required</p>
-                <Slider
-                  checked={selectedSubEvent?.approval_required}
-                  onChange={() => {
-                    if (isUserEditorForEvent())
-                      setSelectedSubEvent({
-                        ...selectedSubEvent,
-                        approval_required: !selectedSubEvent.approval_required,
-                      });
-                  }}
-                  size='medium'
-                />
-              </div>
-
-              <div className={styles.ticketSlider}>
-                <p className={styles.ticketSliderLabel}>Active</p>
-                <Slider
-                  checked={selectedSubEvent?.active}
-                  onChange={() => {
-                    if (isUserEditorForEvent())
-                      setSelectedSubEvent({
-                        ...selectedSubEvent,
-                        active: !selectedSubEvent.active,
-                      });
-                  }}
-                  size='medium'
-                />
-              </div>
-              <br />
-              {isUserEditorForEvent() && (
-                <button className={styles.submitButton} onClick={handleSubmit}>
-                  {currentSelectType === 'edit' ? 'Edit Sub Event' : 'Add Sub Event'}
-                </button>
-              )}
+            <div className={styles.ticketSlider}>
+              <p className={styles.ticketSliderLabel}>Approval Required</p>
+              <Slider
+                checked={selectedSubEvent?.approval_required}
+                onChange={() => {
+                  if (isUserEditorForEvent())
+                    setSelectedSubEvent({
+                      ...selectedSubEvent,
+                      approval_required: !selectedSubEvent.approval_required,
+                    });
+                }}
+                size='medium'
+              />
             </div>
-          </Modal>
-        )}
-        {showDeleteConfirmation && (
-          <Modal title='Delete Sub Event' onClose={() => setShowDeleteConfirmation(false)}>
-            <div className={styles.modalContent}>
-              <TbAlertTriangleFilled size={30} color='#f04b4b' className={styles.limitationIcon} />
-              <p className={styles.deleteConfirmationText}>Are you sure you want to Delete?</p>
-              <p className={styles.modalSubText}>
-                This action cannot be undone. This will permanently delete the event and all
-                associated data.
-              </p>
-              <div className={styles.deleteConfirmationButtons}>
-                <button className={styles.deleteButton} onClick={handleDelete}>
-                  {isDeleting ? <BeatLoader color='#1d1d1d' size={8} /> : 'Delete'}
-                </button>
-                <button
-                  className={styles.cancelButton}
-                  onClick={() => setShowDeleteConfirmation(false)}
-                >
-                  Cancel
-                </button>
-              </div>
+
+            <div className={styles.ticketSlider}>
+              <p className={styles.ticketSliderLabel}>Active</p>
+              <Slider
+                checked={selectedSubEvent?.active}
+                onChange={() => {
+                  if (isUserEditorForEvent())
+                    setSelectedSubEvent({
+                      ...selectedSubEvent,
+                      active: !selectedSubEvent.active,
+                    });
+                }}
+                size='medium'
+              />
             </div>
-          </Modal>
-        )}
+            <br />
+            {isUserEditorForEvent() && (
+              <button className={styles.submitButton} onClick={handleSubmit}>
+                {currentSelectType === 'edit' ? 'Edit Sub Event' : 'Add Sub Event'}
+              </button>
+            )}
+          </div>
+        </Modal>
+
+        <Modal
+          isOpen={showDeleteConfirmation}
+          title='Delete Sub Event'
+          onClose={() => setShowDeleteConfirmation(false)}
+        >
+          <div className={styles.modalContent}>
+            <TbAlertTriangleFilled size={30} color='#f04b4b' className={styles.limitationIcon} />
+            <p className={styles.deleteConfirmationText}>Are you sure you want to Delete?</p>
+            <p className={styles.modalSubText}>
+              This action cannot be undone. This will permanently delete the event and all
+              associated data.
+            </p>
+            <div className={styles.deleteConfirmationButtons}>
+              <button className={styles.deleteButton} onClick={handleDelete}>
+                {isDeleting ? <BeatLoader color='#1d1d1d' size={8} /> : 'Delete'}
+              </button>
+              <button
+                className={styles.cancelButton}
+                onClick={() => setShowDeleteConfirmation(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </Modal>
+
         <div className={styles.mainContainer}>
           <EventHeader previousPageNavigate='-1' />
           <div className={styles.headerRow}>

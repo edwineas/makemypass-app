@@ -16,6 +16,7 @@
   flex-wrap: wrap;
   color: var(--white-color);
   width: 100%;
+  margin-bottom: 0.5rem;
 }
 
 .mailLogsSubText {

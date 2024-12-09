@@ -4,16 +4,17 @@ import Modal from '../Modal';
 import styles from './DeleteModal.module.css';
 
 type Props = {
+  isOpen: boolean;
   setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   onDelete: () => void;
   deleteText: string;
   style?: React.CSSProperties;
 };
 
-const ConfirmDelete = ({ setDeleteModal, onDelete, deleteText, style }: Props) => {
+const ConfirmDelete = ({ setDeleteModal, onDelete, deleteText, style, isOpen }: Props) => {
   return (
     <>
-      <Modal onClose={() => setDeleteModal(false)} style={style} title=' '>
+      <Modal isOpen={isOpen} onClose={() => setDeleteModal(false)} style={style} title=' '>
         <div className={styles.modalContainer}>
           <div className={styles.sectionContent1}>
             <p className={styles.sectionSubTitle}>{deleteText}</p>

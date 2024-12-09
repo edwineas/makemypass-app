@@ -247,176 +247,185 @@ const EventGlance = () => {
   return (
     <>
       <Theme>
-        {venues.showModal && <VenueModal venues={venues} setVenues={setVenues} eventId={eventId} />}
-        {speakers.showModal && (
-          <SpeakerModal eventId={eventId} speakers={speakers} setSpeakers={setSpeakers} />
-        )}
-        {tags.showModal && (
-          <Modal
-            title='Manage Tags'
-            onClose={() => setTags((prev) => ({ ...prev, showModal: false }))}
-          >
-            <div className={styles.tagModalContent}>
-              <p className={styles.tagModalHeading}>Add/Edit Tags</p>
-              <p className={styles.tagModalSubHeading}>
-                Add tags to categorize your event. Tags can be used to filter events at the listing
-                page.
-              </p>
-              <CreatableSelect
-                styles={customStyles}
-                isMulti
-                options={allTags.map((tag) => ({ label: tag, value: tag }))}
-                value={tags.tags.map((tag) => ({ label: tag, value: tag }))}
-                onChange={(selectedOptions) => {
-                  const newTags = selectedOptions.map((option) => option.value);
-                  setTags((prev) => ({ ...prev, tags: newTags }));
-                }}
-                onCreateOption={(inputValue: string) => {
-                  setTags((prev) => ({
-                    ...prev,
-                    tags: [...prev.tags, inputValue],
-                  }));
-                }}
-                placeholder='Select or create tags'
-              />
+        <VenueModal
+          venues={venues}
+          isOpen={venues.showModal}
+          setVenues={setVenues}
+          eventId={eventId}
+        />
 
-              <div className={styles.createButtons}>
-                <button
-                  className={styles.saveButton}
-                  onClick={() => {
-                    createEventTags({
-                      eventId,
-                      tags,
-                      setTags,
-                    });
-                  }}
-                >
-                  Save Tags
-                </button>
-                <button className={styles.cancelButton}>Cancel</button>
-              </div>
+        <SpeakerModal
+          isOpen={speakers.showModal}
+          eventId={eventId}
+          speakers={speakers}
+          setSpeakers={setSpeakers}
+        />
+
+        <Modal
+          title='Manage Tags'
+          isOpen={tags.showModal}
+          onClose={() => setTags((prev) => ({ ...prev, showModal: false }))}
+        >
+          <div className={styles.tagModalContent}>
+            <p className={styles.tagModalHeading}>Add/Edit Tags</p>
+            <p className={styles.tagModalSubHeading}>
+              Add tags to categorize your event. Tags can be used to filter events at the listing
+              page.
+            </p>
+            <CreatableSelect
+              styles={customStyles}
+              isMulti
+              options={allTags.map((tag) => ({ label: tag, value: tag }))}
+              value={tags.tags.map((tag) => ({ label: tag, value: tag }))}
+              onChange={(selectedOptions) => {
+                const newTags = selectedOptions.map((option) => option.value);
+                setTags((prev) => ({ ...prev, tags: newTags }));
+              }}
+              onCreateOption={(inputValue: string) => {
+                setTags((prev) => ({
+                  ...prev,
+                  tags: [...prev.tags, inputValue],
+                }));
+              }}
+              placeholder='Select or create tags'
+            />
+
+            <div className={styles.createButtons}>
+              <button
+                className={styles.saveButton}
+                onClick={() => {
+                  createEventTags({
+                    eventId,
+                    tags,
+                    setTags,
+                  });
+                }}
+              >
+                Save Tags
+              </button>
+              <button className={styles.cancelButton}>Cancel</button>
             </div>
-          </Modal>
-        )}
-        {showEmbedModal && (
-          <Modal
-            title='Embed Form'
-            onClose={() => {
-              setShowEmbedModal(false);
-            }}
-          >
-            <div className={styles.publicEventModal}>
-              <div>
-                <div className={styles.sectionContent}>
-                  <p className={styles.publicModalText}>Embedable Event Form Link</p>
-                  <div className={styles.publicLinkField}>
-                    <textarea
-                      rows={5}
-                      className={styles.publicLink}
-                      value={`<iframe src="${`${eventLink}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`}
-                      readOnly
-                    />
-                  </div>
+          </div>
+        </Modal>
+
+        <Modal
+          title='Embed Form'
+          isOpen={showEmbedModal}
+          onClose={() => {
+            setShowEmbedModal(false);
+          }}
+        >
+          <div className={styles.publicEventModal}>
+            <div>
+              <div className={styles.sectionContent}>
+                <p className={styles.publicModalText}>Embedable Event Form Link</p>
+                <div className={styles.publicLinkField}>
+                  <textarea
+                    rows={5}
+                    className={styles.publicLink}
+                    value={`<iframe src="${`${eventLink}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`}
+                    readOnly
+                  />
                 </div>
               </div>
+            </div>
 
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    `<iframe src="${`${eventLink}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`,
-                  );
-                  toast.success('Link copied to clipboard');
-                }}
-                className={styles.publishButton}
-              >
-                Copy Link
-              </button>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `<iframe src="${`${eventLink}/?type=embed`}" width="600" height="400" frameborder="0"></iframe>`,
+                );
+                toast.success('Link copied to clipboard');
+              }}
+              className={styles.publishButton}
+            >
+              Copy Link
+            </button>
+          </div>
+        </Modal>
+
+        <DashboardLayout prevPage='/events' tabName='manage'>
+          <Modal
+            title='Manage Tickets'
+            isOpen={isTicketsOpen}
+            onClose={() => {
+              handleCloseTicketModal();
+            }}
+            type='side'
+          >
+            <ManageTickets setIsTicketsOpen={setIsTicketsOpen} ref={modalRef} />
+          </Modal>
+          <CustomMail customMail={customMail} setCustomMail={setCustomMail} />
+
+          <Modal
+            isOpen={selectedMail !== undefined}
+            onClose={() => setSelectedMail(undefined)}
+            type='side'
+          >
+            <UpdateMail
+              selectedMail={selectedMail}
+              setCustomMail={setCustomMail}
+              setSelectedMail={setSelectedMail}
+              setMails={setMails}
+            />
+          </Modal>
+
+          <Modal
+            title='Test Mail'
+            isOpen={confirmTestMail.status}
+            onClose={() =>
+              setConfirmTestMail({
+                status: false,
+                mailId: '',
+              })
+            }
+          >
+            <TestMail
+              setConfirmTestMail={setConfirmTestMail}
+              sendTestMail={sendTestMail}
+              confirmTestMail={confirmTestMail}
+              setDummyData={setDummyData}
+              getDummyData={getDummydata}
+            />
+          </Modal>
+
+          <Modal
+            title='Dummy Data'
+            isOpen={dummyData.showModal}
+            onClose={() => setDummyData({ showModal: false, data: {}, mailId: '' })}
+            style={{ zIndex: 999 }}
+          >
+            <DummyData dummyData={dummyData} setDummyData={setDummyData} />
+          </Modal>
+
+          <Modal title='QR Code' isOpen={showQR} onClose={() => setShowQR(false)}>
+            <div className={styles.qrContainer}>
+              <div ref={ref}></div>
+
+              {imageLoaded ? ( // only show this content when image is loaded
+                <>
+                  <p className={styles.qrText}>
+                    Scan this QR code to visit the event page on your mobile device
+                  </p>
+
+                  <SecondaryButton
+                    buttonText='Download QR'
+                    icon={<LuDownload size={15} />}
+                    onClick={() => {
+                      qrCode.download({
+                        name: eventName,
+                        extension: 'png',
+                      });
+                    }}
+                  />
+                </>
+              ) : (
+                <div className='center'>
+                  <HashLoader color={'#46BF75'} size={50} />
+                </div>
+              )}
             </div>
           </Modal>
-        )}
-        <DashboardLayout prevPage='/events' tabName='manage'>
-          {isTicketsOpen && (
-            <Modal
-              title='Manage Tickets'
-              onClose={() => {
-                handleCloseTicketModal();
-              }}
-              type='side'
-            >
-              <ManageTickets setIsTicketsOpen={setIsTicketsOpen} ref={modalRef} />
-            </Modal>
-          )}
-          {customMail && <CustomMail setCustomMail={setCustomMail} />}
-          {selectedMail && (
-            <Modal onClose={() => setSelectedMail(undefined)} type='side'>
-              <UpdateMail
-                selectedMail={selectedMail}
-                setCustomMail={setCustomMail}
-                setSelectedMail={setSelectedMail}
-                setMails={setMails}
-              />
-            </Modal>
-          )}
-          {confirmTestMail.status && (
-            <Modal
-              title='Test Mail'
-              onClose={() =>
-                setConfirmTestMail({
-                  status: false,
-                  mailId: '',
-                })
-              }
-            >
-              <TestMail
-                setConfirmTestMail={setConfirmTestMail}
-                sendTestMail={sendTestMail}
-                confirmTestMail={confirmTestMail}
-                setDummyData={setDummyData}
-                getDummyData={getDummydata}
-              />
-            </Modal>
-          )}
-
-          {dummyData.showModal && (
-            <Modal
-              title='Dummy Data'
-              onClose={() => setDummyData({ showModal: false, data: {}, mailId: '' })}
-              style={{ zIndex: 999 }}
-            >
-              <DummyData dummyData={dummyData} setDummyData={setDummyData} />
-            </Modal>
-          )}
-
-          {showQR && (
-            <Modal title='QR Code' onClose={() => setShowQR(false)}>
-              <div className={styles.qrContainer}>
-                <div ref={ref}></div>
-
-                {imageLoaded ? ( // only show this content when image is loaded
-                  <>
-                    <p className={styles.qrText}>
-                      Scan this QR code to visit the event page on your mobile device
-                    </p>
-
-                    <SecondaryButton
-                      buttonText='Download QR'
-                      icon={<LuDownload size={15} />}
-                      onClick={() => {
-                        qrCode.download({
-                          name: eventName,
-                          extension: 'png',
-                        });
-                      }}
-                    />
-                  </>
-                ) : (
-                  <div className='center'>
-                    <HashLoader color={'#46BF75'} size={50} />
-                  </div>
-                )}
-              </div>
-            </Modal>
-          )}
 
           <div className={styles.eventGlance}>
             <div className={styles.eventLinkContainer}>

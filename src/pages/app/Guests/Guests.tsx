@@ -196,112 +196,120 @@ const Guests = () => {
     <Theme>
       <DashboardLayout prevPage='/events' tabName='guests'>
         <Glance tab='guests' />
-        {eventFormData &&
-          selectedGuestId &&
-          formData &&
-          selectedGuestId.id &&
-          selectedGuestId.type == 'view' && (
-            <>
-              <div onClick={onClose} className={styles.backgroundBlur}></div>
-              <ViewGuest
-                selectedGuestData={selectedGuest}
-                setSelectedGuestId={setSelectedGuestId}
-                eventId={eventId}
-                setResentTicket={setResentTicket}
-                setSelectedGuest={setSelectedGuest}
-                setTriggerFetch={setTriggerFetch}
-              />
-            </>
-          )}
 
-        {selectedGuestId && selectedGuestId.type === 'bulk' && <BulkUpload onClose={onClose} />}
+        <>
+          <div onClick={onClose} className={styles.backgroundBlur}></div>
+          <ViewGuest
+            isOpen={
+              (eventFormData &&
+                selectedGuestId &&
+                formData &&
+                selectedGuestId.id &&
+                selectedGuestId.type == 'view') as boolean
+            }
+            selectedGuestData={selectedGuest}
+            setSelectedGuestId={setSelectedGuestId}
+            eventId={eventId}
+            setResentTicket={setResentTicket}
+            setSelectedGuest={setSelectedGuest}
+            setTriggerFetch={setTriggerFetch}
+          />
+        </>
 
-        {selectedGuestId &&
-          selectedGuestId.type === 'add' &&
-          (isUserEditorForEvent() || isUserAuthorizedForEvent(TillRoles.VOLUNTEER)) && (
-            <Modal title='Invite Guest' onClose={onClose} type='side'>
-              <div
-                className={styles.userInfoModalContainer}
-                style={{
-                  paddingRight: '0.5rem',
+        <BulkUpload
+          isOpen={selectedGuestId != null && selectedGuestId.type === 'bulk'}
+          onClose={onClose}
+        />
+
+        {(isUserEditorForEvent() || isUserAuthorizedForEvent(TillRoles.VOLUNTEER)) && (
+          <Modal
+            isOpen={selectedGuestId != null && selectedGuestId.type === 'add'}
+            title='Invite Guest'
+            onClose={onClose}
+            type='side'
+          >
+            <div
+              className={styles.userInfoModalContainer}
+              style={{
+                paddingRight: '0.5rem',
+              }}
+            >
+              <button
+                className={styles.bulkUploadButton}
+                onClick={() => {
+                  setSelectedGuestId({
+                    id: '',
+                    type: 'bulk',
+                  });
                 }}
               >
-                <button
-                  className={styles.bulkUploadButton}
-                  onClick={() => {
-                    setSelectedGuestId({
-                      id: '',
-                      type: 'bulk',
-                    });
-                  }}
-                >
-                  Bulk Upload
-                </button>
-                <div className={styles.orContainer}>
-                  <hr />
-                  <p>OR</p>
-                  <hr />
-                </div>
-                <p className={styles.ticketLabel}>Enter Ticket Code</p>
-                <div className={styles.ticketCode}>
-                  <input
-                    onChange={(event) => {
-                      setTicketCode(event.target.value);
-                    }}
-                    placeholder='Ticket Code'
-                    type='text'
-                    value={ticketCode}
-                    className={styles.scanInput}
-                  />
-                  <button
-                    onClick={() => {
-                      setShowScanner(true);
-                    }}
-                    className={styles.scanButton}
-                  >
-                    Scan
-                  </button>
-                </div>
-                {!showScanner ? (
-                  eventFormData && (
-                    <>
-                      <Slider
-                        checked={isCashInHand}
-                        onChange={() => setIsCashInHand(!isCashInHand)}
-                        key={isCashInHand ? 'cash' : 'online'}
-                        size='medium'
-                        text='Cash in Hand'
-                      />
-                      <EventForm
-                        formNumber={formNumber}
-                        setFormNumber={setFormNumber}
-                        eventFormData={eventFormData}
-                        eventTitle={eventTitle}
-                        type='addGuest'
-                        ticketCode={ticketCode}
-                        setSelectedGuestId={setSelectedGuestId}
-                        isCashInHand={isCashInHand}
-                      />
-                    </>
-                  )
-                ) : (
-                  <Scanner
-                    ticketId={ticketCode}
-                    setTicketId={setTicketCode}
-                    trigger={true}
-                    setTrigger={() => {
-                      if (setShowScanner) setShowScanner(false);
-                    }}
-                  />
-                )}
+                Bulk Upload
+              </button>
+              <div className={styles.orContainer}>
+                <hr />
+                <p>OR</p>
+                <hr />
               </div>
-            </Modal>
-          )}
-
-        {selectedGuestId && eventFormData && selectedGuestId.type === 'edit' && (
+              <p className={styles.ticketLabel}>Enter Ticket Code</p>
+              <div className={styles.ticketCode}>
+                <input
+                  onChange={(event) => {
+                    setTicketCode(event.target.value);
+                  }}
+                  placeholder='Ticket Code'
+                  type='text'
+                  value={ticketCode}
+                  className={styles.scanInput}
+                />
+                <button
+                  onClick={() => {
+                    setShowScanner(true);
+                  }}
+                  className={styles.scanButton}
+                >
+                  Scan
+                </button>
+              </div>
+              {!showScanner ? (
+                eventFormData && (
+                  <>
+                    <Slider
+                      checked={isCashInHand}
+                      onChange={() => setIsCashInHand(!isCashInHand)}
+                      key={isCashInHand ? 'cash' : 'online'}
+                      size='medium'
+                      text='Cash in Hand'
+                    />
+                    <EventForm
+                      formNumber={formNumber}
+                      setFormNumber={setFormNumber}
+                      eventFormData={eventFormData}
+                      eventTitle={eventTitle}
+                      type='addGuest'
+                      ticketCode={ticketCode}
+                      setSelectedGuestId={setSelectedGuestId}
+                      isCashInHand={isCashInHand}
+                    />
+                  </>
+                )
+              ) : (
+                <Scanner
+                  ticketId={ticketCode}
+                  setTicketId={setTicketCode}
+                  trigger={true}
+                  setTrigger={() => {
+                    if (setShowScanner) setShowScanner(false);
+                  }}
+                />
+              )}
+            </div>
+          </Modal>
+        )}
+        {selectedGuestId && eventFormData && (
           <EditGuest
+            isOpen={selectedGuestId.type === 'edit'}
             formData={formData}
-            eventRegisterId={selectedGuestId.id}
+            eventRegisterId={selectedGuestId?.id}
             setFormData={setFormData}
             eventFormData={eventFormData}
             setSelectedGuestId={setSelectedGuestId}
@@ -313,55 +321,54 @@ const Guests = () => {
 
         {guests ? (
           <>
-            {resentTicket && resentTicket.status && (
-              <Modal
-                onClose={() => {
-                  setResentTicket((prevState) => ({
-                    ...prevState,
-                    status: false,
-                  }));
-                }}
-                title='Resend Ticket'
-              >
-                <p className={styles.modalSubText}>
-                  By clicking on resend, the ticket with most resend will be sent to{' '}
-                  <span
-                    style={{
-                      fontWeight: '500',
-                      color: '#47C97E',
-                    }}
-                  >
-                    {resentTicket.name}
-                  </span>
+            <Modal
+              isOpen={resentTicket.status}
+              onClose={() => {
+                setResentTicket((prevState) => ({
+                  ...prevState,
+                  status: false,
+                }));
+              }}
+              title='Resend Ticket'
+            >
+              <p className={styles.modalSubText}>
+                By clicking on resend, the ticket with most resend will be sent to{' '}
+                <span
+                  style={{
+                    fontWeight: '500',
+                    color: '#47C97E',
+                  }}
+                >
+                  {resentTicket.name}
+                </span>
+              </p>
+              <div className={styles.buttons}>
+                <p
+                  onClick={() => {
+                    handleTicketResend();
+                  }}
+                  className={`pointer ${styles.button}`}
+                >
+                  Resend
                 </p>
-                <div className={styles.buttons}>
-                  <p
-                    onClick={() => {
-                      handleTicketResend();
-                    }}
-                    className={`pointer ${styles.button}`}
-                  >
-                    Resend
-                  </p>
-                  <p
-                    onClick={() => {
-                      setResentTicket((prevState) => ({
-                        ...prevState,
-                        status: false,
-                      }));
+                <p
+                  onClick={() => {
+                    setResentTicket((prevState) => ({
+                      ...prevState,
+                      status: false,
+                    }));
 
-                      setSelectedGuestId({
-                        id: resentTicket.guestId.toString(),
-                        type: 'view',
-                      });
-                    }}
-                    className={`pointer ${styles.button}`}
-                  >
-                    Cancel
-                  </p>
-                </div>
-              </Modal>
-            )}
+                    setSelectedGuestId({
+                      id: resentTicket.guestId.toString(),
+                      type: 'view',
+                    });
+                  }}
+                  className={`pointer ${styles.button}`}
+                >
+                  Cancel
+                </p>
+              </div>
+            </Modal>
 
             <div className={styles.guests}>
               <div className={styles.tableHeader}>

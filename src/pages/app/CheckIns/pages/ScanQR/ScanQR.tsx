@@ -109,34 +109,34 @@ const ScanQR = () => {
     <>
       {eventData ? (
         <Theme>
-          {roomNumber.showModel && (
-            <Modal
-              title='Add Room Number'
-              onClose={() => {
+          <Modal
+            title='Add Room Number'
+            isOpen={roomNumber.showModel}
+            onClose={() => {
+              setRoomNumber({ ...roomNumber, showModel: false });
+            }}
+          >
+            <InputField
+              id='roomNumber'
+              type='text'
+              name='roomNumber'
+              icon={<></>}
+              title='Enter Room Number'
+              value={roomNumber.roomNumber}
+              onChange={(e) => {
+                setRoomNumber({ ...roomNumber, roomNumber: e.target.value });
+              }}
+            />
+            <button
+              className={styles.submitButton}
+              onClick={() => {
                 setRoomNumber({ ...roomNumber, showModel: false });
               }}
             >
-              <InputField
-                id='roomNumber'
-                type='text'
-                name='roomNumber'
-                icon={<></>}
-                title='Enter Room Number'
-                value={roomNumber.roomNumber}
-                onChange={(e) => {
-                  setRoomNumber({ ...roomNumber, roomNumber: e.target.value });
-                }}
-              />
-              <button
-                className={styles.submitButton}
-                onClick={() => {
-                  setRoomNumber({ ...roomNumber, showModel: false });
-                }}
-              >
-                Confirm Room
-              </button>
-            </Modal>
-          )}
+              Confirm Room
+            </button>
+          </Modal>
+
           {eventData?.select_multi_ticket && !isTicketSelected ? (
             <>
               <div className={styles.scanContainer}>
@@ -164,62 +164,64 @@ const ScanQR = () => {
                 setMappingNewCode={setMappingNewCode}
                 mappingNewCode={mappingNewCode}
               />
-              {previewData && previewData.name && (
-                <>
-                  <div className={styles.backgroundBlur}></div>
-                  <Modal title='CheckIn Confirmation'>
-                    <br />
-                    <div className={styles.previewDataContainer}>
-                      <p className={styles.previewDataText}> {previewData.name}</p>
-                      <p className={styles.previewDataText}>Entry Date: {previewData.entry_date}</p>
-                      {previewData.tickets &&
-                        Object.keys(previewData.tickets).map((key) => (
-                          <p className={styles.previewDataText}>
-                            {[key]}: {previewData.tickets[key]} Tickets
-                          </p>
-                        ))}
-                    </div>
-                    <div className={styles.buttonsContainer}>
-                      <SectionButton
-                        buttonText='Close'
-                        onClick={() => {
-                          setPreviewData({
-                            name: '',
-                            entry_date: '',
-                            tickets: {},
-                          });
-                        }}
-                        buttonColor='red'
-                        icon={<CgClose />}
-                      />
-                      <SectionButton
-                        buttonText='Confirm'
-                        onClick={() => {
-                          setPreviewData({
-                            name: '',
-                            entry_date: '',
-                            tickets: {},
-                          });
-                          checkInUser({
-                            ticketId,
-                            eventId,
-                            setScanLogs,
-                            setMessage,
-                            setChecking,
-                            setMultipleTickets,
-                            multipleTickets,
-                            setTrigger,
-                            setMappingNewCode,
-                          });
-                          setTicketId('');
-                        }}
-                        buttonColor='red'
-                        icon={<LuCheck />}
-                      />
-                    </div>
-                  </Modal>
-                </>
-              )}
+
+              <>
+                <Modal
+                  isOpen={previewData.name != undefined && previewData.name.length > 0}
+                  title='CheckIn Confirmation'
+                >
+                  <br />
+                  <div className={styles.previewDataContainer}>
+                    <p className={styles.previewDataText}> {previewData.name}</p>
+                    <p className={styles.previewDataText}>Entry Date: {previewData.entry_date}</p>
+                    {previewData.tickets &&
+                      Object.keys(previewData.tickets).map((key) => (
+                        <p className={styles.previewDataText}>
+                          {[key]}: {previewData.tickets[key]} Tickets
+                        </p>
+                      ))}
+                  </div>
+                  <div className={styles.buttonsContainer}>
+                    <SectionButton
+                      buttonText='Close'
+                      onClick={() => {
+                        setPreviewData({
+                          name: '',
+                          entry_date: '',
+                          tickets: {},
+                        });
+                      }}
+                      buttonColor='red'
+                      icon={<CgClose />}
+                    />
+                    <SectionButton
+                      buttonText='Confirm'
+                      onClick={() => {
+                        setPreviewData({
+                          name: '',
+                          entry_date: '',
+                          tickets: {},
+                        });
+                        checkInUser({
+                          ticketId,
+                          eventId,
+                          setScanLogs,
+                          setMessage,
+                          setChecking,
+                          setMultipleTickets,
+                          multipleTickets,
+                          setTrigger,
+                          setMappingNewCode,
+                        });
+                        setTicketId('');
+                      }}
+                      buttonColor='red'
+                      icon={<LuCheck />}
+                    />
+                  </div>
+                </Modal>
+              </>
+
               <div className={styles.scanContainer}>
                 <CheckInHeader title='Check-In' buttonType='back' />
 

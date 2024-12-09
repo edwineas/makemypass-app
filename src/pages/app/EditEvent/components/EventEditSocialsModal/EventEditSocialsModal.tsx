@@ -8,10 +8,12 @@ import InputField from '../../../../auth/Login/InputField';
 import styles from './EventEditSocialsModal.module.css';
 
 const EventEditSocialsModal = ({
+  isOpen,
   setShowCommunicationMediumModal,
   eventData,
   setEventData,
 }: {
+  isOpen: boolean;
   setShowCommunicationMediumModal: (value: boolean) => void;
   eventData: EventType | undefined;
   setEventData: Dispatch<React.SetStateAction<EventType | undefined>>;
@@ -19,6 +21,7 @@ const EventEditSocialsModal = ({
   return (
     <Modal
       type='side'
+      isOpen={isOpen}
       onClose={() => setShowCommunicationMediumModal(false)}
       title='Add Communication Mediums'
       zIndexCount={100}

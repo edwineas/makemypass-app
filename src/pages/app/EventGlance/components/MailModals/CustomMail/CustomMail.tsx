@@ -9,6 +9,7 @@ import InputField from '../../../../../auth/Login/InputField';
 import styles from './CustomMail.module.css';
 
 type Props = {
+  customMail: boolean;
   setCustomMail: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -20,7 +21,7 @@ export type mailData = {
   from_mail: string;
 };
 
-const CustomMail = ({ setCustomMail }: Props) => {
+const CustomMail = ({ customMail, setCustomMail }: Props) => {
   const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);
 
   const [showCustomMail, setShowCustomMail] = useState(false);
@@ -55,7 +56,12 @@ const CustomMail = ({ setCustomMail }: Props) => {
   }, [fetchedMailData]);
 
   return (
-    <Modal title='Custom Mail' onClose={() => setCustomMail(false)} zIndexCount={100}>
+    <Modal
+      title='Custom Mail'
+      isOpen={customMail}
+      onClose={() => setCustomMail(false)}
+      zIndexCount={100}
+    >
       <>
         {isLoading ? (
           <HashLoader color='#46BF75' size={50} className={styles.loader} />
