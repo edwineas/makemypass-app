@@ -1,20 +1,25 @@
-import toast from 'react-hot-toast';
+import { motion } from 'framer-motion';
 import { IoLocationOutline } from 'react-icons/io5';
-import { useNavigate } from 'react-router';
 
-import { Event } from '../../../../../apis/types';
-import { getDay, getMonthAbbreviation } from '../../../EventPage/constants';
+import { Event } from '../../../../apis/types';
+import { getDay, getMonthAbbreviation } from '../../EventPage/constants';
 import styles from './EventBox.module.css';
 
 type Props = {
   eventData: Event;
+  handleMoreClick: (eventName: string) => void;
+  handleViewTicket: (eventName: string, eventRegisterId: string) => void;
 };
 
-const EventBox = ({ eventData }: Props) => {
-  const navigate = useNavigate();
+const EventBox = ({ eventData, handleMoreClick, handleViewTicket }: Props) => {
   return (
     <>
-      <div className={styles.eventGlance}>
+      <motion.div
+        className={styles.eventGlance}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className={styles.bannerContainer}>
           {eventData?.banner ? (
             <img src={eventData?.banner} alt='' className={styles.banner} />
@@ -26,9 +31,9 @@ const EventBox = ({ eventData }: Props) => {
                   <text x='40%' y='50%' fill='white' className={styles.svgText}>
                     No Banner.
                   </text>
-                  <text x='7%' y='60%' fill='white' className={styles.svgText}>
+                  {/* <text x='7%' y='60%' fill='white' className={styles.svgText}>
                     Please Edit Event Details to add a banner
-                  </text>
+                  </text> */}
                 </>
               )}
             </svg>
@@ -99,25 +104,29 @@ const EventBox = ({ eventData }: Props) => {
             </div>
             <div className={styles.buttons}>
               <button
-                onClick={() => {
-                  const eventLink = `https://makemypass.com/${eventData?.name}`;
-                  navigator.clipboard.writeText(eventLink);
-                  toast.success('Event link copied to clipboard');
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleViewTicket(eventData.name, eventData.event_register_id as string);
                 }}
                 className={styles.editEventButton}
               >
-                Share Event
+                View Ticket
               </button>
-              <button
-                onClick={() => navigate(`/${eventData?.name}/manage/edit-event`)}
-                className={styles.editEventButton}
-              >
-                Edit Event
-              </button>
+              {import.meta.env.VITE_CURRENT_ENV === 'dev' && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleMoreClick(eventData.name);
+                  }}
+                  className={styles.editEventButton}
+                >
+                  More Info
+                </button>
+              )}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

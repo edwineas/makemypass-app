@@ -2,9 +2,11 @@ import Modal from '../../../../../components/Modal/Modal';
 import styles from './ExpectedInvoice.module.css';
 
 const ExpectedInvoice = ({
+  isOpen,
   billReceipt,
   setShowReceiptModal,
 }: {
+  isOpen: boolean;
   billReceipt: {
     ticketName: string;
     ticketPrice: number;
@@ -18,7 +20,7 @@ const ExpectedInvoice = ({
   setShowReceiptModal: (value: boolean) => void;
 }) => {
   return (
-    <Modal title='Expected Invoice' onClose={() => setShowReceiptModal(false)}>
+    <Modal isOpen={isOpen} title='Expected Invoice' onClose={() => setShowReceiptModal(false)}>
       <div className={styles.receiptContainer}>
         {billReceipt.map((ticket) => (
           <div className={styles.receiptItem}>

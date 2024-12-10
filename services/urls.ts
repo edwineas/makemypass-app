@@ -12,8 +12,7 @@ export const makeMyPass = {
   userSocials: makeMyPassURL('/manage-user/user/socials/'),
   publicProfile: (userName: string) =>
     makeMyPassURL(`/manage-user/user/${userName}/public-profile/`),
-  participatedEvents: (userName: string) =>
-    makeMyPassURL(`/manage-user/user/${userName}/participated-events/`),
+  participatedEvents: makeMyPassURL(`/manage-user/user/participated-events/`),
   subscribe: (userName: string) => makeMyPassURL(`/manage-user/user/${userName}/subscribe/`),
   unsubscribe: (userName: string) => makeMyPassURL(`/manage-user/user/${userName}/unsubscribe/`),
 

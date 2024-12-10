@@ -105,180 +105,185 @@ const ProfilePage = ({ type }: { type: 'private' | 'public' }) => {
       {userData && dataLoading ? (
         <>
           <Theme>
-            {type === 'private' && editBasicInfo && (
-              <Modal title='Edit Basic Info' onClose={() => setEditBasicInfo(false)}>
-                <div className={styles.EditBasicInfoContainer}>
-                  <div className={styles.userDetailsContainer}>
-                    <div className={styles.basicProfileImageEdit}>
-                      <img
-                        src={
-                          userData?.profile_pic
-                            ? typeof userData?.profile_pic === 'string'
-                              ? userData?.profile_pic
-                              : URL.createObjectURL(userData?.profile_pic)
-                            : '/app/profilepics/default1.png'
-                        }
-                        alt='profile picture'
-                        style={{ objectFit: 'cover' }}
-                        className={styles.profilePic}
-                      />
-                      <SecondaryButton
-                        style={{ marginTop: '1rem' }}
-                        buttonText='Change'
-                        onClick={() => ProfilePicRef.current?.click()}
-                      />
-                      <input
-                        type='file'
-                        id='profile_pic'
-                        name='profile_pic'
-                        className={styles.fileInput}
-                        accept='.png, .jpg, .jpeg'
-                        onChange={(e) => {
-                          setUserData({ ...userData, profile_pic: e.target.files?.[0] });
-                          localStorage.setItem(
-                            'userImage',
-                            URL.createObjectURL(e.target.files?.[0] as Blob),
-                          );
-                        }}
-                        ref={ProfilePicRef}
-                      />
-                    </div>
+            <Modal
+              title='Edit Basic Info'
+              isOpen={type === 'private' && editBasicInfo}
+              onClose={() => setEditBasicInfo(false)}
+            >
+              <div className={styles.EditBasicInfoContainer}>
+                <div className={styles.userDetailsContainer}>
+                  <div className={styles.basicProfileImageEdit}>
+                    <img
+                      src={
+                        userData?.profile_pic
+                          ? typeof userData?.profile_pic === 'string'
+                            ? userData?.profile_pic
+                            : URL.createObjectURL(userData?.profile_pic)
+                          : '/app/profilepics/default1.png'
+                      }
+                      alt='profile picture'
+                      style={{ objectFit: 'cover' }}
+                      className={styles.profilePic}
+                    />
+                    <SecondaryButton
+                      style={{ marginTop: '1rem' }}
+                      buttonText='Change'
+                      onClick={() => ProfilePicRef.current?.click()}
+                    />
+                    <input
+                      type='file'
+                      id='profile_pic'
+                      name='profile_pic'
+                      className={styles.fileInput}
+                      accept='.png, .jpg, .jpeg'
+                      onChange={(e) => {
+                        setUserData({ ...userData, profile_pic: e.target.files?.[0] });
+                        localStorage.setItem(
+                          'userImage',
+                          URL.createObjectURL(e.target.files?.[0] as Blob),
+                        );
+                      }}
+                      ref={ProfilePicRef}
+                    />
+                  </div>
 
-                    <div className={styles.EditBasicInfoContainer}>
-                      <InputField
-                        type='text'
-                        name='name'
-                        id='name'
-                        title='Name'
-                        icon={<BiUser />}
-                        value={userData?.name}
-                        onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-                        style={{ marginBottom: '0' }}
-                      />
-                      <InputField
-                        type='email'
-                        name='email'
-                        id='email'
-                        title='Email'
-                        icon={<BiUser />}
-                        disabled={true}
-                        value={userData?.email}
-                        onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  <div className={styles.basicEditModalButtons}>
-                    <button
-                      className={styles.confirmButton}
-                      onClick={() => {
-                        updateUserProfile(userData, originalUserData, setLoading);
-                        setEditBasicInfo(false);
-                      }}
-                    >
-                      {loading ? <BeatLoader color='#000' size={8} /> : 'Save'}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setEditBasicInfo(false);
-                      }}
-                      className={styles.cancelButton}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </Modal>
-            )}
-            {type === 'private' && showChangePasswordModal && (
-              <Modal title='Change Password' onClose={() => setShowChangePasswordModal(false)}>
-                <div className={styles.EditPasswordContainer}>
-                  <div className={styles.passwordFieldsContainer}>
+                  <div className={styles.EditBasicInfoContainer}>
                     <InputField
                       type='text'
-                      description='An OTP has been sent to your email. Please enter it here.'
-                      name='otp'
-                      id='otp'
-                      placeholder='Enter the One Time Password'
-                      title='One Time Password'
-                      icon={<BiLock />}
-                      value={passwordData.OTP}
-                      onChange={(e) => setPasswordData({ ...passwordData, OTP: e.target.value })}
-                      style={{ marginBottom: '1rem' }}
+                      name='name'
+                      id='name'
+                      title='Name'
+                      icon={<BiUser />}
+                      value={userData?.name}
+                      onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                      style={{ marginBottom: '0' }}
                     />
-
                     <InputField
-                      type='password'
-                      name='new_password'
-                      id='new_password'
-                      placeholder='Enter New Password'
-                      title='New Password'
-                      icon={<BiLock />}
-                      value={passwordData.newPassword}
-                      onChange={(e) =>
-                        setPasswordData({ ...passwordData, newPassword: e.target.value })
-                      }
-                      style={{ marginBottom: '1rem' }}
+                      type='email'
+                      name='email'
+                      id='email'
+                      title='Email'
+                      icon={<BiUser />}
+                      disabled={true}
+                      value={userData?.email}
+                      onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                     />
-
-                    <InputField
-                      type='password'
-                      name='confirm_password'
-                      id='confirm_password'
-                      placeholder='Confirm Password'
-                      title='Confirm Password'
-                      icon={<BiLock />}
-                      value={passwordData.confirmPassword}
-                      onChange={(e) =>
-                        setPasswordData({ ...passwordData, confirmPassword: e.target.value })
-                      }
-                      style={{ marginBottom: '1rem' }}
-                    />
-                  </div>
-
-                  <div className={styles.basicEditModalButtons}>
-                    <button
-                      className={styles.confirmButton}
-                      onClick={() => {
-                        if (passwordData.newPassword === passwordData.confirmPassword) {
-                          resetUserPassword(
-                            userData.email,
-                            passwordData.OTP,
-                            passwordData.newPassword,
-                          );
-                          setShowChangePasswordModal(false);
-                          setResendTimer(0);
-                        } else {
-                          toast.error('New Password and Confirm Password do not match!');
-                        }
-                      }}
-                    >
-                      {loading ? <BeatLoader color='#000' size={8} /> : 'Update'}
-                    </button>
-                    <button
-                      onClick={() =>
-                        generateOTP(userData.email, setShowChangePasswordModal, 'Forget Password')
-                      }
-                      className={styles.cancelButton}
-                      disabled={resendTimer > 0}
-                      style={
-                        resendTimer > 0
-                          ? { cursor: 'not-allowed', opacity: 0.5 }
-                          : { cursor: 'pointer', opacity: 1 }
-                      }
-                    >
-                      {resendTimer > 0 ? `Resend OTP in ${resendTimer}s` : 'Resend OTP'}
-                    </button>
                   </div>
                 </div>
-              </Modal>
-            )}
-            {type === 'private' && showChangeSocialModal && (
-              <ProfileUpdateSocials
-                setShowChangeSocialModal={setShowChangeSocialModal}
-                socials={socials}
-                setSocials={setSocials}
-              />
-            )}
+                <div className={styles.basicEditModalButtons}>
+                  <button
+                    className={styles.confirmButton}
+                    onClick={() => {
+                      updateUserProfile(userData, originalUserData, setLoading);
+                      setEditBasicInfo(false);
+                    }}
+                  >
+                    {loading ? <BeatLoader color='#000' size={8} /> : 'Save'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setEditBasicInfo(false);
+                    }}
+                    className={styles.cancelButton}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </Modal>
+
+            <Modal
+              isOpen={type === 'private' && showChangePasswordModal}
+              title='Change Password'
+              onClose={() => setShowChangePasswordModal(false)}
+            >
+              <div className={styles.EditPasswordContainer}>
+                <div className={styles.passwordFieldsContainer}>
+                  <InputField
+                    type='text'
+                    description='An OTP has been sent to your email. Please enter it here.'
+                    name='otp'
+                    id='otp'
+                    placeholder='Enter the One Time Password'
+                    title='One Time Password'
+                    icon={<BiLock />}
+                    value={passwordData.OTP}
+                    onChange={(e) => setPasswordData({ ...passwordData, OTP: e.target.value })}
+                    style={{ marginBottom: '1rem' }}
+                  />
+
+                  <InputField
+                    type='password'
+                    name='new_password'
+                    id='new_password'
+                    placeholder='Enter New Password'
+                    title='New Password'
+                    icon={<BiLock />}
+                    value={passwordData.newPassword}
+                    onChange={(e) =>
+                      setPasswordData({ ...passwordData, newPassword: e.target.value })
+                    }
+                    style={{ marginBottom: '1rem' }}
+                  />
+
+                  <InputField
+                    type='password'
+                    name='confirm_password'
+                    id='confirm_password'
+                    placeholder='Confirm Password'
+                    title='Confirm Password'
+                    icon={<BiLock />}
+                    value={passwordData.confirmPassword}
+                    onChange={(e) =>
+                      setPasswordData({ ...passwordData, confirmPassword: e.target.value })
+                    }
+                    style={{ marginBottom: '1rem' }}
+                  />
+                </div>
+
+                <div className={styles.basicEditModalButtons}>
+                  <button
+                    className={styles.confirmButton}
+                    onClick={() => {
+                      if (passwordData.newPassword === passwordData.confirmPassword) {
+                        resetUserPassword(
+                          userData.email,
+                          passwordData.OTP,
+                          passwordData.newPassword,
+                        );
+                        setShowChangePasswordModal(false);
+                        setResendTimer(0);
+                      } else {
+                        toast.error('New Password and Confirm Password do not match!');
+                      }
+                    }}
+                  >
+                    {loading ? <BeatLoader color='#000' size={8} /> : 'Update'}
+                  </button>
+                  <button
+                    onClick={() =>
+                      generateOTP(userData.email, setShowChangePasswordModal, 'Forget Password')
+                    }
+                    className={styles.cancelButton}
+                    disabled={resendTimer > 0}
+                    style={
+                      resendTimer > 0
+                        ? { cursor: 'not-allowed', opacity: 0.5 }
+                        : { cursor: 'pointer', opacity: 1 }
+                    }
+                  >
+                    {resendTimer > 0 ? `Resend OTP in ${resendTimer}s` : 'Resend OTP'}
+                  </button>
+                </div>
+              </div>
+            </Modal>
+
+            <ProfileUpdateSocials
+              isOpen={type === 'private' && showChangeSocialModal}
+              setShowChangeSocialModal={setShowChangeSocialModal}
+              socials={socials}
+              setSocials={setSocials}
+            />
 
             <div className={styles.profilePageContainer}>
               <div className={styles.profileSection}>
