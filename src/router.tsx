@@ -45,6 +45,7 @@ import Dashboard from './pages/app/SubEvents/Admin/Dashboard/Dashboard';
 import SubEventDashboard from './pages/app/SubEvents/Admin/SubEventDashboard/SubEventDashboard';
 import ListSubEvents from './pages/app/SubEvents/User/ListSubEvents';
 import TermsConditions from './pages/app/TermsCondictions/TermsConditions';
+import UserEventInfo from './pages/app/UserEventInfo/UserEventInfo';
 import ValidateData from './pages/app/ValidateData/ValidateData';
 import Login from './pages/auth/Login/Login';
 import FourNotFour from './pages/FourNotFour/FourNotFour';
@@ -82,7 +83,6 @@ const routes: RouteObject[] = [
     path: '/home',
     element: <LandingPage />,
   },
-
   {
     path: '/:eventTitle/public/insights',
     element: <Insights type='public' />,
@@ -114,6 +114,10 @@ const routes: RouteObject[] = [
       {
         path: '/profile',
         element: <ProfilePage type='private' />,
+      },
+      {
+        path: '/:eventTitle/event-info',
+        element: <UserEventInfo />,
       },
       {
         path: '/:eventTitle/overview',
