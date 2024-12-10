@@ -8,7 +8,7 @@
   --button-hover: #1c1c1c;
   --red-color: #ff4d4d;
   --off-white: #f1f1f1; /* Example value for off-white */
-  --white-color: #fff;   /* White color variable */
+  --white-color: #fff; /* White color variable */
   --primary-color: #4caf50; /* Example green color for checked state */
   --very-transparent-bg: rgba(0, 0, 0, 0.1); /* Light transparent background */
 }
@@ -33,7 +33,7 @@
 .text {
   font-size: 13px;
   color: var(--off-white);
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .switch input {
@@ -57,7 +57,7 @@
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 26px;
   width: 26px;
   left: 4px;

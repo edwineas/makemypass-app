@@ -107,7 +107,6 @@
     max-width: 22rem;
     min-width: 23.85rem;
   }
-
 }
 
 .innerCard {
@@ -312,8 +311,6 @@
   .selectRow {
     justify-content: flex-start;
   }
-
-
 }
 
 .createButton {
@@ -474,7 +471,6 @@
   font-family: 'Inter', sans-serif;
 }
 
-
 .eventAffiliationButton {
   background: rgba(255, 255, 255, 0.04);
   color: #fff;
@@ -514,7 +510,6 @@
   }
 }
 
-
 .participatedEventButtons {
   display: flex;
   flex-direction: row;
@@ -524,7 +519,6 @@
 }
 
 .participantButton {
-
   width: 6rem;
   border-radius: 8px;
   margin-top: 1rem;
@@ -536,7 +530,4 @@
   text-align: center;
   display: flex;
   column-gap: 0.25rem;
-
-
-
 }

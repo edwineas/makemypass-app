@@ -15,7 +15,7 @@ import InputField from '../../../../auth/Login/InputField.tsx';
 import { FormEventData } from '../../../Guests/types.ts';
 import { getIcon } from '../../constants';
 import type { CouponData, DiscountData, Tickets } from '../../types';
-import ExpectedInvoice from '../ExpectedInvoice/ExpectedInvoice.tsx';
+// import ExpectedInvoice from '../ExpectedInvoice/ExpectedInvoice.tsx';
 import styles from './CouponForm.module.css';
 
 const CouponForm = ({
@@ -72,7 +72,7 @@ const CouponForm = ({
   const [newTickets, setNewTickets] = useState<Tickets[]>([]);
   const [selectedTicketCategory, setSelectedTicketCategory] = useState<string>('');
   const [billReceipt, setBillReceipt] = useState<billReceipt[]>([]);
-  const [showReceiptModal, setShowReceiptModal] = useState<boolean>(false);
+  // const [showReceiptModal, setShowReceiptModal] = useState<boolean>(false);
 
   const ticketSoldAlert = () => {
     toast.error('Ticket sold out');
@@ -116,7 +116,7 @@ const CouponForm = ({
           ),
           category: ticketData.category,
           youTicket: ticket.my_ticket,
-          currency: ticketData.currency,
+          currency: ticketData?.currency,
           is_fee:
             ticketData.platform_fee_from_user &&
             ticketData.platform_perc_fee + ticketData.gateway_fee > 0,
@@ -266,11 +266,11 @@ const CouponForm = ({
 
   return (
     <>
-      <ExpectedInvoice
+      {/* <ExpectedInvoice
         isOpen={showReceiptModal}
         billReceipt={billReceipt}
         setShowReceiptModal={setShowReceiptModal}
-      />
+      /> */}
 
       {findMinDate(eventFormData) && (
         <SelectDate
@@ -412,11 +412,11 @@ const CouponForm = ({
                           <p className={styles.discountAmount}>
                             {discount.discount_type.toLowerCase() === 'percentage'
                               ? `${discount.discount_value}% off`
-                              : `${filteredTicket.currency} ${discount.discount_value} off`}
+                              : `${filteredTicket?.currency} ${discount.discount_value} off`}
                           </p>
                           <p className={styles.originalPrice}>
                             <del>
-                              {filteredTicket.currency} {filteredTicket.show_price}
+                              {filteredTicket?.currency} {filteredTicket.show_price}
                             </del>
                           </p>
                         </div>
@@ -424,7 +424,7 @@ const CouponForm = ({
 
                     <div className={styles.priceData}>
                       <p className={styles.ticketPrice}>
-                        {filteredTicket.price > 0 && filteredTicket.currency}{' '}
+                        {filteredTicket.price > 0 && filteredTicket?.currency}{' '}
                         {filteredTicket.price === 0 ? 'FREE' : filteredTicket.price}
                       </p>
                       <p className={styles.extraCharges}>
@@ -513,7 +513,7 @@ const CouponForm = ({
             <p className={styles.discountText}>
               {discount.discount_type.toLowerCase() === 'percentage'
                 ? `${discount.discount_value}% discount applied on ${discount.ticket.map((ticket) => ticket.name).join(', ')}`
-                : `${discount.discount_value} ${filteredTickets[0].currency} discount applied on ${discount.ticket.map((ticket) => ticket.name).join(', ')}`}
+                : `${discount.discount_value} ${filteredTickets[0]?.currency} discount applied on ${discount.ticket.map((ticket) => ticket.name).join(', ')}`}
             </p>
           )}
 
