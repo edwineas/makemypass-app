@@ -3,7 +3,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-// import { FaBookOpen } from 'react-icons/fa';
+import { FaBookOpen } from 'react-icons/fa';
 import { RiInformationFill } from 'react-icons/ri';
 
 import { validateFormCoupon } from '../../../../../apis/publicpage';
@@ -15,7 +15,7 @@ import InputField from '../../../../auth/Login/InputField.tsx';
 import { FormEventData } from '../../../Guests/types.ts';
 import { getIcon } from '../../constants';
 import type { CouponData, DiscountData, Tickets } from '../../types';
-// import ExpectedInvoice from '../ExpectedInvoice/ExpectedInvoice.tsx';
+import ExpectedInvoice from '../ExpectedInvoice/ExpectedInvoice.tsx';
 import styles from './CouponForm.module.css';
 
 const CouponForm = ({
@@ -72,7 +72,7 @@ const CouponForm = ({
   const [newTickets, setNewTickets] = useState<Tickets[]>([]);
   const [selectedTicketCategory, setSelectedTicketCategory] = useState<string>('');
   const [billReceipt, setBillReceipt] = useState<billReceipt[]>([]);
-  // const [showReceiptModal, setShowReceiptModal] = useState<boolean>(false);
+  const [showReceiptModal, setShowReceiptModal] = useState<boolean>(false);
 
   const ticketSoldAlert = () => {
     toast.error('Ticket sold out');
@@ -99,6 +99,7 @@ const CouponForm = ({
 
   useEffect(() => {
     const localBillReceipt: billReceipt[] = [];
+    console.log(tickets);
     tickets.forEach((ticket) => {
       const ticketData = filteredTickets.find(
         (filteredTicket) => filteredTicket.id === ticket.ticket_id,
@@ -123,6 +124,7 @@ const CouponForm = ({
         });
       }
     });
+    console.log(localBillReceipt);
     setBillReceipt(localBillReceipt);
   }, [tickets, filteredTickets]);
 
@@ -266,11 +268,11 @@ const CouponForm = ({
 
   return (
     <>
-      {/* <ExpectedInvoice
+      <ExpectedInvoice
         isOpen={showReceiptModal}
         billReceipt={billReceipt}
         setShowReceiptModal={setShowReceiptModal}
-      /> */}
+      />
 
       {findMinDate(eventFormData) && (
         <SelectDate
@@ -571,7 +573,7 @@ const CouponForm = ({
                 <span className={styles.extraCharges}></span>
               </span>
             </div>
-            {/* <div className='pointer' onClick={() => setShowReceiptModal(true)}>
+            <div className='pointer' onClick={() => setShowReceiptModal(true)}>
               <FaBookOpen color='#fff' size={20} style={{ marginRight: '0.25rem' }} />{' '}
               <span
                 style={{
@@ -581,7 +583,7 @@ const CouponForm = ({
               >
                 Expected Invoice
               </span>
-            </div> */}
+            </div>
           </div>
         )}
     </>
