@@ -1,0 +1,168 @@
+.eventGlance {
+  margin-top: 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  position: relative;
+  width: 17rem;
+  min-height: 23rem;
+  color: white;
+
+  font-family: 'Inter', sans-serif;
+  padding: 1rem;
+}
+
+.svgText {
+  color: #fff;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+
+  font-size: 0.75rem;
+}
+
+.headingTexts {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.eventDate {
+  margin-right: 1rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.eventDate,
+.eventPlace {
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+}
+
+.dateBox {
+  width: 3rem;
+
+  height: 3rem;
+  border: 2px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+}
+
+.eventMonth {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.eventDateNum {
+  margin: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.eventDateText {
+  font-size: 0.8rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  max-width: 15rem;
+}
+
+.eventTimeText {
+  margin-top: 0.5rem;
+  max-width: 10rem;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #bbbaba;
+  word-wrap: break-all;
+  font-family: 'Inter', sans-serif;
+}
+
+.eventTimeText span {
+  word-break: break-all;
+}
+
+.locationBox {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 2.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+}
+
+.eventDatePlace {
+  padding-right: 0;
+  width: 100%;
+  opacity: 0.8;
+  height: 10rem;
+}
+
+.banner {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  fill: #d8ffff11;
+  max-width: 23rem;
+  max-height: 9rem;
+  object-fit: cover;
+}
+
+.eventTitle {
+  font-size: 1.25rem;
+  max-width: 10;
+  font-weight: 600;
+  max-width: 26rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 1rem;
+  column-gap: 0.5rem;
+  position: absolute;
+  bottom: 1rem;
+}
+
+.editEventButton {
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+@media (max-width: 923px) {
+  .buttons {
+    position: relative;
+    justify-content: flex-start;
+    padding: 1rem 0;
+  }
+}
+
+@media (max-width: 435px) {
+  .banner {
+    padding: 0;
+  }
+
+  .eventDatePlace,
+  .headingTexts {
+    padding-left: 0.5rem;
+  }
+}
