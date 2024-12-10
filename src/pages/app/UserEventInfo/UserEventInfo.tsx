@@ -1,10 +1,8 @@
-import React from 'react';
+// import React from 'react';
 
 import Theme from '../../../components/Theme/Theme';
 
-type Props = {};
-
-const UserEventInfo = (props: Props) => {
+const UserEventInfo = () => {
   return <Theme>UserEventInfo</Theme>;
 };
 
