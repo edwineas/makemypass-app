@@ -49,8 +49,9 @@ const ExpectedInvoice = ({
         ))}
         <div className={styles.totalPrice}>
           <p>
-            Total Price: {billReceipt[0].currency ?? ''}{' '}
-            {billReceipt.reduce((acc, ticket) => acc + ticket.total, 0).toFixed(2)}
+            Total Price:{' '}
+            {billReceipt.length > 0 &&
+              `${billReceipt[0].currency} ${billReceipt.reduce((acc, ticket) => acc + ticket.total, 0).toFixed(2)}`}
           </p>
         </div>
       </div>

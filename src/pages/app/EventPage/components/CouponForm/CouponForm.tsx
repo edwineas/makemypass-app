@@ -99,7 +99,7 @@ const CouponForm = ({
 
   useEffect(() => {
     const localBillReceipt: billReceipt[] = [];
-    console.log(tickets);
+
     tickets.forEach((ticket) => {
       const ticketData = filteredTickets.find(
         (filteredTicket) => filteredTicket.id === ticket.ticket_id,
