@@ -48,6 +48,8 @@
   list-style-type: disc;
   font-size: 0.9rem;
   column-gap: 0.5rem;
+  width: 100%;
+  flex-wrap: wrap;
   font-family: 'Inter', sans-serif;
 }
 

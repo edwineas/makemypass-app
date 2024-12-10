@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { GiPartyPopper } from 'react-icons/gi';
 
 import { claimUserPerk, getScanPerkList } from '../../../../../apis/perks';
 import { formatDate } from '../../../../../common/commonFunctions';
@@ -10,7 +11,7 @@ import SecondaryButton from '../../../Overview/components/SecondaryButton/Second
 import ScanLogs from '../../components/ScanLogs/ScanLogs';
 import { LogType } from '../Venue/Venue';
 import styles from './Perks.module.css';
-import { TicketPerkType } from './types';
+import { ClaimPerkModalType, TicketPerkType } from './types';
 
 const Perks = () => {
   const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);
@@ -25,11 +26,12 @@ const Perks = () => {
   });
   const [ticketId, setTicketId] = useState<string>('');
   const [trigger, setTrigger] = useState(false);
-
+  const [claimPerkModal, setClaimPerkModal] = useState<ClaimPerkModalType>();
+  const [claimPerkSuccessModal, setClaimPerkSuccessModal] = useState<boolean>(false);
   const [checking, setChecking] = useState<boolean>(false);
   const [scanLogs, setScanLogs] = useState<LogType[]>([]);
   const [exhaustHistory, setExhaustHistory] = useState<string[]>([]);
-
+  const [confirmation, setConfirmation] = useState<boolean>(false);
   useEffect(() => {
     getScanPerkList(eventId, setAvailablePerks);
   }, [eventId]);
@@ -44,6 +46,11 @@ const Perks = () => {
         setChecking,
         setTrigger,
         setExhaustHistory,
+        setClaimPerkSuccessModal,
+        setClaimPerkModal,
+        confirmation,
+        setConfirmation,
+        setTicketId,
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,21 +59,75 @@ const Perks = () => {
   return (
     <>
       <Theme>
-        {exhaustHistory.length > 0 && (
-          <Modal title='Previous Claims' onClose={() => setExhaustHistory([])}>
-            <div className={styles.exhaustHistoryContainer}>
-              <p className={styles.modalHeading}>Perk {selectedPerk.name}</p>
-              <p className={styles.modalDescription}>You have already claimed the this perk at</p>
-              {exhaustHistory.map((history, index) => (
-                <div key={history} className={styles.exhaustHistoryItem}>
-                  <p
-                    className={styles.exhaustHistoryItemDate}
-                  >{`${index + 1}. ${formatDate(history, true)}`}</p>
-                </div>
-              ))}
-            </div>
-          </Modal>
-        )}
+        <Modal
+          isOpen={exhaustHistory.length > 0}
+          title='Previous Claims'
+          onClose={() => setExhaustHistory([])}
+        >
+          <div className={styles.exhaustHistoryContainer}>
+            <p className={styles.modalHeading}>Perk {selectedPerk.name}</p>
+            <p className={styles.modalDescription}>You have already claimed the this perk at</p>
+            {exhaustHistory.map((history, index) => (
+              <div key={history} className={styles.exhaustHistoryItem}>
+                <p
+                  className={styles.exhaustHistoryItemDate}
+                >{`${index + 1}. ${formatDate(history, true)}`}</p>
+              </div>
+            ))}
+          </div>
+        </Modal>
+
+        <Modal
+          isOpen={claimPerkSuccessModal}
+          title='Success'
+          onClose={() => setClaimPerkSuccessModal(false)}
+        >
+          <div className={styles.modalContainer}>
+            <p className={styles.modalHeading}>
+              Perk Claimed <GiPartyPopper />{' '}
+            </p>
+            <p className={styles.modalDescription}>You have successfully claimed the perk</p>
+          </div>
+        </Modal>
+
+        <Modal
+          title='Confirm Perk Claim'
+          isOpen={claimPerkModal?.open || false}
+          onClose={() => {
+            setClaimPerkModal((prev) => (prev ? { ...prev, open: false } : undefined));
+          }}
+        >
+          <div className={styles.modalContainer}>
+            {claimPerkModal?.user_data && (
+              <>
+                {claimPerkModal.user_data.map((field, index) => (
+                  <div key={index} className={styles.userDataField}>
+                    <label className={styles.userDataLabel}>{field.title}:</label>
+                    <label className={styles.userDataInput}>{field.value}</label>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+
+          <div className={styles.modalButtons}>
+            <SecondaryButton
+              style={{ backgroundColor: 'white', color: 'black', fontWeight: 500 }}
+              buttonText='Confirm Claim'
+              onClick={() => {
+                setConfirmation(true);
+                setClaimPerkModal((prev) => (prev ? { ...prev, open: false } : undefined));
+                setTrigger(true);
+              }}
+            />
+            <SecondaryButton
+              buttonText='Cancel'
+              onClick={() => {
+                setClaimPerkModal((prev) => (prev ? { ...prev, open: false } : undefined));
+              }}
+            />
+          </div>
+        </Modal>
 
         <EventHeader previousPageNavigate='-1' />
 

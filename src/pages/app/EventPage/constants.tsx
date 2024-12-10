@@ -20,7 +20,7 @@ export const customStyles = {
     width: '100%',
     boxShadow: state.isFocused ? 'none' : 'none', // Remove blue border on focus
     position: 'relative', // Add this to establish a positioning context
-    zIndex: 10001, // Ensure the control stays above the menu
+    zIndex: 10000, // Ensure the control stays above the menu
   }),
 
   group: (provided: any) => ({
@@ -85,7 +85,7 @@ export const customStyles = {
     fontWeight: 400,
     height: 'auto',
     fontSize: '0.9rem',
-    zIndex: 10000,
+    zIndex: 10001,
     position: 'absolute', // Change from 'relative' to 'absolute'
     width: '100%', // Ensure the menu width matches the control
   }),
@@ -141,8 +141,6 @@ export const dynamicFormCustomStyles = {
     fontSize: '0.9rem',
     minWidth: '10rem',
     boxShadow: state.isFocused ? 'none' : 'none', // Remove blue border on focus
-    position: 'relative', // Add this to establish a positioning context
-    zIndex: 10001, // Ensure the control stays above the menu
   }),
 
   group: (provided: any) => ({

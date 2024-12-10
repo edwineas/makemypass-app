@@ -19,8 +19,10 @@ import type {
   DiscountData,
   SuccessModalProps,
   Tickets,
+  VerificationModalProps,
 } from '../../types';
 import CouponForm from '../CouponForm/CouponForm';
+import VerificationModal from '../VerificationModal/VerificationModal';
 import VoiceInput from './components/VoiceInput';
 
 const EventForm = ({
@@ -89,11 +91,66 @@ const EventForm = ({
     error: '',
   });
   const [accessCode, setAccessCode] = useState('');
-
+  const [verification, setVerification] = useState<VerificationModalProps>({
+    showModal: false,
+    email: false,
+    phone: false,
+    condition: null,
+    submit: null,
+  });
   const navigate = useNavigate();
 
   const location = useLocation();
   const newSearchParams = new URLSearchParams(location.search);
+  const [phoneCode, setPhoneCode] = useState<string>('+91');
+
+  const submitForm1 = () => {
+    submitForm({
+      eventId: eventFormData.id,
+      isCouponFirst: eventFormData.show_ticket_first,
+      tickets,
+      formData,
+      coupon,
+      setSuccess,
+      setFormNumber,
+      setFormData,
+      setFormErrors,
+      setEventData,
+      eventTitle,
+      selectedDate,
+      setDiscount,
+      setLoading,
+      setCoupon,
+      ticketCode,
+      utmData,
+      navigate,
+      accessCode,
+    });
+  };
+  const submitForm2 = () => {
+    submitForm({
+      eventId: eventFormData.id,
+      tickets,
+      formData,
+      coupon,
+      eventForm: eventFormData.form,
+      phoneCode,
+      setSuccess,
+      setFormNumber,
+      setFormData,
+      setFormErrors,
+      setEventData,
+      eventTitle,
+      selectedDate,
+      setDiscount,
+      setLoading,
+      setCoupon,
+      ticketCode,
+      utmData,
+      navigate,
+      accessCode,
+    });
+  };
 
   useEffect(() => {
     setFormData(
@@ -330,6 +387,12 @@ const EventForm = ({
 
   return (
     <>
+      <VerificationModal
+        verification={verification}
+        setVerification={setVerification}
+        formData={formData}
+        onFieldChange={onFieldChange}
+      />
       {claimCodeExceed?.exceeded && (
         <div className={styles.claimCodeExccededMessage}>
           <MdError color='#F04B4B' size={25} />
@@ -368,6 +431,8 @@ const EventForm = ({
                   formErrors={formErrors}
                   formData={formData}
                   onFieldChange={onFieldChange}
+                  phoneCode={phoneCode}
+                  setPhoneCode={setPhoneCode}
                   previews={previews}
                   handleFileChange={handleFileChange}
                   handleDeleteAttachment={handleDeleteAttachment}
@@ -438,27 +503,18 @@ const EventForm = ({
                 selectedDate,
               ).then(() => {
                 if (eventFormData.show_ticket_first)
-                  submitForm({
-                    eventId: eventFormData.id,
-                    isCouponFirst: eventFormData.show_ticket_first,
-                    tickets,
-                    formData,
-                    coupon,
-                    setSuccess,
-                    setFormNumber,
-                    setFormData,
-                    setFormErrors,
-                    setEventData,
-                    eventTitle,
-                    selectedDate,
-                    setDiscount,
-                    setLoading,
-                    setCoupon,
-                    ticketCode,
-                    utmData,
-                    navigate,
-                    accessCode,
-                  });
+                  if (
+                    eventFormData.verification_settings.email ||
+                    eventFormData.verification_settings.phone
+                  ) {
+                    setVerification((prev) => ({
+                      ...prev,
+                      showModal: true,
+                      submit: submitForm1,
+                    }));
+                  } else {
+                    submitForm1();
+                  }
               });
             } else if (formNumber === 1 && eventFormData.show_ticket_first) {
               if (tickets.some((ticket) => ticket.count > 0)) setFormNumber(0);
@@ -479,26 +535,18 @@ const EventForm = ({
                   setLoading,
                 );
               } else {
-                submitForm({
-                  eventId: eventFormData.id,
-                  tickets,
-                  formData,
-                  coupon,
-                  setSuccess,
-                  setFormNumber,
-                  setFormData,
-                  setFormErrors,
-                  setEventData,
-                  eventTitle,
-                  selectedDate,
-                  setDiscount,
-                  setLoading,
-                  setCoupon,
-                  ticketCode,
-                  utmData,
-                  navigate,
-                  accessCode,
-                });
+                if (
+                  eventFormData.verification_settings.email ||
+                  eventFormData.verification_settings.phone
+                ) {
+                  setVerification((prev) => ({
+                    ...prev,
+                    showModal: true,
+                    submit: submitForm2,
+                  }));
+                } else {
+                  submitForm2();
+                }
               }
             }
           }}

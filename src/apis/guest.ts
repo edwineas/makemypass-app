@@ -44,6 +44,8 @@ export const addGuest = (
   isCashInHand?: boolean,
   setLoading?: Dispatch<React.SetStateAction<boolean>>,
 ) => {
+  const eventData = JSON.parse(sessionStorage.getItem('eventData') || '{}');
+
   if (setLoading) setLoading(true);
   if (selectedDate) {
     formData['ticket_date'] = selectedDate;
@@ -109,7 +111,7 @@ export const addGuest = (
           amount: paymentAmount,
           currency: response.data.response.currency,
           name: 'MakeMyPass',
-          description: 'Event Registration',
+          description: `MMP - ${eventData.title}`,
           image: '/pwa/maskable.webp',
           order_id: paymentId,
           handler: function (response: RazorpayPaymentDetails) {

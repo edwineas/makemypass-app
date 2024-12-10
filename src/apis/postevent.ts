@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import toast from 'react-hot-toast';
 
 import { privateGateway } from '../../services/apiGateway';
@@ -59,7 +60,10 @@ export const getPostEventContentList = async (
     });
 };
 
-export const updatePostEventContent = async (formData: FormData) => {
+export const updatePostEventContent = async (
+  formData: FormData,
+  setIsUploading: Dispatch<SetStateAction<boolean>>,
+) => {
   const { event_id: eventId } = JSON.parse(sessionStorage.getItem('eventData')!);
   privateGateway
     .put(makeMyPass.updatePostEventContent(eventId), formData, {
@@ -72,5 +76,8 @@ export const updatePostEventContent = async (formData: FormData) => {
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Error in Creating Post Event Content');
+    })
+    .finally(() => {
+      setIsUploading(false);
     });
 };

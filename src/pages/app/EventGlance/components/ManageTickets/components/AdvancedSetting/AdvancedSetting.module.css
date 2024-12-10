@@ -136,6 +136,7 @@
   outline: none;
   opacity: 0.8;
   text-align: left;
+  border: none;
 }
 
 .perkCountInput {
@@ -149,6 +150,7 @@
   outline: none;
   opacity: 0.8;
   text-align: left;
+  border: none;
 }
 
 .addPerkButton {
@@ -163,4 +165,20 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   width: fit-content;
+}
+
+.privateRegContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  column-gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.privateRegLabel {
+  font-size: 0.875rem;
+  color: var(--off-white);
+  font-family: 'Inter', sans-serif;
 }

@@ -16,6 +16,7 @@ const ViewTicket = () => {
   const location = useLocation();
   const [eventRegisterId, setEventRegisterId] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [ticketCode, setTicketCode] = useState('');
   const [eventId, setEventId] = useState(
     JSON.parse(sessionStorage.getItem('eventData')!)?.event_id,
   );
@@ -43,13 +44,13 @@ const ViewTicket = () => {
 
   useEffect(() => {
     if (eventRegisterId && eventId) {
-      viewGuestTicket(eventId, eventRegisterId, setImageUrl, setLoading);
+      viewGuestTicket(eventId, eventRegisterId, setImageUrl, setTicketCode, setLoading);
     }
   }, [eventRegisterId, eventId]);
 
   return (
     <>
-      <Theme>
+      <Theme hideLogin={true}>
         <div className={styles.viewEventHeaderContainer}>
           {isUserAuthorizedForEvent(TillRoles.VOLUNTEER) && (
             <EventHeader
@@ -63,30 +64,41 @@ const ViewTicket = () => {
           ) : imageUrl.length > 0 ? (
             <>
               <img src={imageUrl} alt='ticket' className={styles.ticketImage} />
+              <div className={styles.row}>
+                <button
+                  onClick={async () => {
+                    try {
+                      const response = await fetch(imageUrl);
+                      const blob = await response.blob();
 
-              <button
-                onClick={async () => {
-                  try {
-                    const response = await fetch(imageUrl);
-                    const blob = await response.blob();
+                      const link = document.createElement('a');
+                      link.href = URL.createObjectURL(blob);
+                      link.setAttribute('download', 'ticket.png');
 
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.setAttribute('download', 'ticket.png');
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
 
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                      URL.revokeObjectURL(link.href);
+                    } catch (error) {
+                      toast.error('Failed to download ticket');
+                    }
+                  }}
+                  className={styles.downloadTicketButton}
+                >
+                  Download Your Ticket
+                </button>
 
-                    URL.revokeObjectURL(link.href);
-                  } catch (error) {
-                    toast.error('Failed to download ticket');
-                  }
-                }}
-                className={styles.downloadTicketButton}
-              >
-                Download Your Ticket
-              </button>
+                <button
+                  className={styles.downloadTicketButton}
+                  onClick={() => {
+                    navigator.clipboard.writeText(ticketCode);
+                    toast.success('Ticket Code Copied');
+                  }}
+                >
+                  Copy Ticket Code
+                </button>
+              </div>
             </>
           ) : (
             <div className={styles.noTicketFound}>

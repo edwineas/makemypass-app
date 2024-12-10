@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { privateGateway } from '../../services/apiGateway';
 import { makeMyPass } from '../../services/urls';
 import type { hostData } from '../pages/app/Overview/Overview/types';
-import { hostList } from './types';
+import { hostId, hostList } from './types';
 
 export const createEventHost = async (
   eventId: string,
@@ -71,12 +71,24 @@ export const removeEventHost = async (
   eventId: string,
   hostId: string,
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setHostId: React.Dispatch<React.SetStateAction<hostId>>,
+  setHostData: React.Dispatch<React.SetStateAction<hostData>>,
 ) => {
   privateGateway
     .delete(makeMyPass.host(eventId, hostId))
     .then((response) => {
       toast.success(response.data.message.general[0] || 'Host removed successfully');
       setOpenDeleteModal(false);
+      setHostId({
+        id: '',
+        type: null,
+      });
+      setHostData({
+        email: '',
+        role: '',
+        id: '',
+        is_private: true,
+      });
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');

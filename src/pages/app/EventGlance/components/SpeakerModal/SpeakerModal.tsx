@@ -16,9 +16,11 @@ import styles from './SpeakerModal.module.css';
 import { SpeakerType } from './types';
 
 const SpeakerModal = ({
+  isOpen,
   speakers,
   setSpeakers,
 }: {
+  isOpen: boolean;
   eventId: string;
   speakers: SpeakerCRUDType;
   setSpeakers: Dispatch<SetStateAction<SpeakerCRUDType>>;
@@ -37,6 +39,7 @@ const SpeakerModal = ({
       {(speakerData.type === 'CREATE' || speakerData.type === 'EDIT') && (
         <Modal
           title='Add Speaker'
+          isOpen={isOpen}
           onClose={() => {
             setSpeakers((prev) => ({
               ...prev,
@@ -132,6 +135,7 @@ const SpeakerModal = ({
 
       {speakerData.type === 'DELETE' && speakerData.id ? (
         <Modal
+          isOpen={isOpen}
           title='Delete Confirmation'
           onClose={() => {
             setSpeakerData(
@@ -179,6 +183,7 @@ const SpeakerModal = ({
       ) : (
         <Modal
           title='Add Speaker'
+          isOpen={isOpen}
           onClose={() => {
             setSpeakers((prev) => ({
               ...prev,

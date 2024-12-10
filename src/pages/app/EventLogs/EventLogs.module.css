@@ -16,6 +16,7 @@
   flex-wrap: wrap;
   color: var(--white-color);
   width: 100%;
+  margin-bottom: 0.5rem;
 }
 
 .mailLogsSubText {
@@ -30,7 +31,7 @@
   margin-top: 1rem;
   padding-bottom: 1rem;
   position: relative;
-  background-color: var(--very-trasnparent-bg);
+  background-color: var(--very-transparent-bg);
   padding: 1rem;
   border-radius: 8px;
   margin-right: 0.5rem;

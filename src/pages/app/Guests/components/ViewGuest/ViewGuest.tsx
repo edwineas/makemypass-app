@@ -1,10 +1,12 @@
 import { isArray } from 'chart.js/helpers';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { Dispatch, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { BiChevronDown } from 'react-icons/bi';
 import { BsTicketPerforatedFill } from 'react-icons/bs';
-import { FaEdit, FaMailBulk, FaTrash, FaWalking } from 'react-icons/fa';
+import { FaEdit, FaFileInvoiceDollar, FaMailBulk, FaTrash, FaWalking } from 'react-icons/fa';
 import { FaCheck } from 'react-icons/fa6';
+import { IoCopyOutline } from 'react-icons/io5';
 import { MdDownload, MdMail, MdRemove } from 'react-icons/md';
 import { HashLoader } from 'react-spinners';
 
@@ -34,6 +36,7 @@ import type { EmailType, VisitedVenues } from './types';
 import styles from './ViewGuest.module.css';
 
 const ViewGuest = ({
+  isOpen,
   selectedGuestData,
   setSelectedGuestId,
   eventId,
@@ -42,6 +45,7 @@ const ViewGuest = ({
   type,
   setTriggerFetch,
 }: {
+  isOpen: boolean;
   selectedGuestData: RegistrationDataType | undefined;
   setSelectedGuestId: Dispatch<React.SetStateAction<SelectedGuest | null>>;
   eventId: string;
@@ -71,7 +75,6 @@ const ViewGuest = ({
   const [initateRefundClicked, setInitateRefundClicked] = useState(false);
 
   const toggleMailContent = (id: string) => {
-    console.log(id);
     setMailLog((prevState) => ({
       ...prevState,
       logs: prevState.logs.map((mail) => {
@@ -120,173 +123,182 @@ const ViewGuest = ({
         multipleTickets={multipleTickets}
         type='checkIn'
       />
-      {deleteModal && (
-        <>
-          <Modal
-            title='Delete Submission'
-            onClose={() => {
-              setDeleteModal(false);
-            }}
-          >
-            <div className={styles.deleteModal}>
-              <p className={styles.deleteModalText}>
-                Are you sure you want to delete this submission?
-              </p>
-              <div className={styles.deleteModalButtons}>
-                <SecondaryButton
-                  buttonText='Cancel'
-                  onClick={() => {
-                    setDeleteModal(false);
-                  }}
-                />
-                <SecondaryButton
-                  buttonText='Delete'
-                  onClick={() => {
-                    if (selectedGuestData) {
-                      deleteGuestSubmission(
-                        eventId,
-                        selectedGuestData['id'] as string,
-                        setTriggerFetch,
-                      );
-                    }
-                    setSelectedGuestId(null);
-                    setDeleteModal(false);
-                  }}
-                />
-              </div>
-            </div>
-          </Modal>
-        </>
-      )}
-      {removeTicketCode && (
+
+      <>
         <Modal
-          title='Remove Ticket Code'
+          isOpen={deleteModal}
+          title='Delete Submission'
           onClose={() => {
-            setRemoveTicketCode(false);
+            setDeleteModal(false);
           }}
         >
           <div className={styles.deleteModal}>
             <p className={styles.deleteModalText}>
-              Are you sure you want to remove this ticket code?
+              Are you sure you want to delete this submission?
             </p>
             <div className={styles.deleteModalButtons}>
               <SecondaryButton
                 buttonText='Cancel'
                 onClick={() => {
-                  setRemoveTicketCode(false);
+                  setDeleteModal(false);
                 }}
               />
               <SecondaryButton
-                buttonText='Remove'
+                buttonText='Delete'
                 onClick={() => {
                   if (selectedGuestData) {
-                    removeMappedCode(
+                    deleteGuestSubmission(
                       eventId,
-                      selectedGuestData['id'],
-                      selectedGuestData['mapped_code'],
+                      selectedGuestData['id'] as string,
                       setTriggerFetch,
                     );
                   }
                   setSelectedGuestId(null);
-                  setRemoveTicketCode(false);
+                  setDeleteModal(false);
                 }}
               />
             </div>
           </div>
         </Modal>
-      )}
-      {visitedVenues.status && (
-        <div className={styles.topLayer}>
-          <Modal
-            title='Visited Venues'
-            onClose={() => {
-              setVisitedVenues({
-                status: false,
-                venues: [],
-              });
-            }}
-          >
-            <div className={styles.visitedVenues}>
-              {visitedVenues.venues.length > 0 ? (
-                visitedVenues.venues.map((venue) => {
-                  return (
-                    <div className={styles.venue}>
-                      <p className={styles.venueName}>{`${venue.name},`}</p>
-                      <p className={styles.venueTime}>{formatDate(venue.visited_at, true)}</p>
-                    </div>
+      </>
+
+      <Modal
+        isOpen={removeTicketCode}
+        title='Remove Ticket Code'
+        onClose={() => {
+          setRemoveTicketCode(false);
+        }}
+      >
+        <div className={styles.deleteModal}>
+          <p className={styles.deleteModalText}>
+            Are you sure you want to remove this ticket code?
+          </p>
+          <div className={styles.deleteModalButtons}>
+            <SecondaryButton
+              buttonText='Cancel'
+              onClick={() => {
+                setRemoveTicketCode(false);
+              }}
+            />
+            <SecondaryButton
+              buttonText='Remove'
+              onClick={() => {
+                if (selectedGuestData) {
+                  removeMappedCode(
+                    eventId,
+                    selectedGuestData['id'],
+                    selectedGuestData['mapped_code'],
+                    setTriggerFetch,
                   );
-                })
-              ) : (
-                <p className={styles.noVisitedVenues}>No Visited Venues</p>
-              )}
-            </div>
-          </Modal>
+                }
+                setSelectedGuestId(null);
+                setRemoveTicketCode(false);
+              }}
+            />
+          </div>
         </div>
-      )}
-      {mailLog.showLog && (
+      </Modal>
+
+      <div className={styles.topLayer}>
         <Modal
-          title='Mail Log'
-          onClose={() =>
-            setMailLog({
-              showLog: false,
-              logs: [],
-            })
-          }
-          style={{
-            maxWidth: '35rem',
-            alignItems: 'flex-start',
+          isOpen={visitedVenues.status}
+          title='Visited Venues'
+          onClose={() => {
+            setVisitedVenues({
+              status: false,
+              venues: [],
+            });
           }}
-          zIndexCount={100}
         >
-          <div className={styles.mailsContainer}>
-            {mailLog.logs.map((mail, index) => {
-              return (
-                <div className={styles.mail} key={index} onClick={() => toggleMailContent(mail.id)}>
-                  <div className={styles.expandIcon}>
-                    <BiChevronDown
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMailContent(mail.id);
-                      }}
-                      size={25}
-                      style={{
-                        transform: mail.show_content ? 'rotate(180deg)' : 'rotate(0deg)',
-                      }}
-                    />
+          <div className={styles.visitedVenues}>
+            {visitedVenues.venues.length > 0 ? (
+              visitedVenues.venues.map((venue) => {
+                return (
+                  <div className={styles.venue}>
+                    <p className={styles.venueName}>{`${venue.name},`}</p>
+                    <p className={styles.venueTime}>{formatDate(venue.visited_at, true)}</p>
                   </div>
-
-                  <div className={styles.mailHeader}>
-                    <MdMail size={25} />
-                    <div className={styles.mailHeaderContents}>
-                      <p className={styles.mailType}>{mail.type} Mail</p>
-                      {mail.opened_at && (
-                        <p className={styles.mailType}>
-                          Mail Opened @ {formatDate(mail.opened_at, true)}
-                        </p>
-                      )}
-                      <p className={styles.mailSubject}>{mail.subject}</p>
-                      <p className={styles.mailDescription}>
-                        To: <span>{mail.send_to}</span> <br />
-                        From: <span>{mail.send_from}</span>
-                      </p>
-
-                      {mail.show_content && (
-                        <>
-                          <hr className={styles.line} />
-                          <div className={styles.mailContent}>
-                            <pre> {mail.body}</pre>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <p className={styles.noVisitedVenues}>No Visited Venues</p>
+            )}
           </div>
         </Modal>
-      )}
+      </div>
+
       <Modal
+        isOpen={mailLog.showLog}
+        title='Mail Log'
+        onClose={() =>
+          setMailLog({
+            showLog: false,
+            logs: [],
+          })
+        }
+        style={{
+          maxWidth: '35rem',
+          alignItems: 'flex-start',
+        }}
+        zIndexCount={100}
+      >
+        <div className={styles.mailsContainer}>
+          {mailLog.logs.map((mail, index) => {
+            return (
+              <div className={styles.mail} key={index} onClick={() => toggleMailContent(mail.id)}>
+                <div className={styles.expandIcon}>
+                  <BiChevronDown
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleMailContent(mail.id);
+                    }}
+                    size={25}
+                    style={{
+                      transform: mail.show_content ? 'rotate(180deg)' : 'rotate(0deg)',
+                    }}
+                  />
+                </div>
+
+                <div className={styles.mailHeader}>
+                  <MdMail size={25} />
+                  <div className={styles.mailHeaderContents}>
+                    <p className={styles.mailType}>{mail.type} Mail</p>
+                    {mail.opened_at && (
+                      <p className={styles.mailType}>
+                        Mail Opened @ {formatDate(mail.opened_at, true)}
+                      </p>
+                    )}
+                    <p className={styles.mailSubject}>{mail.subject}</p>
+                    <p className={styles.mailDescription}>
+                      To: <span>{mail.send_to}</span> <br />
+                      From: <span>{mail.send_from}</span>
+                    </p>
+                    <AnimatePresence>
+                      {mail.show_content && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: mail.show_content ? 'auto' : 0 }}
+                          exit={{ opacity: 0, height: 0 }}
+                          style={{ overflow: 'hidden' }}
+                          className={styles.mailContentContainer}
+                        >
+                          <hr className={styles.line} />
+                          <div className={styles.mailContent}>
+                            <pre>{mail.body}</pre>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isOpen}
         type='side'
         title='View Guest'
         onClose={() => {
@@ -331,6 +343,20 @@ const ViewGuest = ({
                   </p>
                   <p className={styles.ticketCode}>
                     <span>Ticket Code:</span> {selectedGuestData['ticket_code']}
+                    <IoCopyOutline
+                      style={{
+                        marginLeft: '5px',
+                        marginTop: '2px',
+                        cursor: 'pointer',
+                      }}
+                      size={15}
+                      onClick={() => {
+                        navigator.clipboard.writeText(selectedGuestData['ticket_code']);
+                        toast.success('Ticket Code Copied', {
+                          id: 'ticket-code-copied',
+                        });
+                      }}
+                    />
                   </p>
                   {selectedGuestData['mapped_code'] && (
                     <p className={styles.ticketCode}>
@@ -514,6 +540,23 @@ const ViewGuest = ({
                     <MdDownload size={20} color='#8E8E8E' />
                     <span>View Ticket</span>
                   </div>
+                  {Number(selectedGuestData['amount']) > 0 && (
+                    <div
+                      className={styles.icon}
+                      onClick={() => {
+                        if (setSelectedGuestId) {
+                          setSelectedGuestId((prevState) => ({
+                            ...prevState,
+                            id: selectedGuestData['id'].toString(),
+                            type: 'downloadInvoice',
+                          }));
+                        }
+                      }}
+                    >
+                      <FaFileInvoiceDollar size={20} color='#8E8E8E' />
+                      <span>View Invoice</span>
+                    </div>
+                  )}
                   {selectedGuestData['is_checked_in'] && selectedGuestData['has_venues'] && (
                     <div
                       className={styles.icon}

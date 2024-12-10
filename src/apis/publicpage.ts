@@ -13,7 +13,13 @@ import type {
   Tickets,
 } from '../pages/app/EventPage/types';
 import { convertWebmToWav } from './helpers';
-import { ErrorMessages, EventType, FormDataType, RazorpayPaymentDetails } from './types';
+import {
+  ErrorMessages,
+  EventType,
+  FormDataType,
+  FormFieldType,
+  RazorpayPaymentDetails,
+} from './types';
 
 declare global {
   interface Window {
@@ -28,6 +34,8 @@ export const submitForm = async ({
   tickets,
   formData,
   coupon,
+  eventForm,
+  phoneCode,
   setSuccess,
   setFormNumber,
   setFormData,
@@ -50,6 +58,8 @@ export const submitForm = async ({
   tickets: Tickets[];
   formData: FormDataType;
   coupon: CouponData;
+  eventForm?: FormFieldType[];
+  phoneCode?: string;
   setSuccess?: React.Dispatch<React.SetStateAction<SuccessModalProps>>;
   setFormNumber?: React.Dispatch<React.SetStateAction<number>>;
   setFormData?: React.Dispatch<React.SetStateAction<FormDataType>>;
@@ -99,6 +109,12 @@ export const submitForm = async ({
         value.forEach((value) => backendFormData.append(key + '[]', value));
       } else {
         value = formData[key].toString();
+        if (eventForm && eventForm.length > 0) {
+          const isFieldPhone = eventForm.find((field) => field.field_key === key)?.type === 'phone';
+          if (isFieldPhone && phoneCode && value.length > 0) {
+            value = phoneCode + value;
+          }
+        }
       }
     }
 
@@ -144,7 +160,7 @@ export const submitForm = async ({
           amount: paymentAmount,
           currency: response.data.response.currency,
           name: 'MakeMyPass',
-          description: 'Event Registration',
+          description: `MMP - ${eventTitle}`,
           image: '/pwa/maskable.webp',
           order_id: paymentId,
           handler: function (response: RazorpayPaymentDetails) {
@@ -171,6 +187,7 @@ export const submitForm = async ({
                     eventRegisterId: response.data.response.event_register_id,
                     loading: false,
                     redirection: response.data.response.redirection,
+                    team_id: response.data.response.team_id,
                   }));
 
                 if (isCouponFirst && setFormNumber) setFormNumber(1);
@@ -222,6 +239,7 @@ export const submitForm = async ({
           loading: false,
           redirection: response.data.response.redirection,
           newPage: response.data.response.thank_you_new_page,
+          team_id: response.data.response.team_id,
         };
 
         if (response.data.response.thank_you_new_page) {
@@ -503,7 +521,9 @@ export const sendVerfication = async (contactType: string, contactInfo: string) 
       contact_info: contactInfo,
     })
     .then(() => {
-      toast.success('Verification Email Sent');
+      toast.success(
+        `Verification Code Sent to ${contactType.charAt(0).toUpperCase() + contactType.slice(1)}`,
+      );
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0]);

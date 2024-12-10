@@ -35,6 +35,12 @@
   column-gap: 0.15rem;
 }
 
+@media (max-width: 486px) {
+  .customFieldLabel {
+    max-width: 15rem;
+  }
+}
+
 .customFieldsHeader {
   display: flex;
   flex-direction: row;
@@ -228,7 +234,7 @@
 }
 
 .customFieldName input {
-  width: calc(100% - 4rem);
+  width: calc(100% - 2rem);
   background: rgba(255, 255, 255, 0.04);
   border: none;
   border-radius: 8px;
@@ -378,18 +384,13 @@
   font-size: 0.9rem;
   color: white;
   max-width: 16.5rem;
-
-  margin-top: 0.5rem;
+  width: 100%;
 }
 
 .changeTypeContainer {
   margin-left: 5rem;
   position: absolute;
   z-index: 99999;
-}
-
-li {
-  list-style-type: none;
 }
 
 .customFieldOptionRow,
@@ -532,8 +533,8 @@ li {
   border-radius: 8px;
   margin-top: 0.5rem;
   margin-left: -0.25rem;
-  max-width: 71rem;
-  width: calc(100% - 7rem);
+  width: 100%;
+  width: calc(100% - 5rem);
 }
 
 .optionValues {
@@ -543,6 +544,7 @@ li {
   flex-wrap: wrap;
   justify-content: flex-start;
   column-gap: 1rem;
+  row-gap: 0.5rem;
   margin-top: 0.5rem;
   max-width: calc(100% - 2rem);
 }

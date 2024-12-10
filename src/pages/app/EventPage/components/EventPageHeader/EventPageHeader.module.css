@@ -196,7 +196,17 @@
   font-size: 0.9rem;
   font-weight: 400;
   font-family: 'Inter', sans-serif;
-  max-width: 15rem;
+  max-width: 13rem;
+}
+
+.locationIcon {
+  margin-top: -0.25rem;
+  margin-left: 0.25rem;
+  opacity: 0.5;
+}
+
+.locationIcon:hover {
+  opacity: 1;
 }
 
 .line {
@@ -325,10 +335,10 @@
   padding: 0.75rem;
   width: 100%;
   border-radius: 8px;
-  background: white;
+  background: #47c97e;
   color: #212325;
   font-size: 1rem;
-  font-weight: 00;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;

@@ -235,62 +235,65 @@ const FormBuilder = () => {
     <>
       <Theme>
         <DashboardLayout prevPage='/events' tabName='formbuilder'>
-          {showConfirmationModal && (
-            <Modal
-              type='center'
-              title='Confirmation'
-              onClose={() => setShowConfirmationModal(false)}
-            >
-              <div className={styles.confirmationModal}>
-                <p>Are you sure you want to delete this field?</p>
-                <div className={styles.confirmationButtons}>
-                  <button onClick={() => removeField()}>Yes</button>
-                  <button onClick={() => setShowConfirmationModal(false)}>No</button>
-                </div>
+          <Modal
+            isOpen={showConfirmationModal}
+            type='center'
+            title='Confirmation'
+            onClose={() => setShowConfirmationModal(false)}
+          >
+            <div className={styles.confirmationModal}>
+              <p>Are you sure you want to delete this field?</p>
+              <div className={styles.confirmationButtons}>
+                <button onClick={() => removeField()}>Yes</button>
+                <button onClick={() => setShowConfirmationModal(false)}>No</button>
               </div>
-            </Modal>
-          )}
+            </div>
+          </Modal>
 
-          {import.meta.env.VITE_CURRENT_ENV == 'dev' && showGenerateWithAI && (
-            <Modal onClose={() => setShowGenerateWithAI(false)} title='Build Your Form with AI'>
+          {import.meta.env.VITE_CURRENT_ENV == 'dev' && (
+            <Modal
+              isOpen={showGenerateWithAI}
+              onClose={() => setShowGenerateWithAI(false)}
+              title='Build Your Form with AI'
+            >
               <GenerateWithAI />
             </Modal>
           )}
 
-          {closeForm && (
-            <Modal type='center' title='Enter Message' onClose={() => setCloseForm(false)}>
-              <div className={styles.followupMessageContainer}>
-                <label className={styles.headingText}>Form Closed Message</label>
-                <p className={styles.subText}>
-                  This message will be shown once the form has been closed.
-                </p>
-                <div className={styles.followupMessage}>
-                  <Editor
-                    description={tempFollowupMessage}
-                    setNewDescription={setFollowupMessage}
-                  />
-                </div>
-                <br />
-                <Slider
-                  checked={showFollowUpMessage}
-                  text={'Close Registration Form'}
-                  onChange={() => {
-                    isUserEditorForEvent() && setShowFollowUpMessage(!showFollowUpMessage);
-                  }}
-                  size='small'
-                />
-                <button
-                  className={styles.continueButton}
-                  onClick={() => {
-                    if (isUserEditorForEvent())
-                      closeFormMessage(event_id, followUpMessage, showFollowUpMessage);
-                  }}
-                >
-                  Continue
-                </button>
+          <Modal
+            isOpen={closeForm}
+            type='center'
+            title='Enter Message'
+            onClose={() => setCloseForm(false)}
+          >
+            <div className={styles.followupMessageContainer}>
+              <label className={styles.headingText}>Form Closed Message</label>
+              <p className={styles.subText}>
+                This message will be shown once the form has been closed.
+              </p>
+              <div className={styles.followupMessage}>
+                <Editor description={tempFollowupMessage} setNewDescription={setFollowupMessage} />
               </div>
-            </Modal>
-          )}
+              <br />
+              <Slider
+                checked={showFollowUpMessage}
+                text={'Close Registration Form'}
+                onChange={() => {
+                  isUserEditorForEvent() && setShowFollowUpMessage(!showFollowUpMessage);
+                }}
+                size='small'
+              />
+              <button
+                className={styles.continueButton}
+                onClick={() => {
+                  if (isUserEditorForEvent())
+                    closeFormMessage(event_id, followUpMessage, showFollowUpMessage);
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          </Modal>
 
           <div className={styles.requiredFieldsHeader}>
             <div className={styles.requiredFieldsHeader}>
@@ -404,7 +407,6 @@ const FormBuilder = () => {
                                     }}
                                     onClick={() => {
                                       setSelectedField(field);
-                                      setShowChangeTypeModal(true);
                                     }}
                                   >
                                     {(Object.keys(FieldType) as Array<keyof typeof FieldType>).find(
@@ -606,7 +608,9 @@ const FormBuilder = () => {
                                       <div className={styles.optionValuesContainer}>
                                         <div
                                           className='row'
-                                          style={{ justifyContent: 'space-between' }}
+                                          style={{
+                                            justifyContent: 'space-between',
+                                          }}
                                         >
                                           <p className={styles.optionHeader}>
                                             Option Group {optionIndex + 1}
@@ -654,7 +658,13 @@ const FormBuilder = () => {
                                         </div>
                                         <div className={styles.optionValues}>
                                           {optionsObject.values.map((option, valueIndex) => (
-                                            <div className='row' key={valueIndex}>
+                                            <div
+                                              className='row'
+                                              key={valueIndex}
+                                              style={{
+                                                flexWrap: 'nowrap',
+                                              }}
+                                            >
                                               <input
                                                 className={styles.optionInput}
                                                 type='text'

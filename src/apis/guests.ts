@@ -9,15 +9,6 @@ import { FormEventData, GuestsType, ResentTicket, SelectedGuest } from '../pages
 import type { RegistrationDataType } from '../pages/app/Overview/Overview/types';
 import { ErrorMessages, FormDataType } from './types';
 
-const options: Intl.DateTimeFormatOptions = {
-  year: '2-digit',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: false,
-};
-
 export const resentGuestTicket = async (
   ticketData: ResentTicket,
   setResentTicket: Dispatch<React.SetStateAction<ResentTicket>>,
@@ -139,12 +130,33 @@ export const viewGuestTicket = async (
   eventId: string,
   eventRegisterId: string,
   setImageUrl: Dispatch<React.SetStateAction<string>>,
+  setTicketCode: Dispatch<React.SetStateAction<string>>,
   setLoading?: Dispatch<React.SetStateAction<boolean>>,
 ) => {
   publicGateway
     .get(makeMyPass.guestDownloadTicket(eventId, eventRegisterId))
     .then((response) => {
       setImageUrl(response.data.response.image);
+      setTicketCode(response.data.response.ticket_code);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Something went wrong');
+    })
+    .finally(() => {
+      setLoading && setLoading(false);
+    });
+};
+
+export const viewGuestInvoice = async (
+  eventId: string,
+  eventRegisterId: string,
+  setInvoiceUrl: Dispatch<React.SetStateAction<string>>,
+  setLoading?: Dispatch<React.SetStateAction<boolean>>,
+) => {
+  publicGateway
+    .get(makeMyPass.guestDownloadInvoice(eventId, eventRegisterId))
+    .then((response) => {
+      setInvoiceUrl(response.data.response.invoice_url);
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Something went wrong');
@@ -168,17 +180,10 @@ export const downloadRegisterCSVData = async (
     .get(makeMyPass.guestDownloadCSV(eventId) + '?' + params.toString())
     .then((response) => {
       const csvData = response.data;
-      const csvContent = 'data:text/csv;charset=utf-8,' + csvData;
-      const encodedUri = encodeURI(csvContent);
+      const csvContent = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData);
       const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      const timestamp = new Date()
-        .toLocaleString('en-GB', options)
-        .replace(/\//g, '-') // Replace slashes with hyphens
-        .replace(/, /g, '_') // Replace comma-space with underscore
-        .replace(/:/g, '-'); // Replace colons with hyphens
-
-      link.setAttribute('download', `${eventTitle}-guests-${timestamp}.csv`);
+      link.setAttribute('href', csvContent);
+      link.setAttribute('download', `${eventTitle}.csv`);
       document.body.appendChild(link);
       link.click();
     })
@@ -311,7 +316,6 @@ export const uploadBulkGuestData = (
   selectedTickets.forEach((ticket) => {
     formData.append('tickets[]', ticket);
   });
-  console.log('Dye Dey23 ', formData);
 
   privateGateway
     .post(makeMyPass.bulkGuestUpload(eventId), formData, {

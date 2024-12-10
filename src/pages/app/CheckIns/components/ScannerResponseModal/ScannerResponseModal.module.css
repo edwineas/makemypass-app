@@ -112,3 +112,33 @@
   border: none;
   margin: 0.5rem 0;
 }
+
+.hasError {
+  color: var(--error-red);
+  display: flex;
+  gap: 0.25rem;
+}
+
+.errorMessageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.errorMessageHeading {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 0.5rem;
+  color: var(--error-red);
+}
+
+.errorMessageSubText {
+  font-size: 0.9rem;
+  color: #fff;
+  opacity: 0.8;
+  font-family: Inter, sans-serif;
+  margin-top: 0.5rem;
+}

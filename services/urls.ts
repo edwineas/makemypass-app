@@ -6,12 +6,15 @@ const makeMyPassURL = buildURL('/makemypass');
 export const makeMyPass = {
   //Common
   onboardUser: makeMyPassURL('/common/onboard-user/'),
-  listEvents: makeMyPassURL('/manage-user/user/events/'),
+  listEvents: makeMyPassURL('/manage-user/user/organized-events/'),
   listCommonTags: makeMyPassURL('/manage-user/user/list-tags/'),
   listOrgs: makeMyPassURL('/manage-user/user/org/list'),
   userSocials: makeMyPassURL('/manage-user/user/socials/'),
   publicProfile: (userName: string) =>
     makeMyPassURL(`/manage-user/user/${userName}/public-profile/`),
+  participatedEvents: makeMyPassURL(`/manage-user/user/participated-events/`),
+  subscribe: (userName: string) => makeMyPassURL(`/manage-user/user/${userName}/subscribe/`),
+  unsubscribe: (userName: string) => makeMyPassURL(`/manage-user/user/${userName}/unsubscribe/`),
 
   //Scan Guest
   scanGuestCheckin: (eventId: string) => makeMyPassURL(`/scan-guest/${eventId}/checkin`), //Till Volunteer
@@ -58,6 +61,9 @@ export const makeMyPass = {
     makeMyPassURL(`/manage-guest/${eventId}/guest/${submissionId}/edit/`), //Till Volunteer
   guestDownloadTicket: (eventId: string, eventRegisterId: string) =>
     makeMyPassURL(`/manage-guest/${eventId}/guest/${eventRegisterId}/download-ticket/`), //Till Volunteer
+  guestDownloadInvoice: (eventId: string, eventRegisterId: string) =>
+    makeMyPassURL(`/manage-guest/${eventId}/guest/${eventRegisterId}/download-invoice/`), //Till Volunteer
+
   guestSendInvite: (eventId: string) => makeMyPassURL(`/manage-guest/${eventId}/send-invite/`), //Till Volunteer
   guestShortList: (eventId: string, userId: string) =>
     makeMyPassURL(`/manage-guest/${eventId}/guest/${userId}/shortlist`), //Till Volunteer
@@ -100,6 +106,8 @@ export const makeMyPass = {
   host: (eventId: string, hostId: string) =>
     makeMyPassURL(`/manage-event/${eventId}/host/${hostId}`), // Till Admin
   eventCreateDuplicate: (eventId: string) => makeMyPassURL(`/manage-event/${eventId}/duplicate/`), // Till Admin
+  eventChangeOranization: (eventId: string) =>
+    makeMyPassURL(`/manage-event/${eventId}/org/link/update`), // Till Admin
 
   eventVenueList: (eventId: string) => makeMyPassURL(`/manage-event/${eventId}/venue/list`), // Till Viewer
   eventVenueCreate: (eventId: string) => makeMyPassURL(`/manage-event/${eventId}/venue/create`), // Till Editor

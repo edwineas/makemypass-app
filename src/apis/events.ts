@@ -28,6 +28,23 @@ export const getEventsList = async (
     });
 };
 
+export const getParticipatedEvents = async (
+  setEvents: React.Dispatch<React.SetStateAction<Event[]>>,
+  setIsDataLoaded: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+  privateGateway
+    .get(makeMyPass.participatedEvents)
+    .then((response) => {
+      setEvents(response.data.response.participated_events);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    })
+    .finally(() => {
+      setIsDataLoaded(true);
+    });
+};
+
 export const getCommonTags = async (setTags: React.Dispatch<React.SetStateAction<string[]>>) => {
   privateGateway
     .get(makeMyPass.listCommonTags, {})
@@ -75,7 +92,7 @@ export const getEventId = async (
   eventName: string,
 ): Promise<{
   id: string;
-  name: string;
+  title: string;
 }> => {
   return new Promise((resolve, reject) => {
     publicGateway
@@ -83,7 +100,7 @@ export const getEventId = async (
       .then((response) => {
         const eventData = {
           id: response.data.response.id,
-          title: response.data.response.name,
+          title: response.data.response.title,
         };
         sessionStorage.setItem('eventData', JSON.stringify(eventData));
         resolve(response.data.response);
@@ -243,12 +260,42 @@ export const deleteEvent = (eventId: string, setIsDeleting: Dispatch<SetStateAct
     });
 };
 
-export const createDuplicateEvent = async (eventId: string) => {
+export const createDuplicateEvent = async (
+  eventId: string,
+  setEvents: React.Dispatch<React.SetStateAction<Event[]>>,
+  setIsDataLoaded: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
   privateGateway
     .post(makeMyPass.eventCreateDuplicate(eventId))
     .then((response) => {
       toast.success('Event Duplicated Successfually');
       setEventInfoLocal(response.data.response.event_name);
+      setTimeout(() => {
+        getEventsList(setEvents, setIsDataLoaded);
+      }, 1000);
+    })
+    .catch((error) => {
+      toast.error(error.response.data.message.general[0] || 'Unable to process the request');
+    });
+};
+
+export const updateEventOrganization = async (
+  eventId: string,
+  orgId: string | null,
+  setEventData: Dispatch<SetStateAction<EventType | undefined>>,
+) => {
+  privateGateway
+    .post(makeMyPass.eventChangeOranization(eventId), {
+      org_id: orgId,
+    })
+    .then((response) => {
+      setEventData((prev) => {
+        return {
+          ...prev!,
+          org_id: orgId,
+        };
+      });
+      toast.success(response.data.message.general[0] || 'Organization Updated Successfully');
     })
     .catch((error) => {
       toast.error(error.response.data.message.general[0] || 'Unable to process the request');

@@ -15,6 +15,7 @@ export type Event = {
   location: string | null;
   status: string;
   tags: string[];
+  event_register_id?: string;
 };
 
 export type hostList = {
@@ -153,6 +154,7 @@ export interface TicketType {
     file_path: string;
   };
   commission?: number;
+  private_registration?: string[];
 }
 
 interface CouponType {
@@ -173,6 +175,7 @@ export interface EventType {
   is_checkout: boolean;
   show_ticket_first: boolean;
   err_message: ReactNode;
+  org_id: string | null;
   id: string;
   name: string;
   title: string;
@@ -230,6 +233,13 @@ export interface EventType {
     photos: string[];
     video_link: string;
   };
+  verification_settings:
+    | {
+        email: boolean | null;
+        phone: boolean | null;
+        condition: 'and' | 'or' | null;
+      }
+    | Record<string, never>;
 }
 
 export type EventDetails = {

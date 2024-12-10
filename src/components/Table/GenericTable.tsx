@@ -47,42 +47,42 @@ const GenericTable = ({
 
   return (
     <>
-      {showConfirmModal && (
-        <Modal
-          title='Delete Coupon'
-          onClose={() => setShowConfirmModal(false)}
+      <Modal
+        isOpen={showConfirmModal}
+        title='Delete Coupon'
+        onClose={() => setShowConfirmModal(false)}
+        style={{
+          width: '20rem',
+        }}
+      >
+        <p
           style={{
-            width: '20rem',
+            fontSize: '0.9rem',
           }}
         >
-          <p
-            style={{
-              fontSize: '0.9rem',
+          Are you sure you want to delete this coupon?
+        </p>
+        <div
+          className='row'
+          style={{
+            marginTop: '20px',
+          }}
+        >
+          <SecondaryButton buttonText='Cancel' onClick={() => setShowConfirmModal(false)} />
+          <SecondaryButton
+            buttonText='Delete'
+            onClick={() => {
+              deleteCoupon(
+                JSON.parse(sessionStorage.getItem('eventData')!).event_id,
+                selectedCoupon!.id,
+                setTableData as React.Dispatch<React.SetStateAction<CouponType[]>>,
+              );
+              setShowConfirmModal(false);
             }}
-          >
-            Are you sure you want to delete this coupon?
-          </p>
-          <div
-            className='row'
-            style={{
-              marginTop: '20px',
-            }}
-          >
-            <SecondaryButton buttonText='Cancel' onClick={() => setShowConfirmModal(false)} />
-            <SecondaryButton
-              buttonText='Delete'
-              onClick={() => {
-                deleteCoupon(
-                  JSON.parse(sessionStorage.getItem('eventData')!).event_id,
-                  selectedCoupon!.id,
-                  setTableData as React.Dispatch<React.SetStateAction<CouponType[]>>,
-                );
-                setShowConfirmModal(false);
-              }}
-            />
-          </div>
-        </Modal>
-      )}
+          />
+        </div>
+      </Modal>
+
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}

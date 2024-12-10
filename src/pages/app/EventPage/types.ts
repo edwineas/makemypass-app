@@ -67,6 +67,7 @@ export type SuccessModalProps = {
     type: 'on_submit' | 'on_button_click';
   };
   newPage?: boolean;
+  team_id?: string;
 };
 
 export type AudioControlsType = {
@@ -78,4 +79,12 @@ export type AudioControlsType = {
 export type ClaimCodeExceedType = {
   exceeded: boolean;
   message: string;
+};
+
+export type VerificationModalProps = {
+  showModal: boolean;
+  email: boolean;
+  phone: boolean;
+  condition: string | null;
+  submit: (() => void) | null;
 };

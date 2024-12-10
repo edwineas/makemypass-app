@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { BsQrCodeScan } from 'react-icons/bs';
 import { FaWrench } from 'react-icons/fa';
 import { HiUserGroup } from 'react-icons/hi2';
+import { TbAlertTriangleFilled } from 'react-icons/tb';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { HashLoader } from 'react-spinners';
 
@@ -177,7 +178,11 @@ const Overview = () => {
   };
 
   const removeHostAccount = () => {
-    removeEventHost(eventId, hostId.id, setOpenDeleteModal);
+    removeEventHost(eventId, hostId.id, setOpenDeleteModal, setHostId, setHostData);
+
+    setTimeout(() => {
+      getEventHosts(eventId, setHostList);
+    }, 1000);
   };
 
   const onSubmit = () => {
@@ -192,6 +197,11 @@ const Overview = () => {
         setHostData,
         setHostList,
       );
+
+    setTimeout(() => {
+      getEventHosts(eventId, setHostList);
+    }, 1000);
+
     setOpenAddModal(false);
   };
 
@@ -213,64 +223,61 @@ const Overview = () => {
         <Glance tab='overview' />
 
         <>
-          {openAddModal && (
-            <AddHosts
-              hostData={hostData}
-              setHostData={setHostData}
-              onSubmit={() => {
-                if (hostValidate()) {
-                  onSubmit();
-                }
-                setHostData({ email: '', role: '', is_private: true });
-                setHostId({ id: '', type: null });
-                addRef.current = false;
-              }}
-              onClose={() => {
-                setOpenAddModal(false);
-                setHostData({ email: '', role: '', is_private: true });
-                addRef.current = false;
-              }}
-              add={addRef.current}
-            />
-          )}
-          {openDeleteModal && (
-            <Modal
-              onClose={() => {
-                setOpenDeleteModal(false);
-              }}
-            >
-              <p className={styles.modalHeader}>Remove Host</p>
+          <AddHosts
+            isOpen={openAddModal}
+            hostData={hostData}
+            setHostData={setHostData}
+            onSubmit={() => {
+              if (hostValidate()) {
+                onSubmit();
+              }
+              setHostData({ email: '', role: '', is_private: true });
+              setHostId({ id: '', type: null });
+              addRef.current = false;
+            }}
+            onClose={() => {
+              setOpenAddModal(false);
+              setHostData({ email: '', role: '', is_private: true });
+              addRef.current = false;
+            }}
+            add={addRef.current}
+          />
+
+          <Modal
+            isOpen={openDeleteModal}
+            onClose={() => {
+              setOpenDeleteModal(false);
+            }}
+            title='Remove Host'
+          >
+            <div className={styles.modalContainer}>
+              <TbAlertTriangleFilled size={30} color='#f04b4b' className={styles.limitationIcon} />
+              <p className={styles.modalHeader}>Are you sure you want to Delete?</p>
               <p className={styles.modalSubText}>
-                Are you sure you want to delete&nbsp;
-                <span
-                  style={{
-                    fontWeight: '600',
-                    color: '#ff0c28',
-                  }}
-                >
-                  {hostData.email}
-                </span>
+                This user {hostData.email} will be revoked of the current access allowed for this
+                role
               </p>
-              <div className={styles.buttons}>
-                <p
+              <div className={styles.modalButtonContainer}>
+                <button
+                  className={styles.primaryButton}
                   onClick={() => {
                     removeHostAccount();
                   }}
-                  className={`pointer ${styles.button}`}
                 >
                   Remove Host
-                </p>
-                <p
+                </button>
+                <button
+                  className={styles.secondaryButton}
                   onClick={() => {
                     setOpenDeleteModal(false);
                   }}
-                  className={`pointer ${styles.button}`}
                 >
                   Cancel
-                </p>
+                </button>
               </div>
-            </Modal>
-          )}
+            </div>
+          </Modal>
+
           {recentRegistrations && hostList && recentRegistrations.length >= 0 ? (
             <>
               <div className={styles.buttons}>

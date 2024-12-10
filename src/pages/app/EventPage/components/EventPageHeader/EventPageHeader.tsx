@@ -15,7 +15,7 @@ import {
   IoMapOutline,
   IoPodiumOutline,
 } from 'react-icons/io5';
-import { MdContacts } from 'react-icons/md';
+import { MdArrowOutward, MdContacts } from 'react-icons/md';
 import { useNavigate } from 'react-router';
 
 import { EventHosts, EventType } from '../../../../../apis/types';
@@ -126,12 +126,33 @@ const EventPageHeader = ({ eventData }: { eventData: EventType | undefined }) =>
                 )}
               </div>
               {eventData?.place && (
-                <div className={styles.eventPlace}>
+                <div
+                  className={styles.eventPlace}
+                  onClick={() => {
+                    window.open(
+                      `https://maps.google.com/maps?q=${eventData?.location?.lat},${eventData?.location?.lng}&z=16`,
+                    );
+                  }}
+                >
                   <div className={styles.locationBox}>
                     <IoLocationOutline size={20} className={styles.locationIcon} />
                   </div>
-                  <div className={styles.eventDateTimeText}>
+                  <div
+                    className={styles.eventDateTimeText}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '0rem',
+                    }}
+                  >
                     <p className={styles.eventDateText}>{eventData?.place}</p>
+                    <MdArrowOutward
+                      className={styles.locationIcon}
+                      style={{
+                        marginLeft: '-0.5rem',
+                      }}
+                      size={15}
+                    />
                   </div>
                 </div>
               )}

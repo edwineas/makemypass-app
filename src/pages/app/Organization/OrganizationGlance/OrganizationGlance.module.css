@@ -264,6 +264,8 @@
   opacity: 0.9;
   font-size: 0.7rem;
   margin-bottom: 0.5rem;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
 }
 
 .manage {
@@ -437,6 +439,39 @@
   bottom: 0;
 }
 
+/*CSS Styles for the Org Embed Modal*/
+.publicLinkField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.02);
+  padding-right: 1rem;
+}
+
+.publicLink {
+  flex-grow: 1;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  color: white;
+  font-weight: 400;
+  line-height: 1.5;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  resize: none;
+}
+
+.publicLink:focus {
+  outline: none;
+}
+
 .publicEventModal {
   width: 100%;
 }
@@ -481,36 +516,4 @@
   margin-top: 1rem;
 
   width: 100%;
-}
-
-.publicLinkField {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 95%;
-  margin-top: 1rem;
-  border: none;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.02);
-  padding-right: 1rem;
-}
-
-.publicLink {
-  flex-grow: 1;
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  padding: 0.5rem 1rem;
-  color: white;
-  font-weight: 400;
-  line-height: 1.5;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  font-family: 'Inter', sans-serif;
-  overflow: hidden;
-  resize: none;
-}
-
-.publicLink:focus {
-  outline: none;
 }

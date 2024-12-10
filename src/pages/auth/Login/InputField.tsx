@@ -20,6 +20,7 @@ interface FormProps {
   disabled?: boolean;
   key?: string;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  inputStyles?: React.CSSProperties;
 }
 
 const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, type, ...inputProps }, ref) => {
@@ -48,9 +49,7 @@ const InputField = forwardRef<HTMLInputElement, FormProps>(({ icon, type, ...inp
       )}
       <div
         className={styles.inputField}
-        style={{
-          opacity: inputProps.disabled ? 0.5 : 1,
-        }}
+        style={{ ...inputProps.inputStyles, opacity: inputProps.disabled ? 0.5 : 1 }}
       >
         {icon}
         <input

@@ -26,6 +26,17 @@
   column-gap: 1rem;
 }
 
+.publishedEventsContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  height: 100%;
+  row-gap: 1rem;
+  column-gap: 1rem;
+  margin-top: 1rem;
+}
+
 .event {
   display: flex;
   flex-direction: row;
@@ -34,13 +45,6 @@
   flex-wrap: wrap;
   column-gap: 2rem;
   row-gap: 2rem;
-}
-
-.date {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
 }
 
 .day {
@@ -90,12 +94,12 @@
 
   display: flex;
   flex-direction: column;
-
+  transition: all 0.2s ease-in-out;
   position: relative;
 }
 
 .eventCard:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 @media (min-width: 1200px) {
@@ -103,6 +107,7 @@
     max-width: 22rem;
     min-width: 23.85rem;
   }
+
 }
 
 .innerCard {
@@ -187,6 +192,8 @@
   opacity: 0.9;
   font-size: 0.7rem;
   margin-bottom: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
 }
 
 .absoluteButtons {
@@ -305,6 +312,8 @@
   .selectRow {
     justify-content: flex-start;
   }
+
+
 }
 
 .createButton {
@@ -411,4 +420,123 @@
   flex-wrap: wrap;
   margin-top: 1rem;
   row-gap: 0.5rem;
+}
+
+.rightMenuButton {
+  border-radius: 2px;
+  padding: 0.2rem;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: all;
+}
+
+.rightMenuButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.orgContainer {
+  width: 100%;
+  text-align: left;
+}
+
+.orgLabel {
+  color: #a4a4a4;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+.orgNote {
+  color: #a4a4a4;
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+.orgContainer {
+  width: 100%;
+  text-align: left;
+}
+
+.orgLabel {
+  color: #a4a4a4;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+.orgNote {
+  color: #a4a4a4;
+  font-size: 0.75rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+
+.eventAffiliationButton {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  margin-right: 0.5rem;
+}
+
+.eventAffiliationButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.eventAffiliationButtonSelected {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: rgba(255, 255, 255, 0.3) solid 2px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  margin-right: 0.5rem;
+}
+
+.eventAffiliationButtonSelected:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media screen and (max-width: 872px) {
+  .EventAffiliationContainer {
+    margin-top: 1rem;
+  }
+}
+
+
+.participatedEventButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  position: absolute;
+  bottom: 1rem;
+}
+
+.participantButton {
+
+  width: 6rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #a4a4a4;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  text-align: center;
+  display: flex;
+  column-gap: 0.25rem;
+
+
+
 }
