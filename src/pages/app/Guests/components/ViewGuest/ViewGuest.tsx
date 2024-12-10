@@ -1,10 +1,12 @@
 import { isArray } from 'chart.js/helpers';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { Dispatch, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { BiChevronDown } from 'react-icons/bi';
 import { BsTicketPerforatedFill } from 'react-icons/bs';
 import { FaEdit, FaFileInvoiceDollar, FaMailBulk, FaTrash, FaWalking } from 'react-icons/fa';
 import { FaCheck } from 'react-icons/fa6';
+import { IoCopyOutline } from 'react-icons/io5';
 import { MdDownload, MdMail, MdRemove } from 'react-icons/md';
 import { HashLoader } from 'react-spinners';
 
@@ -341,6 +343,20 @@ const ViewGuest = ({
                   </p>
                   <p className={styles.ticketCode}>
                     <span>Ticket Code:</span> {selectedGuestData['ticket_code']}
+                    <IoCopyOutline
+                      style={{
+                        marginLeft: '5px',
+                        marginTop: '2px',
+                        cursor: 'pointer',
+                      }}
+                      size={15}
+                      onClick={() => {
+                        navigator.clipboard.writeText(selectedGuestData['ticket_code']);
+                        toast.success('Ticket Code Copied', {
+                          id: 'ticket-code-copied',
+                        });
+                      }}
+                    />
                   </p>
                   {selectedGuestData['mapped_code'] && (
                     <p className={styles.ticketCode}>

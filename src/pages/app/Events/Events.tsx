@@ -27,6 +27,7 @@ import Theme from '../../../components/Theme/Theme';
 import InputField from '../../auth/Login/InputField';
 import { customStyles } from '../EventPage/constants';
 import SecondaryButton from '../Overview/components/SecondaryButton/SecondaryButton';
+import EventBox from './EventBox/EventBox';
 import styles from './Events.module.css';
 import RightClickMenu from './RightClickMenu';
 import type { NewEventStateType, OrgListType } from './types';
@@ -80,7 +81,9 @@ const Events = () => {
 
   const [events, setEvents] = useState([] as Event[]);
   const [participatedEvents, setParticipatedEvents] = useState([] as Event[]);
-  const [eventAffiliation, setEventAffiliation] = useState(EventAffiliation.Organized);
+  const [eventAffiliation, setEventAffiliation] = useState(
+    (localStorage.getItem('eventAffiliation') as EventAffiliation) ?? EventAffiliation.Participated,
+  );
 
   useEffect(() => {
     getCommonTags(setTags);
@@ -93,6 +96,10 @@ const Events = () => {
     } else {
       getEventsList(setEvents, setIsDataLoaded);
     }
+    localStorage.setItem('eventAffiliation', eventAffiliation);
+    return () => {
+      localStorage.setItem('eventAffiliation', eventAffiliation);
+    };
   }, [EventAffiliation.Participated, eventAffiliation]);
 
   useEffect(() => {
@@ -118,6 +125,10 @@ const Events = () => {
     navigate(`/${eventName}/view-ticket/${eventRegisterId}`);
   };
 
+  const handleMoreClick = (eventName: string) => {
+    navigate(`/${eventName}/event-info`);
+  };
+
   const onModalClose = () => {
     setShowModal(false);
   };
@@ -132,6 +143,10 @@ const Events = () => {
       }));
     }
   };
+
+  useEffect(() => {
+    sessionStorage.clear();
+  }, []);
 
   return (
     <>
@@ -309,7 +324,7 @@ const Events = () => {
                   </div>
                 )}
 
-                {tags && tags.length > 0 && (
+                {tags && tags.length > 0 && eventAffiliation == EventAffiliation.Organized && (
                   <Select
                     styles={customStyles}
                     isMulti
@@ -323,7 +338,7 @@ const Events = () => {
                   />
                 )}
 
-                {orgs && orgs.length > 0 && (
+                {orgs && orgs.length > 0 && eventAffiliation == EventAffiliation.Organized && (
                   <>
                     <Select
                       styles={customStyles}
@@ -570,117 +585,13 @@ const Events = () => {
                 {participatedEvents
                   .filter((event) => event.title.toLowerCase().includes(searchTerm.toLowerCase()))
                   .map((event) => (
-                    <div key={event.id} className={styles.event}>
-                      <div>
-                        <motion.div
-                          initial={{ opacity: 0, y: 50 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className={styles.eventCard}
-                          onClick={() => {
-                            handleClick(event.name);
-                          }}
-                        >
-                          <div className={styles.innerCard}>
-                            {event.logo ? (
-                              <motion.img
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5 }}
-                                src={event.logo}
-                                alt='event logo depicting event information'
-                                className={styles.eventImage}
-                              />
-                            ) : (
-                              <div className={styles.eventImage}>
-                                {event.title.charAt(0).toUpperCase()}
-                              </div>
-                            )}
-                            <div className={styles.eventDetails}>
-                              <div className={styles.eventDetailsHeader}>
-                                <div>
-                                  {event.event_start_date && (
-                                    <motion.div className={styles.eventDate}>
-                                      <p className={styles.date}>
-                                        {formatDate(event?.event_start_date)}
-                                      </p>
-                                    </motion.div>
-                                  )}
-                                  <p className={styles.eventName}>
-                                    {event.title.substring(0, 35)}
-                                    {event.title.length > 35 ? '...' : ''}
-                                  </p>
-                                </div>
-                                {/* <div className={styles.absoluteButtons}>
-                                  {event.tags.length > 0 && (
-                                    <div className={styles.tagsButton}>
-                                      <FaTags
-                                        color='#ffffff'
-                                        className='pointer'
-                                        title={event.tags.length > 0 ? event.tags.join(', ') : ''}
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                        }}
-                                      />
-                                    </div>
-                                  )}
-
-                                  <div className={styles.rightMenuButton}>
-                                    <BsThreeDots
-                                      onClick={(
-                                        eventClick: React.MouseEvent<SVGElement, MouseEvent>,
-                                      ) => {
-                                        eventClick.stopPropagation();
-                                        handleButtonClick(eventClick);
-                                        setDuplicateEventId(event?.id);
-                                      }}
-                                      size={15}
-                                      color='#ffffff'
-                                      className='pointer'
-                                      style={{
-                                        zIndex: 10,
-                                      }}
-                                    />
-                                  </div>
-                                </div> */}
-                              </div>
-                              {isMenuOpen && duplicateEventId == event.id && (
-                                <RightClickMenu
-                                  isOpen={isMenuOpen}
-                                  position={menuPosition}
-                                  onClose={handleMenuClose}
-                                  setShowModal={setShowModal}
-                                />
-                              )}
-                              <div className={styles.participatedEventButtons}>
-                                <motion.button
-                                  whileHover={{ scale: 1.05 }}
-                                  className={styles.participantButton}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleViewTicket(event.name, event.event_register_id as string);
-                                  }}
-                                >
-                                  View Ticket
-                                  {/* <BsArrowRight size={15} /> */}
-                                </motion.button>
-
-                                <motion.button
-                                  whileHover={{ scale: 1.05 }}
-                                  className={styles.participantButton}
-                                  onClick={() => {
-                                    handleClick(event.name);
-                                  }}
-                                >
-                                  More Info
-                                  <BsArrowRight size={15} />
-                                </motion.button>
-                              </div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      </div>
-                    </div>
+                    <>
+                      <EventBox
+                        eventData={event}
+                        handleViewTicket={handleViewTicket}
+                        handleMoreClick={handleMoreClick}
+                      />
+                    </>
                   ))}
               </div>
             )}
@@ -691,15 +602,20 @@ const Events = () => {
               isDataLoaded && (
                 <div className={styles.noEventsContainer}>
                   <p className={styles.noEvents}>
-                    You don't have any events yet. Please connect with our sales team to get
-                    started.
+                    You don't have any {eventAffiliation} events yet. Please connect with{' '}
+                    {eventAffiliation == EventAffiliation.Organized
+                      ? 'our sales team'
+                      : 'your organizer'}{' '}
+                    to get started.
                   </p>
-                  <SecondaryButton
-                    buttonText='Contact Sales'
-                    onClick={() => {
-                      window.open('https://wa.me/916238450178', '_blank');
-                    }}
-                  />
+                  {eventAffiliation == EventAffiliation.Organized && (
+                    <SecondaryButton
+                      buttonText='Contact Sales'
+                      onClick={() => {
+                        window.open('https://wa.me/916238450178', '_blank');
+                      }}
+                    />
+                  )}
                 </div>
               )}
           </div>

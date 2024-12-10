@@ -103,7 +103,7 @@ const Insights = ({ type }: { type?: string }) => {
   }
 
   const [eventData, setEventData] = useState<{
-    name: string;
+    title: string;
     id: string;
   }>();
   const { eventTitle } = useParams();
