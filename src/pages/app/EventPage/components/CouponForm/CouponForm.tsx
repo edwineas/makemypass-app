@@ -3,7 +3,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { FaBookOpen } from 'react-icons/fa';
+// import { FaBookOpen } from 'react-icons/fa';
 import { RiInformationFill } from 'react-icons/ri';
 
 import { validateFormCoupon } from '../../../../../apis/publicpage';
