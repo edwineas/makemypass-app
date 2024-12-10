@@ -15,6 +15,7 @@ export type Event = {
   location: string | null;
   status: string;
   tags: string[];
+  event_register_id?: string;
 };
 
 export type hostList = {
