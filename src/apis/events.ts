@@ -92,7 +92,7 @@ export const getEventId = async (
   eventName: string,
 ): Promise<{
   id: string;
-  name: string;
+  title: string;
 }> => {
   return new Promise((resolve, reject) => {
     publicGateway
@@ -100,7 +100,7 @@ export const getEventId = async (
       .then((response) => {
         const eventData = {
           id: response.data.response.id,
-          title: response.data.response.name,
+          title: response.data.response.title,
         };
         sessionStorage.setItem('eventData', JSON.stringify(eventData));
         resolve(response.data.response);
