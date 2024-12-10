@@ -29,7 +29,10 @@ export const createTicket = async (eventId: string, ticket: TicketType) => {
     });
 
     toast.success(response.data.message.general[0] || 'Ticket Created Successfully');
-    return response.data.response.ticket_id as string;
+    return {
+      ticket_id: response.data.response.ticket_id as string,
+      ticket_template: response.data.response.ticket_template as string,
+    };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     toast.error(error.response.data.message.general[0] || 'Unable to process the request');

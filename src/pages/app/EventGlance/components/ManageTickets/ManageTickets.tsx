@@ -67,10 +67,16 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         default_selected: false,
         registration_count: 0,
       };
-      const newTicketId = await createTicket(eventId, newTicket as TicketType);
+      const newTicketObj = await createTicket(eventId, newTicket as TicketType);
+      const newTicketId = newTicketObj?.ticket_id;
+      const newTicketTemplate = newTicketObj?.ticket_template;
       if (newTicketId) {
         setTicketData((prevTickets) => [
-          { ...(newTicket as TicketType), id: newTicketId },
+          {
+            ...(newTicket as TicketType),
+            id: newTicketId,
+            image: { file_path: newTicketTemplate || '' },
+          },
           ...prevTickets,
         ]);
         setSelectedTicket({ ...(newTicket as TicketType), id: newTicketId });
@@ -112,10 +118,16 @@ const ManageTickets = forwardRef<ChildRef, ChildProps>(({ setIsTicketsOpen }, re
         },
         commission: 0.0,
       };
-      const newTicketId = await createTicket(eventId, newTicket as TicketType);
+      const newTicketObj = await createTicket(eventId, newTicket as TicketType);
+      const newTicketId = newTicketObj?.ticket_id;
+      const newTicketTemplate = newTicketObj?.ticket_template;
       if (newTicketId) {
         setTicketData((prevTickets) => [
-          { ...(newTicket as TicketType), id: newTicketId },
+          {
+            ...(newTicket as TicketType),
+            id: newTicketId,
+            image: { file_path: newTicketTemplate || '' },
+          },
           ...prevTickets,
         ]);
         setSelectedTicket({ ...(newTicket as TicketType), id: newTicketId });

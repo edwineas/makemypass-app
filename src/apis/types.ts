@@ -136,12 +136,12 @@ export interface TicketType {
     operator: string;
   }[];
   image?: {
-    qr: {
+    qr?: {
       border: string;
       box_size: string;
       position: string;
     };
-    content: {
+    content?: {
       text: string;
       max_len: string;
       position: string;
