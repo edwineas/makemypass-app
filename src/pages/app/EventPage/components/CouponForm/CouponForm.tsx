@@ -571,7 +571,7 @@ const CouponForm = ({
                 <span className={styles.extraCharges}></span>
               </span>
             </div>
-            <div className='pointer' onClick={() => setShowReceiptModal(true)}>
+            {/* <div className='pointer' onClick={() => setShowReceiptModal(true)}>
               <FaBookOpen color='#fff' size={20} style={{ marginRight: '0.25rem' }} />{' '}
               <span
                 style={{
@@ -581,7 +581,7 @@ const CouponForm = ({
               >
                 Expected Invoice
               </span>
-            </div>
+            </div> */}
           </div>
         )}
     </>
